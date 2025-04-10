@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram File Storage</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Telegram File Storage</h1>
+
+    <div class="container">
+        <h2>Upload File</h2>
+        <label for="username">Username:</label>
+        <input type="text" id="username" placeholder="Enter your username" required><br><br>
+
+        <div id="drop-zone">
+            <p>Drag & Drop file here or click to select</p>
+            <input type="file" id="file-input" style="display: none;">
+        </div>
+        <progress id="upload-progress" value="0" max="100" style="width: 100%; display: none;"></progress>
+        <p id="upload-status"></p>
+        <button id="upload-button" disabled>Upload</button>
+    </div>
+
+    <div class="container">
+        <h2>Stored Files</h2>
+        <label for="list-username">Username to List Files:</label>
+        <input type="text" id="list-username" placeholder="Enter username to list files">
+        <button id="list-files-button">List Files</button>
+        <ul id="file-list">
+            <!-- File list will be populated here -->
+        </ul>
+        <p id="list-status"></p>
+    </div>
+
+    <script>
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+        const uploadButton = document.getElementById('upload-button');
+        const uploadProgress = document.getElementById('upload-progress');
+        const uploadStatus = document.getElementById('upload-status');
+        const usernameInput = document.getElementById('username');
+        const listUsernameInput = document.getElementById('list-username');
+        const listFilesButton = document.getElementById('list-files-button');
+        const fileList = document.getElementById('file-list');
+        const listStatus = document.getElementById('list-status');
+
+        let fileToUpload = null;
+
+        // --- Drag and Drop ---
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('drag-over');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('drag-over');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('drag-over');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        });
+
+        dropZone.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        });
+
+        function handleFile(file) {
+            fileToUpload = file;
+            dropZone.querySelector('p').textContent = `Selected: ${file.name}`;
+            uploadButton.disabled = false;
+            uploadStatus.textContent = ''; // Clear previous status
+            uploadProgress.style.display = 'none'; // Hide progress bar initially
+            uploadProgress.value = 0;
+        }
+
+        // --- Upload ---
+        uploadButton.addEventListener('click', async () => {
+            if (!fileToUpload) {
+                uploadStatus.textContent = 'Please select a file first.';
+                return;
+            }
+            const username = usernameInput.value.trim();
+            if (!username) {
+                uploadStatus.textContent = 'Please enter a username.';
+                return;
+            }
+
+            uploadButton.disabled = true;
+            uploadStatus.textContent = 'Uploading...';
+            uploadProgress.style.display = 'block';
+            uploadProgress.value = 0;
+
+            const formData = new FormData();
+            formData.append('file', fileToUpload);
+            formData.append('username', username);
+
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData,
+                    // Note: No 'Content-Type' header needed for FormData with fetch
+                    // It sets the boundary automatically.
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    uploadStatus.textContent = `Success: ${result.message}`;
+                    // Reset form
+                    fileToUpload = null;
+                    dropZone.querySelector('p').textContent = 'Drag & Drop file here or click to select';
+                    fileInput.value = ''; // Clear the file input
+                    // Optionally list files for the current user immediately
+                    // listFiles(username);
+                } else {
+                    throw new Error(result.error || `HTTP error! status: ${response.status}`);
+                }
+            } catch (error) {
+                console.error('Upload error:', error);
+                uploadStatus.textContent = `Error: ${error.message}`;
+            } finally {
+                uploadButton.disabled = false;
+                uploadProgress.style.display = 'none';
+            }
+        });
+
+        // --- List Files ---
+        listFilesButton.addEventListener('click', () => {
+            const username = listUsernameInput.value.trim();
+            if (!username) {
+                listStatus.textContent = 'Please enter a username to list files.';
+                return;
+            }
+            listFiles(username);
+        });
+
+        async function listFiles(username) {
+            fileList.innerHTML = ''; // Clear previous list
+            listStatus.textContent = 'Fetching file list...';
+
+            try {
+                const response = await fetch(`/files/${encodeURIComponent(username)}`);
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+                }
+                const files = await response.json();
+
+                if (files.length === 0) {
+                    listStatus.textContent = 'No files found for this user.';
+                    return;
+                }
+
+                files.forEach(fileInfo => {
+                    const li = document.createElement('li');
+                    const fileNameSpan = document.createElement('span');
+                    fileNameSpan.textContent = fileInfo.original_filename;
+
+                    const downloadButton = document.createElement('button');
+                    downloadButton.textContent = 'Download';
+                    downloadButton.classList.add('download-button');
+                    downloadButton.onclick = () => downloadFile(username, fileInfo.original_filename);
+
+                    li.appendChild(fileNameSpan);
+                    li.appendChild(downloadButton);
+                    fileList.appendChild(li);
+                });
+                listStatus.textContent = ''; // Clear status on success
+            } catch (error) {
+                console.error('List files error:', error);
+                listStatus.textContent = `Error: ${error.message}`;
+            }
+        }
+
+         // --- Download File ---
+        async function downloadFile(username, filename) {
+             listStatus.textContent = `Preparing download for ${filename}...`;
+             try {
+                 // Use window.location for direct download trigger which handles headers correctly
+                 window.location.href = `/download/${encodeURIComponent(username)}/${encodeURIComponent(filename)}`;
+                 // Clear status after initiating download (it happens in a new request)
+                 // We can't easily track progress or success here without websockets or polling
+                 setTimeout(() => { listStatus.textContent = ''; }, 3000); // Clear after a delay
+
+             } catch (error) { // This catch block might not be effective for window.location errors
+                 console.error('Download initiation error:', error);
+                 listStatus.textContent = `Error starting download: ${error.message}`;
+             }
+        }
+
+    </script>
+</body>
+</html>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Telegram File Storage</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">
 </head>
 <body>
     <h1>Telegram File Storage</h1>
@@ -20,7 +20,7 @@
         </div>
         <progress id="upload-progress" value="0" max="100" style="width: 100%; display: none;"></progress>
         <p id="upload-status"></p>
-        <button id="upload-button" disabled>Upload</button>
+        <button id="upload-button">Upload</button>
     </div>
 
     <div class="container">
@@ -98,7 +98,7 @@
                 return;
             }
 
-            uploadButton.disabled = true;
+            uploadButton.disabled = false;
             uploadStatus.textContent = 'Uploading...';
             uploadProgress.style.display = 'block';
             uploadProgress.value = 0;

@@ -1,0 +1,762 @@
+2025-04-11 11:57:07,274 - INFO - app.py:683 - -------------------- Application Starting --------------------
+2025-04-11 11:57:07,275 - INFO - app.py:684 - Logging configured to write to file: logs\app.log
+2025-04-11 11:57:07,275 - INFO - app.py:685 - Script execution started in __main__ block.
+2025-04-11 11:57:07,275 - INFO - app.py:688 - Attempting asynchronous bot initialization...
+2025-04-11 11:57:07,277 - INFO - app.py:114 - Attempting to initialize Telegram Bot...
+2025-04-11 11:57:07,283 - INFO - app.py:117 - Bot instance created. Validating token with get_me()...
+2025-04-11 11:57:08,202 - ERROR - app.py:125 - Failed to initialize Telegram Bot: Invalid Token provided.
+2025-04-11 11:57:08,204 - WARNING - app.py:693 - -----------------------------------------------------
+2025-04-11 11:57:08,211 - WARNING - app.py:694 - WARNING: Telegram Bot failed to initialize. 
+2025-04-11 11:57:08,211 - WARNING - app.py:695 -          Upload/Download functionality will not work.
+2025-04-11 11:57:08,211 - WARNING - app.py:696 -          Check your TELEGRAM_BOT_TOKEN and network.
+2025-04-11 11:57:08,211 - WARNING - app.py:697 - -----------------------------------------------------
+2025-04-11 11:57:08,212 - ERROR - app.py:707 - -----------------------------------------------------
+2025-04-11 11:57:08,212 - ERROR - app.py:708 - ERROR: Bot object is still None after initialization attempt.
+2025-04-11 11:57:08,212 - ERROR - app.py:709 -        Upload/Download functionality WILL NOT WORK.
+2025-04-11 11:57:08,212 - ERROR - app.py:710 -        Review initialization logs for errors.
+2025-04-11 11:57:08,212 - ERROR - app.py:711 - -----------------------------------------------------
+2025-04-11 11:57:08,212 - INFO - app.py:725 - TELEGRAM_CHAT_ID is configured to: -4603853425
+2025-04-11 11:57:08,212 - INFO - app.py:728 - Starting Flask server...
+2025-04-11 11:57:08,252 - WARNING - _internal.py:97 -  * Debugger is active!
+2025-04-11 11:57:08,257 - INFO - _internal.py:97 -  * Debugger PIN: 107-410-311
+2025-04-11 11:57:38,128 - INFO - app.py:683 - -------------------- Application Starting --------------------
+2025-04-11 11:57:38,128 - INFO - app.py:684 - Logging configured to write to file: logs\app.log
+2025-04-11 11:57:38,128 - INFO - app.py:685 - Script execution started in __main__ block.
+2025-04-11 11:57:38,128 - INFO - app.py:688 - Attempting asynchronous bot initialization...
+2025-04-11 11:57:38,129 - INFO - app.py:114 - Attempting to initialize Telegram Bot...
+2025-04-11 11:57:38,131 - INFO - app.py:117 - Bot instance created. Validating token with get_me()...
+2025-04-11 11:57:38,964 - ERROR - app.py:125 - Failed to initialize Telegram Bot: Invalid Token provided.
+2025-04-11 11:57:38,965 - WARNING - app.py:693 - -----------------------------------------------------
+2025-04-11 11:57:38,965 - WARNING - app.py:694 - WARNING: Telegram Bot failed to initialize. 
+2025-04-11 11:57:38,965 - WARNING - app.py:695 -          Upload/Download functionality will not work.
+2025-04-11 11:57:38,965 - WARNING - app.py:696 -          Check your TELEGRAM_BOT_TOKEN and network.
+2025-04-11 11:57:38,966 - WARNING - app.py:697 - -----------------------------------------------------
+2025-04-11 11:57:38,966 - ERROR - app.py:707 - -----------------------------------------------------
+2025-04-11 11:57:38,966 - ERROR - app.py:708 - ERROR: Bot object is still None after initialization attempt.
+2025-04-11 11:57:38,966 - ERROR - app.py:709 -        Upload/Download functionality WILL NOT WORK.
+2025-04-11 11:57:38,966 - ERROR - app.py:710 -        Review initialization logs for errors.
+2025-04-11 11:57:38,966 - ERROR - app.py:711 - -----------------------------------------------------
+2025-04-11 11:57:38,966 - INFO - app.py:725 - TELEGRAM_CHAT_ID is configured to: -4603853425
+2025-04-11 11:57:38,967 - INFO - app.py:728 - Starting Flask server...
+2025-04-11 11:57:39,011 - INFO - _internal.py:97 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-04-11 11:57:39,012 - INFO - _internal.py:97 - [33mPress CTRL+C to quit[0m
+2025-04-11 11:57:39,018 - INFO - _internal.py:97 -  * Restarting with stat
+2025-04-11 11:57:39,469 - INFO - app.py:683 - -------------------- Application Starting --------------------
+2025-04-11 11:57:39,469 - INFO - app.py:684 - Logging configured to write to file: logs\app.log
+2025-04-11 11:57:39,469 - INFO - app.py:685 - Script execution started in __main__ block.
+2025-04-11 11:57:39,469 - INFO - app.py:688 - Attempting asynchronous bot initialization...
+2025-04-11 11:57:39,470 - INFO - app.py:114 - Attempting to initialize Telegram Bot...
+2025-04-11 11:57:39,473 - INFO - app.py:117 - Bot instance created. Validating token with get_me()...
+2025-04-11 11:57:40,292 - ERROR - app.py:125 - Failed to initialize Telegram Bot: Invalid Token provided.
+2025-04-11 11:57:40,294 - WARNING - app.py:693 - -----------------------------------------------------
+2025-04-11 11:57:40,294 - WARNING - app.py:694 - WARNING: Telegram Bot failed to initialize. 
+2025-04-11 11:57:40,294 - WARNING - app.py:695 -          Upload/Download functionality will not work.
+2025-04-11 11:57:40,294 - WARNING - app.py:696 -          Check your TELEGRAM_BOT_TOKEN and network.
+2025-04-11 11:57:40,294 - WARNING - app.py:697 - -----------------------------------------------------
+2025-04-11 11:57:40,295 - ERROR - app.py:707 - -----------------------------------------------------
+2025-04-11 11:57:40,295 - ERROR - app.py:708 - ERROR: Bot object is still None after initialization attempt.
+2025-04-11 11:57:40,295 - ERROR - app.py:709 -        Upload/Download functionality WILL NOT WORK.
+2025-04-11 11:57:40,295 - ERROR - app.py:710 -        Review initialization logs for errors.
+2025-04-11 11:57:40,295 - ERROR - app.py:711 - -----------------------------------------------------
+2025-04-11 11:57:40,295 - INFO - app.py:725 - TELEGRAM_CHAT_ID is configured to: -4603853425
+2025-04-11 11:57:40,295 - INFO - app.py:728 - Starting Flask server...
+2025-04-11 11:57:40,315 - WARNING - _internal.py:97 -  * Debugger is active!
+2025-04-11 11:57:40,321 - INFO - _internal.py:97 -  * Debugger PIN: 107-410-311
+2025-04-11 12:25:42,152 - INFO - app.py:698 - -------------------- Application Starting --------------------
+2025-04-11 12:25:42,152 - INFO - app.py:699 - Logging configured to write to file: logs\app.log
+2025-04-11 12:25:42,152 - INFO - app.py:700 - Script execution started in __main__ block.
+2025-04-11 12:25:42,152 - INFO - app.py:703 - Attempting asynchronous bot initialization...
+2025-04-11 12:25:42,152 - INFO - app.py:114 - Attempting to initialize Telegram Bot...
+2025-04-11 12:25:42,152 - INFO - app.py:122 - Token String from os.getenv: '7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs'
+2025-04-11 12:25:42,152 - INFO - app.py:123 - Type: <class 'str'>, Length: 46
+2025-04-11 12:25:42,152 - INFO - app.py:128 - Token string being passed to telegram.Bot: '7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs'
+2025-04-11 12:25:42,152 - INFO - app.py:131 - Bot instance created. Validating token with get_me()...
+2025-04-11 12:25:43,030 - ERROR - app.py:144 - Failed to initialize Telegram Bot. Error: object User can't be used in 'await' expression
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\app.py", line 132, in initialize_bot
+    user = await temp_bot.get_me()
+          ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: object User can't be used in 'await' expression
+2025-04-11 12:25:43,045 - WARNING - app.py:708 - -----------------------------------------------------
+2025-04-11 12:25:43,045 - WARNING - app.py:709 - WARNING: Telegram Bot failed to initialize. 
+2025-04-11 12:25:43,045 - WARNING - app.py:710 -          Upload/Download functionality will not work.
+2025-04-11 12:25:43,045 - WARNING - app.py:711 -          Check your TELEGRAM_BOT_TOKEN and network.
+2025-04-11 12:25:43,045 - WARNING - app.py:712 - -----------------------------------------------------
+2025-04-11 12:25:43,045 - ERROR - app.py:722 - -----------------------------------------------------
+2025-04-11 12:25:43,045 - ERROR - app.py:723 - ERROR: Bot object is still None after initialization attempt.
+2025-04-11 12:25:43,045 - ERROR - app.py:724 -        Upload/Download functionality WILL NOT WORK.
+2025-04-11 12:25:43,045 - ERROR - app.py:725 -        Review initialization logs for errors.
+2025-04-11 12:25:43,045 - ERROR - app.py:726 - -----------------------------------------------------
+2025-04-11 12:25:43,045 - INFO - app.py:740 - TELEGRAM_CHAT_ID is configured to: -4603853425
+2025-04-11 12:25:43,045 - INFO - app.py:743 - Starting Flask server...
+2025-04-11 12:25:43,079 - INFO - _internal.py:97 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-04-11 12:25:43,079 - INFO - _internal.py:97 - [33mPress CTRL+C to quit[0m
+2025-04-11 12:25:43,079 - INFO - _internal.py:97 -  * Restarting with stat
+2025-04-11 12:25:43,540 - INFO - app.py:698 - -------------------- Application Starting --------------------
+2025-04-11 12:25:43,540 - INFO - app.py:699 - Logging configured to write to file: logs\app.log
+2025-04-11 12:25:43,540 - INFO - app.py:700 - Script execution started in __main__ block.
+2025-04-11 12:25:43,540 - INFO - app.py:703 - Attempting asynchronous bot initialization...
+2025-04-11 12:25:43,540 - INFO - app.py:114 - Attempting to initialize Telegram Bot...
+2025-04-11 12:25:43,540 - INFO - app.py:122 - Token String from os.getenv: '7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs'
+2025-04-11 12:25:43,540 - INFO - app.py:123 - Type: <class 'str'>, Length: 46
+2025-04-11 12:25:43,540 - INFO - app.py:128 - Token string being passed to telegram.Bot: '7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs'
+2025-04-11 12:25:43,540 - INFO - app.py:131 - Bot instance created. Validating token with get_me()...
+2025-04-11 12:25:44,334 - ERROR - app.py:144 - Failed to initialize Telegram Bot. Error: object User can't be used in 'await' expression
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\app.py", line 132, in initialize_bot
+    user = await temp_bot.get_me()
+          ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: object User can't be used in 'await' expression
+2025-04-11 12:25:44,334 - WARNING - app.py:708 - -----------------------------------------------------
+2025-04-11 12:25:44,334 - WARNING - app.py:709 - WARNING: Telegram Bot failed to initialize. 
+2025-04-11 12:25:44,334 - WARNING - app.py:710 -          Upload/Download functionality will not work.
+2025-04-11 12:25:44,334 - WARNING - app.py:711 -          Check your TELEGRAM_BOT_TOKEN and network.
+2025-04-11 12:25:44,334 - WARNING - app.py:712 - -----------------------------------------------------
+2025-04-11 12:25:44,334 - ERROR - app.py:722 - -----------------------------------------------------
+2025-04-11 12:25:44,334 - ERROR - app.py:723 - ERROR: Bot object is still None after initialization attempt.
+2025-04-11 12:25:44,334 - ERROR - app.py:724 -        Upload/Download functionality WILL NOT WORK.
+2025-04-11 12:25:44,334 - ERROR - app.py:725 -        Review initialization logs for errors.
+2025-04-11 12:25:44,334 - ERROR - app.py:726 - -----------------------------------------------------
+2025-04-11 12:25:44,334 - INFO - app.py:740 - TELEGRAM_CHAT_ID is configured to: -4603853425
+2025-04-11 12:25:44,334 - INFO - app.py:743 - Starting Flask server...
+2025-04-11 12:25:44,366 - WARNING - _internal.py:97 -  * Debugger is active!
+2025-04-11 12:25:44,367 - INFO - _internal.py:97 -  * Debugger PIN: 107-410-311
+2025-04-11 12:27:10,393 - INFO - app.py:321 - Route '/' accessed. Rendering index.html.
+2025-04-11 12:27:10,472 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:27:10] "GET / HTTP/1.1" 200 -
+2025-04-11 12:27:10,589 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:27:10] "GET /static/style.css HTTP/1.1" 200 -
+2025-04-11 12:27:10,647 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:27:10] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-04-11 12:27:34,274 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:27:34,274 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:27:34,274 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:27:34] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:27:37,058 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:27:37,058 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:27:37,058 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:27:37] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:27:37,746 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:27:37,748 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:27:37,748 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:27:37] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:27:38,484 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:27:38,484 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:27:38,484 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:27:38] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:27:39,062 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:27:39,062 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:27:39,062 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:27:39] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:27:40,281 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:27:40,281 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:27:40,281 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:27:40] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:27:40,862 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:27:40,862 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:27:40,862 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:27:40] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:27:46,630 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:27:46,630 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:27:46,631 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:27:46] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:27:47,116 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:27:47,116 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:27:47,117 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:27:47] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:27:47,292 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:27:47,292 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:27:47,292 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:27:47] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:27:47,460 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:27:47,460 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:27:47,460 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:27:47] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:27:47,633 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:27:47,633 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:27:47,633 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:27:47] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:27:47,808 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:27:47,808 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:27:47,808 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:27:47] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:27:47,972 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:27:47,972 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:27:47,972 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:27:47] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:27:48,132 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:27:48,132 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:27:48,134 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:27:48] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:27:48,286 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:27:48,286 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:27:48,286 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:27:48] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:27:48,440 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:27:48,440 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:27:48,440 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:27:48] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:27:48,656 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:27:48,656 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:27:48,656 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:27:48] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:27:49,262 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:27:49,262 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:27:49,262 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:27:49] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:28:13,368 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:28:13,368 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:28:13,368 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:28:13] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:28:13,887 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:28:13,887 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:28:13,888 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:28:13] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:28:14,082 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:28:14,083 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:28:14,083 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:28:14] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:28:14,272 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:28:14,273 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:28:14,273 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:28:14] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:28:14,453 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:28:14,453 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:28:14,454 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:28:14] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:28:14,623 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:28:14,623 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:28:14,623 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:28:14] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:28:14,801 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:28:14,801 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:28:14,802 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:28:14] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:28:15,000 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:28:15,000 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:28:15,001 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:28:15] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:28:16,853 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:28:16,853 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:28:16,854 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:28:16] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:28:17,425 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:28:17,425 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:28:17,426 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:28:17] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:28:17,629 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:28:17,629 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:28:17,630 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:28:17] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:28:18,231 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:28:18,231 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:28:18,232 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:28:18] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:28:18,857 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:28:18,857 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:28:18,858 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:28:18] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:28:19,329 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:28:19,329 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:28:19,329 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:28:19] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:28:19,547 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:28:19,547 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:28:19,548 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:28:19] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:28:19,727 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:28:19,727 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:28:19,727 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:28:19] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:28:19,926 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:28:19,928 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:28:19,928 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:28:19] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:28:20,132 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:28:20,132 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:28:20,133 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:28:20] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:28:20,325 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:28:20,326 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:28:20,326 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:28:20] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:28:29,906 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:28:29,906 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:28:29,906 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:28:29] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:28:30,585 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:28:30,585 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:28:30,585 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:28:30] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:28:31,649 - INFO - app.py:321 - Route '/' accessed. Rendering index.html.
+2025-04-11 12:28:31,649 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:28:31] "GET / HTTP/1.1" 200 -
+2025-04-11 12:28:31,670 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:28:31] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-04-11 12:28:39,632 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:28:39,632 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:28:39,632 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:28:39] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:28:40,808 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:28:40,808 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:28:40,808 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:28:40] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:29:01,399 - INFO - app.py:698 - -------------------- Application Starting --------------------
+2025-04-11 12:29:01,399 - INFO - app.py:699 - Logging configured to write to file: logs\app.log
+2025-04-11 12:29:01,399 - INFO - app.py:700 - Script execution started in __main__ block.
+2025-04-11 12:29:01,399 - INFO - app.py:703 - Attempting asynchronous bot initialization...
+2025-04-11 12:29:01,399 - INFO - app.py:114 - Attempting to initialize Telegram Bot...
+2025-04-11 12:29:01,399 - INFO - app.py:122 - Token String from os.getenv: '7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs'
+2025-04-11 12:29:01,399 - INFO - app.py:123 - Type: <class 'str'>, Length: 46
+2025-04-11 12:29:01,399 - INFO - app.py:128 - Token string being passed to telegram.Bot: '7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs'
+2025-04-11 12:29:01,415 - INFO - app.py:131 - Bot instance created. Validating token with get_me()...
+2025-04-11 12:29:02,263 - ERROR - app.py:144 - Failed to initialize Telegram Bot. Error: object User can't be used in 'await' expression
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\app.py", line 132, in initialize_bot
+    user = await temp_bot.get_me()
+          ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: object User can't be used in 'await' expression
+2025-04-11 12:29:02,264 - WARNING - app.py:708 - -----------------------------------------------------
+2025-04-11 12:29:02,264 - WARNING - app.py:709 - WARNING: Telegram Bot failed to initialize. 
+2025-04-11 12:29:02,264 - WARNING - app.py:710 -          Upload/Download functionality will not work.
+2025-04-11 12:29:02,264 - WARNING - app.py:711 -          Check your TELEGRAM_BOT_TOKEN and network.
+2025-04-11 12:29:02,265 - WARNING - app.py:712 - -----------------------------------------------------
+2025-04-11 12:29:02,265 - ERROR - app.py:722 - -----------------------------------------------------
+2025-04-11 12:29:02,265 - ERROR - app.py:723 - ERROR: Bot object is still None after initialization attempt.
+2025-04-11 12:29:02,265 - ERROR - app.py:724 -        Upload/Download functionality WILL NOT WORK.
+2025-04-11 12:29:02,265 - ERROR - app.py:725 -        Review initialization logs for errors.
+2025-04-11 12:29:02,265 - ERROR - app.py:726 - -----------------------------------------------------
+2025-04-11 12:29:02,265 - INFO - app.py:740 - TELEGRAM_CHAT_ID is configured to: -4603853425
+2025-04-11 12:29:02,265 - INFO - app.py:743 - Starting Flask server...
+2025-04-11 12:29:02,295 - INFO - _internal.py:97 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-04-11 12:29:02,295 - INFO - _internal.py:97 - [33mPress CTRL+C to quit[0m
+2025-04-11 12:29:02,295 - INFO - _internal.py:97 -  * Restarting with stat
+2025-04-11 12:29:02,810 - INFO - app.py:698 - -------------------- Application Starting --------------------
+2025-04-11 12:29:02,811 - INFO - app.py:699 - Logging configured to write to file: logs\app.log
+2025-04-11 12:29:02,811 - INFO - app.py:700 - Script execution started in __main__ block.
+2025-04-11 12:29:02,811 - INFO - app.py:703 - Attempting asynchronous bot initialization...
+2025-04-11 12:29:02,811 - INFO - app.py:114 - Attempting to initialize Telegram Bot...
+2025-04-11 12:29:02,811 - INFO - app.py:122 - Token String from os.getenv: '7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs'
+2025-04-11 12:29:02,811 - INFO - app.py:123 - Type: <class 'str'>, Length: 46
+2025-04-11 12:29:02,812 - INFO - app.py:128 - Token string being passed to telegram.Bot: '7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs'
+2025-04-11 12:29:02,815 - INFO - app.py:131 - Bot instance created. Validating token with get_me()...
+2025-04-11 12:29:03,633 - ERROR - app.py:144 - Failed to initialize Telegram Bot. Error: object User can't be used in 'await' expression
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\app.py", line 132, in initialize_bot
+    user = await temp_bot.get_me()
+          ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: object User can't be used in 'await' expression
+2025-04-11 12:29:03,633 - WARNING - app.py:708 - -----------------------------------------------------
+2025-04-11 12:29:03,633 - WARNING - app.py:709 - WARNING: Telegram Bot failed to initialize. 
+2025-04-11 12:29:03,633 - WARNING - app.py:710 -          Upload/Download functionality will not work.
+2025-04-11 12:29:03,633 - WARNING - app.py:711 -          Check your TELEGRAM_BOT_TOKEN and network.
+2025-04-11 12:29:03,633 - WARNING - app.py:712 - -----------------------------------------------------
+2025-04-11 12:29:03,633 - ERROR - app.py:722 - -----------------------------------------------------
+2025-04-11 12:29:03,633 - ERROR - app.py:723 - ERROR: Bot object is still None after initialization attempt.
+2025-04-11 12:29:03,633 - ERROR - app.py:724 -        Upload/Download functionality WILL NOT WORK.
+2025-04-11 12:29:03,633 - ERROR - app.py:725 -        Review initialization logs for errors.
+2025-04-11 12:29:03,633 - ERROR - app.py:726 - -----------------------------------------------------
+2025-04-11 12:29:03,633 - INFO - app.py:740 - TELEGRAM_CHAT_ID is configured to: -4603853425
+2025-04-11 12:29:03,633 - INFO - app.py:743 - Starting Flask server...
+2025-04-11 12:29:03,655 - WARNING - _internal.py:97 -  * Debugger is active!
+2025-04-11 12:29:03,655 - INFO - _internal.py:97 -  * Debugger PIN: 107-410-311
+2025-04-11 12:29:06,392 - INFO - app.py:321 - Route '/' accessed. Rendering index.html.
+2025-04-11 12:29:06,397 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:29:06] "GET / HTTP/1.1" 200 -
+2025-04-11 12:29:06,472 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:29:06] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-04-11 12:29:07,062 - INFO - app.py:321 - Route '/' accessed. Rendering index.html.
+2025-04-11 12:29:07,062 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:29:07] "GET / HTTP/1.1" 200 -
+2025-04-11 12:29:07,081 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:29:07] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-04-11 12:29:14,643 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:29:14,643 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:29:14,643 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:29:14] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:29:15,711 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:29:15,711 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:29:15,712 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:29:15] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:29:15,906 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:29:15,906 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:29:15,906 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:29:15] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:29:16,066 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:29:16,066 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:29:16,066 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:29:16] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:29:16,266 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:29:16,266 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:29:16,266 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:29:16] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:29:16,454 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:29:16,454 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:29:16,454 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:29:16] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:29:16,652 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:29:16,652 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:29:16,652 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:29:16] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:29:16,832 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:29:16,832 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:29:16,832 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:29:16] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:29:17,015 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:29:17,015 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:29:17,015 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:29:17] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:29:17,199 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:29:17,199 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:29:17,199 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:29:17] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:29:17,372 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:29:17,372 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:29:17,372 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:29:17] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:29:17,540 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:29:17,540 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:29:17,540 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:29:17] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:29:17,720 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:29:17,720 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:29:17,720 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:29:17] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:29:17,896 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:29:17,896 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:29:17,896 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:29:17] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:29:18,070 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:29:18,070 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:29:18,070 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:29:18] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:29:18,252 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:29:18,252 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:29:18,253 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:29:18] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:29:18,410 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:29:18,410 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:29:18,410 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:29:18] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:29:18,586 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:29:18,586 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:29:18,586 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:29:18] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:29:18,766 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:29:18,766 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:29:18,766 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:29:18] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:29:18,954 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:29:18,954 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:29:18,954 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:29:18] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:29:19,138 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:29:19,138 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:29:19,138 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:29:19] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:29:19,323 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:29:19,323 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:29:19,323 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:29:19] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:29:19,500 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:29:19,500 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:29:19,500 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:29:19] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:29:19,681 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:29:19,681 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:29:19,681 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:29:19] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:29:19,868 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:29:19,868 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:29:19,868 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:29:19] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:29:20,048 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:29:20,048 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:29:20,048 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:29:20] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:29:20,212 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:29:20,212 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:29:20,212 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:29:20] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:30:16,624 - INFO - app.py:321 - Route '/' accessed. Rendering index.html.
+2025-04-11 12:30:16,624 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:30:16] "GET / HTTP/1.1" 200 -
+2025-04-11 12:30:16,648 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:30:16] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-04-11 12:30:24,411 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:30:24,411 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:30:24,411 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:30:24] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:30:25,430 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:30:25,430 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:30:25,430 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:30:25] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:30:25,880 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:30:25,880 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:30:25,880 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:30:25] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:30:26,084 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:30:26,084 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:30:26,084 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:30:26] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:33:47,647 - INFO - app.py:698 - -------------------- Application Starting --------------------
+2025-04-11 12:33:47,663 - INFO - app.py:699 - Logging configured to write to file: logs\app.log
+2025-04-11 12:33:47,663 - INFO - app.py:700 - Script execution started in __main__ block.
+2025-04-11 12:33:47,663 - INFO - app.py:703 - Attempting asynchronous bot initialization...
+2025-04-11 12:33:47,663 - INFO - app.py:114 - Attempting to initialize Telegram Bot...
+2025-04-11 12:33:47,663 - INFO - app.py:122 - Token String from os.getenv: '7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs'
+2025-04-11 12:33:47,663 - INFO - app.py:123 - Type: <class 'str'>, Length: 46
+2025-04-11 12:33:47,663 - INFO - app.py:128 - Token string being passed to telegram.Bot: '7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs'
+2025-04-11 12:33:47,663 - INFO - app.py:131 - Bot instance created. Validating token with get_me()...
+2025-04-11 12:33:48,517 - ERROR - app.py:144 - Failed to initialize Telegram Bot. Error: object User can't be used in 'await' expression
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\app.py", line 132, in initialize_bot
+    user = await temp_bot.get_me()
+          ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: object User can't be used in 'await' expression
+2025-04-11 12:33:48,517 - WARNING - app.py:708 - -----------------------------------------------------
+2025-04-11 12:33:48,517 - WARNING - app.py:709 - WARNING: Telegram Bot failed to initialize. 
+2025-04-11 12:33:48,517 - WARNING - app.py:710 -          Upload/Download functionality will not work.
+2025-04-11 12:33:48,517 - WARNING - app.py:711 -          Check your TELEGRAM_BOT_TOKEN and network.
+2025-04-11 12:33:48,517 - WARNING - app.py:712 - -----------------------------------------------------
+2025-04-11 12:33:48,517 - ERROR - app.py:722 - -----------------------------------------------------
+2025-04-11 12:33:48,517 - ERROR - app.py:723 - ERROR: Bot object is still None after initialization attempt.
+2025-04-11 12:33:48,517 - ERROR - app.py:724 -        Upload/Download functionality WILL NOT WORK.
+2025-04-11 12:33:48,517 - ERROR - app.py:725 -        Review initialization logs for errors.
+2025-04-11 12:33:48,532 - ERROR - app.py:726 - -----------------------------------------------------
+2025-04-11 12:33:48,532 - INFO - app.py:740 - TELEGRAM_CHAT_ID is configured to: -4603853425
+2025-04-11 12:33:48,532 - INFO - app.py:743 - Starting Flask server...
+2025-04-11 12:33:48,567 - INFO - _internal.py:97 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-04-11 12:33:48,567 - INFO - _internal.py:97 - [33mPress CTRL+C to quit[0m
+2025-04-11 12:33:48,570 - INFO - _internal.py:97 -  * Restarting with stat
+2025-04-11 12:33:49,079 - INFO - app.py:698 - -------------------- Application Starting --------------------
+2025-04-11 12:33:49,079 - INFO - app.py:699 - Logging configured to write to file: logs\app.log
+2025-04-11 12:33:49,079 - INFO - app.py:700 - Script execution started in __main__ block.
+2025-04-11 12:33:49,079 - INFO - app.py:703 - Attempting asynchronous bot initialization...
+2025-04-11 12:33:49,079 - INFO - app.py:114 - Attempting to initialize Telegram Bot...
+2025-04-11 12:33:49,079 - INFO - app.py:122 - Token String from os.getenv: '7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs'
+2025-04-11 12:33:49,079 - INFO - app.py:123 - Type: <class 'str'>, Length: 46
+2025-04-11 12:33:49,079 - INFO - app.py:128 - Token string being passed to telegram.Bot: '7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs'
+2025-04-11 12:33:49,079 - INFO - app.py:131 - Bot instance created. Validating token with get_me()...
+2025-04-11 12:33:49,889 - ERROR - app.py:144 - Failed to initialize Telegram Bot. Error: object User can't be used in 'await' expression
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\app.py", line 132, in initialize_bot
+    user = await temp_bot.get_me()
+          ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: object User can't be used in 'await' expression
+2025-04-11 12:33:49,892 - WARNING - app.py:708 - -----------------------------------------------------
+2025-04-11 12:33:49,892 - WARNING - app.py:709 - WARNING: Telegram Bot failed to initialize. 
+2025-04-11 12:33:49,893 - WARNING - app.py:710 -          Upload/Download functionality will not work.
+2025-04-11 12:33:49,893 - WARNING - app.py:711 -          Check your TELEGRAM_BOT_TOKEN and network.
+2025-04-11 12:33:49,893 - WARNING - app.py:712 - -----------------------------------------------------
+2025-04-11 12:33:49,893 - ERROR - app.py:722 - -----------------------------------------------------
+2025-04-11 12:33:49,893 - ERROR - app.py:723 - ERROR: Bot object is still None after initialization attempt.
+2025-04-11 12:33:49,893 - ERROR - app.py:724 -        Upload/Download functionality WILL NOT WORK.
+2025-04-11 12:33:49,893 - ERROR - app.py:725 -        Review initialization logs for errors.
+2025-04-11 12:33:49,893 - ERROR - app.py:726 - -----------------------------------------------------
+2025-04-11 12:33:49,893 - INFO - app.py:740 - TELEGRAM_CHAT_ID is configured to: -4603853425
+2025-04-11 12:33:49,893 - INFO - app.py:743 - Starting Flask server...
+2025-04-11 12:33:49,912 - WARNING - _internal.py:97 -  * Debugger is active!
+2025-04-11 12:33:49,916 - INFO - _internal.py:97 -  * Debugger PIN: 107-410-311
+2025-04-11 12:33:52,635 - INFO - app.py:321 - Route '/' accessed. Rendering index.html.
+2025-04-11 12:33:52,638 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:33:52] "GET / HTTP/1.1" 200 -
+2025-04-11 12:33:52,715 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:33:52] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-04-11 12:33:58,080 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:33:58,080 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:33:58,080 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:33:58] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:33:59,050 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:33:59,050 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:33:59,050 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:33:59] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:33:59,558 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:33:59,558 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:33:59,558 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:33:59] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:34:00,810 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:34:00,810 - ERROR - app.py:330 - Upload rejected: Telegram Bot is not available (None).
+2025-04-11 12:34:00,811 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:34:00] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:37:12,373 - INFO - app.py:698 - -------------------- Application Starting --------------------
+2025-04-11 12:37:12,373 - INFO - app.py:699 - Logging configured to write to file: logs\app.log
+2025-04-11 12:37:12,373 - INFO - app.py:700 - Script execution started in __main__ block.
+2025-04-11 12:37:12,373 - INFO - app.py:703 - Attempting asynchronous bot initialization...
+2025-04-11 12:37:12,388 - INFO - app.py:114 - Attempting to initialize Telegram Bot...
+2025-04-11 12:37:12,388 - INFO - app.py:122 - Token String from os.getenv: '7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs'
+2025-04-11 12:37:12,388 - INFO - app.py:123 - Type: <class 'str'>, Length: 46
+2025-04-11 12:37:12,388 - INFO - app.py:128 - Token string being passed to telegram.Bot: '7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs'
+2025-04-11 12:37:13,240 - INFO - app.py:131 - Bot instance created. Validating token with get_me()...
+2025-04-11 12:37:13,780 - INFO - _client.py:1740 - HTTP Request: POST https://api.telegram.org/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/getMe "HTTP/1.1 200 OK"
+2025-04-11 12:37:13,780 - INFO - app.py:133 - Token validated successfully. Bot Name: hhhHarryBot
+2025-04-11 12:37:13,780 - INFO - app.py:135 - Global 'bot' variable assigned.
+2025-04-11 12:37:13,796 - INFO - app.py:717 - Telegram Bot initialized successfully.
+2025-04-11 12:37:13,796 - INFO - app.py:740 - TELEGRAM_CHAT_ID is configured to: -4603853425
+2025-04-11 12:37:13,796 - INFO - app.py:743 - Starting Flask server...
+2025-04-11 12:37:13,825 - INFO - _internal.py:97 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-04-11 12:37:13,825 - INFO - _internal.py:97 - [33mPress CTRL+C to quit[0m
+2025-04-11 12:37:13,826 - INFO - _internal.py:97 -  * Restarting with stat
+2025-04-11 12:37:14,374 - INFO - app.py:698 - -------------------- Application Starting --------------------
+2025-04-11 12:37:14,374 - INFO - app.py:699 - Logging configured to write to file: logs\app.log
+2025-04-11 12:37:14,374 - INFO - app.py:700 - Script execution started in __main__ block.
+2025-04-11 12:37:14,374 - INFO - app.py:703 - Attempting asynchronous bot initialization...
+2025-04-11 12:37:14,376 - INFO - app.py:114 - Attempting to initialize Telegram Bot...
+2025-04-11 12:37:14,376 - INFO - app.py:122 - Token String from os.getenv: '7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs'
+2025-04-11 12:37:14,376 - INFO - app.py:123 - Type: <class 'str'>, Length: 46
+2025-04-11 12:37:14,376 - INFO - app.py:128 - Token string being passed to telegram.Bot: '7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs'
+2025-04-11 12:37:15,228 - INFO - app.py:131 - Bot instance created. Validating token with get_me()...
+2025-04-11 12:37:15,681 - INFO - _client.py:1740 - HTTP Request: POST https://api.telegram.org/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/getMe "HTTP/1.1 200 OK"
+2025-04-11 12:37:15,681 - INFO - app.py:133 - Token validated successfully. Bot Name: hhhHarryBot
+2025-04-11 12:37:15,681 - INFO - app.py:135 - Global 'bot' variable assigned.
+2025-04-11 12:37:15,717 - INFO - app.py:717 - Telegram Bot initialized successfully.
+2025-04-11 12:37:15,717 - INFO - app.py:740 - TELEGRAM_CHAT_ID is configured to: -4603853425
+2025-04-11 12:37:15,717 - INFO - app.py:743 - Starting Flask server...
+2025-04-11 12:37:15,764 - WARNING - _internal.py:97 -  * Debugger is active!
+2025-04-11 12:37:15,769 - INFO - _internal.py:97 -  * Debugger PIN: 107-410-311
+2025-04-11 12:38:48,823 - INFO - app.py:321 - Route '/' accessed. Rendering index.html.
+2025-04-11 12:38:48,853 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:38:48] "GET / HTTP/1.1" 200 -
+2025-04-11 12:38:48,937 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:38:48] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-04-11 12:38:54,247 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:38:54,247 - INFO - app.py:350 - Processing upload for user 'mitali', original filename: 'chrome.VisualElementsManifest.xml'.
+2025-04-11 12:38:54,247 - INFO - app.py:362 - User 'mitali' uploaded 'chrome.VisualElementsManifest.xml'. Saved temporarily to: uploads_temp\chrome.VisualElementsManifest.xml
+2025-04-11 12:38:54,247 - INFO - app.py:368 - Compression is enabled. Attempting to compress...
+2025-04-11 12:38:54,247 - INFO - app.py:218 - Attempting to compress file 'uploads_temp\chrome.VisualElementsManifest.xml' to 'uploads_temp\chrome.VisualElementsManifest.xml.zip'.
+2025-04-11 12:38:54,259 - INFO - app.py:235 - Successfully compressed 'uploads_temp\chrome.VisualElementsManifest.xml' to 'uploads_temp\chrome.VisualElementsManifest.xml.zip'.
+2025-04-11 12:38:54,259 - INFO - app.py:375 - Compression successful. Using compressed file for processing: 'uploads_temp\chrome.VisualElementsManifest.xml.zip'
+2025-04-11 12:38:54,259 - INFO - app.py:393 - File to send size: 383 bytes ('chrome.VisualElementsManifest.xml.zip'). Splitting into 1 chunks (Max chunk size: 1572864000 bytes).
+2025-04-11 12:38:54,696 - INFO - app.py:429 - Attempting to send chunk 1/1 ('chrome.VisualElementsManifest.xml.zip.part001') to Telegram chat ID -4603853425...
+2025-04-11 12:38:54,696 - ERROR - app.py:452 - Failed to send chunk 1 ('chrome.VisualElementsManifest.xml.zip.part001') to Telegram: Bot.send_document() got an unexpected keyword argument 'timeout'
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\app.py", line 440, in upload_file
+    message = bot.send_document(
+              ^^^^^^^^^^^^^^^^^^
+TypeError: Bot.send_document() got an unexpected keyword argument 'timeout'
+2025-04-11 12:38:54,696 - WARNING - app.py:454 - Cleaning up local files due to Telegram send failure.
+2025-04-11 12:38:54,696 - ERROR - app.py:457 - Error removing process file on fail: [WinError 32] The process cannot access the file because it is being used by another process: 'uploads_temp\\chrome.VisualElementsManifest.xml.zip'
+2025-04-11 12:38:54,712 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:38:54] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:39:02,218 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:39:02,219 - INFO - app.py:350 - Processing upload for user 'mitali', original filename: 'chrome.VisualElementsManifest.xml'.
+2025-04-11 12:39:02,220 - INFO - app.py:362 - User 'mitali' uploaded 'chrome.VisualElementsManifest.xml'. Saved temporarily to: uploads_temp\chrome.VisualElementsManifest.xml
+2025-04-11 12:39:02,220 - INFO - app.py:368 - Compression is enabled. Attempting to compress...
+2025-04-11 12:39:02,220 - INFO - app.py:218 - Attempting to compress file 'uploads_temp\chrome.VisualElementsManifest.xml' to 'uploads_temp\chrome.VisualElementsManifest.xml.zip'.
+2025-04-11 12:39:02,223 - INFO - app.py:235 - Successfully compressed 'uploads_temp\chrome.VisualElementsManifest.xml' to 'uploads_temp\chrome.VisualElementsManifest.xml.zip'.
+2025-04-11 12:39:02,223 - INFO - app.py:375 - Compression successful. Using compressed file for processing: 'uploads_temp\chrome.VisualElementsManifest.xml.zip'
+2025-04-11 12:39:02,223 - INFO - app.py:393 - File to send size: 383 bytes ('chrome.VisualElementsManifest.xml.zip'). Splitting into 1 chunks (Max chunk size: 1572864000 bytes).
+2025-04-11 12:39:02,471 - INFO - app.py:429 - Attempting to send chunk 1/1 ('chrome.VisualElementsManifest.xml.zip.part001') to Telegram chat ID -4603853425...
+2025-04-11 12:39:02,471 - ERROR - app.py:452 - Failed to send chunk 1 ('chrome.VisualElementsManifest.xml.zip.part001') to Telegram: Bot.send_document() got an unexpected keyword argument 'timeout'
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\app.py", line 440, in upload_file
+    message = bot.send_document(
+              ^^^^^^^^^^^^^^^^^^
+TypeError: Bot.send_document() got an unexpected keyword argument 'timeout'
+2025-04-11 12:39:02,471 - WARNING - app.py:454 - Cleaning up local files due to Telegram send failure.
+2025-04-11 12:39:02,471 - ERROR - app.py:457 - Error removing process file on fail: [WinError 32] The process cannot access the file because it is being used by another process: 'uploads_temp\\chrome.VisualElementsManifest.xml.zip'
+2025-04-11 12:39:02,487 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:39:02] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:40:04,081 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:40:04,088 - INFO - app.py:350 - Processing upload for user 'mitali', original filename: 'Telegram_Bot.py'.
+2025-04-11 12:40:04,088 - INFO - app.py:362 - User 'mitali' uploaded 'Telegram_Bot.py'. Saved temporarily to: uploads_temp\Telegram_Bot.py
+2025-04-11 12:40:04,088 - INFO - app.py:368 - Compression is enabled. Attempting to compress...
+2025-04-11 12:40:04,088 - INFO - app.py:218 - Attempting to compress file 'uploads_temp\Telegram_Bot.py' to 'uploads_temp\Telegram_Bot.py.zip'.
+2025-04-11 12:40:04,088 - INFO - app.py:235 - Successfully compressed 'uploads_temp\Telegram_Bot.py' to 'uploads_temp\Telegram_Bot.py.zip'.
+2025-04-11 12:40:04,088 - INFO - app.py:375 - Compression successful. Using compressed file for processing: 'uploads_temp\Telegram_Bot.py.zip'
+2025-04-11 12:40:04,102 - INFO - app.py:393 - File to send size: 685 bytes ('Telegram_Bot.py.zip'). Splitting into 1 chunks (Max chunk size: 1572864000 bytes).
+2025-04-11 12:40:04,367 - INFO - app.py:429 - Attempting to send chunk 1/1 ('Telegram_Bot.py.zip.part001') to Telegram chat ID -4603853425...
+2025-04-11 12:40:04,367 - ERROR - app.py:452 - Failed to send chunk 1 ('Telegram_Bot.py.zip.part001') to Telegram: Bot.send_document() got an unexpected keyword argument 'timeout'
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\app.py", line 440, in upload_file
+    message = bot.send_document(
+              ^^^^^^^^^^^^^^^^^^
+TypeError: Bot.send_document() got an unexpected keyword argument 'timeout'
+2025-04-11 12:40:04,367 - WARNING - app.py:454 - Cleaning up local files due to Telegram send failure.
+2025-04-11 12:40:04,367 - ERROR - app.py:457 - Error removing process file on fail: [WinError 32] The process cannot access the file because it is being used by another process: 'uploads_temp\\Telegram_Bot.py.zip'
+2025-04-11 12:40:04,383 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:40:04] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:40:28,093 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:40:28,093 - INFO - app.py:350 - Processing upload for user 'mitali', original filename: 'Telegram_Bot.py'.
+2025-04-11 12:40:28,093 - INFO - app.py:362 - User 'mitali' uploaded 'Telegram_Bot.py'. Saved temporarily to: uploads_temp\Telegram_Bot.py
+2025-04-11 12:40:28,093 - INFO - app.py:368 - Compression is enabled. Attempting to compress...
+2025-04-11 12:40:28,093 - INFO - app.py:218 - Attempting to compress file 'uploads_temp\Telegram_Bot.py' to 'uploads_temp\Telegram_Bot.py.zip'.
+2025-04-11 12:40:28,093 - INFO - app.py:235 - Successfully compressed 'uploads_temp\Telegram_Bot.py' to 'uploads_temp\Telegram_Bot.py.zip'.
+2025-04-11 12:40:28,093 - INFO - app.py:375 - Compression successful. Using compressed file for processing: 'uploads_temp\Telegram_Bot.py.zip'
+2025-04-11 12:40:28,093 - INFO - app.py:393 - File to send size: 685 bytes ('Telegram_Bot.py.zip'). Splitting into 1 chunks (Max chunk size: 1572864000 bytes).
+2025-04-11 12:40:28,341 - INFO - app.py:429 - Attempting to send chunk 1/1 ('Telegram_Bot.py.zip.part001') to Telegram chat ID -4603853425...
+2025-04-11 12:40:28,341 - ERROR - app.py:452 - Failed to send chunk 1 ('Telegram_Bot.py.zip.part001') to Telegram: Bot.send_document() got an unexpected keyword argument 'timeout'
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\app.py", line 440, in upload_file
+    message = bot.send_document(
+              ^^^^^^^^^^^^^^^^^^
+TypeError: Bot.send_document() got an unexpected keyword argument 'timeout'
+2025-04-11 12:40:28,341 - WARNING - app.py:454 - Cleaning up local files due to Telegram send failure.
+2025-04-11 12:40:28,341 - ERROR - app.py:457 - Error removing process file on fail: [WinError 32] The process cannot access the file because it is being used by another process: 'uploads_temp\\Telegram_Bot.py.zip'
+2025-04-11 12:40:28,356 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:40:28] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:40:29,143 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:40:29,143 - INFO - app.py:350 - Processing upload for user 'mitali', original filename: 'Telegram_Bot.py'.
+2025-04-11 12:40:29,143 - INFO - app.py:362 - User 'mitali' uploaded 'Telegram_Bot.py'. Saved temporarily to: uploads_temp\Telegram_Bot.py
+2025-04-11 12:40:29,143 - INFO - app.py:368 - Compression is enabled. Attempting to compress...
+2025-04-11 12:40:29,143 - INFO - app.py:218 - Attempting to compress file 'uploads_temp\Telegram_Bot.py' to 'uploads_temp\Telegram_Bot.py.zip'.
+2025-04-11 12:40:29,143 - INFO - app.py:235 - Successfully compressed 'uploads_temp\Telegram_Bot.py' to 'uploads_temp\Telegram_Bot.py.zip'.
+2025-04-11 12:40:29,143 - INFO - app.py:375 - Compression successful. Using compressed file for processing: 'uploads_temp\Telegram_Bot.py.zip'
+2025-04-11 12:40:29,143 - INFO - app.py:393 - File to send size: 685 bytes ('Telegram_Bot.py.zip'). Splitting into 1 chunks (Max chunk size: 1572864000 bytes).
+2025-04-11 12:40:29,347 - INFO - app.py:429 - Attempting to send chunk 1/1 ('Telegram_Bot.py.zip.part001') to Telegram chat ID -4603853425...
+2025-04-11 12:40:29,347 - ERROR - app.py:452 - Failed to send chunk 1 ('Telegram_Bot.py.zip.part001') to Telegram: Bot.send_document() got an unexpected keyword argument 'timeout'
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\app.py", line 440, in upload_file
+    message = bot.send_document(
+              ^^^^^^^^^^^^^^^^^^
+TypeError: Bot.send_document() got an unexpected keyword argument 'timeout'
+2025-04-11 12:40:29,347 - WARNING - app.py:454 - Cleaning up local files due to Telegram send failure.
+2025-04-11 12:40:29,347 - ERROR - app.py:457 - Error removing process file on fail: [WinError 32] The process cannot access the file because it is being used by another process: 'uploads_temp\\Telegram_Bot.py.zip'
+2025-04-11 12:40:29,363 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:40:29] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:40:32,613 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:40:32,613 - INFO - app.py:350 - Processing upload for user 'mitali', original filename: 'Telegram_Bot.py'.
+2025-04-11 12:40:32,613 - INFO - app.py:362 - User 'mitali' uploaded 'Telegram_Bot.py'. Saved temporarily to: uploads_temp\Telegram_Bot.py
+2025-04-11 12:40:32,613 - INFO - app.py:368 - Compression is enabled. Attempting to compress...
+2025-04-11 12:40:32,613 - INFO - app.py:218 - Attempting to compress file 'uploads_temp\Telegram_Bot.py' to 'uploads_temp\Telegram_Bot.py.zip'.
+2025-04-11 12:40:32,621 - INFO - app.py:235 - Successfully compressed 'uploads_temp\Telegram_Bot.py' to 'uploads_temp\Telegram_Bot.py.zip'.
+2025-04-11 12:40:32,621 - INFO - app.py:375 - Compression successful. Using compressed file for processing: 'uploads_temp\Telegram_Bot.py.zip'
+2025-04-11 12:40:32,621 - INFO - app.py:393 - File to send size: 685 bytes ('Telegram_Bot.py.zip'). Splitting into 1 chunks (Max chunk size: 1572864000 bytes).
+2025-04-11 12:40:32,855 - INFO - app.py:429 - Attempting to send chunk 1/1 ('Telegram_Bot.py.zip.part001') to Telegram chat ID -4603853425...
+2025-04-11 12:40:32,855 - ERROR - app.py:452 - Failed to send chunk 1 ('Telegram_Bot.py.zip.part001') to Telegram: Bot.send_document() got an unexpected keyword argument 'timeout'
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\app.py", line 440, in upload_file
+    message = bot.send_document(
+              ^^^^^^^^^^^^^^^^^^
+TypeError: Bot.send_document() got an unexpected keyword argument 'timeout'
+2025-04-11 12:40:32,855 - WARNING - app.py:454 - Cleaning up local files due to Telegram send failure.
+2025-04-11 12:40:32,855 - ERROR - app.py:457 - Error removing process file on fail: [WinError 32] The process cannot access the file because it is being used by another process: 'uploads_temp\\Telegram_Bot.py.zip'
+2025-04-11 12:40:32,871 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:40:32] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:46:36,633 - INFO - _internal.py:97 -  * Detected change in 'E:\\Telegram_tool\\Telegram_Bot_Tool\\app.py', reloading
+2025-04-11 12:46:36,717 - INFO - _internal.py:97 -  * Restarting with stat
+2025-04-11 12:46:37,368 - INFO - app.py:698 - -------------------- Application Starting --------------------
+2025-04-11 12:46:37,368 - INFO - app.py:699 - Logging configured to write to file: logs\app.log
+2025-04-11 12:46:37,369 - INFO - app.py:700 - Script execution started in __main__ block.
+2025-04-11 12:46:37,369 - INFO - app.py:703 - Attempting asynchronous bot initialization...
+2025-04-11 12:46:37,369 - INFO - app.py:114 - Attempting to initialize Telegram Bot...
+2025-04-11 12:46:37,370 - INFO - app.py:122 - Token String from os.getenv: '7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs'
+2025-04-11 12:46:37,370 - INFO - app.py:123 - Type: <class 'str'>, Length: 46
+2025-04-11 12:46:37,370 - INFO - app.py:128 - Token string being passed to telegram.Bot: '7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs'
+2025-04-11 12:46:38,164 - INFO - app.py:131 - Bot instance created. Validating token with get_me()...
+2025-04-11 12:46:38,686 - INFO - _client.py:1740 - HTTP Request: POST https://api.telegram.org/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/getMe "HTTP/1.1 200 OK"
+2025-04-11 12:46:38,686 - INFO - app.py:133 - Token validated successfully. Bot Name: hhhHarryBot
+2025-04-11 12:46:38,701 - INFO - app.py:135 - Global 'bot' variable assigned.
+2025-04-11 12:46:38,701 - INFO - app.py:717 - Telegram Bot initialized successfully.
+2025-04-11 12:46:38,701 - INFO - app.py:740 - TELEGRAM_CHAT_ID is configured to: -4603853425
+2025-04-11 12:46:38,701 - INFO - app.py:743 - Starting Flask server...
+2025-04-11 12:46:38,724 - WARNING - _internal.py:97 -  * Debugger is active!
+2025-04-11 12:46:38,724 - INFO - _internal.py:97 -  * Debugger PIN: 107-410-311
+2025-04-11 12:46:50,462 - INFO - app.py:698 - -------------------- Application Starting --------------------
+2025-04-11 12:46:50,462 - INFO - app.py:699 - Logging configured to write to file: logs\app.log
+2025-04-11 12:46:50,462 - INFO - app.py:700 - Script execution started in __main__ block.
+2025-04-11 12:46:50,462 - INFO - app.py:703 - Attempting asynchronous bot initialization...
+2025-04-11 12:46:50,462 - INFO - app.py:114 - Attempting to initialize Telegram Bot...
+2025-04-11 12:46:50,462 - INFO - app.py:122 - Token String from os.getenv: '7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs'
+2025-04-11 12:46:50,462 - INFO - app.py:123 - Type: <class 'str'>, Length: 46
+2025-04-11 12:46:50,462 - INFO - app.py:128 - Token string being passed to telegram.Bot: '7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs'
+2025-04-11 12:46:51,349 - INFO - app.py:131 - Bot instance created. Validating token with get_me()...
+2025-04-11 12:46:51,794 - INFO - _client.py:1740 - HTTP Request: POST https://api.telegram.org/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/getMe "HTTP/1.1 200 OK"
+2025-04-11 12:46:51,795 - INFO - app.py:133 - Token validated successfully. Bot Name: hhhHarryBot
+2025-04-11 12:46:51,796 - INFO - app.py:135 - Global 'bot' variable assigned.
+2025-04-11 12:46:51,797 - INFO - app.py:717 - Telegram Bot initialized successfully.
+2025-04-11 12:46:51,797 - INFO - app.py:740 - TELEGRAM_CHAT_ID is configured to: -4603853425
+2025-04-11 12:46:51,797 - INFO - app.py:743 - Starting Flask server...
+2025-04-11 12:46:51,839 - INFO - _internal.py:97 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-04-11 12:46:51,840 - INFO - _internal.py:97 - [33mPress CTRL+C to quit[0m
+2025-04-11 12:46:51,842 - INFO - _internal.py:97 -  * Restarting with stat
+2025-04-11 12:46:52,405 - INFO - app.py:698 - -------------------- Application Starting --------------------
+2025-04-11 12:46:52,405 - INFO - app.py:699 - Logging configured to write to file: logs\app.log
+2025-04-11 12:46:52,405 - INFO - app.py:700 - Script execution started in __main__ block.
+2025-04-11 12:46:52,405 - INFO - app.py:703 - Attempting asynchronous bot initialization...
+2025-04-11 12:46:52,406 - INFO - app.py:114 - Attempting to initialize Telegram Bot...
+2025-04-11 12:46:52,406 - INFO - app.py:122 - Token String from os.getenv: '7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs'
+2025-04-11 12:46:52,406 - INFO - app.py:123 - Type: <class 'str'>, Length: 46
+2025-04-11 12:46:52,406 - INFO - app.py:128 - Token string being passed to telegram.Bot: '7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs'
+2025-04-11 12:46:53,177 - INFO - app.py:131 - Bot instance created. Validating token with get_me()...
+2025-04-11 12:46:53,629 - INFO - _client.py:1740 - HTTP Request: POST https://api.telegram.org/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/getMe "HTTP/1.1 200 OK"
+2025-04-11 12:46:53,630 - INFO - app.py:133 - Token validated successfully. Bot Name: hhhHarryBot
+2025-04-11 12:46:53,630 - INFO - app.py:135 - Global 'bot' variable assigned.
+2025-04-11 12:46:53,632 - INFO - app.py:717 - Telegram Bot initialized successfully.
+2025-04-11 12:46:53,633 - INFO - app.py:740 - TELEGRAM_CHAT_ID is configured to: -4603853425
+2025-04-11 12:46:53,633 - INFO - app.py:743 - Starting Flask server...
+2025-04-11 12:46:53,663 - WARNING - _internal.py:97 -  * Debugger is active!
+2025-04-11 12:46:53,665 - INFO - _internal.py:97 -  * Debugger PIN: 107-410-311
+2025-04-11 12:46:56,140 - INFO - app.py:321 - Route '/' accessed. Rendering index.html.
+2025-04-11 12:46:56,166 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:46:56] "GET / HTTP/1.1" 200 -
+2025-04-11 12:46:56,249 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:46:56] "GET /static/style.css HTTP/1.1" 200 -
+2025-04-11 12:46:56,273 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:46:56] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-04-11 12:47:27,106 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:47:27,161 - INFO - app.py:350 - Processing upload for user 'emma', original filename: 'agent.exe'.
+2025-04-11 12:47:27,226 - INFO - app.py:362 - User 'emma' uploaded 'agent.exe'. Saved temporarily to: uploads_temp\agent.exe
+2025-04-11 12:47:27,226 - INFO - app.py:368 - Compression is enabled. Attempting to compress...
+2025-04-11 12:47:27,226 - INFO - app.py:218 - Attempting to compress file 'uploads_temp\agent.exe' to 'uploads_temp\agent.exe.zip'.
+2025-04-11 12:47:28,545 - INFO - app.py:235 - Successfully compressed 'uploads_temp\agent.exe' to 'uploads_temp\agent.exe.zip'.
+2025-04-11 12:47:28,545 - INFO - app.py:375 - Compression successful. Using compressed file for processing: 'uploads_temp\agent.exe.zip'
+2025-04-11 12:47:28,545 - INFO - app.py:393 - File to send size: 8267952 bytes ('agent.exe.zip'). Splitting into 1 chunks (Max chunk size: 1572864000 bytes).
+2025-04-11 12:47:28,890 - INFO - app.py:429 - Attempting to send chunk 1/1 ('agent.exe.zip.part001') to Telegram chat ID -4603853425...
+2025-04-11 12:47:28,906 - ERROR - app.py:452 - Failed to send chunk 1 ('agent.exe.zip.part001') to Telegram: 'coroutine' object has no attribute 'message_id'
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\app.py", line 447, in upload_file
+    chunk_message_ids.append(message.message_id)
+                             ^^^^^^^^^^^^^^^^^^
+AttributeError: 'coroutine' object has no attribute 'message_id'
+2025-04-11 12:47:28,953 - WARNING - app.py:454 - Cleaning up local files due to Telegram send failure.
+2025-04-11 12:47:28,953 - ERROR - app.py:457 - Error removing process file on fail: [WinError 32] The process cannot access the file because it is being used by another process: 'uploads_temp\\agent.exe.zip'
+2025-04-11 12:47:29,031 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:47:29] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:48:05,009 - INFO - app.py:327 - Route '/upload' accessed (POST request).
+2025-04-11 12:48:05,059 - INFO - app.py:350 - Processing upload for user 'emma', original filename: 'agent.exe'.
+2025-04-11 12:48:05,074 - INFO - app.py:362 - User 'emma' uploaded 'agent.exe'. Saved temporarily to: uploads_temp\agent.exe
+2025-04-11 12:48:05,090 - INFO - app.py:368 - Compression is enabled. Attempting to compress...
+2025-04-11 12:48:05,090 - INFO - app.py:218 - Attempting to compress file 'uploads_temp\agent.exe' to 'uploads_temp\agent.exe.zip'.
+2025-04-11 12:48:06,322 - INFO - app.py:235 - Successfully compressed 'uploads_temp\agent.exe' to 'uploads_temp\agent.exe.zip'.
+2025-04-11 12:48:06,322 - INFO - app.py:375 - Compression successful. Using compressed file for processing: 'uploads_temp\agent.exe.zip'
+2025-04-11 12:48:06,324 - INFO - app.py:393 - File to send size: 8267952 bytes ('agent.exe.zip'). Splitting into 1 chunks (Max chunk size: 1572864000 bytes).
+2025-04-11 12:48:06,564 - INFO - app.py:429 - Attempting to send chunk 1/1 ('agent.exe.zip.part001') to Telegram chat ID -4603853425...
+2025-04-11 12:48:06,580 - ERROR - app.py:452 - Failed to send chunk 1 ('agent.exe.zip.part001') to Telegram: 'coroutine' object has no attribute 'message_id'
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\app.py", line 447, in upload_file
+    chunk_message_ids.append(message.message_id)
+                             ^^^^^^^^^^^^^^^^^^
+AttributeError: 'coroutine' object has no attribute 'message_id'
+2025-04-11 12:48:06,580 - WARNING - app.py:454 - Cleaning up local files due to Telegram send failure.
+2025-04-11 12:48:06,580 - ERROR - app.py:457 - Error removing process file on fail: [WinError 32] The process cannot access the file because it is being used by another process: 'uploads_temp\\agent.exe.zip'
+2025-04-11 12:48:06,611 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:48:06] "[35m[1mPOST /upload HTTP/1.1[0m" 500 -
+2025-04-11 12:48:31,055 - INFO - app.py:529 - Route '/files/emma' accessed (GET request).
+2025-04-11 12:48:31,055 - INFO - app.py:89 - Attempting to load metadata...
+2025-04-11 12:48:31,055 - ERROR - app.py:104 - Error loading metadata: Expecting value: line 1 column 1 (char 0)
+2025-04-11 12:48:31,055 - WARNING - app.py:105 - Returning empty dictionary due to JSON decoding error.
+2025-04-11 12:48:31,055 - INFO - app.py:543 - Returning list of 0 files for user 'emma'.
+2025-04-11 12:48:31,055 - INFO - _internal.py:97 - 127.0.0.1 - - [11/Apr/2025 12:48:31] "GET /files/emma HTTP/1.1" 200 -
+2025-04-11 12:51:33,843 - INFO - _internal.py:97 -  * Detected change in 'E:\\Telegram_tool\\Telegram_Bot_Tool\\app.py', reloading
+2025-04-11 12:51:33,920 - INFO - _internal.py:97 -  * Restarting with stat
+2025-04-11 12:51:35,014 - INFO - app.py:698 - -------------------- Application Starting --------------------
+2025-04-11 12:51:35,014 - INFO - app.py:699 - Logging configured to write to file: logs\app.log
+2025-04-11 12:51:35,014 - INFO - app.py:700 - Script execution started in __main__ block.
+2025-04-11 12:51:35,014 - INFO - app.py:703 - Attempting asynchronous bot initialization...
+2025-04-11 12:51:35,015 - INFO - app.py:114 - Attempting to initialize Telegram Bot...
+2025-04-11 12:51:35,015 - INFO - app.py:122 - Token String from os.getenv: '7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs'
+2025-04-11 12:51:35,015 - INFO - app.py:123 - Type: <class 'str'>, Length: 46
+2025-04-11 12:51:35,015 - INFO - app.py:128 - Token string being passed to telegram.Bot: '7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs'
+2025-04-11 12:51:36,464 - INFO - app.py:131 - Bot instance created. Validating token with get_me()...
+2025-04-11 12:51:36,966 - INFO - _client.py:1740 - HTTP Request: POST https://api.telegram.org/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/getMe "HTTP/1.1 200 OK"
+2025-04-11 12:51:36,967 - INFO - app.py:133 - Token validated successfully. Bot Name: hhhHarryBot
+2025-04-11 12:51:36,967 - INFO - app.py:135 - Global 'bot' variable assigned.
+2025-04-11 12:51:36,999 - INFO - app.py:717 - Telegram Bot initialized successfully.
+2025-04-11 12:51:36,999 - INFO - app.py:740 - TELEGRAM_CHAT_ID is configured to: -4603853425
+2025-04-11 12:51:36,999 - INFO - app.py:743 - Starting Flask server...
+2025-04-11 12:51:37,045 - WARNING - _internal.py:97 -  * Debugger is active!
+2025-04-11 12:51:37,051 - INFO - _internal.py:97 -  * Debugger PIN: 107-410-311

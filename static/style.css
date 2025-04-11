@@ -2,11 +2,11 @@ body {
     font-family: sans-serif;
     line-height: 1.6;
     margin: 20px;
-    background-color: #f4f4f4;
+    background-color: #e68080;
 }
 
 h1, h2 {
-    color: #333;
+    color: #f30909;
     text-align: center;
     margin-bottom: 20px;
 }
@@ -34,9 +34,9 @@ input[type="file"] {
     border-radius: 4px;
 }
 
- button {
+button {
      background-color: #5cb85c;
-     color: white;
+     color: rgb(17, 15, 15);
      padding: 10px 15px;
      border: none;
      border-radius: 4px;

@@ -5,6 +5,122 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Telegram File Storage</title>
     <link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">
+    <style>
+
+    h1, h2 {
+    color: #0d0c0c;
+    text-align: center;
+    margin-bottom: 20px;}
+
+    body {
+    font-family: sans-serif;
+    line-height: 1.6;
+    margin: 200px;
+    margin-top: 20px;
+    background-color: #fae2f2;}
+
+    .container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;}
+
+    label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;}
+
+    input[type="text"],
+    input[type="file"] {
+    width: calc(100% - 22px); /* Adjust for padding/border */
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #7a7a7a;
+    border-radius: 4px;}
+
+    button {
+     background-color: #d373e0;
+     color: rgb(17, 14, 14);
+     padding: 10px 15px;
+     border: none;
+     border-radius: 4px;
+     cursor: pointer;
+     font-size: 1em;
+     transition: background-color 0.2s ease;}
+
+    button:hover:not(:disabled) {
+    background-color: #bebfc7;}
+
+    button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    }
+
+    #drop-zone {
+        border: 2px dashed #9f9f9f;
+        border-radius: 4px;
+        padding: 30px;
+        text-align: center;
+        cursor: pointer;
+        background-color: #f3eeee;
+        margin-bottom: 15px;
+        transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+
+    #drop-zone.drag-over {
+        border-color: #5cb85c;
+        background-color: #e8f5e8;
+    }
+
+    #drop-zone p {
+        margin: 0;
+        color: #666;
+    }
+
+    #upload-progress {
+        margin-top: 10px;
+    }
+
+    #upload-status, #list-status {
+        margin-top: 10px;
+        font-weight: bold;
+    }
+
+    #file-list {
+        list-style: none;
+        padding: 0;
+        margin-top: 15px;
+    }
+
+    #file-list li {
+        background-color: #e9e9e9;
+        padding: 10px;
+        margin-bottom: 8px;
+        border-radius: 4px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    #file-list li span {
+        margin-right: 10px;
+        word-break: break-all; /* Prevent long filenames from overflowing */
+    }
+
+    .download-button {
+        background-color: #337ab7;
+        padding: 5px 10px;
+        font-size: 0.9em;
+    }
+
+    .download-button:hover {
+        background-color: #286090;
+    }
+
+     
+
+    </style>
 </head>
 <body>
     <h1>Telegram File Storage</h1>

@@ -8,20 +8,57 @@ from flask import Flask, request, jsonify, render_template, send_file, abort
 from werkzeug.utils import secure_filename
 import telegram
 import asyncio
+import logging
+
+
+# Assuming Flask, telegram, secure_filename etc. are imported elsewhere
+from flask import Flask, request, jsonify, render_template, send_file, abort
+from werkzeug.utils import secure_filename
+import telegram
+from dotenv import load_dotenv
+
+load_dotenv()
 
 bot = None
 
 # --- Configuration ---
-TELEGRAM_BOT_TOKEN = "7812479394:AAFhPxoHysfTUf710a7ShQbaSCYi-0r7e7E" 
+TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN") 
 
-TELEGRAM_CHAT_ID = -4603853425 
-print(f"DEBUG: The value of TELEGRAM_CHAT_ID is {TELEGRAM_CHAT_ID}") 
+TELEGRAM_CHAT_ID_STR = os.getenv("TELEGRAM_CHAT_ID")
+print(f"DEBUG: The value of TELEGRAM_CHAT_ID is {TELEGRAM_CHAT_ID_STR}") 
 
-if TELEGRAM_CHAT_ID == -4603853425:
-    print("successfully found")
+TELEGRAM_CHAT_ID = None
+
+if TELEGRAM_BOT_TOKEN:
+    logging.info("Successfully loaded TELEGRAM_BOT_TOKEN from .env")
 else:
-    print("error getting chat id")
+    logging.error("ERROR: TELEGRAM_BOT_TOKEN not found in .env file or environment variables.")
 
+if TELEGRAM_BOT_TOKEN:
+    logging.info("Successfully loaded TELEGRAM_BOT_TOKEN from .env")
+else:
+    logging.error("ERROR: TELEGRAM_BOT_TOKEN not found in .env file or environment variables.")
+
+if TELEGRAM_CHAT_ID_STR:
+    try:
+        TELEGRAM_CHAT_ID = int(TELEGRAM_CHAT_ID_STR) 
+        logging.info(f"Successfully loaded and parsed TELEGRAM_CHAT_ID from .env: {TELEGRAM_CHAT_ID}")
+        print(f"DEBUG: The value of TELEGRAM_CHAT_ID is {TELEGRAM_CHAT_ID}") 
+        if TELEGRAM_CHAT_ID == -4603853425: 
+             print("successfully found (match check)")
+        else:
+             print("loaded, but doesn't match specific check value")
+    except ValueError:
+        logging.error(f"ERROR: TELEGRAM_CHAT_ID ('{TELEGRAM_CHAT_ID_STR}') in .env file is not a valid integer.")
+        TELEGRAM_CHAT_ID = None # Ensure it's None if conversion failed
+        print("error getting chat id - invalid format in .env")
+else:
+    logging.error("ERROR: TELEGRAM_CHAT_ID not found in .env file or environment variables.")
+    print("error getting chat id - not found in .env")
+
+if TELEGRAM_CHAT_ID is None:
+     logging.warning("Proceeding without a valid TELEGRAM_CHAT_ID. Telegram features might fail.")
+     
 
 CHUNK_SIZE_MB = 1500 # Split files into chunks of this size (slightly below Telegram's 2GB limit)
 CHUNK_SIZE_BYTES = CHUNK_SIZE_MB * 1024 * 1024
@@ -29,6 +66,8 @@ UPLOAD_FOLDER = 'uploads_temp' # Temporary folder for uploads
 DOWNLOAD_FOLDER = 'downloads_temp' # Temporary folder for downloads
 METADATA_FILE = 'metadata.json'
 COMPRESSION_ENABLED = True # Set to False to disable zipping
+LOG_DIR = 'logs'
+LOG_FILE = os.path.join(LOG_DIR, 'app.log')
 
 # --- Flask App Setup ---
 app = Flask(__name__)
@@ -42,14 +81,6 @@ os.makedirs(DOWNLOAD_FOLDER, exist_ok=True)
 
 # --- Logging Setup ---
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-
-# --- Telegram Bot Setup ---
-# try:
-#     bot = telegram.Bot(token=TELEGRAM_BOT_TOKEN)
-#     logging.info(f"Telegram Bot initialized. Bot Name: {bot.get_me().username}")
-# except Exception as e:
-#     logging.error(f"Failed to initialize Telegram Bot: {e}")
-#     bot = None # Set bot to None if initialization fails
 
 # --- Metadata Handling ---
 # metadata Json read
@@ -82,18 +113,33 @@ async def initialize_bot():
     global bot
     logging.info("Attempting to initialize Telegram Bot...") 
     try:
-        temp_bot = telegram.Bot(token=TELEGRAM_BOT_TOKEN)
-        logging.info("Bot instance created. Validating token with get_me()...")
-        user = await temp_bot.get_me() 
-        logging.info(f"Token validated successfully. Bot Name: {user.username}")
-        bot = temp_bot 
-        logging.info("Global 'bot' variable assigned.")
-        return True
+
+        if not TELEGRAM_BOT_TOKEN: # Add check here
+            logging.error("Cannot initialize bot: TELEGRAM_BOT_TOKEN is missing.")
+            bot = None
+            return False
+        
+        logging.info(f"Token String from os.getenv: '{TELEGRAM_BOT_TOKEN}'")
+        logging.info(f"Type: {type(TELEGRAM_BOT_TOKEN)}, Length: {len(TELEGRAM_BOT_TOKEN)}")
+
+        try:
+
+            token_to_use = TELEGRAM_BOT_TOKEN.strip() # Example: Add .strip() just in case
+            logging.info(f"Token string being passed to telegram.Bot: '{token_to_use}'")
+
+            temp_bot = telegram.Bot(token=token_to_use)
+            logging.info("Bot instance created. Validating token with get_me()...")
+            user = await temp_bot.get_me() 
+            logging.info(f"Token validated successfully. Bot Name: {user.username}")
+            bot = temp_bot 
+            logging.info("Global 'bot' variable assigned.")
+            return True
     
-    except Exception as e:
-        logging.error("Failed to initialize Telegram Bot: Invalid Token provided.")
-        bot = None 
-        return False
+        except telegram.error.InvalidToken: # Catch specific InvalidToken error
+            logging.error("Failed to initialize Telegram Bot: Invalid Token provided (rejected by Telegram API). Check the token in your .env file and the logged value above.")
+            bot = None
+            return False
+
     except Exception as e:
         logging.error(f"Failed to initialize Telegram Bot. Error: {e}", exc_info=True)
         bot = None
@@ -203,18 +249,7 @@ def compress_file(input_path, output_path):
         logging.error(f"Error during compression of {input_path}: {e}")
         return False
 
-import zipfile
-import logging
-import os # Needed for path operations
-import math # Needed in upload_file
-import tempfile # Needed in download_file_route
-import asyncio # Needed in __main__
-import json # Needed in upload_file, list_files
 
-# Assuming Flask, telegram, secure_filename etc. are imported elsewhere
-from flask import Flask, request, jsonify, render_template, send_file, abort
-from werkzeug.utils import secure_filename
-import telegram
 
 
 # Assume bot, configuration variables (TELEGRAM_CHAT_ID, etc.),
@@ -407,7 +442,7 @@ def upload_file():
                             document=chunk_to_send,
                             filename=chunk_filename, # Use chunk filename for TG message
                             caption=caption,
-                            timeout=300 # Increase timeout for potentially large chunks (5 mins)
+                            #timeout=300 # Increase timeout for potentially large chunks (5 mins)
                         )
                     chunk_message_ids.append(message.message_id)
                     logging.info(f"Chunk {current_chunk_num} sent successfully. Message ID: {message.message_id}") # INFO: Send success
@@ -637,6 +672,31 @@ def download_file_route(username, filename):
 
 # --- Main Execution (with added logs) ---
 if __name__ == '__main__':
+
+    os.makedirs(LOG_DIR, exist_ok=True)
+    # Create formatter
+    log_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s')
+
+    # Create file handler
+    file_handler = logging.FileHandler(LOG_FILE, encoding='utf-8') # Specify encoding
+    file_handler.setLevel(logging.INFO) # Set level for the file handler
+    file_handler.setFormatter(log_formatter)
+
+    # Get the root logger
+    root_logger = logging.getLogger()
+    root_logger.setLevel(logging.INFO) # Set overall level for the logger
+
+    # Remove existing handlers (like default StreamHandler if any were added automatically)
+    # This prevents duplicate logs if basicConfig was called or default handlers exist
+    if root_logger.hasHandlers():
+        root_logger.handlers.clear()
+
+    # Add the file handler to the root logger
+    root_logger.addHandler(file_handler)
+
+    # Now logging is configured to go to the file
+    logging.info("-------------------- Application Starting --------------------")
+    logging.info("Logging configured to write to file: %s", LOG_FILE)
     logging.info("Script execution started in __main__ block.") # INFO: Start main block
 
     # Initialize Bot

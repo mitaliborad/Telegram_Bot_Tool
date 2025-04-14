@@ -250,10 +250,10 @@
                 clearInterval(interval);
                 uploadProgress.value = 100;
 
-                const result = await response.json();
+                //const result = await response.json();
 
                 if (response.ok) {
-                    uploadStatus.textContent = `Success: ${result.message}`;
+                    uploadStatus.textContent = 'Upload processed. Reloading to show status...';
                     uploadStatus.style.color = 'green';
 
                     setTimeout(() => {
@@ -261,9 +261,9 @@
                      }, 1500); 
 
                     // Reset form
-                    fileToUpload = null;
-                    dropZone.querySelector('p').textContent = 'Drag & Drop file here or click to select';
-                    fileInput.value = ''; // Clear the file input
+                    //fileToUpload = null;
+                    //dropZone.querySelector('p').textContent = 'Drag & Drop file here or click to select';
+                    //fileInput.value = ''; // Clear the file input
                     // Optionally list files for the current user immediately
                     // listFiles(username);
                 } else {

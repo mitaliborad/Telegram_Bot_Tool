@@ -206,22 +206,37 @@
         uploadButton.addEventListener('click', async () => {
             if (!fileToUpload) {
                 uploadStatus.textContent = 'Please select a file first.';
-                return;
-            }
-            const username = usernameInput.value.trim();
-            if (!username) {
-                uploadStatus.textContent = 'Please enter a username.';
+                uploadStatus.style.color = 'red';
                 return;
             }
 
-            uploadButton.disabled = false;
+            const usernameInput = document.getElementById('username');
+
+            const username = usernameInput.value.trim();
+            if (!username) {
+                uploadStatus.textContent = 'Please enter a username.';
+                uploadStatus.style.color = 'red';
+                return;
+            }
+
+            uploadButton.disabled = true;
             uploadStatus.textContent = 'Uploading...';
+            uploadStatus.style.color = 'black';
             uploadProgress.style.display = 'block';
             uploadProgress.value = 0;
 
             const formData = new FormData();
-            formData.append('file', fileToUpload);
+            formData.append('file', fileToUpload, fileToUpload.name);
             formData.append('username', username);
+
+            // --- Simulate Progress (optional but good for user experience) ---
+            let progress = 0;
+            const interval = setInterval(() => {
+                 progress += 10;
+                 // Don't let simulation finish before actual request might start responding
+                 uploadProgress.value = Math.min(progress, 90);
+                 if (progress >= 100) clearInterval(interval);
+            }, 200);    
 
             try {
                 const response = await fetch('/upload', {
@@ -230,11 +245,21 @@
                     // Note: No 'Content-Type' header needed for FormData with fetch
                     // It sets the boundary automatically.
                 });
+                
+                // --- Request finished: Stop simulation, set progress to 100% ---
+                clearInterval(interval);
+                uploadProgress.value = 100;
 
                 const result = await response.json();
 
                 if (response.ok) {
                     uploadStatus.textContent = `Success: ${result.message}`;
+                    uploadStatus.style.color = 'green';
+
+                    setTimeout(() => {
+                         window.location.reload();
+                     }, 1500); 
+
                     // Reset form
                     fileToUpload = null;
                     dropZone.querySelector('p').textContent = 'Drag & Drop file here or click to select';
@@ -245,8 +270,12 @@
                     throw new Error(result.error || `HTTP error! status: ${response.status}`);
                 }
             } catch (error) {
-                console.error('Upload error:', error);
-                uploadStatus.textContent = `Error: ${error.message}`;
+                clearInterval(interval); // Stop simulation
+                console.error('Upload Error:', error); // Log detailed error to browser console
+                uploadStatus.textContent = `Error: ${error.message}. Check console for details.`;
+                uploadStatus.style.color = 'red';
+                uploadProgress.style.display = 'none'; // Hide progress on error
+                uploadButton.disabled = false; // Re-enable button on failure
             } finally {
                 uploadButton.disabled = false;
                 uploadProgress.style.display = 'none';

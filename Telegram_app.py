@@ -2,7 +2,7 @@
 import io
 import os
 import requests
-from flask import Flask, request, render_template, flash, redirect, url_for, make_response, jsonify
+from flask import Flask, request, render_template, flash, redirect, url_for, make_response, jsonify, send_file
 import json
 from datetime import datetime, timezone
 import logging
@@ -14,7 +14,7 @@ import tempfile
 TELEGRAM_BOT_TOKEN = '7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs' # Replace with your actual Bot Token
 TELEGRAM_CHAT_ID = '-4603853425'     # Replace with your actual Chat ID
 METADATA_FILE = 'metadata.json'
-CHUNK_SIZE = 45 * 1024 * 1024 # ~45MB chunk size for splitting large files
+CHUNK_SIZE = 19 * 1024 * 1024 # ~45MB chunk size for splitting large files
 
 # --- Logging Setup ---
 LOG_DIR = "Selenium-Logs"
@@ -116,6 +116,99 @@ def send_file_to_telegram(file_object, filename):
     except Exception as e:
         logging.error(f"Unexpected error sending '{filename}' to Telegram: {e}", exc_info=True)
         return False, f"An unexpected error occurred: {e}", None
+
+# --- Telegram API Interaction ---
+# (send_file_to_telegram function is here)
+
+def download_telegram_file_content(file_id):
+    """
+    Gets the temporary download URL for a file_id and downloads its content.
+
+    Args:
+        file_id: The file_id from Telegram.
+
+    Returns:
+        Bytes object containing the file content, or None if an error occurs.
+        Also returns an error message string (None on success).
+    """
+    logging.info(f"Attempting to get download URL for file_id: {file_id}")
+    get_file_url = f'https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getFile'
+    params = {'file_id': file_id}
+    direct_download_url = None
+    error_message = None
+
+    try:
+        response = requests.get(get_file_url, params=params, timeout=30)
+        response.raise_for_status()
+        response_json = response.json()
+
+        if response_json.get('ok'):
+            file_path = response_json.get('result', {}).get('file_path')
+            if file_path:
+                direct_download_url = f'https://api.telegram.org/file/bot{TELEGRAM_BOT_TOKEN}/{file_path}'
+                logging.info(f"Obtained temporary download URL: {direct_download_url}")
+            else:
+                logging.error(f"getFile OK but no 'file_path' for file_id {file_id}. Response: {response_json}")
+                error_message = "Telegram API OK but no file path received."
+                return None, error_message
+        else:
+            error_desc = response_json.get('description', 'Unknown Telegram error')
+            logging.error(f"Telegram API error (getFile) for file_id {file_id}: {error_desc}. Response: {response_json}")
+            error_message = f"Telegram API error getting file path: {error_desc}"
+            return None, error_message
+
+    except requests.exceptions.Timeout:
+        logging.error(f"Timeout calling Telegram getFile API for file_id: {file_id}", exc_info=True)
+        error_message = "Timeout getting download URL from Telegram."
+        return None, error_message
+    except requests.exceptions.RequestException as e:
+        error_details = str(e)
+        if e.response is not None:
+             error_details += f" | Status: {e.response.status_code} | Response: {e.response.text}"
+        logging.error(f"Network/Request error calling Telegram getFile API: {error_details}", exc_info=True)
+        error_message = f"Network error getting download URL: {error_details}"
+        return None, error_message
+    except json.JSONDecodeError:
+        logging.error(f"Telegram getFile response was not valid JSON. Status: {response.status_code if 'response' in locals() else 'N/A'}, Body: {response.text if 'response' in locals() else 'N/A'}", exc_info=True)
+        error_message = "Invalid response from Telegram (getFile)."
+        return None, error_message
+    except Exception as e:
+        logging.error(f"Unexpected error during getFile for file_id {file_id}: {e}", exc_info=True)
+        error_message = "Unexpected error getting download URL."
+        return None, error_message
+
+    # If we have the URL, now download the content
+    if direct_download_url:
+        logging.info(f"Attempting to download content from: {direct_download_url}")
+        try:
+            # Use stream=True for potentially large files, although we read all at once here.
+            # Timeout increased for potentially large downloads
+            download_response = requests.get(direct_download_url, stream=True, timeout=120)
+            download_response.raise_for_status()
+
+            # Read the content into bytes
+            file_content = download_response.content
+            logging.info(f"Successfully downloaded {len(file_content)} bytes for file_id {file_id}.")
+            return file_content, None # Success: return content, no error message
+
+        except requests.exceptions.Timeout:
+            logging.error(f"Timeout downloading file content for file_id: {file_id} from {direct_download_url}", exc_info=True)
+            error_message = "Timeout downloading file content from Telegram."
+            return None, error_message
+        except requests.exceptions.RequestException as e:
+            error_details = str(e)
+            if e.response is not None:
+                 error_details += f" | Status: {e.response.status_code} | Response: {e.response.text}"
+            logging.error(f"Network/Request error downloading file content: {error_details}", exc_info=True)
+            error_message = f"Network error downloading content: {error_details}"
+            return None, error_message
+        except Exception as e:
+            logging.error(f"Unexpected error downloading content for file_id {file_id}: {e}", exc_info=True)
+            error_message = "Unexpected error downloading content."
+            return None, error_message
+    else:
+         # Should not happen if previous checks worked, but defensive coding
+         return None, error_message
 
 # --- Flask Routes ---
 @app.route('/')
@@ -567,8 +660,7 @@ def list_user_files(username):
 
 @app.route('/download/<username>/<filename>', methods=['GET'])
 def download_user_file(username, filename):
-    logging.info(f"Download request: User='{username}', File='{filename}'")
-
+    logging.info(f"Download request: User='{username}', Original File='{filename}'")
     metadata = load_metadata()
     user_files = metadata.get(username, [])
     file_info = next((f for f in user_files if f.get('original_filename') == filename), None)
@@ -576,66 +668,256 @@ def download_user_file(username, filename):
     if not file_info:
         logging.warning(f"Download failed: File '{filename}' not found for user '{username}'.")
         flash(f"Error: File '{filename}' not found for user '{username}'.", 'error')
-        return redirect(url_for('index'))
+        # Redirect back to the index or potentially a user-specific page if you have one
+        # For now, redirecting to index
+        # Check if referer exists and redirect back, otherwise to index
+        referer = request.headers.get("Referer")
+        return redirect(referer or url_for('index'))
 
-    # --- Crucial Check: Can we download this file type? ---
-    if file_info.get('is_split', False):
-        logging.warning(f"Download attempt failed for SPLIT file '{filename}' (user: '{username}'). Not implemented.")
-        flash(f"Error: Downloading split files ('{filename}') is not yet supported.", 'error')
-        return redirect(url_for('index'))
-    # --- End Check ---
 
-    telegram_file_id = file_info.get('telegram_file_id')
-    if not telegram_file_id:
-        logging.error(f"Download failed: Metadata for '{filename}' (user: '{username}') missing 'telegram_file_id'. Record: {file_info}")
-        flash(f"Error: Cannot download '{filename}'. File tracking info is incomplete.", 'error')
-        return redirect(url_for('index'))
+    is_split = file_info.get('is_split', False)
+    is_compressed = file_info.get('is_compressed', False) # Check if it was compressed
+    original_filename = file_info.get('original_filename') # Should always match 'filename' arg
 
-    logging.info(f"Found file_id '{telegram_file_id}' for '{filename}' (user: '{username}'). Requesting download path.")
-
-    get_file_url = f'https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getFile'
-    params = {'file_id': telegram_file_id}
+    # --- Temporary file paths - must be cleaned up in 'finally' ---
+    temp_decompressed_path = None
+    temp_reassembled_zip_path = None
+    # --- File handles - ensure closed ---
+    zip_file_handle = None
+    inner_file_stream = None
 
     try:
-        response = requests.get(get_file_url, params=params, timeout=30)
-        response.raise_for_status()
-        response_json = response.json()
+        if not is_split:
+            # --- Single File Download Workflow ---
+            logging.info(f"Processing non-split file download for '{original_filename}'")
+            telegram_file_id = file_info.get('telegram_file_id')
+            sent_filename = file_info.get('sent_filename') # e.g., filename.zip
 
-        if response_json.get('ok'):
-            file_path = response_json.get('result', {}).get('file_path')
-            if file_path:
-                direct_download_url = f'https://api.telegram.org/file/bot{TELEGRAM_BOT_TOKEN}/{file_path}'
-                logging.info(f"Obtained temporary download URL for '{filename}'. Redirecting user to: {direct_download_url}")
-                return redirect(direct_download_url) # Send user's browser to Telegram download link
-            else:
-                logging.error(f"Download failed: Telegram responded OK for '{filename}' but no 'file_path'. Response: {response_json}")
-                flash(f"Error: Could not get download link for '{filename}' (missing path).", 'error')
+            if not telegram_file_id:
+                logging.error(f"Metadata error: Missing 'telegram_file_id' for non-split file '{original_filename}'.")
+                flash(f"Error: Cannot download '{filename}'. File tracking info incomplete.", 'error')
                 return redirect(url_for('index'))
-        else:
-            error_desc = response_json.get('description', 'Unknown Telegram error')
-            logging.error(f"Download failed: Telegram API error (getFile) for '{filename}': {error_desc}. Response: {response_json}")
-            flash(f"Error: Telegram rejected the download request: {error_desc}", 'error')
-            return redirect(url_for('index'))
 
-    except requests.exceptions.Timeout:
-        logging.error(f"Timeout calling Telegram getFile API for file_id: {telegram_file_id}", exc_info=True)
-        flash("Error: Timed out preparing download.", 'error')
-        return redirect(url_for('index'))
-    except requests.exceptions.RequestException as e:
-        error_details = str(e)
-        if e.response is not None:
-             error_details += f" | Status: {e.response.status_code} | Response: {e.response.text}"
-        logging.error(f"Network/Request error calling Telegram getFile API: {error_details}", exc_info=True)
-        flash(f"Network Error preparing download: {error_details}", 'error')
-        return redirect(url_for('index'))
-    except json.JSONDecodeError:
-        logging.error(f"Telegram getFile response was not valid JSON. Status: {response.status_code if 'response' in locals() else 'N/A'}, Body: {response.text if 'response' in locals() else 'N/A'}", exc_info=True)
-        flash("Error: Received an invalid response from Telegram.", 'error')
-        return redirect(url_for('index'))
+            # 1. Download the (potentially compressed) file content
+            logging.debug(f"Calling helper to download content for file_id: {telegram_file_id}")
+            file_content_bytes, error_msg = download_telegram_file_content(telegram_file_id)
+            if error_msg:
+                logging.error(f"Failed to download content for '{sent_filename}': {error_msg}")
+                flash(f"Error downloading file from Telegram: {error_msg}", 'error')
+                return redirect(url_for('index'))
+            if not file_content_bytes:
+                 logging.error(f"Downloaded content was empty for '{sent_filename}' (file_id: {telegram_file_id}).")
+                 flash("Error: Downloaded file content from Telegram was empty.", 'error')
+                 return redirect(url_for('index'))
+
+            logging.info(f"Successfully downloaded content for '{sent_filename}'. Size: {len(file_content_bytes)} bytes.")
+
+            # 2. Handle decompression if needed
+            if is_compressed:
+                logging.info(f"File '{sent_filename}' is compressed. Decompressing...")
+                try:
+                    zip_buffer = io.BytesIO(file_content_bytes)
+                    zip_file_handle = zipfile.ZipFile(zip_buffer, 'r') # Open for reading
+
+                    # Ensure it contains the original file
+                    file_list_in_zip = zip_file_handle.namelist()
+                    if not file_list_in_zip:
+                        raise ValueError("Downloaded zip file is empty.")
+                    # We assume the first file is the one we want, or check name:
+                    if original_filename not in file_list_in_zip:
+                         # Fallback if name doesn't match exactly (e.g., path issues)
+                         if len(file_list_in_zip) == 1:
+                             inner_filename = file_list_in_zip[0]
+                             logging.warning(f"Filename inside zip ('{inner_filename}') doesn't exactly match original ('{original_filename}'). Using the only file found.")
+                         else:
+                            raise ValueError(f"Cannot find '{original_filename}' inside the downloaded zip file. Contents: {file_list_in_zip}")
+                    else:
+                        inner_filename = original_filename
+
+                    # 3. Create a temporary file for the *decompressed* content
+                    with tempfile.NamedTemporaryFile(delete=False) as temp_out_handle:
+                        temp_decompressed_path = temp_out_handle.name
+                        logging.info(f"Extracting '{inner_filename}' to temporary file: {temp_decompressed_path}")
+
+                        # Stream from zip to temp file
+                        with zip_file_handle.open(inner_filename, 'r') as inner_file_stream:
+                            buffer_size = 4 * 1024 * 1024 # 4MB buffer
+                            while True:
+                                chunk = inner_file_stream.read(buffer_size)
+                                if not chunk:
+                                    break
+                                temp_out_handle.write(chunk)
+
+                    logging.info(f"Successfully extracted to {temp_decompressed_path}. Size: {os.path.getsize(temp_decompressed_path)}")
+                    zip_file_handle.close() # Close zip handle
+
+                    # 4. Send the DECOMPRESSED temporary file
+                    logging.info(f"Sending decompressed file '{original_filename}' from path '{temp_decompressed_path}'")
+                    return send_file(temp_decompressed_path,
+                                     as_attachment=True,
+                                     download_name=original_filename) # Use the ORIGINAL filename
+
+                except zipfile.BadZipFile:
+                    logging.error(f"Error: Downloaded file '{sent_filename}' is not a valid zip file.", exc_info=True)
+                    flash(f"Error: The downloaded file '{sent_filename}' appears corrupted (not a valid zip).", 'error')
+                    return redirect(url_for('index'))
+                except ValueError as e:
+                    logging.error(f"Error processing zip file contents for '{sent_filename}': {e}", exc_info=True)
+                    flash(f"Error: Problem with the structure of the downloaded file '{sent_filename}': {e}", 'error')
+                    return redirect(url_for('index'))
+                except Exception as e:
+                    logging.error(f"Unexpected error during decompression of '{sent_filename}': {e}", exc_info=True)
+                    flash("An unexpected error occurred during file decompression.", 'error')
+                    return redirect(url_for('index'))
+                finally:
+                     # Ensure zip handle is closed even if errors occurred before send_file
+                     if zip_file_handle and not zip_file_handle.fp.closed:
+                         zip_file_handle.close()
+
+
+            else:
+                # File was NOT compressed, create a temp file just to use send_file consistently
+                logging.info(f"File '{sent_filename}' was not compressed. Sending directly.")
+                with tempfile.NamedTemporaryFile(delete=False) as temp_out_handle:
+                    temp_decompressed_path = temp_out_handle.name # Use the same variable name for cleanup
+                    temp_out_handle.write(file_content_bytes)
+                logging.info(f"Wrote non-compressed content to temporary file: {temp_decompressed_path}")
+                return send_file(temp_decompressed_path,
+                                 as_attachment=True,
+                                 download_name=original_filename) # Still use original filename
+
+        else:
+            # --- Split File Download Workflow ---
+            logging.info(f"Processing SPLIT file download for '{original_filename}'")
+            chunks_metadata = file_info.get('chunks', [])
+            if not chunks_metadata:
+                logging.error(f"Metadata error: Missing 'chunks' list for split file '{original_filename}'.")
+                flash(f"Error: Cannot download '{filename}'. Split file tracking info missing.", 'error')
+                return redirect(url_for('index'))
+
+            # Sort chunks by part number just in case
+            chunks_metadata.sort(key=lambda c: c.get('part_number', 0))
+
+            # 1. Create a temporary file to reassemble the potentially compressed zip file
+            with tempfile.NamedTemporaryFile(suffix=".zip.tmp", delete=False) as temp_zip_handle:
+                temp_reassembled_zip_path = temp_zip_handle.name
+                logging.info(f"Created temporary file for reassembly: {temp_reassembled_zip_path}")
+
+                # 2. Download and append each chunk
+                total_bytes_written = 0
+                for i, chunk_info in enumerate(chunks_metadata):
+                    part_num = chunk_info.get('part_number')
+                    chunk_file_id = chunk_info.get('file_id')
+                    chunk_filename = chunk_info.get('chunk_filename', f'part_{part_num}') # For logging
+
+                    if not chunk_file_id:
+                        logging.error(f"Metadata error: Missing 'file_id' for chunk {part_num} of '{original_filename}'.")
+                        raise ValueError(f"Tracking info missing for part {part_num}.") # Raise to trigger finally cleanup
+
+                    logging.debug(f"Downloading chunk {part_num}/{len(chunks_metadata)} ('{chunk_filename}', file_id: {chunk_file_id})...")
+                    chunk_content_bytes, error_msg = download_telegram_file_content(chunk_file_id)
+                    if error_msg:
+                        logging.error(f"Failed to download chunk {part_num} ('{chunk_filename}'): {error_msg}")
+                        raise ValueError(f"Error downloading part {part_num}: {error_msg}") # Raise to trigger finally cleanup
+                    if not chunk_content_bytes:
+                         logging.error(f"Downloaded chunk {part_num} ('{chunk_filename}') was empty.")
+                         raise ValueError(f"Downloaded part {part_num} was empty.")
+
+                    temp_zip_handle.write(chunk_content_bytes)
+                    total_bytes_written += len(chunk_content_bytes)
+                    logging.debug(f"Appended {len(chunk_content_bytes)} bytes for chunk {part_num}. Total written: {total_bytes_written}")
+
+            # Reassembly complete (temp_zip_handle is closed automatically by 'with')
+            logging.info(f"Finished reassembling chunks to '{temp_reassembled_zip_path}'. Total size: {total_bytes_written} bytes.")
+
+            # 3. Decompress the reassembled file if necessary
+            if is_compressed:
+                logging.info(f"Reassembled file '{temp_reassembled_zip_path}' is compressed. Decompressing...")
+                try:
+                    # Open the reassembled temp zip file for reading
+                    zip_file_handle = zipfile.ZipFile(temp_reassembled_zip_path, 'r')
+
+                    file_list_in_zip = zip_file_handle.namelist()
+                    if not file_list_in_zip:
+                         raise ValueError("Reassembled zip file is empty.")
+                    if original_filename not in file_list_in_zip:
+                         if len(file_list_in_zip) == 1:
+                             inner_filename = file_list_in_zip[0]
+                             logging.warning(f"Filename inside reassembled zip ('{inner_filename}') doesn't match original ('{original_filename}'). Using the only file found.")
+                         else:
+                             raise ValueError(f"Cannot find '{original_filename}' inside the reassembled zip file. Contents: {file_list_in_zip}")
+                    else:
+                         inner_filename = original_filename
+
+                    # 4. Create a SECOND temporary file for the final DECOMPRESSED content
+                    with tempfile.NamedTemporaryFile(delete=False) as temp_final_out_handle:
+                        temp_decompressed_path = temp_final_out_handle.name
+                        logging.info(f"Extracting '{inner_filename}' from reassembled zip to final temp file: {temp_decompressed_path}")
+
+                        # Stream from reassembled zip to final temp file
+                        with zip_file_handle.open(inner_filename, 'r') as inner_file_stream:
+                            buffer_size = 4 * 1024 * 1024 # 4MB buffer
+                            while True:
+                                chunk = inner_file_stream.read(buffer_size)
+                                if not chunk:
+                                    break
+                                temp_final_out_handle.write(chunk)
+
+                    logging.info(f"Successfully extracted final file to {temp_decompressed_path}. Size: {os.path.getsize(temp_decompressed_path)}")
+                    zip_file_handle.close() # Close zip handle
+
+                    # 5. Send the FINAL DECOMPRESSED temporary file
+                    logging.info(f"Sending final decompressed file '{original_filename}' from path '{temp_decompressed_path}'")
+                    return send_file(temp_decompressed_path,
+                                     as_attachment=True,
+                                     download_name=original_filename) # Use the ORIGINAL filename
+
+                except zipfile.BadZipFile:
+                    logging.error(f"Error: Reassembled file '{temp_reassembled_zip_path}' is not a valid zip file.", exc_info=True)
+                    flash("Error: The reassembled file appears corrupted (not a valid zip).", 'error')
+                    return redirect(url_for('index'))
+                except ValueError as e:
+                    logging.error(f"Error processing reassembled zip file contents: {e}", exc_info=True)
+                    flash(f"Error: Problem with the structure of the reassembled file: {e}", 'error')
+                    return redirect(url_for('index'))
+                except Exception as e:
+                    logging.error(f"Unexpected error during decompression of reassembled file: {e}", exc_info=True)
+                    flash("An unexpected error occurred during final file decompression.", 'error')
+                    return redirect(url_for('index'))
+                finally:
+                     if zip_file_handle and not zip_file_handle.fp.closed:
+                          zip_file_handle.close()
+
+            else:
+                # Split file was NOT compressed (unlikely given our upload logic, but handle defensively)
+                logging.info("Split file was not compressed. Sending reassembled file directly.")
+                # We need to use temp_decompressed_path for the cleanup logic, even though it's not decompressed
+                temp_decompressed_path = temp_reassembled_zip_path
+                temp_reassembled_zip_path = None # Prevent deleting it twice in finally block
+                return send_file(temp_decompressed_path,
+                                 as_attachment=True,
+                                 download_name=original_filename) # Use the original filename
+
+
     except Exception as e:
-        logging.error(f"Unexpected error during download prep for '{filename}' (user: {username}): {e}", exc_info=True)
-        flash("An unexpected internal error occurred preparing download.", 'error')
+        # Catch errors during chunk download or outer processing
+        logging.error(f"General error during download processing for '{filename}': {e}", exc_info=True)
+        # Use str(e) which might contain specific error from ValueError raised during chunk download
+        flash(f"An error occurred during download: {str(e)}", 'error')
         return redirect(url_for('index'))
+
+    finally:
+                     # Ensure zip handle is closed if it was successfully opened
+                     logging.debug(f"Single file finally block: zip_file_handle is {type(zip_file_handle)}") # <<< ADD THIS LINE
+                     if zip_file_handle:
+                         try:
+                             # Use getattr for extra safety
+                             fp = getattr(zip_file_handle, 'fp', None)
+                             if fp and not fp.closed:
+                                 zip_file_handle.close()
+                                 logging.debug("Closed zip_file_handle in single file decompression finally block.")
+                         except Exception as e:
+                             logging.warning(f"Exception while trying to close single-file zip_file_handle in finally: {e}")
 
 # --- Application Runner ---
 if __name__ == '__main__':

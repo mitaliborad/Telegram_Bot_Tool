@@ -1,0 +1,103 @@
+2025-04-15 11:16:33,282 - INFO - [<module>] - Logging configured. Log file: Selenium-Logs\app_20250415_111633.log
+2025-04-15 11:16:33,284 - INFO - [<module>] - Flask application initialized.
+2025-04-15 11:16:33,287 - INFO - [<module>] - Starting Flask development server...
+2025-04-15 11:16:33,325 - WARNING - [_log] -  * Debugger is active!
+2025-04-15 11:16:33,332 - INFO - [_log] -  * Debugger PIN: 107-410-311
+2025-04-15 11:16:43,177 - INFO - [index] - Serving index page.
+2025-04-15 11:16:43,198 - INFO - [_log] - 127.0.0.1 - - [15/Apr/2025 11:16:43] "GET / HTTP/1.1" 200 -
+2025-04-15 11:16:43,225 - INFO - [_log] - 127.0.0.1 - - [15/Apr/2025 11:16:43] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-15 11:16:43,275 - INFO - [_log] - 127.0.0.1 - - [15/Apr/2025 11:16:43] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-04-15 11:17:18,310 - INFO - [upload_file] - Received file upload request.
+2025-04-15 11:17:18,853 - INFO - [upload_file] - Processing upload: User='Klaus', File='60mb.pdf'
+2025-04-15 11:17:18,853 - INFO - [upload_file] - File '60mb.pdf' size: 63862122 bytes.
+2025-04-15 11:17:18,853 - INFO - [upload_file] - '60mb.pdf' is large (63862122 bytes). Compressing before splitting.
+2025-04-15 11:17:18,854 - INFO - [upload_file] - Created temporary file for compression: C:\Users\DELL\AppData\Local\Temp\tmpje4yirkh.zip
+2025-04-15 11:17:18,854 - INFO - [upload_file] - Compressing '60mb.pdf' into temporary file...
+2025-04-15 11:17:20,945 - INFO - [upload_file] - Finished compressing to 'C:\Users\DELL\AppData\Local\Temp\tmpje4yirkh.zip'. Size: 62754351 bytes. Time: 2.09s.
+2025-04-15 11:17:20,945 - INFO - [upload_file] - Starting split upload for compressed file '60mb.pdf.zip' (Chunk size: 47185920 bytes).
+2025-04-15 11:17:20,965 - INFO - [upload_file] - Reading chunk 1 for COMPRESSED file '60mb.pdf.zip' starting at byte 0.
+2025-04-15 11:17:20,998 - INFO - [upload_file] - Read chunk 1 (47185920 bytes) for '60mb.pdf.zip'. Total read: 47185920/62754351
+2025-04-15 11:17:20,998 - INFO - [upload_file] - Attempting to send chunk: '60mb.pdf.zip.part_001'
+2025-04-15 11:17:20,998 - INFO - [send_file_to_telegram] - Sending file '60mb.pdf.zip.part_001' to Telegram chat ID: -4603853425
+2025-04-15 11:17:41,157 - INFO - [send_file_to_telegram] - Telegram API success for '60mb.pdf.zip.part_001'.
+2025-04-15 11:17:41,163 - INFO - [upload_file] - Chunk '60mb.pdf.zip.part_001' sent successfully.
+2025-04-15 11:17:41,163 - INFO - [upload_file] - Successfully processed chunk '60mb.pdf.zip.part_001' (MsgID=49) in 20.20s.
+2025-04-15 11:17:41,163 - INFO - [upload_file] - Reading chunk 2 for COMPRESSED file '60mb.pdf.zip' starting at byte 47185920.
+2025-04-15 11:17:41,183 - INFO - [upload_file] - Read chunk 2 (15568431 bytes) for '60mb.pdf.zip'. Total read: 62754351/62754351
+2025-04-15 11:17:41,184 - INFO - [upload_file] - Attempting to send chunk: '60mb.pdf.zip.part_002'
+2025-04-15 11:17:41,185 - INFO - [send_file_to_telegram] - Sending file '60mb.pdf.zip.part_002' to Telegram chat ID: -4603853425
+2025-04-15 11:17:49,541 - INFO - [send_file_to_telegram] - Telegram API success for '60mb.pdf.zip.part_002'.
+2025-04-15 11:17:49,543 - INFO - [upload_file] - Chunk '60mb.pdf.zip.part_002' sent successfully.
+2025-04-15 11:17:49,544 - INFO - [upload_file] - Successfully processed chunk '60mb.pdf.zip.part_002' (MsgID=50) in 8.38s.
+2025-04-15 11:17:49,544 - INFO - [upload_file] - Reading chunk 3 for COMPRESSED file '60mb.pdf.zip' starting at byte 62754351.
+2025-04-15 11:17:49,555 - INFO - [upload_file] - Finished reading all chunks for compressed file '60mb.pdf.zip'.
+2025-04-15 11:17:49,556 - INFO - [upload_file] - All 2 chunks for compressed file '60mb.pdf.zip' uploaded successfully. Saving metadata.
+2025-04-15 11:17:49,557 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-15 11:17:49,558 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-15 11:17:49,558 - INFO - [upload_file] - Successfully saved metadata for compressed split file '60mb.pdf'.
+2025-04-15 11:17:49,560 - INFO - [upload_file] - Finished processing compressed split file '60mb.pdf' in 31.25 seconds.
+2025-04-15 11:17:49,566 - INFO - [upload_file] - Successfully deleted temporary compressed file: C:\Users\DELL\AppData\Local\Temp\tmpje4yirkh.zip
+2025-04-15 11:17:49,574 - INFO - [_log] - 127.0.0.1 - - [15/Apr/2025 11:17:49] "[32mPOST /upload HTTP/1.1[0m" 302 -
+2025-04-15 11:17:49,580 - INFO - [index] - Serving index page.
+2025-04-15 11:17:49,583 - INFO - [_log] - 127.0.0.1 - - [15/Apr/2025 11:17:49] "GET / HTTP/1.1" 200 -
+2025-04-15 11:17:51,109 - INFO - [index] - Serving index page.
+2025-04-15 11:17:51,110 - INFO - [_log] - 127.0.0.1 - - [15/Apr/2025 11:17:51] "GET / HTTP/1.1" 200 -
+2025-04-15 11:17:51,132 - INFO - [_log] - 127.0.0.1 - - [15/Apr/2025 11:17:51] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-15 11:18:42,883 - INFO - [list_user_files] - Request received to list files for user: 'Klaus'
+2025-04-15 11:18:42,884 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-15 11:18:42,885 - INFO - [list_user_files] - Found 1 file records for user 'Klaus'.
+2025-04-15 11:18:42,885 - INFO - [_log] - 127.0.0.1 - - [15/Apr/2025 11:18:42] "GET /files/Klaus HTTP/1.1" 200 -
+2025-04-15 11:18:44,589 - INFO - [download_user_file] - Download request: User='Klaus', File='60mb.pdf'
+2025-04-15 11:18:44,589 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-15 11:18:44,590 - WARNING - [download_user_file] - Download attempt failed for SPLIT file '60mb.pdf' (user: 'Klaus'). Not implemented.
+2025-04-15 11:18:44,592 - INFO - [_log] - 127.0.0.1 - - [15/Apr/2025 11:18:44] "[32mGET /download/Klaus/60mb.pdf HTTP/1.1[0m" 302 -
+2025-04-15 11:18:44,599 - INFO - [index] - Serving index page.
+2025-04-15 11:18:44,600 - INFO - [_log] - 127.0.0.1 - - [15/Apr/2025 11:18:44] "GET / HTTP/1.1" 200 -
+2025-04-15 11:18:44,617 - INFO - [_log] - 127.0.0.1 - - [15/Apr/2025 11:18:44] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-15 11:20:22,778 - INFO - [upload_file] - Received file upload request.
+2025-04-15 11:20:22,781 - INFO - [upload_file] - Processing upload: User='Mat', File='file_6.zip'
+2025-04-15 11:20:22,784 - INFO - [upload_file] - File 'file_6.zip' size: 12529 bytes.
+2025-04-15 11:20:22,785 - INFO - [upload_file] - 'file_6.zip' is small (12529 bytes). Sending as single file.
+2025-04-15 11:20:22,786 - INFO - [upload_file] - Compressed 'file_6.zip' to 12617 bytes.
+2025-04-15 11:20:22,786 - INFO - [send_file_to_telegram] - Sending file 'file_6.zip.zip' to Telegram chat ID: -4603853425
+2025-04-15 11:20:23,620 - INFO - [send_file_to_telegram] - Telegram API success for 'file_6.zip.zip'.
+2025-04-15 11:20:23,621 - INFO - [upload_file] - Single file 'file_6.zip' sent successfully via Telegram.
+2025-04-15 11:20:23,621 - INFO - [upload_file] - Extracted IDs for 'file_6.zip': MsgID=51, UniqueID=AgAD2BIAAmGN8Vc
+2025-04-15 11:20:23,623 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-15 11:20:23,625 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-15 11:20:23,626 - INFO - [upload_file] - Successfully saved metadata for single file 'file_6.zip'.
+2025-04-15 11:20:23,627 - INFO - [upload_file] - Finished processing single(compressed) file 'file_6.zip' in 0.85 seconds.
+2025-04-15 11:20:23,629 - INFO - [_log] - 127.0.0.1 - - [15/Apr/2025 11:20:23] "[32mPOST /upload HTTP/1.1[0m" 302 -
+2025-04-15 11:20:23,636 - INFO - [index] - Serving index page.
+2025-04-15 11:20:23,639 - INFO - [_log] - 127.0.0.1 - - [15/Apr/2025 11:20:23] "GET / HTTP/1.1" 200 -
+2025-04-15 11:20:25,160 - INFO - [index] - Serving index page.
+2025-04-15 11:20:25,161 - INFO - [_log] - 127.0.0.1 - - [15/Apr/2025 11:20:25] "GET / HTTP/1.1" 200 -
+2025-04-15 11:20:25,183 - INFO - [_log] - 127.0.0.1 - - [15/Apr/2025 11:20:25] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-15 11:21:15,119 - INFO - [upload_file] - Received file upload request.
+2025-04-15 11:21:15,121 - INFO - [upload_file] - Processing upload: User='Tyler', File='import zipfile.py'
+2025-04-15 11:21:15,122 - INFO - [upload_file] - File 'import zipfile.py' size: 29652 bytes.
+2025-04-15 11:21:15,122 - INFO - [upload_file] - 'import zipfile.py' is small (29652 bytes). Sending as single file.
+2025-04-15 11:21:15,124 - INFO - [upload_file] - Compressed 'import zipfile.py' to 8127 bytes.
+2025-04-15 11:21:15,125 - INFO - [send_file_to_telegram] - Sending file 'import zipfile.py.zip' to Telegram chat ID: -4603853425
+2025-04-15 11:21:15,966 - INFO - [send_file_to_telegram] - Telegram API success for 'import zipfile.py.zip'.
+2025-04-15 11:21:15,966 - INFO - [upload_file] - Single file 'import zipfile.py' sent successfully via Telegram.
+2025-04-15 11:21:15,966 - INFO - [upload_file] - Extracted IDs for 'import zipfile.py': MsgID=52, UniqueID=AgAD2RIAAmGN8Vc
+2025-04-15 11:21:15,978 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-15 11:21:15,979 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-15 11:21:15,980 - INFO - [upload_file] - Successfully saved metadata for single file 'import zipfile.py'.
+2025-04-15 11:21:15,980 - INFO - [upload_file] - Finished processing single(compressed) file 'import zipfile.py' in 0.86 seconds.
+2025-04-15 11:21:15,981 - INFO - [_log] - 127.0.0.1 - - [15/Apr/2025 11:21:15] "[32mPOST /upload HTTP/1.1[0m" 302 -
+2025-04-15 11:21:15,987 - INFO - [index] - Serving index page.
+2025-04-15 11:21:15,988 - INFO - [_log] - 127.0.0.1 - - [15/Apr/2025 11:21:15] "GET / HTTP/1.1" 200 -
+2025-04-15 11:21:17,497 - INFO - [index] - Serving index page.
+2025-04-15 11:21:17,500 - INFO - [_log] - 127.0.0.1 - - [15/Apr/2025 11:21:17] "GET / HTTP/1.1" 200 -
+2025-04-15 11:21:17,518 - INFO - [_log] - 127.0.0.1 - - [15/Apr/2025 11:21:17] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-15 11:21:34,420 - INFO - [list_user_files] - Request received to list files for user: 'Tyler'
+2025-04-15 11:21:34,421 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-15 11:21:34,421 - INFO - [list_user_files] - Found 1 file records for user 'Tyler'.
+2025-04-15 11:21:34,422 - INFO - [_log] - 127.0.0.1 - - [15/Apr/2025 11:21:34] "GET /files/Tyler HTTP/1.1" 200 -
+2025-04-15 11:21:37,253 - INFO - [download_user_file] - Download request: User='Tyler', File='import zipfile.py'
+2025-04-15 11:21:37,255 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-15 11:21:37,255 - INFO - [download_user_file] - Found file_id 'BQACAgUAAxkDAAM0Z_3z02H8VVX77leiUMqku1al4uUAAtkSAAJhjfFXAp_ZSIGCb2s2BA' for 'import zipfile.py' (user: 'Tyler'). Requesting download path.
+2025-04-15 11:21:38,043 - INFO - [download_user_file] - Obtained temporary download URL for 'import zipfile.py'. Redirecting user to: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_10.zip
+2025-04-15 11:21:38,046 - INFO - [_log] - 127.0.0.1 - - [15/Apr/2025 11:21:38] "[32mGET /download/Tyler/import%20zipfile.py HTTP/1.1[0m" 302 -

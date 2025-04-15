@@ -1,0 +1,36 @@
+2025-04-15 09:07:54,445 - INFO - [<module>] - Logging configured. Log file: Selenium-Logs\app_20250415_090754.log
+2025-04-15 09:07:54,445 - INFO - [<module>] - Flask application initialized.
+2025-04-15 09:07:54,445 - INFO - [<module>] - Starting Flask development server...
+2025-04-15 09:07:54,485 - WARNING - [_log] -  * Debugger is active!
+2025-04-15 09:07:54,490 - INFO - [_log] -  * Debugger PIN: 107-410-311
+2025-04-15 09:09:52,569 - INFO - [index] - Serving index page.
+2025-04-15 09:09:52,646 - INFO - [_log] - 127.0.0.1 - - [15/Apr/2025 09:09:52] "GET / HTTP/1.1" 200 -
+2025-04-15 09:09:52,669 - INFO - [_log] - 127.0.0.1 - - [15/Apr/2025 09:09:52] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-15 09:09:52,716 - INFO - [_log] - 127.0.0.1 - - [15/Apr/2025 09:09:52] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-04-15 09:10:49,678 - INFO - [upload_file] - Received file upload request.
+2025-04-15 09:10:49,678 - INFO - [upload_file] - Processing upload: User='Octopus', File='bot.py'
+2025-04-15 09:10:49,678 - INFO - [upload_file] - File 'bot.py' size: 2350 bytes.
+2025-04-15 09:10:49,678 - INFO - [upload_file] - 'bot.py' is small (2350 bytes). Sending as single file.
+2025-04-15 09:10:49,678 - INFO - [send_file_to_telegram] - Sending file 'bot.py' to Telegram chat ID: -4603853425
+2025-04-15 09:10:50,714 - INFO - [send_file_to_telegram] - Telegram API success for 'bot.py'.
+2025-04-15 09:10:50,714 - INFO - [upload_file] - Single file 'bot.py' sent successfully via Telegram.
+2025-04-15 09:10:50,715 - INFO - [upload_file] - Extracted IDs for 'bot.py': MsgID=44, UniqueID=AgADqBIAAmGN8Vc
+2025-04-15 09:10:50,729 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-15 09:10:50,737 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-15 09:10:50,737 - INFO - [upload_file] - Successfully saved metadata for single file 'bot.py'.
+2025-04-15 09:10:50,737 - INFO - [upload_file] - Finished processing single file 'bot.py' in 1.06 seconds.
+2025-04-15 09:10:50,740 - INFO - [_log] - 127.0.0.1 - - [15/Apr/2025 09:10:50] "[32mPOST /upload HTTP/1.1[0m" 302 -
+2025-04-15 09:10:50,741 - INFO - [index] - Serving index page.
+2025-04-15 09:10:50,746 - INFO - [_log] - 127.0.0.1 - - [15/Apr/2025 09:10:50] "GET / HTTP/1.1" 200 -
+2025-04-15 09:10:52,259 - INFO - [index] - Serving index page.
+2025-04-15 09:10:52,259 - INFO - [_log] - 127.0.0.1 - - [15/Apr/2025 09:10:52] "GET / HTTP/1.1" 200 -
+2025-04-15 09:10:52,283 - INFO - [_log] - 127.0.0.1 - - [15/Apr/2025 09:10:52] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-15 09:11:12,737 - INFO - [list_user_files] - Request received to list files for user: 'Octopus'
+2025-04-15 09:11:12,749 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-15 09:11:12,749 - INFO - [list_user_files] - Found 1 file records for user 'Octopus'.
+2025-04-15 09:11:12,750 - INFO - [_log] - 127.0.0.1 - - [15/Apr/2025 09:11:12] "GET /files/Octopus HTTP/1.1" 200 -
+2025-04-15 09:11:14,124 - INFO - [download_user_file] - Download request: User='Octopus', File='bot.py'
+2025-04-15 09:11:14,124 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-15 09:11:14,124 - INFO - [download_user_file] - Found file_id 'BQACAgUAAxkDAAMsZ_3VQ1iV4TNRKX-U8XTu1bbL6vwAAqgSAAJhjfFXsZPK9QjLuuA2BA' for 'bot.py' (user: 'Octopus'). Requesting download path.
+2025-04-15 09:11:14,932 - INFO - [download_user_file] - Obtained temporary download URL for 'bot.py'. Redirecting user to: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_9.py
+2025-04-15 09:11:14,933 - INFO - [_log] - 127.0.0.1 - - [15/Apr/2025 09:11:14] "[32mGET /download/Octopus/bot.py HTTP/1.1[0m" 302 -

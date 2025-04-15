@@ -11,10 +11,10 @@ import zipfile
 import tempfile
 
 # --- Configuration ---
-TELEGRAM_BOT_TOKEN = '7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs' # Replace with your actual Bot Token
-TELEGRAM_CHAT_ID = '-4603853425'     # Replace with your actual Chat ID
+TELEGRAM_BOT_TOKEN = '7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs' 
+TELEGRAM_CHAT_ID = '-4603853425'     
 METADATA_FILE = 'metadata.json'
-CHUNK_SIZE = 19 * 1024 * 1024 # ~45MB chunk size for splitting large files
+CHUNK_SIZE = 19 * 1024 * 1024 
 
 # --- Logging Setup ---
 LOG_DIR = "Selenium-Logs"
@@ -659,6 +659,7 @@ def list_user_files(username):
     return jsonify(user_files)
 
 @app.route('/download/<username>/<filename>', methods=['GET'])
+@app.route('/download/<username>/<filename>', methods=['GET'])
 def download_user_file(username, filename):
     logging.info(f"Download request: User='{username}', Original File='{filename}'")
     metadata = load_metadata()
@@ -668,12 +669,8 @@ def download_user_file(username, filename):
     if not file_info:
         logging.warning(f"Download failed: File '{filename}' not found for user '{username}'.")
         flash(f"Error: File '{filename}' not found for user '{username}'.", 'error')
-        # Redirect back to the index or potentially a user-specific page if you have one
-        # For now, redirecting to index
-        # Check if referer exists and redirect back, otherwise to index
         referer = request.headers.get("Referer")
         return redirect(referer or url_for('index'))
-
 
     is_split = file_info.get('is_split', False)
     is_compressed = file_info.get('is_compressed', False) # Check if it was compressed
@@ -683,8 +680,8 @@ def download_user_file(username, filename):
     temp_decompressed_path = None
     temp_reassembled_zip_path = None
     # --- File handles - ensure closed ---
-    zip_file_handle = None
-    inner_file_stream = None
+    zip_file_handle = None # Initialize to None
+    inner_file_stream = None # Initialize to None
 
     try:
         if not is_split:
@@ -698,7 +695,6 @@ def download_user_file(username, filename):
                 flash(f"Error: Cannot download '{filename}'. File tracking info incomplete.", 'error')
                 return redirect(url_for('index'))
 
-            # 1. Download the (potentially compressed) file content
             logging.debug(f"Calling helper to download content for file_id: {telegram_file_id}")
             file_content_bytes, error_msg = download_telegram_file_content(telegram_file_id)
             if error_msg:
@@ -712,50 +708,46 @@ def download_user_file(username, filename):
 
             logging.info(f"Successfully downloaded content for '{sent_filename}'. Size: {len(file_content_bytes)} bytes.")
 
-            # 2. Handle decompression if needed
             if is_compressed:
                 logging.info(f"File '{sent_filename}' is compressed. Decompressing...")
                 try:
                     zip_buffer = io.BytesIO(file_content_bytes)
-                    zip_file_handle = zipfile.ZipFile(zip_buffer, 'r') # Open for reading
+                    zip_file_handle = zipfile.ZipFile(zip_buffer, 'r')
 
-                    # Ensure it contains the original file
                     file_list_in_zip = zip_file_handle.namelist()
                     if not file_list_in_zip:
                         raise ValueError("Downloaded zip file is empty.")
-                    # We assume the first file is the one we want, or check name:
+
+                    inner_filename = original_filename # Assume first
                     if original_filename not in file_list_in_zip:
-                         # Fallback if name doesn't match exactly (e.g., path issues)
                          if len(file_list_in_zip) == 1:
                              inner_filename = file_list_in_zip[0]
                              logging.warning(f"Filename inside zip ('{inner_filename}') doesn't exactly match original ('{original_filename}'). Using the only file found.")
                          else:
                             raise ValueError(f"Cannot find '{original_filename}' inside the downloaded zip file. Contents: {file_list_in_zip}")
-                    else:
-                        inner_filename = original_filename
 
-                    # 3. Create a temporary file for the *decompressed* content
                     with tempfile.NamedTemporaryFile(delete=False) as temp_out_handle:
                         temp_decompressed_path = temp_out_handle.name
                         logging.info(f"Extracting '{inner_filename}' to temporary file: {temp_decompressed_path}")
-
-                        # Stream from zip to temp file
                         with zip_file_handle.open(inner_filename, 'r') as inner_file_stream:
-                            buffer_size = 4 * 1024 * 1024 # 4MB buffer
+                            buffer_size = 4 * 1024 * 1024
                             while True:
                                 chunk = inner_file_stream.read(buffer_size)
                                 if not chunk:
                                     break
                                 temp_out_handle.write(chunk)
+                            # inner_file_stream closed automatically by 'with'
 
                     logging.info(f"Successfully extracted to {temp_decompressed_path}. Size: {os.path.getsize(temp_decompressed_path)}")
-                    zip_file_handle.close() # Close zip handle
+                    # Explicitly close zip_file_handle *here* after use
+                    zip_file_handle.close()
+                    zip_file_handle = None # Set to None after closing
 
-                    # 4. Send the DECOMPRESSED temporary file
                     logging.info(f"Sending decompressed file '{original_filename}' from path '{temp_decompressed_path}'")
+                    # send_file will manage the temp_decompressed_path after sending
                     return send_file(temp_decompressed_path,
                                      as_attachment=True,
-                                     download_name=original_filename) # Use the ORIGINAL filename
+                                     download_name=original_filename)
 
                 except zipfile.BadZipFile:
                     logging.error(f"Error: Downloaded file '{sent_filename}' is not a valid zip file.", exc_info=True)
@@ -769,24 +761,28 @@ def download_user_file(username, filename):
                     logging.error(f"Unexpected error during decompression of '{sent_filename}': {e}", exc_info=True)
                     flash("An unexpected error occurred during file decompression.", 'error')
                     return redirect(url_for('index'))
+                # ---- START: CORRECTED INNER FINALLY Block 1 ----
                 finally:
-                     # Ensure zip handle is closed even if errors occurred before send_file
-                     if zip_file_handle and not zip_file_handle.fp.closed:
-                         zip_file_handle.close()
+                    # Ensures we only try to close if zip_file_handle was created *and not already closed*
+                    if zip_file_handle:
+                        try:
+                            zip_file_handle.close()
+                            logging.debug("Closed zip_file_handle in non-split inner finally block (redundant but safe).")
+                        except Exception as e:
+                            logging.warning(f"Exception closing zip_file_handle in non-split inner finally: {e}", exc_info=True)
+                # ---- END: CORRECTED INNER FINALLY Block 1 ----
 
-
-            else:
-                # File was NOT compressed, create a temp file just to use send_file consistently
+            else: # Non-split, Non-compressed
                 logging.info(f"File '{sent_filename}' was not compressed. Sending directly.")
                 with tempfile.NamedTemporaryFile(delete=False) as temp_out_handle:
-                    temp_decompressed_path = temp_out_handle.name # Use the same variable name for cleanup
+                    temp_decompressed_path = temp_out_handle.name
                     temp_out_handle.write(file_content_bytes)
                 logging.info(f"Wrote non-compressed content to temporary file: {temp_decompressed_path}")
                 return send_file(temp_decompressed_path,
                                  as_attachment=True,
-                                 download_name=original_filename) # Still use original filename
+                                 download_name=original_filename)
 
-        else:
+        else: # is_split is True
             # --- Split File Download Workflow ---
             logging.info(f"Processing SPLIT file download for '{original_filename}'")
             chunks_metadata = file_info.get('chunks', [])
@@ -795,82 +791,74 @@ def download_user_file(username, filename):
                 flash(f"Error: Cannot download '{filename}'. Split file tracking info missing.", 'error')
                 return redirect(url_for('index'))
 
-            # Sort chunks by part number just in case
             chunks_metadata.sort(key=lambda c: c.get('part_number', 0))
 
-            # 1. Create a temporary file to reassemble the potentially compressed zip file
             with tempfile.NamedTemporaryFile(suffix=".zip.tmp", delete=False) as temp_zip_handle:
                 temp_reassembled_zip_path = temp_zip_handle.name
                 logging.info(f"Created temporary file for reassembly: {temp_reassembled_zip_path}")
 
-                # 2. Download and append each chunk
                 total_bytes_written = 0
                 for i, chunk_info in enumerate(chunks_metadata):
                     part_num = chunk_info.get('part_number')
                     chunk_file_id = chunk_info.get('file_id')
-                    chunk_filename = chunk_info.get('chunk_filename', f'part_{part_num}') # For logging
+                    chunk_filename = chunk_info.get('chunk_filename', f'part_{part_num}')
 
                     if not chunk_file_id:
-                        logging.error(f"Metadata error: Missing 'file_id' for chunk {part_num} of '{original_filename}'.")
-                        raise ValueError(f"Tracking info missing for part {part_num}.") # Raise to trigger finally cleanup
+                        raise ValueError(f"Tracking info missing for part {part_num}.")
 
                     logging.debug(f"Downloading chunk {part_num}/{len(chunks_metadata)} ('{chunk_filename}', file_id: {chunk_file_id})...")
                     chunk_content_bytes, error_msg = download_telegram_file_content(chunk_file_id)
                     if error_msg:
-                        logging.error(f"Failed to download chunk {part_num} ('{chunk_filename}'): {error_msg}")
-                        raise ValueError(f"Error downloading part {part_num}: {error_msg}") # Raise to trigger finally cleanup
+                        raise ValueError(f"Error downloading part {part_num}: {error_msg}")
                     if not chunk_content_bytes:
-                         logging.error(f"Downloaded chunk {part_num} ('{chunk_filename}') was empty.")
                          raise ValueError(f"Downloaded part {part_num} was empty.")
 
                     temp_zip_handle.write(chunk_content_bytes)
                     total_bytes_written += len(chunk_content_bytes)
                     logging.debug(f"Appended {len(chunk_content_bytes)} bytes for chunk {part_num}. Total written: {total_bytes_written}")
+                # temp_zip_handle closed automatically by 'with'
 
-            # Reassembly complete (temp_zip_handle is closed automatically by 'with')
             logging.info(f"Finished reassembling chunks to '{temp_reassembled_zip_path}'. Total size: {total_bytes_written} bytes.")
 
-            # 3. Decompress the reassembled file if necessary
             if is_compressed:
                 logging.info(f"Reassembled file '{temp_reassembled_zip_path}' is compressed. Decompressing...")
                 try:
-                    # Open the reassembled temp zip file for reading
                     zip_file_handle = zipfile.ZipFile(temp_reassembled_zip_path, 'r')
 
                     file_list_in_zip = zip_file_handle.namelist()
                     if not file_list_in_zip:
                          raise ValueError("Reassembled zip file is empty.")
+
+                    inner_filename = original_filename # Assume first
                     if original_filename not in file_list_in_zip:
                          if len(file_list_in_zip) == 1:
                              inner_filename = file_list_in_zip[0]
                              logging.warning(f"Filename inside reassembled zip ('{inner_filename}') doesn't match original ('{original_filename}'). Using the only file found.")
                          else:
                              raise ValueError(f"Cannot find '{original_filename}' inside the reassembled zip file. Contents: {file_list_in_zip}")
-                    else:
-                         inner_filename = original_filename
 
-                    # 4. Create a SECOND temporary file for the final DECOMPRESSED content
                     with tempfile.NamedTemporaryFile(delete=False) as temp_final_out_handle:
                         temp_decompressed_path = temp_final_out_handle.name
                         logging.info(f"Extracting '{inner_filename}' from reassembled zip to final temp file: {temp_decompressed_path}")
-
-                        # Stream from reassembled zip to final temp file
                         with zip_file_handle.open(inner_filename, 'r') as inner_file_stream:
-                            buffer_size = 4 * 1024 * 1024 # 4MB buffer
+                            buffer_size = 4 * 1024 * 1024
                             while True:
                                 chunk = inner_file_stream.read(buffer_size)
                                 if not chunk:
                                     break
                                 temp_final_out_handle.write(chunk)
+                            # inner_file_stream closed automatically by 'with'
 
                     logging.info(f"Successfully extracted final file to {temp_decompressed_path}. Size: {os.path.getsize(temp_decompressed_path)}")
-                    zip_file_handle.close() # Close zip handle
+                    # Explicitly close zip_file_handle *here* after use
+                    zip_file_handle.close()
+                    zip_file_handle = None # Set to None after closing
 
-                    # 5. Send the FINAL DECOMPRESSED temporary file
                     logging.info(f"Sending final decompressed file '{original_filename}' from path '{temp_decompressed_path}'")
+                    # send_file will manage the temp_decompressed_path after sending
                     return send_file(temp_decompressed_path,
                                      as_attachment=True,
-                                     download_name=original_filename) # Use the ORIGINAL filename
+                                     download_name=original_filename)
 
                 except zipfile.BadZipFile:
                     logging.error(f"Error: Reassembled file '{temp_reassembled_zip_path}' is not a valid zip file.", exc_info=True)
@@ -884,42 +872,88 @@ def download_user_file(username, filename):
                     logging.error(f"Unexpected error during decompression of reassembled file: {e}", exc_info=True)
                     flash("An unexpected error occurred during final file decompression.", 'error')
                     return redirect(url_for('index'))
+                # ---- START: CORRECTED INNER FINALLY Block 2 ----
                 finally:
-                     if zip_file_handle and not zip_file_handle.fp.closed:
-                          zip_file_handle.close()
+                    # Ensures we only try to close if zip_file_handle was created *and not already closed*
+                    if zip_file_handle:
+                        try:
+                            zip_file_handle.close()
+                            logging.debug("Closed zip_file_handle in split inner finally block (redundant but safe).")
+                        except Exception as e:
+                            logging.warning(f"Exception closing zip_file_handle in split inner finally: {e}", exc_info=True)
+                # ---- END: CORRECTED INNER FINALLY Block 2 ----
 
-            else:
-                # Split file was NOT compressed (unlikely given our upload logic, but handle defensively)
+            else: # Split, Non-compressed
                 logging.info("Split file was not compressed. Sending reassembled file directly.")
-                # We need to use temp_decompressed_path for the cleanup logic, even though it's not decompressed
+                # Rename reassembled file to behave like decompressed for cleanup
                 temp_decompressed_path = temp_reassembled_zip_path
-                temp_reassembled_zip_path = None # Prevent deleting it twice in finally block
+                temp_reassembled_zip_path = None # Prevent double deletion
                 return send_file(temp_decompressed_path,
                                  as_attachment=True,
-                                 download_name=original_filename) # Use the original filename
-
+                                 download_name=original_filename)
 
     except Exception as e:
-        # Catch errors during chunk download or outer processing
         logging.error(f"General error during download processing for '{filename}': {e}", exc_info=True)
-        # Use str(e) which might contain specific error from ValueError raised during chunk download
         flash(f"An error occurred during download: {str(e)}", 'error')
-        return redirect(url_for('index'))
+        referer = request.headers.get("Referer")
+        return redirect(referer or url_for('index'))
 
     finally:
-                     # Ensure zip handle is closed if it was successfully opened
-                     logging.debug(f"Single file finally block: zip_file_handle is {type(zip_file_handle)}") # <<< ADD THIS LINE
-                     if zip_file_handle:
-                         try:
-                             # Use getattr for extra safety
-                             fp = getattr(zip_file_handle, 'fp', None)
-                             if fp and not fp.closed:
-                                 zip_file_handle.close()
-                                 logging.debug("Closed zip_file_handle in single file decompression finally block.")
-                         except Exception as e:
-                             logging.warning(f"Exception while trying to close single-file zip_file_handle in finally: {e}")
+        # --- Outer Cleanup ---
+        # Note: send_file typically handles deletion of the path it's given if it's a temporary file path,
+        # but cleaning up here provides robustness in case send_file fails or isn't reached.
+
+        # Close zip handle *again* just in case it wasn't closed properly above due to an error
+        # (This uses the safe pattern)
+        if zip_file_handle:
+            try:
+                zip_file_handle.close()
+                logging.debug("Closed zip_file_handle in outer finally block.")
+            except Exception as e:
+                logging.warning(f"Exception closing zip_file_handle in outer finally: {e}", exc_info=True)
+
+        # Safely close inner file stream if it's somehow still open
+        if inner_file_stream and hasattr(inner_file_stream, 'closed') and not inner_file_stream.closed:
+             try:
+                 inner_file_stream.close()
+                 logging.debug("Closed inner_file_stream in outer finally.")
+             except Exception as e:
+                  logging.warning(f"Exception closing inner_file_stream in outer finally: {e}", exc_info=True)
+
+        # Delete temporary files IF THEY EXIST
+        if temp_decompressed_path and os.path.exists(temp_decompressed_path):
+            try:
+                os.remove(temp_decompressed_path)
+                logging.info(f"Successfully deleted temporary decompressed/final file: {temp_decompressed_path}")
+            except OSError as e:
+                logging.error(f"Error deleting temporary decompressed/final file '{temp_decompressed_path}': {e}", exc_info=True)
+            except Exception as e:
+                 logging.error(f"Unexpected error deleting temporary file '{temp_decompressed_path}': {e}", exc_info=True)
+
+        if temp_reassembled_zip_path and os.path.exists(temp_reassembled_zip_path):
+            try:
+                os.remove(temp_reassembled_zip_path)
+                logging.info(f"Successfully deleted temporary reassembled file: {temp_reassembled_zip_path}")
+            except OSError as e:
+                logging.error(f"Error deleting temporary reassembled file '{temp_reassembled_zip_path}': {e}", exc_info=True)
+            except Exception as e:
+                 logging.error(f"Unexpected error deleting temporary reassembled file '{temp_reassembled_zip_path}': {e}", exc_info=True)
+            # --- End of download_user_file function ---
+
 
 # --- Application Runner ---
 if __name__ == '__main__':
+    # Ensure Log Directory Exists
+    if not os.path.exists(LOG_DIR):
+        try:
+            os.makedirs(LOG_DIR)
+            logging.info(f"Created log directory: {LOG_DIR}")
+        except OSError as e:
+            logging.error(f"Could not create log directory {LOG_DIR}: {e}", exc_info=True)
+            # Decide if you want to exit or continue without file logging
+            # For now, it will continue but file logging might fail if dir creation failed.
+
     logging.info("Starting Flask development server...")
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    # Use host='0.0.0.0' to make it accessible on your network
+    # debug=True is useful for development, but should be False in production
+    app.run(host='0.0.0.0', port=5000, debug=True) # Consider debug=False for production

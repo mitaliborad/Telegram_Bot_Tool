@@ -1,0 +1,293 @@
+2025-04-16 11:37:38,409 - INFO - [<module>] - Logging configured. Log file: Selenium-Logs\app_20250416_113738.log
+2025-04-16 11:37:38,409 - INFO - [<module>] - Flask application initialized.
+2025-04-16 11:37:38,409 - INFO - [<module>] - Starting Flask development server...
+2025-04-16 11:37:38,447 - WARNING - [_log] -  * Debugger is active!
+2025-04-16 11:37:38,449 - INFO - [_log] -  * Debugger PIN: 107-410-311
+2025-04-16 11:37:57,822 - INFO - [index] - Serving index page.
+2025-04-16 11:37:57,837 - INFO - [_log] - 127.0.0.1 - - [16/Apr/2025 11:37:57] "GET / HTTP/1.1" 200 -
+2025-04-16 11:37:57,866 - INFO - [_log] - 127.0.0.1 - - [16/Apr/2025 11:37:57] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-16 11:38:19,542 - INFO - [upload_file] - Received file upload request.
+2025-04-16 11:38:30,154 - INFO - [upload_file] - Processing upload: User='Octopus', File='3dicons-png-dynamic-1.0.0.zip'
+2025-04-16 11:38:30,156 - INFO - [upload_file] - File '3dicons-png-dynamic-1.0.0.zip' size: 1358121652 bytes.
+2025-04-16 11:38:30,156 - INFO - [upload_file] - '3dicons-png-dynamic-1.0.0.zip' is large (1358121652 bytes). Compressing before splitting.
+2025-04-16 11:38:30,156 - INFO - [upload_file] - Created temporary file for compression: C:\Users\DELL\AppData\Local\Temp\tmpg2dmnc89.zip
+2025-04-16 11:38:30,157 - INFO - [upload_file] - Compressing '3dicons-png-dynamic-1.0.0.zip' into temporary file...
+2025-04-16 11:39:09,161 - INFO - [upload_file] - Finished compressing to 'C:\Users\DELL\AppData\Local\Temp\tmpg2dmnc89.zip'. Size: 1358474795 bytes. Time: 39.00s.
+2025-04-16 11:39:09,161 - INFO - [upload_file] - Starting split upload for compressed file '3dicons-png-dynamic-1.0.0.zip.zip' (Chunk size: 50331648 bytes).
+2025-04-16 11:39:09,198 - INFO - [upload_file] - Reading chunk 1 for COMPRESSED file '3dicons-png-dynamic-1.0.0.zip.zip' starting at byte 0.
+2025-04-16 11:39:09,234 - INFO - [upload_file] - Read chunk 1 (50331648 bytes) for '3dicons-png-dynamic-1.0.0.zip.zip'. Total read: 50331648/1358474795
+2025-04-16 11:39:09,234 - INFO - [upload_file] - Attempting to send chunk: '3dicons-png-dynamic-1.0.0.zip.zip.part_001'
+2025-04-16 11:39:09,234 - INFO - [send_file_to_telegram] - Sending file '3dicons-png-dynamic-1.0.0.zip.zip.part_001' to Telegram chat ID: -4603853425
+2025-04-16 11:39:31,750 - INFO - [send_file_to_telegram] - Telegram API success for '3dicons-png-dynamic-1.0.0.zip.zip.part_001'.
+2025-04-16 11:39:31,757 - INFO - [upload_file] - Chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_001' sent successfully.
+2025-04-16 11:39:31,757 - INFO - [upload_file] - Successfully processed chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_001' (MsgID=112) in 22.56s.
+2025-04-16 11:39:31,758 - INFO - [upload_file] - Reading chunk 2 for COMPRESSED file '3dicons-png-dynamic-1.0.0.zip.zip' starting at byte 50331648.
+2025-04-16 11:39:31,796 - INFO - [upload_file] - Read chunk 2 (50331648 bytes) for '3dicons-png-dynamic-1.0.0.zip.zip'. Total read: 100663296/1358474795
+2025-04-16 11:39:31,797 - INFO - [upload_file] - Attempting to send chunk: '3dicons-png-dynamic-1.0.0.zip.zip.part_002'
+2025-04-16 11:39:31,797 - INFO - [send_file_to_telegram] - Sending file '3dicons-png-dynamic-1.0.0.zip.zip.part_002' to Telegram chat ID: -4603853425
+2025-04-16 11:39:53,601 - INFO - [send_file_to_telegram] - Telegram API success for '3dicons-png-dynamic-1.0.0.zip.zip.part_002'.
+2025-04-16 11:39:53,606 - INFO - [upload_file] - Chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_002' sent successfully.
+2025-04-16 11:39:53,607 - INFO - [upload_file] - Successfully processed chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_002' (MsgID=113) in 21.85s.
+2025-04-16 11:39:53,607 - INFO - [upload_file] - Reading chunk 3 for COMPRESSED file '3dicons-png-dynamic-1.0.0.zip.zip' starting at byte 100663296.
+2025-04-16 11:39:53,641 - INFO - [upload_file] - Read chunk 3 (50331648 bytes) for '3dicons-png-dynamic-1.0.0.zip.zip'. Total read: 150994944/1358474795
+2025-04-16 11:39:53,642 - INFO - [upload_file] - Attempting to send chunk: '3dicons-png-dynamic-1.0.0.zip.zip.part_003'
+2025-04-16 11:39:53,642 - INFO - [send_file_to_telegram] - Sending file '3dicons-png-dynamic-1.0.0.zip.zip.part_003' to Telegram chat ID: -4603853425
+2025-04-16 11:40:18,297 - INFO - [send_file_to_telegram] - Telegram API success for '3dicons-png-dynamic-1.0.0.zip.zip.part_003'.
+2025-04-16 11:40:18,302 - INFO - [upload_file] - Chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_003' sent successfully.
+2025-04-16 11:40:18,303 - INFO - [upload_file] - Successfully processed chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_003' (MsgID=114) in 24.70s.
+2025-04-16 11:40:18,303 - INFO - [upload_file] - Reading chunk 4 for COMPRESSED file '3dicons-png-dynamic-1.0.0.zip.zip' starting at byte 150994944.
+2025-04-16 11:40:18,338 - INFO - [upload_file] - Read chunk 4 (50331648 bytes) for '3dicons-png-dynamic-1.0.0.zip.zip'. Total read: 201326592/1358474795
+2025-04-16 11:40:18,339 - INFO - [upload_file] - Attempting to send chunk: '3dicons-png-dynamic-1.0.0.zip.zip.part_004'
+2025-04-16 11:40:18,340 - INFO - [send_file_to_telegram] - Sending file '3dicons-png-dynamic-1.0.0.zip.zip.part_004' to Telegram chat ID: -4603853425
+2025-04-16 11:40:39,484 - INFO - [send_file_to_telegram] - Telegram API success for '3dicons-png-dynamic-1.0.0.zip.zip.part_004'.
+2025-04-16 11:40:39,489 - INFO - [upload_file] - Chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_004' sent successfully.
+2025-04-16 11:40:39,489 - INFO - [upload_file] - Successfully processed chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_004' (MsgID=115) in 21.19s.
+2025-04-16 11:40:39,490 - INFO - [upload_file] - Reading chunk 5 for COMPRESSED file '3dicons-png-dynamic-1.0.0.zip.zip' starting at byte 201326592.
+2025-04-16 11:40:39,521 - INFO - [upload_file] - Read chunk 5 (50331648 bytes) for '3dicons-png-dynamic-1.0.0.zip.zip'. Total read: 251658240/1358474795
+2025-04-16 11:40:39,521 - INFO - [upload_file] - Attempting to send chunk: '3dicons-png-dynamic-1.0.0.zip.zip.part_005'
+2025-04-16 11:40:39,522 - INFO - [send_file_to_telegram] - Sending file '3dicons-png-dynamic-1.0.0.zip.zip.part_005' to Telegram chat ID: -4603853425
+2025-04-16 11:41:01,370 - INFO - [send_file_to_telegram] - Telegram API success for '3dicons-png-dynamic-1.0.0.zip.zip.part_005'.
+2025-04-16 11:41:01,375 - INFO - [upload_file] - Chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_005' sent successfully.
+2025-04-16 11:41:01,375 - INFO - [upload_file] - Successfully processed chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_005' (MsgID=116) in 21.89s.
+2025-04-16 11:41:01,375 - INFO - [upload_file] - Reading chunk 6 for COMPRESSED file '3dicons-png-dynamic-1.0.0.zip.zip' starting at byte 251658240.
+2025-04-16 11:41:01,408 - INFO - [upload_file] - Read chunk 6 (50331648 bytes) for '3dicons-png-dynamic-1.0.0.zip.zip'. Total read: 301989888/1358474795
+2025-04-16 11:41:01,408 - INFO - [upload_file] - Attempting to send chunk: '3dicons-png-dynamic-1.0.0.zip.zip.part_006'
+2025-04-16 11:41:01,409 - INFO - [send_file_to_telegram] - Sending file '3dicons-png-dynamic-1.0.0.zip.zip.part_006' to Telegram chat ID: -4603853425
+2025-04-16 11:41:26,900 - INFO - [send_file_to_telegram] - Telegram API success for '3dicons-png-dynamic-1.0.0.zip.zip.part_006'.
+2025-04-16 11:41:26,905 - INFO - [upload_file] - Chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_006' sent successfully.
+2025-04-16 11:41:26,906 - INFO - [upload_file] - Successfully processed chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_006' (MsgID=117) in 25.53s.
+2025-04-16 11:41:26,906 - INFO - [upload_file] - Reading chunk 7 for COMPRESSED file '3dicons-png-dynamic-1.0.0.zip.zip' starting at byte 301989888.
+2025-04-16 11:41:26,963 - INFO - [upload_file] - Read chunk 7 (50331648 bytes) for '3dicons-png-dynamic-1.0.0.zip.zip'. Total read: 352321536/1358474795
+2025-04-16 11:41:26,965 - INFO - [upload_file] - Attempting to send chunk: '3dicons-png-dynamic-1.0.0.zip.zip.part_007'
+2025-04-16 11:41:26,967 - INFO - [send_file_to_telegram] - Sending file '3dicons-png-dynamic-1.0.0.zip.zip.part_007' to Telegram chat ID: -4603853425
+2025-04-16 11:41:51,750 - INFO - [send_file_to_telegram] - Telegram API success for '3dicons-png-dynamic-1.0.0.zip.zip.part_007'.
+2025-04-16 11:41:51,756 - INFO - [upload_file] - Chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_007' sent successfully.
+2025-04-16 11:41:51,756 - INFO - [upload_file] - Successfully processed chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_007' (MsgID=118) in 24.85s.
+2025-04-16 11:41:51,756 - INFO - [upload_file] - Reading chunk 8 for COMPRESSED file '3dicons-png-dynamic-1.0.0.zip.zip' starting at byte 352321536.
+2025-04-16 11:41:51,797 - INFO - [upload_file] - Read chunk 8 (50331648 bytes) for '3dicons-png-dynamic-1.0.0.zip.zip'. Total read: 402653184/1358474795
+2025-04-16 11:41:51,798 - INFO - [upload_file] - Attempting to send chunk: '3dicons-png-dynamic-1.0.0.zip.zip.part_008'
+2025-04-16 11:41:51,798 - INFO - [send_file_to_telegram] - Sending file '3dicons-png-dynamic-1.0.0.zip.zip.part_008' to Telegram chat ID: -4603853425
+2025-04-16 11:42:14,059 - INFO - [send_file_to_telegram] - Telegram API success for '3dicons-png-dynamic-1.0.0.zip.zip.part_008'.
+2025-04-16 11:42:14,067 - INFO - [upload_file] - Chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_008' sent successfully.
+2025-04-16 11:42:14,068 - INFO - [upload_file] - Successfully processed chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_008' (MsgID=119) in 22.31s.
+2025-04-16 11:42:14,069 - INFO - [upload_file] - Reading chunk 9 for COMPRESSED file '3dicons-png-dynamic-1.0.0.zip.zip' starting at byte 402653184.
+2025-04-16 11:42:14,106 - INFO - [upload_file] - Read chunk 9 (50331648 bytes) for '3dicons-png-dynamic-1.0.0.zip.zip'. Total read: 452984832/1358474795
+2025-04-16 11:42:14,106 - INFO - [upload_file] - Attempting to send chunk: '3dicons-png-dynamic-1.0.0.zip.zip.part_009'
+2025-04-16 11:42:14,106 - INFO - [send_file_to_telegram] - Sending file '3dicons-png-dynamic-1.0.0.zip.zip.part_009' to Telegram chat ID: -4603853425
+2025-04-16 11:42:34,502 - INFO - [send_file_to_telegram] - Telegram API success for '3dicons-png-dynamic-1.0.0.zip.zip.part_009'.
+2025-04-16 11:42:34,507 - INFO - [upload_file] - Chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_009' sent successfully.
+2025-04-16 11:42:34,508 - INFO - [upload_file] - Successfully processed chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_009' (MsgID=120) in 20.44s.
+2025-04-16 11:42:34,508 - INFO - [upload_file] - Reading chunk 10 for COMPRESSED file '3dicons-png-dynamic-1.0.0.zip.zip' starting at byte 452984832.
+2025-04-16 11:42:34,541 - INFO - [upload_file] - Read chunk 10 (50331648 bytes) for '3dicons-png-dynamic-1.0.0.zip.zip'. Total read: 503316480/1358474795
+2025-04-16 11:42:34,542 - INFO - [upload_file] - Attempting to send chunk: '3dicons-png-dynamic-1.0.0.zip.zip.part_010'
+2025-04-16 11:42:34,542 - INFO - [send_file_to_telegram] - Sending file '3dicons-png-dynamic-1.0.0.zip.zip.part_010' to Telegram chat ID: -4603853425
+2025-04-16 11:43:00,949 - INFO - [send_file_to_telegram] - Telegram API success for '3dicons-png-dynamic-1.0.0.zip.zip.part_010'.
+2025-04-16 11:43:00,954 - INFO - [upload_file] - Chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_010' sent successfully.
+2025-04-16 11:43:00,955 - INFO - [upload_file] - Successfully processed chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_010' (MsgID=121) in 26.45s.
+2025-04-16 11:43:00,955 - INFO - [upload_file] - Reading chunk 11 for COMPRESSED file '3dicons-png-dynamic-1.0.0.zip.zip' starting at byte 503316480.
+2025-04-16 11:43:00,995 - INFO - [upload_file] - Read chunk 11 (50331648 bytes) for '3dicons-png-dynamic-1.0.0.zip.zip'. Total read: 553648128/1358474795
+2025-04-16 11:43:00,996 - INFO - [upload_file] - Attempting to send chunk: '3dicons-png-dynamic-1.0.0.zip.zip.part_011'
+2025-04-16 11:43:00,996 - INFO - [send_file_to_telegram] - Sending file '3dicons-png-dynamic-1.0.0.zip.zip.part_011' to Telegram chat ID: -4603853425
+2025-04-16 11:43:19,289 - INFO - [send_file_to_telegram] - Telegram API success for '3dicons-png-dynamic-1.0.0.zip.zip.part_011'.
+2025-04-16 11:43:19,295 - INFO - [upload_file] - Chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_011' sent successfully.
+2025-04-16 11:43:19,295 - INFO - [upload_file] - Successfully processed chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_011' (MsgID=122) in 18.34s.
+2025-04-16 11:43:19,295 - INFO - [upload_file] - Reading chunk 12 for COMPRESSED file '3dicons-png-dynamic-1.0.0.zip.zip' starting at byte 553648128.
+2025-04-16 11:43:19,333 - INFO - [upload_file] - Read chunk 12 (50331648 bytes) for '3dicons-png-dynamic-1.0.0.zip.zip'. Total read: 603979776/1358474795
+2025-04-16 11:43:19,334 - INFO - [upload_file] - Attempting to send chunk: '3dicons-png-dynamic-1.0.0.zip.zip.part_012'
+2025-04-16 11:43:19,334 - INFO - [send_file_to_telegram] - Sending file '3dicons-png-dynamic-1.0.0.zip.zip.part_012' to Telegram chat ID: -4603853425
+2025-04-16 11:43:47,581 - INFO - [send_file_to_telegram] - Telegram API success for '3dicons-png-dynamic-1.0.0.zip.zip.part_012'.
+2025-04-16 11:43:47,591 - INFO - [upload_file] - Chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_012' sent successfully.
+2025-04-16 11:43:47,592 - INFO - [upload_file] - Successfully processed chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_012' (MsgID=123) in 28.30s.
+2025-04-16 11:43:47,592 - INFO - [upload_file] - Reading chunk 13 for COMPRESSED file '3dicons-png-dynamic-1.0.0.zip.zip' starting at byte 603979776.
+2025-04-16 11:43:47,644 - INFO - [upload_file] - Read chunk 13 (50331648 bytes) for '3dicons-png-dynamic-1.0.0.zip.zip'. Total read: 654311424/1358474795
+2025-04-16 11:43:47,645 - INFO - [upload_file] - Attempting to send chunk: '3dicons-png-dynamic-1.0.0.zip.zip.part_013'
+2025-04-16 11:43:47,645 - INFO - [send_file_to_telegram] - Sending file '3dicons-png-dynamic-1.0.0.zip.zip.part_013' to Telegram chat ID: -4603853425
+2025-04-16 11:44:20,187 - INFO - [send_file_to_telegram] - Telegram API success for '3dicons-png-dynamic-1.0.0.zip.zip.part_013'.
+2025-04-16 11:44:20,193 - INFO - [upload_file] - Chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_013' sent successfully.
+2025-04-16 11:44:20,194 - INFO - [upload_file] - Successfully processed chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_013' (MsgID=124) in 32.60s.
+2025-04-16 11:44:20,195 - INFO - [upload_file] - Reading chunk 14 for COMPRESSED file '3dicons-png-dynamic-1.0.0.zip.zip' starting at byte 654311424.
+2025-04-16 11:44:20,232 - INFO - [upload_file] - Read chunk 14 (50331648 bytes) for '3dicons-png-dynamic-1.0.0.zip.zip'. Total read: 704643072/1358474795
+2025-04-16 11:44:20,232 - INFO - [upload_file] - Attempting to send chunk: '3dicons-png-dynamic-1.0.0.zip.zip.part_014'
+2025-04-16 11:44:20,232 - INFO - [send_file_to_telegram] - Sending file '3dicons-png-dynamic-1.0.0.zip.zip.part_014' to Telegram chat ID: -4603853425
+2025-04-16 11:44:43,611 - INFO - [send_file_to_telegram] - Telegram API success for '3dicons-png-dynamic-1.0.0.zip.zip.part_014'.
+2025-04-16 11:44:43,616 - INFO - [upload_file] - Chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_014' sent successfully.
+2025-04-16 11:44:43,616 - INFO - [upload_file] - Successfully processed chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_014' (MsgID=125) in 23.42s.
+2025-04-16 11:44:43,616 - INFO - [upload_file] - Reading chunk 15 for COMPRESSED file '3dicons-png-dynamic-1.0.0.zip.zip' starting at byte 704643072.
+2025-04-16 11:44:43,652 - INFO - [upload_file] - Read chunk 15 (50331648 bytes) for '3dicons-png-dynamic-1.0.0.zip.zip'. Total read: 754974720/1358474795
+2025-04-16 11:44:43,653 - INFO - [upload_file] - Attempting to send chunk: '3dicons-png-dynamic-1.0.0.zip.zip.part_015'
+2025-04-16 11:44:43,653 - INFO - [send_file_to_telegram] - Sending file '3dicons-png-dynamic-1.0.0.zip.zip.part_015' to Telegram chat ID: -4603853425
+2025-04-16 11:45:07,685 - INFO - [send_file_to_telegram] - Telegram API success for '3dicons-png-dynamic-1.0.0.zip.zip.part_015'.
+2025-04-16 11:45:07,690 - INFO - [upload_file] - Chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_015' sent successfully.
+2025-04-16 11:45:07,690 - INFO - [upload_file] - Successfully processed chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_015' (MsgID=126) in 24.07s.
+2025-04-16 11:45:07,691 - INFO - [upload_file] - Reading chunk 16 for COMPRESSED file '3dicons-png-dynamic-1.0.0.zip.zip' starting at byte 754974720.
+2025-04-16 11:45:07,726 - INFO - [upload_file] - Read chunk 16 (50331648 bytes) for '3dicons-png-dynamic-1.0.0.zip.zip'. Total read: 805306368/1358474795
+2025-04-16 11:45:07,727 - INFO - [upload_file] - Attempting to send chunk: '3dicons-png-dynamic-1.0.0.zip.zip.part_016'
+2025-04-16 11:45:07,728 - INFO - [send_file_to_telegram] - Sending file '3dicons-png-dynamic-1.0.0.zip.zip.part_016' to Telegram chat ID: -4603853425
+2025-04-16 11:45:41,983 - INFO - [send_file_to_telegram] - Telegram API success for '3dicons-png-dynamic-1.0.0.zip.zip.part_016'.
+2025-04-16 11:45:41,988 - INFO - [upload_file] - Chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_016' sent successfully.
+2025-04-16 11:45:41,988 - INFO - [upload_file] - Successfully processed chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_016' (MsgID=127) in 34.30s.
+2025-04-16 11:45:41,989 - INFO - [upload_file] - Reading chunk 17 for COMPRESSED file '3dicons-png-dynamic-1.0.0.zip.zip' starting at byte 805306368.
+2025-04-16 11:45:42,023 - INFO - [upload_file] - Read chunk 17 (50331648 bytes) for '3dicons-png-dynamic-1.0.0.zip.zip'. Total read: 855638016/1358474795
+2025-04-16 11:45:42,025 - INFO - [upload_file] - Attempting to send chunk: '3dicons-png-dynamic-1.0.0.zip.zip.part_017'
+2025-04-16 11:45:42,027 - INFO - [send_file_to_telegram] - Sending file '3dicons-png-dynamic-1.0.0.zip.zip.part_017' to Telegram chat ID: -4603853425
+2025-04-16 11:46:05,020 - INFO - [send_file_to_telegram] - Telegram API success for '3dicons-png-dynamic-1.0.0.zip.zip.part_017'.
+2025-04-16 11:46:05,027 - INFO - [upload_file] - Chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_017' sent successfully.
+2025-04-16 11:46:05,027 - INFO - [upload_file] - Successfully processed chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_017' (MsgID=128) in 23.04s.
+2025-04-16 11:46:05,028 - INFO - [upload_file] - Reading chunk 18 for COMPRESSED file '3dicons-png-dynamic-1.0.0.zip.zip' starting at byte 855638016.
+2025-04-16 11:46:05,062 - INFO - [upload_file] - Read chunk 18 (50331648 bytes) for '3dicons-png-dynamic-1.0.0.zip.zip'. Total read: 905969664/1358474795
+2025-04-16 11:46:05,063 - INFO - [upload_file] - Attempting to send chunk: '3dicons-png-dynamic-1.0.0.zip.zip.part_018'
+2025-04-16 11:46:05,063 - INFO - [send_file_to_telegram] - Sending file '3dicons-png-dynamic-1.0.0.zip.zip.part_018' to Telegram chat ID: -4603853425
+2025-04-16 11:46:26,872 - INFO - [send_file_to_telegram] - Telegram API success for '3dicons-png-dynamic-1.0.0.zip.zip.part_018'.
+2025-04-16 11:46:26,877 - INFO - [upload_file] - Chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_018' sent successfully.
+2025-04-16 11:46:26,877 - INFO - [upload_file] - Successfully processed chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_018' (MsgID=129) in 21.85s.
+2025-04-16 11:46:26,877 - INFO - [upload_file] - Reading chunk 19 for COMPRESSED file '3dicons-png-dynamic-1.0.0.zip.zip' starting at byte 905969664.
+2025-04-16 11:46:26,908 - INFO - [upload_file] - Read chunk 19 (50331648 bytes) for '3dicons-png-dynamic-1.0.0.zip.zip'. Total read: 956301312/1358474795
+2025-04-16 11:46:26,909 - INFO - [upload_file] - Attempting to send chunk: '3dicons-png-dynamic-1.0.0.zip.zip.part_019'
+2025-04-16 11:46:26,909 - INFO - [send_file_to_telegram] - Sending file '3dicons-png-dynamic-1.0.0.zip.zip.part_019' to Telegram chat ID: -4603853425
+2025-04-16 11:46:54,734 - INFO - [send_file_to_telegram] - Telegram API success for '3dicons-png-dynamic-1.0.0.zip.zip.part_019'.
+2025-04-16 11:46:54,740 - INFO - [upload_file] - Chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_019' sent successfully.
+2025-04-16 11:46:54,741 - INFO - [upload_file] - Successfully processed chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_019' (MsgID=130) in 27.86s.
+2025-04-16 11:46:54,741 - INFO - [upload_file] - Reading chunk 20 for COMPRESSED file '3dicons-png-dynamic-1.0.0.zip.zip' starting at byte 956301312.
+2025-04-16 11:46:54,773 - INFO - [upload_file] - Read chunk 20 (50331648 bytes) for '3dicons-png-dynamic-1.0.0.zip.zip'. Total read: 1006632960/1358474795
+2025-04-16 11:46:54,774 - INFO - [upload_file] - Attempting to send chunk: '3dicons-png-dynamic-1.0.0.zip.zip.part_020'
+2025-04-16 11:46:54,774 - INFO - [send_file_to_telegram] - Sending file '3dicons-png-dynamic-1.0.0.zip.zip.part_020' to Telegram chat ID: -4603853425
+2025-04-16 11:47:20,704 - INFO - [send_file_to_telegram] - Telegram API success for '3dicons-png-dynamic-1.0.0.zip.zip.part_020'.
+2025-04-16 11:47:20,710 - INFO - [upload_file] - Chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_020' sent successfully.
+2025-04-16 11:47:20,711 - INFO - [upload_file] - Successfully processed chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_020' (MsgID=131) in 25.97s.
+2025-04-16 11:47:20,711 - INFO - [upload_file] - Reading chunk 21 for COMPRESSED file '3dicons-png-dynamic-1.0.0.zip.zip' starting at byte 1006632960.
+2025-04-16 11:47:20,750 - INFO - [upload_file] - Read chunk 21 (50331648 bytes) for '3dicons-png-dynamic-1.0.0.zip.zip'. Total read: 1056964608/1358474795
+2025-04-16 11:47:20,750 - INFO - [upload_file] - Attempting to send chunk: '3dicons-png-dynamic-1.0.0.zip.zip.part_021'
+2025-04-16 11:47:20,751 - INFO - [send_file_to_telegram] - Sending file '3dicons-png-dynamic-1.0.0.zip.zip.part_021' to Telegram chat ID: -4603853425
+2025-04-16 11:47:43,059 - INFO - [send_file_to_telegram] - Telegram API success for '3dicons-png-dynamic-1.0.0.zip.zip.part_021'.
+2025-04-16 11:47:43,064 - INFO - [upload_file] - Chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_021' sent successfully.
+2025-04-16 11:47:43,065 - INFO - [upload_file] - Successfully processed chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_021' (MsgID=132) in 22.35s.
+2025-04-16 11:47:43,065 - INFO - [upload_file] - Reading chunk 22 for COMPRESSED file '3dicons-png-dynamic-1.0.0.zip.zip' starting at byte 1056964608.
+2025-04-16 11:47:43,097 - INFO - [upload_file] - Read chunk 22 (50331648 bytes) for '3dicons-png-dynamic-1.0.0.zip.zip'. Total read: 1107296256/1358474795
+2025-04-16 11:47:43,098 - INFO - [upload_file] - Attempting to send chunk: '3dicons-png-dynamic-1.0.0.zip.zip.part_022'
+2025-04-16 11:47:43,098 - INFO - [send_file_to_telegram] - Sending file '3dicons-png-dynamic-1.0.0.zip.zip.part_022' to Telegram chat ID: -4603853425
+2025-04-16 11:48:06,052 - INFO - [send_file_to_telegram] - Telegram API success for '3dicons-png-dynamic-1.0.0.zip.zip.part_022'.
+2025-04-16 11:48:06,058 - INFO - [upload_file] - Chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_022' sent successfully.
+2025-04-16 11:48:06,058 - INFO - [upload_file] - Successfully processed chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_022' (MsgID=133) in 22.99s.
+2025-04-16 11:48:06,058 - INFO - [upload_file] - Reading chunk 23 for COMPRESSED file '3dicons-png-dynamic-1.0.0.zip.zip' starting at byte 1107296256.
+2025-04-16 11:48:06,095 - INFO - [upload_file] - Read chunk 23 (50331648 bytes) for '3dicons-png-dynamic-1.0.0.zip.zip'. Total read: 1157627904/1358474795
+2025-04-16 11:48:06,099 - INFO - [upload_file] - Attempting to send chunk: '3dicons-png-dynamic-1.0.0.zip.zip.part_023'
+2025-04-16 11:48:06,099 - INFO - [send_file_to_telegram] - Sending file '3dicons-png-dynamic-1.0.0.zip.zip.part_023' to Telegram chat ID: -4603853425
+2025-04-16 11:48:28,980 - INFO - [send_file_to_telegram] - Telegram API success for '3dicons-png-dynamic-1.0.0.zip.zip.part_023'.
+2025-04-16 11:48:28,985 - INFO - [upload_file] - Chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_023' sent successfully.
+2025-04-16 11:48:28,985 - INFO - [upload_file] - Successfully processed chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_023' (MsgID=134) in 22.93s.
+2025-04-16 11:48:28,986 - INFO - [upload_file] - Reading chunk 24 for COMPRESSED file '3dicons-png-dynamic-1.0.0.zip.zip' starting at byte 1157627904.
+2025-04-16 11:48:29,019 - INFO - [upload_file] - Read chunk 24 (50331648 bytes) for '3dicons-png-dynamic-1.0.0.zip.zip'. Total read: 1207959552/1358474795
+2025-04-16 11:48:29,019 - INFO - [upload_file] - Attempting to send chunk: '3dicons-png-dynamic-1.0.0.zip.zip.part_024'
+2025-04-16 11:48:29,020 - INFO - [send_file_to_telegram] - Sending file '3dicons-png-dynamic-1.0.0.zip.zip.part_024' to Telegram chat ID: -4603853425
+2025-04-16 11:48:48,960 - INFO - [send_file_to_telegram] - Telegram API success for '3dicons-png-dynamic-1.0.0.zip.zip.part_024'.
+2025-04-16 11:48:48,965 - INFO - [upload_file] - Chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_024' sent successfully.
+2025-04-16 11:48:48,966 - INFO - [upload_file] - Successfully processed chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_024' (MsgID=135) in 19.98s.
+2025-04-16 11:48:48,966 - INFO - [upload_file] - Reading chunk 25 for COMPRESSED file '3dicons-png-dynamic-1.0.0.zip.zip' starting at byte 1207959552.
+2025-04-16 11:48:49,000 - INFO - [upload_file] - Read chunk 25 (50331648 bytes) for '3dicons-png-dynamic-1.0.0.zip.zip'. Total read: 1258291200/1358474795
+2025-04-16 11:48:49,001 - INFO - [upload_file] - Attempting to send chunk: '3dicons-png-dynamic-1.0.0.zip.zip.part_025'
+2025-04-16 11:48:49,001 - INFO - [send_file_to_telegram] - Sending file '3dicons-png-dynamic-1.0.0.zip.zip.part_025' to Telegram chat ID: -4603853425
+2025-04-16 11:49:09,879 - INFO - [send_file_to_telegram] - Telegram API success for '3dicons-png-dynamic-1.0.0.zip.zip.part_025'.
+2025-04-16 11:49:09,885 - INFO - [upload_file] - Chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_025' sent successfully.
+2025-04-16 11:49:09,885 - INFO - [upload_file] - Successfully processed chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_025' (MsgID=136) in 20.92s.
+2025-04-16 11:49:09,886 - INFO - [upload_file] - Reading chunk 26 for COMPRESSED file '3dicons-png-dynamic-1.0.0.zip.zip' starting at byte 1258291200.
+2025-04-16 11:49:09,917 - INFO - [upload_file] - Read chunk 26 (50331648 bytes) for '3dicons-png-dynamic-1.0.0.zip.zip'. Total read: 1308622848/1358474795
+2025-04-16 11:49:09,917 - INFO - [upload_file] - Attempting to send chunk: '3dicons-png-dynamic-1.0.0.zip.zip.part_026'
+2025-04-16 11:49:09,917 - INFO - [send_file_to_telegram] - Sending file '3dicons-png-dynamic-1.0.0.zip.zip.part_026' to Telegram chat ID: -4603853425
+2025-04-16 11:49:29,230 - INFO - [send_file_to_telegram] - Telegram API success for '3dicons-png-dynamic-1.0.0.zip.zip.part_026'.
+2025-04-16 11:49:29,238 - INFO - [upload_file] - Chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_026' sent successfully.
+2025-04-16 11:49:29,248 - INFO - [upload_file] - Successfully processed chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_026' (MsgID=137) in 19.36s.
+2025-04-16 11:49:29,248 - INFO - [upload_file] - Reading chunk 27 for COMPRESSED file '3dicons-png-dynamic-1.0.0.zip.zip' starting at byte 1308622848.
+2025-04-16 11:49:29,285 - INFO - [upload_file] - Read chunk 27 (49851947 bytes) for '3dicons-png-dynamic-1.0.0.zip.zip'. Total read: 1358474795/1358474795
+2025-04-16 11:49:29,285 - INFO - [upload_file] - Attempting to send chunk: '3dicons-png-dynamic-1.0.0.zip.zip.part_027'
+2025-04-16 11:49:29,286 - INFO - [send_file_to_telegram] - Sending file '3dicons-png-dynamic-1.0.0.zip.zip.part_027' to Telegram chat ID: -4603853425
+2025-04-16 11:49:49,811 - INFO - [send_file_to_telegram] - Telegram API success for '3dicons-png-dynamic-1.0.0.zip.zip.part_027'.
+2025-04-16 11:49:49,816 - INFO - [upload_file] - Chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_027' sent successfully.
+2025-04-16 11:49:49,817 - INFO - [upload_file] - Successfully processed chunk '3dicons-png-dynamic-1.0.0.zip.zip.part_027' (MsgID=138) in 20.57s.
+2025-04-16 11:49:49,817 - INFO - [upload_file] - Reading chunk 28 for COMPRESSED file '3dicons-png-dynamic-1.0.0.zip.zip' starting at byte 1358474795.
+2025-04-16 11:49:49,835 - INFO - [upload_file] - Finished reading all chunks for compressed file '3dicons-png-dynamic-1.0.0.zip.zip'.
+2025-04-16 11:49:49,835 - INFO - [upload_file] - All 27 chunks for compressed file '3dicons-png-dynamic-1.0.0.zip.zip' uploaded successfully. Saving metadata.
+2025-04-16 11:49:49,848 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-16 11:49:49,851 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-16 11:49:49,852 - INFO - [upload_file] - Successfully saved metadata for compressed split file '3dicons-png-dynamic-1.0.0.zip'.
+2025-04-16 11:49:49,852 - INFO - [upload_file] - Finished processing compressed split file '3dicons-png-dynamic-1.0.0.zip' in 690.31 seconds.
+2025-04-16 11:49:49,961 - INFO - [upload_file] - Successfully deleted temporary compressed file: C:\Users\DELL\AppData\Local\Temp\tmpg2dmnc89.zip
+2025-04-16 11:49:50,041 - INFO - [_log] - 127.0.0.1 - - [16/Apr/2025 11:49:50] "[32mPOST /upload HTTP/1.1[0m" 302 -
+2025-04-16 11:49:50,049 - INFO - [index] - Serving index page.
+2025-04-16 11:49:50,053 - INFO - [_log] - 127.0.0.1 - - [16/Apr/2025 11:49:50] "GET / HTTP/1.1" 200 -
+2025-04-16 11:49:51,754 - INFO - [index] - Serving index page.
+2025-04-16 11:49:51,756 - INFO - [_log] - 127.0.0.1 - - [16/Apr/2025 11:49:51] "GET / HTTP/1.1" 200 -
+2025-04-16 11:49:51,776 - INFO - [_log] - 127.0.0.1 - - [16/Apr/2025 11:49:51] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-16 11:53:27,917 - INFO - [list_user_files] - Request received to list files for user: 'testt'
+2025-04-16 11:53:27,917 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-16 11:53:27,917 - INFO - [list_user_files] - Found 2 file records for user 'testt'.
+2025-04-16 11:53:27,917 - INFO - [_log] - 127.0.0.1 - - [16/Apr/2025 11:53:27] "GET /files/testt HTTP/1.1" 200 -
+2025-04-16 11:53:30,605 - INFO - [download_user_file] - Download request: User='testt', Original File='file_9 (1).py'
+2025-04-16 11:53:30,608 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-16 11:53:30,608 - INFO - [download_user_file] - Processing non-split file download for 'file_9 (1).py'
+2025-04-16 11:53:30,608 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAANvZ_9Dpd9FyAWqsQZRp2vsbHnKlIsAAlgfAAIWNgABVJnBFrzUqH4eNgQ
+2025-04-16 11:53:31,440 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_67.zip
+2025-04-16 11:53:31,457 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_67.zip
+2025-04-16 11:53:31,941 - INFO - [download_telegram_file_content] - Successfully downloaded 1086 bytes for file_id BQACAgUAAxkDAANvZ_9Dpd9FyAWqsQZRp2vsbHnKlIsAAlgfAAIWNgABVJnBFrzUqH4eNgQ.
+2025-04-16 11:53:31,943 - INFO - [download_user_file] - Successfully downloaded content for 'file_9 (1).py.zip'. Size: 1086 bytes.
+2025-04-16 11:53:31,944 - INFO - [download_user_file] - File 'file_9 (1).py.zip' is compressed. Decompressing...
+2025-04-16 11:53:31,954 - INFO - [download_user_file] - Extracting 'file_9 (1).py' to temporary file: C:\Users\DELL\AppData\Local\Temp\tmpe351iem4
+2025-04-16 11:53:31,960 - INFO - [download_user_file] - Successfully extracted to C:\Users\DELL\AppData\Local\Temp\tmpe351iem4. Size: 2350
+2025-04-16 11:53:31,961 - INFO - [download_user_file] - Sending decompressed file 'file_9 (1).py' from path 'C:\Users\DELL\AppData\Local\Temp\tmpe351iem4'
+2025-04-16 11:53:32,038 - ERROR - [download_user_file] - Error deleting temporary decompressed/final file 'C:\Users\DELL\AppData\Local\Temp\tmpe351iem4': [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\DELL\\AppData\\Local\\Temp\\tmpe351iem4'
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\Telegram_app.py", line 926, in download_user_file
+    os.remove(temp_decompressed_path)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\DELL\\AppData\\Local\\Temp\\tmpe351iem4'
+2025-04-16 11:53:32,041 - INFO - [_log] - 127.0.0.1 - - [16/Apr/2025 11:53:32] "GET /download/testt/file_9%20(1).py HTTP/1.1" 200 -
+2025-04-16 11:53:50,868 - INFO - [list_user_files] - Request received to list files for user: 'Octopus'
+2025-04-16 11:53:50,869 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-16 11:53:50,869 - INFO - [list_user_files] - Found 6 file records for user 'Octopus'.
+2025-04-16 11:53:50,870 - INFO - [_log] - 127.0.0.1 - - [16/Apr/2025 11:53:50] "GET /files/Octopus HTTP/1.1" 200 -
+2025-04-16 11:53:52,858 - INFO - [download_user_file] - Download request: User='Octopus', Original File='3dicons-png-dynamic-1.0.0.zip'
+2025-04-16 11:53:52,858 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-16 11:53:52,858 - INFO - [download_user_file] - Processing SPLIT file download for '3dicons-png-dynamic-1.0.0.zip'
+2025-04-16 11:53:52,865 - INFO - [download_user_file] - Created temporary file for reassembly: C:\Users\DELL\AppData\Local\Temp\tmpm0o7iqg5.zip.tmp
+2025-04-16 11:53:52,866 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAANwZ_9JnKlmbZIzS94tza-64bMRio4AAlofAAIWNgABVKciIDh0zh-CNgQ
+2025-04-16 11:53:53,364 - ERROR - [download_telegram_file_content] - Network/Request error calling Telegram getFile API: 400 Client Error: Bad Request for url: https://api.telegram.org/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/getFile?file_id=BQACAgUAAxkDAANwZ_9JnKlmbZIzS94tza-64bMRio4AAlofAAIWNgABVKciIDh0zh-CNgQ | Status: 400 | Response: {"ok":false,"error_code":400,"description":"Bad Request: file is too big"}
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\Telegram_app.py", line 142, in download_telegram_file_content
+    response.raise_for_status()
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\requests\models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://api.telegram.org/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/getFile?file_id=BQACAgUAAxkDAANwZ_9JnKlmbZIzS94tza-64bMRio4AAlofAAIWNgABVKciIDh0zh-CNgQ
+2025-04-16 11:53:53,408 - ERROR - [download_user_file] - General error during download processing for '3dicons-png-dynamic-1.0.0.zip': Error downloading part 1: Network error getting download URL: 400 Client Error: Bad Request for url: https://api.telegram.org/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/getFile?file_id=BQACAgUAAxkDAANwZ_9JnKlmbZIzS94tza-64bMRio4AAlofAAIWNgABVKciIDh0zh-CNgQ | Status: 400 | Response: {"ok":false,"error_code":400,"description":"Bad Request: file is too big"}
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\Telegram_app.py", line 812, in download_user_file
+    raise ValueError(f"Error downloading part {part_num}: {error_msg}")
+ValueError: Error downloading part 1: Network error getting download URL: 400 Client Error: Bad Request for url: https://api.telegram.org/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/getFile?file_id=BQACAgUAAxkDAANwZ_9JnKlmbZIzS94tza-64bMRio4AAlofAAIWNgABVKciIDh0zh-CNgQ | Status: 400 | Response: {"ok":false,"error_code":400,"description":"Bad Request: file is too big"}
+2025-04-16 11:53:53,412 - INFO - [download_user_file] - Successfully deleted temporary reassembled file: C:\Users\DELL\AppData\Local\Temp\tmpm0o7iqg5.zip.tmp
+2025-04-16 11:53:53,413 - INFO - [_log] - 127.0.0.1 - - [16/Apr/2025 11:53:53] "[32mGET /download/Octopus/3dicons-png-dynamic-1.0.0.zip HTTP/1.1[0m" 302 -
+2025-04-16 11:53:53,420 - INFO - [index] - Serving index page.
+2025-04-16 11:53:53,421 - INFO - [_log] - 127.0.0.1 - - [16/Apr/2025 11:53:53] "GET / HTTP/1.1" 200 -
+2025-04-16 11:53:53,438 - INFO - [_log] - 127.0.0.1 - - [16/Apr/2025 11:53:53] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-16 11:54:03,934 - INFO - [list_user_files] - Request received to list files for user: 'Octopus'
+2025-04-16 11:54:03,936 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-16 11:54:03,936 - INFO - [list_user_files] - Found 6 file records for user 'Octopus'.
+2025-04-16 11:54:03,936 - INFO - [_log] - 127.0.0.1 - - [16/Apr/2025 11:54:03] "GET /files/Octopus HTTP/1.1" 200 -
+2025-04-16 11:54:05,869 - INFO - [download_user_file] - Download request: User='Octopus', Original File='3dicons-png-dynamic-1.0.0.zip'
+2025-04-16 11:54:05,876 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-16 11:54:05,877 - INFO - [download_user_file] - Processing SPLIT file download for '3dicons-png-dynamic-1.0.0.zip'
+2025-04-16 11:54:05,878 - INFO - [download_user_file] - Created temporary file for reassembly: C:\Users\DELL\AppData\Local\Temp\tmplcd4qeek.zip.tmp
+2025-04-16 11:54:05,879 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAANwZ_9JnKlmbZIzS94tza-64bMRio4AAlofAAIWNgABVKciIDh0zh-CNgQ
+2025-04-16 11:54:06,398 - ERROR - [download_telegram_file_content] - Network/Request error calling Telegram getFile API: 400 Client Error: Bad Request for url: https://api.telegram.org/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/getFile?file_id=BQACAgUAAxkDAANwZ_9JnKlmbZIzS94tza-64bMRio4AAlofAAIWNgABVKciIDh0zh-CNgQ | Status: 400 | Response: {"ok":false,"error_code":400,"description":"Bad Request: file is too big"}
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\Telegram_app.py", line 142, in download_telegram_file_content
+    response.raise_for_status()
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\requests\models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://api.telegram.org/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/getFile?file_id=BQACAgUAAxkDAANwZ_9JnKlmbZIzS94tza-64bMRio4AAlofAAIWNgABVKciIDh0zh-CNgQ
+2025-04-16 11:54:06,400 - ERROR - [download_user_file] - General error during download processing for '3dicons-png-dynamic-1.0.0.zip': Error downloading part 1: Network error getting download URL: 400 Client Error: Bad Request for url: https://api.telegram.org/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/getFile?file_id=BQACAgUAAxkDAANwZ_9JnKlmbZIzS94tza-64bMRio4AAlofAAIWNgABVKciIDh0zh-CNgQ | Status: 400 | Response: {"ok":false,"error_code":400,"description":"Bad Request: file is too big"}
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\Telegram_app.py", line 812, in download_user_file
+    raise ValueError(f"Error downloading part {part_num}: {error_msg}")
+ValueError: Error downloading part 1: Network error getting download URL: 400 Client Error: Bad Request for url: https://api.telegram.org/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/getFile?file_id=BQACAgUAAxkDAANwZ_9JnKlmbZIzS94tza-64bMRio4AAlofAAIWNgABVKciIDh0zh-CNgQ | Status: 400 | Response: {"ok":false,"error_code":400,"description":"Bad Request: file is too big"}
+2025-04-16 11:54:06,403 - INFO - [download_user_file] - Successfully deleted temporary reassembled file: C:\Users\DELL\AppData\Local\Temp\tmplcd4qeek.zip.tmp
+2025-04-16 11:54:06,404 - INFO - [_log] - 127.0.0.1 - - [16/Apr/2025 11:54:06] "[32mGET /download/Octopus/3dicons-png-dynamic-1.0.0.zip HTTP/1.1[0m" 302 -
+2025-04-16 11:54:06,410 - INFO - [index] - Serving index page.
+2025-04-16 11:54:06,411 - INFO - [_log] - 127.0.0.1 - - [16/Apr/2025 11:54:06] "GET / HTTP/1.1" 200 -
+2025-04-16 11:54:06,427 - INFO - [_log] - 127.0.0.1 - - [16/Apr/2025 11:54:06] "[33mGET /static/style.css HTTP/1.1[0m" 404 -

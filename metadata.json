@@ -300,6 +300,290 @@
             "telegram_file_unique_id": "AgADqBIAAmGN8Vc",
             "upload_timestamp": "2025-04-15T03:40:50.729979+00:00",
             "username": "Octopus"
+        },
+        {
+            "original_filename": "70mb.pdf",
+            "sent_filename": "70mb.pdf.zip",
+            "is_split": true,
+            "is_compressed": true,
+            "original_size": 73779590,
+            "compressed_total_size": 72649917,
+            "chunk_size": 19922944,
+            "num_chunks": 4,
+            "chunks": [
+                {
+                    "part_number": 1,
+                    "chunk_filename": "70mb.pdf.zip.part_001",
+                    "message_id": 77,
+                    "file_id": "BQACAgUAAxkDAANNZ_8ohdbHM_TBIvllEr9WYycglmkAAh8fAAIWNgABVCLx80JCExYQNgQ",
+                    "file_unique_id": "AgADHx8AAhY2AAFU"
+                },
+                {
+                    "part_number": 2,
+                    "chunk_filename": "70mb.pdf.zip.part_002",
+                    "message_id": 78,
+                    "file_id": "BQACAgUAAxkDAANOZ_8okCwtAAGppBF7Hyx-4SP_3VUfAAIgHwACFjYAAVSyMkxnjAABMu82BA",
+                    "file_unique_id": "AgADIB8AAhY2AAFU"
+                },
+                {
+                    "part_number": 3,
+                    "chunk_filename": "70mb.pdf.zip.part_003",
+                    "message_id": 79,
+                    "file_id": "BQACAgUAAxkDAANPZ_8onApqOL7G-RGcLImXr9wg-mcAAiEfAAIWNgABVG9KVzbxhxDuNgQ",
+                    "file_unique_id": "AgADIR8AAhY2AAFU"
+                },
+                {
+                    "part_number": 4,
+                    "chunk_filename": "70mb.pdf.zip.part_004",
+                    "message_id": 80,
+                    "file_id": "BQACAgUAAxkDAANQZ_8oo8WUS6y2TieLzLG35Gk8_wQAAiIfAAIWNgABVPLt2gIRd1yqNgQ",
+                    "file_unique_id": "AgADIh8AAhY2AAFU"
+                }
+            ],
+            "upload_timestamp": "2025-04-16T03:48:51.830016+00:00",
+            "username": "Octopus"
+        },
+        {
+            "original_filename": "agent.exe",
+            "sent_filename": "agent.exe.zip",
+            "is_split": false,
+            "is_compressed": true,
+            "original_size": 15353000,
+            "compressed_size": 8267952,
+            "telegram_message_id": 81,
+            "telegram_file_id": "BQACAgUAAxkDAANRZ_8tmONXA2f0BRksPXw8B5KQpF4AAiQfAAIWNgABVPc42RFKntlMNgQ",
+            "telegram_file_unique_id": "AgADJB8AAhY2AAFU",
+            "upload_timestamp": "2025-04-16T04:10:00.479555+00:00",
+            "username": "Octopus"
+        },
+        {
+            "original_filename": "file_9.py",
+            "sent_filename": "file_9.py.zip",
+            "is_split": false,
+            "is_compressed": true,
+            "original_size": 2350,
+            "compressed_size": 1078,
+            "telegram_message_id": 82,
+            "telegram_file_id": "BQACAgUAAxkDAANSZ_84sfHUnbhFPDPsqTa1-fZoMYkAAjIfAAIWNgABVCEY05fyTs_lNgQ",
+            "telegram_file_unique_id": "AgADMh8AAhY2AAFU",
+            "upload_timestamp": "2025-04-16T04:57:21.182827+00:00",
+            "username": "Octopus"
+        },
+        {
+            "original_filename": "multiloginx-amd64 (1).exe",
+            "sent_filename": "multiloginx-amd64 (1).exe.zip",
+            "is_split": false,
+            "is_compressed": true,
+            "original_size": 8929336,
+            "compressed_size": 8347536,
+            "telegram_message_id": 83,
+            "telegram_file_id": "BQACAgUAAxkDAANTZ_84ztsE0laJfkDJWxJbyBmqxqsAAjMfAAIWNgABVDhHPcMkgRVbNgQ",
+            "telegram_file_unique_id": "AgADMx8AAhY2AAFU",
+            "upload_timestamp": "2025-04-16T04:57:50.191250+00:00",
+            "username": "Octopus"
+        },
+        {
+            "original_filename": "3dicons-png-dynamic-1.0.0.zip",
+            "sent_filename": "3dicons-png-dynamic-1.0.0.zip.zip",
+            "is_split": true,
+            "is_compressed": true,
+            "original_size": 1358121652,
+            "compressed_total_size": 1358474795,
+            "chunk_size": 50331648,
+            "num_chunks": 27,
+            "chunks": [
+                {
+                    "part_number": 1,
+                    "chunk_filename": "3dicons-png-dynamic-1.0.0.zip.zip.part_001",
+                    "message_id": 112,
+                    "file_id": "BQACAgUAAxkDAANwZ_9JnKlmbZIzS94tza-64bMRio4AAlofAAIWNgABVKciIDh0zh-CNgQ",
+                    "file_unique_id": "AgADWh8AAhY2AAFU"
+                },
+                {
+                    "part_number": 2,
+                    "chunk_filename": "3dicons-png-dynamic-1.0.0.zip.zip.part_002",
+                    "message_id": 113,
+                    "file_id": "BQACAgUAAxkDAANxZ_9JsdU67lgmw1j01XomG2Ag-aUAAlsfAAIWNgABVLJXt3GJ7xdYNgQ",
+                    "file_unique_id": "AgADWx8AAhY2AAFU"
+                },
+                {
+                    "part_number": 3,
+                    "chunk_filename": "3dicons-png-dynamic-1.0.0.zip.zip.part_003",
+                    "message_id": 114,
+                    "file_id": "BQACAgUAAxkDAANyZ_9JykqXbMV6NzEd0kNdgwoFCCkAAlwfAAIWNgABVKTc2ggus5-eNgQ",
+                    "file_unique_id": "AgADXB8AAhY2AAFU"
+                },
+                {
+                    "part_number": 4,
+                    "chunk_filename": "3dicons-png-dynamic-1.0.0.zip.zip.part_004",
+                    "message_id": 115,
+                    "file_id": "BQACAgUAAxkDAANzZ_9J36q8LA7KZu0_GxefD0uZtKkAAl0fAAIWNgABVJy8xV4kq3kONgQ",
+                    "file_unique_id": "AgADXR8AAhY2AAFU"
+                },
+                {
+                    "part_number": 5,
+                    "chunk_filename": "3dicons-png-dynamic-1.0.0.zip.zip.part_005",
+                    "message_id": 116,
+                    "file_id": "BQACAgUAAxkDAAN0Z_9J9ZDedIIWXd-Qz8sQKsMrlrYAAl4fAAIWNgABVIVOlWSthkieNgQ",
+                    "file_unique_id": "AgADXh8AAhY2AAFU"
+                },
+                {
+                    "part_number": 6,
+                    "chunk_filename": "3dicons-png-dynamic-1.0.0.zip.zip.part_006",
+                    "message_id": 117,
+                    "file_id": "BQACAgUAAxkDAAN1Z_9KD5bWfgsX8YCCrjEHg0P6iNsAAl8fAAIWNgABVK9re43KMGdbNgQ",
+                    "file_unique_id": "AgADXx8AAhY2AAFU"
+                },
+                {
+                    "part_number": 7,
+                    "chunk_filename": "3dicons-png-dynamic-1.0.0.zip.zip.part_007",
+                    "message_id": 118,
+                    "file_id": "BQACAgUAAxkDAAN2Z_9KKMql2bVwJj1Bvf45cWEVsqEAAmAfAAIWNgABVA0WRUrRQW0ONgQ",
+                    "file_unique_id": "AgADYB8AAhY2AAFU"
+                },
+                {
+                    "part_number": 8,
+                    "chunk_filename": "3dicons-png-dynamic-1.0.0.zip.zip.part_008",
+                    "message_id": 119,
+                    "file_id": "BQACAgUAAxkDAAN3Z_9KPhPjzpQ9VFuDH2S1mj506GEAAmEfAAIWNgABVI73ZZg-u1xNNgQ",
+                    "file_unique_id": "AgADYR8AAhY2AAFU"
+                },
+                {
+                    "part_number": 9,
+                    "chunk_filename": "3dicons-png-dynamic-1.0.0.zip.zip.part_009",
+                    "message_id": 120,
+                    "file_id": "BQACAgUAAxkDAAN4Z_9KUqhdtfj0eew9t-BXtUZlTNYAAmIfAAIWNgABVF64QT96PrhmNgQ",
+                    "file_unique_id": "AgADYh8AAhY2AAFU"
+                },
+                {
+                    "part_number": 10,
+                    "chunk_filename": "3dicons-png-dynamic-1.0.0.zip.zip.part_010",
+                    "message_id": 121,
+                    "file_id": "BQACAgUAAxkDAAN5Z_9KbVbEbw8-9c5nfy70GxaHaXEAAmMfAAIWNgABVJQeGg2-2yw9NgQ",
+                    "file_unique_id": "AgADYx8AAhY2AAFU"
+                },
+                {
+                    "part_number": 11,
+                    "chunk_filename": "3dicons-png-dynamic-1.0.0.zip.zip.part_011",
+                    "message_id": 122,
+                    "file_id": "BQACAgUAAxkDAAN6Z_9Kf3TdDRyVTgRcqEPhWa91K8EAAmQfAAIWNgABVLrdUTaXPll4NgQ",
+                    "file_unique_id": "AgADZB8AAhY2AAFU"
+                },
+                {
+                    "part_number": 12,
+                    "chunk_filename": "3dicons-png-dynamic-1.0.0.zip.zip.part_012",
+                    "message_id": 123,
+                    "file_id": "BQACAgUAAxkDAAN7Z_9Km7I8DoYtPYt-NoIOue-FwT4AAmUfAAIWNgABVPTGpSicyB-6NgQ",
+                    "file_unique_id": "AgADZR8AAhY2AAFU"
+                },
+                {
+                    "part_number": 13,
+                    "chunk_filename": "3dicons-png-dynamic-1.0.0.zip.zip.part_013",
+                    "message_id": 124,
+                    "file_id": "BQACAgUAAxkDAAN8Z_9KvC46k-7TyQABLrw8QBcLos0-AAJmHwACFjYAAVRvj77cH22-8TYE",
+                    "file_unique_id": "AgADZh8AAhY2AAFU"
+                },
+                {
+                    "part_number": 14,
+                    "chunk_filename": "3dicons-png-dynamic-1.0.0.zip.zip.part_014",
+                    "message_id": 125,
+                    "file_id": "BQACAgUAAxkDAAN9Z_9K0wuzn3dlC4NCywkjnT6VNg8AAmcfAAIWNgABVI6nn_F32c7hNgQ",
+                    "file_unique_id": "AgADZx8AAhY2AAFU"
+                },
+                {
+                    "part_number": 15,
+                    "chunk_filename": "3dicons-png-dynamic-1.0.0.zip.zip.part_015",
+                    "message_id": 126,
+                    "file_id": "BQACAgUAAxkDAAN-Z_9K63GSzajtgWZn7xZopzBBrOEAAmgfAAIWNgABVCLoLWet_4GGNgQ",
+                    "file_unique_id": "AgADaB8AAhY2AAFU"
+                },
+                {
+                    "part_number": 16,
+                    "chunk_filename": "3dicons-png-dynamic-1.0.0.zip.zip.part_016",
+                    "message_id": 127,
+                    "file_id": "BQACAgUAAxkDAAN_Z_9LDuXvcXCMNWkWSANROU_L2YsAAmkfAAIWNgABVLNp7PAtBApyNgQ",
+                    "file_unique_id": "AgADaR8AAhY2AAFU"
+                },
+                {
+                    "part_number": 17,
+                    "chunk_filename": "3dicons-png-dynamic-1.0.0.zip.zip.part_017",
+                    "message_id": 128,
+                    "file_id": "BQACAgUAAxkDAAOAZ_9LJf09aYlOPHirIQABGc9FIFuPAAJqHwACFjYAAVS5nO1C7rx_8zYE",
+                    "file_unique_id": "AgADah8AAhY2AAFU"
+                },
+                {
+                    "part_number": 18,
+                    "chunk_filename": "3dicons-png-dynamic-1.0.0.zip.zip.part_018",
+                    "message_id": 129,
+                    "file_id": "BQACAgUAAxkDAAOBZ_9LO3yMM3m_82Dt0EboWLN_D1IAAmsfAAIWNgABVMfmDvg2YKotNgQ",
+                    "file_unique_id": "AgADax8AAhY2AAFU"
+                },
+                {
+                    "part_number": 19,
+                    "chunk_filename": "3dicons-png-dynamic-1.0.0.zip.zip.part_019",
+                    "message_id": 130,
+                    "file_id": "BQACAgUAAxkDAAOCZ_9LVlQes9GIrOzTJIOVZQbDgzkAAmwfAAIWNgABVLm95zj5CzpvNgQ",
+                    "file_unique_id": "AgADbB8AAhY2AAFU"
+                },
+                {
+                    "part_number": 20,
+                    "chunk_filename": "3dicons-png-dynamic-1.0.0.zip.zip.part_020",
+                    "message_id": 131,
+                    "file_id": "BQACAgUAAxkDAAODZ_9LcOS2tP0TnLnjq3qmenrtL08AAm4fAAIWNgABVHPHn8FQhU2qNgQ",
+                    "file_unique_id": "AgADbh8AAhY2AAFU"
+                },
+                {
+                    "part_number": 21,
+                    "chunk_filename": "3dicons-png-dynamic-1.0.0.zip.zip.part_021",
+                    "message_id": 132,
+                    "file_id": "BQACAgUAAxkDAAOEZ_9Lh1gBtrTLHrEyxkN6Jjn_3boAAm8fAAIWNgABVJrG9_wOby2KNgQ",
+                    "file_unique_id": "AgADbx8AAhY2AAFU"
+                },
+                {
+                    "part_number": 22,
+                    "chunk_filename": "3dicons-png-dynamic-1.0.0.zip.zip.part_022",
+                    "message_id": 133,
+                    "file_id": "BQACAgUAAxkDAAOFZ_9Lni19T27O6XC1UmoIZIfIttcAAnAfAAIWNgABVBqP0bJ987bJNgQ",
+                    "file_unique_id": "AgADcB8AAhY2AAFU"
+                },
+                {
+                    "part_number": 23,
+                    "chunk_filename": "3dicons-png-dynamic-1.0.0.zip.zip.part_023",
+                    "message_id": 134,
+                    "file_id": "BQACAgUAAxkDAAOGZ_9LtesaAAG_iHQAAbV7PoNiUe9NzgACcR8AAhY2AAFUnRPEpCAjAVQ2BA",
+                    "file_unique_id": "AgADcR8AAhY2AAFU"
+                },
+                {
+                    "part_number": 24,
+                    "chunk_filename": "3dicons-png-dynamic-1.0.0.zip.zip.part_024",
+                    "message_id": 135,
+                    "file_id": "BQACAgUAAxkDAAOHZ_9LyUzZNzBrCfGW1FYZRul4cQwAAnIfAAIWNgABVLZOYPtiQ1adNgQ",
+                    "file_unique_id": "AgADch8AAhY2AAFU"
+                },
+                {
+                    "part_number": 25,
+                    "chunk_filename": "3dicons-png-dynamic-1.0.0.zip.zip.part_025",
+                    "message_id": 136,
+                    "file_id": "BQACAgUAAxkDAAOIZ_9L3hTzvbMDD_BA5AMHG6086TwAAnMfAAIWNgABVD-AeCEG7uiBNgQ",
+                    "file_unique_id": "AgADcx8AAhY2AAFU"
+                },
+                {
+                    "part_number": 26,
+                    "chunk_filename": "3dicons-png-dynamic-1.0.0.zip.zip.part_026",
+                    "message_id": 137,
+                    "file_id": "BQACAgUAAxkDAAOJZ_9L8SmBLhRVWH0wgcfsuAJZcBsAAnQfAAIWNgABVPgjEBGFMHcrNgQ",
+                    "file_unique_id": "AgADdB8AAhY2AAFU"
+                },
+                {
+                    "part_number": 27,
+                    "chunk_filename": "3dicons-png-dynamic-1.0.0.zip.zip.part_027",
+                    "message_id": 138,
+                    "file_id": "BQACAgUAAxkDAAOKZ_9MBllXRCsBAwE3wJoxXL5zAxsAAnUfAAIWNgABVF_h97Rtmy9TNgQ",
+                    "file_unique_id": "AgADdR8AAhY2AAFU"
+                }
+            ],
+            "upload_timestamp": "2025-04-16T06:19:49.849268+00:00",
+            "username": "Octopus"
         }
     ],
     "Klaus": [
@@ -537,6 +821,224 @@
             ],
             "upload_timestamp": "2025-04-15T11:36:49.948120+00:00",
             "username": "John"
+        }
+    ],
+    "testt": [
+        {
+            "original_filename": "500MB-CZIPtestfile.org.zip",
+            "sent_filename": "500MB-CZIPtestfile.org.zip.zip",
+            "is_split": true,
+            "is_compressed": true,
+            "original_size": 524288000,
+            "compressed_total_size": 524448080,
+            "chunk_size": 19922944,
+            "num_chunks": 27,
+            "chunks": [
+                {
+                    "part_number": 1,
+                    "chunk_filename": "500MB-CZIPtestfile.org.zip.zip.part_001",
+                    "message_id": 84,
+                    "file_id": "BQACAgUAAxkDAANUZ_85dKUhzh072U-w75gbZ24fdBsAAjQfAAIWNgABVJJK0_DgPsOrNgQ",
+                    "file_unique_id": "AgADNB8AAhY2AAFU"
+                },
+                {
+                    "part_number": 2,
+                    "chunk_filename": "500MB-CZIPtestfile.org.zip.zip.part_002",
+                    "message_id": 85,
+                    "file_id": "BQACAgUAAxkDAANVZ_85finbfr_JEbB4_CQYd4XFkH8AAjUfAAIWNgABVOYjBJnRdOPjNgQ",
+                    "file_unique_id": "AgADNR8AAhY2AAFU"
+                },
+                {
+                    "part_number": 3,
+                    "chunk_filename": "500MB-CZIPtestfile.org.zip.zip.part_003",
+                    "message_id": 86,
+                    "file_id": "BQACAgUAAxkDAANWZ_85jN0KxD6_DRxfHy5u73OHV70AAjYfAAIWNgABVCJsGYCvH0IxNgQ",
+                    "file_unique_id": "AgADNh8AAhY2AAFU"
+                },
+                {
+                    "part_number": 4,
+                    "chunk_filename": "500MB-CZIPtestfile.org.zip.zip.part_004",
+                    "message_id": 87,
+                    "file_id": "BQACAgUAAxkDAANXZ_85mAO3RuojMWgWmoqdEowFa9YAAjcfAAIWNgABVFJ3DWJTEvyUNgQ",
+                    "file_unique_id": "AgADNx8AAhY2AAFU"
+                },
+                {
+                    "part_number": 5,
+                    "chunk_filename": "500MB-CZIPtestfile.org.zip.zip.part_005",
+                    "message_id": 88,
+                    "file_id": "BQACAgUAAxkDAANYZ_85oPsn7bRl6bDkEXyhFDJ3wpMAAjgfAAIWNgABVIacmibN_-SvNgQ",
+                    "file_unique_id": "AgADOB8AAhY2AAFU"
+                },
+                {
+                    "part_number": 6,
+                    "chunk_filename": "500MB-CZIPtestfile.org.zip.zip.part_006",
+                    "message_id": 89,
+                    "file_id": "BQACAgUAAxkDAANZZ_85rSwDMavbtWxPcxYyVfesSSAAAjkfAAIWNgABVNPw9AUnHdF2NgQ",
+                    "file_unique_id": "AgADOR8AAhY2AAFU"
+                },
+                {
+                    "part_number": 7,
+                    "chunk_filename": "500MB-CZIPtestfile.org.zip.zip.part_007",
+                    "message_id": 90,
+                    "file_id": "BQACAgUAAxkDAANaZ_85u3q-lSDJaMdJQ1c72xvPMYEAAjofAAIWNgABVPD-E5KmnXUGNgQ",
+                    "file_unique_id": "AgADOh8AAhY2AAFU"
+                },
+                {
+                    "part_number": 8,
+                    "chunk_filename": "500MB-CZIPtestfile.org.zip.zip.part_008",
+                    "message_id": 91,
+                    "file_id": "BQACAgUAAxkDAANbZ_85ylgvOD-kFxluU9F4nlshb_wAAjsfAAIWNgABVFere8nNArX4NgQ",
+                    "file_unique_id": "AgADOx8AAhY2AAFU"
+                },
+                {
+                    "part_number": 9,
+                    "chunk_filename": "500MB-CZIPtestfile.org.zip.zip.part_009",
+                    "message_id": 92,
+                    "file_id": "BQACAgUAAxkDAANcZ_851UG1SbRU_4IDJvs5zKaQ410AAjwfAAIWNgABVGs_g2a9oIvBNgQ",
+                    "file_unique_id": "AgADPB8AAhY2AAFU"
+                },
+                {
+                    "part_number": 10,
+                    "chunk_filename": "500MB-CZIPtestfile.org.zip.zip.part_010",
+                    "message_id": 93,
+                    "file_id": "BQACAgUAAxkDAANdZ_854nuWy_ppw7bGwE4m9X6i1wgAAj0fAAIWNgABVEjFVsTBCxFUNgQ",
+                    "file_unique_id": "AgADPR8AAhY2AAFU"
+                },
+                {
+                    "part_number": 11,
+                    "chunk_filename": "500MB-CZIPtestfile.org.zip.zip.part_011",
+                    "message_id": 94,
+                    "file_id": "BQACAgUAAxkDAANeZ_859Au1H1tYRtFpVcazCdnXP2UAAj4fAAIWNgABVOs1xR9tqrRhNgQ",
+                    "file_unique_id": "AgADPh8AAhY2AAFU"
+                },
+                {
+                    "part_number": 12,
+                    "chunk_filename": "500MB-CZIPtestfile.org.zip.zip.part_012",
+                    "message_id": 95,
+                    "file_id": "BQACAgUAAxkDAANfZ_85_ZRNNCCMeASPOMianC9MqsoAAj8fAAIWNgABVJ1c9J5CuDP-NgQ",
+                    "file_unique_id": "AgADPx8AAhY2AAFU"
+                },
+                {
+                    "part_number": 13,
+                    "chunk_filename": "500MB-CZIPtestfile.org.zip.zip.part_013",
+                    "message_id": 96,
+                    "file_id": "BQACAgUAAxkDAANgZ_86B06zQr2Ro4Tx39LbsCfEqZoAAkAfAAIWNgABVJ3qQSMIHj5ONgQ",
+                    "file_unique_id": "AgADQB8AAhY2AAFU"
+                },
+                {
+                    "part_number": 14,
+                    "chunk_filename": "500MB-CZIPtestfile.org.zip.zip.part_014",
+                    "message_id": 97,
+                    "file_id": "BQACAgUAAxkDAANhZ_86EePE2g3Ag1kvkVFBJ2hH65wAAkEfAAIWNgABVKHxdNrJgS4aNgQ",
+                    "file_unique_id": "AgADQR8AAhY2AAFU"
+                },
+                {
+                    "part_number": 15,
+                    "chunk_filename": "500MB-CZIPtestfile.org.zip.zip.part_015",
+                    "message_id": 98,
+                    "file_id": "BQACAgUAAxkDAANiZ_86GmVHNmkLk--rvbPz1wuU2KwAAkIfAAIWNgABVDe5Dx550F46NgQ",
+                    "file_unique_id": "AgADQh8AAhY2AAFU"
+                },
+                {
+                    "part_number": 16,
+                    "chunk_filename": "500MB-CZIPtestfile.org.zip.zip.part_016",
+                    "message_id": 99,
+                    "file_id": "BQACAgUAAxkDAANjZ_86LeaV9AEF6jQc2gMfIALOxUMAAkMfAAIWNgABVMNIWfCthOjLNgQ",
+                    "file_unique_id": "AgADQx8AAhY2AAFU"
+                },
+                {
+                    "part_number": 17,
+                    "chunk_filename": "500MB-CZIPtestfile.org.zip.zip.part_017",
+                    "message_id": 100,
+                    "file_id": "BQACAgUAAxkDAANkZ_86ONR4ckl4WtjylIU7yPtRIDoAAkQfAAIWNgABVFU-cBDZ3QjFNgQ",
+                    "file_unique_id": "AgADRB8AAhY2AAFU"
+                },
+                {
+                    "part_number": 18,
+                    "chunk_filename": "500MB-CZIPtestfile.org.zip.zip.part_018",
+                    "message_id": 101,
+                    "file_id": "BQACAgUAAxkDAANlZ_86Q5UhqzWFFAQo9UMOCGdCYz8AAkUfAAIWNgABVBJU8wsNW_6jNgQ",
+                    "file_unique_id": "AgADRR8AAhY2AAFU"
+                },
+                {
+                    "part_number": 19,
+                    "chunk_filename": "500MB-CZIPtestfile.org.zip.zip.part_019",
+                    "message_id": 102,
+                    "file_id": "BQACAgUAAxkDAANmZ_86TqHeJ1Kv30thvxaK926kkG4AAkYfAAIWNgABVB_2VY7xCUZONgQ",
+                    "file_unique_id": "AgADRh8AAhY2AAFU"
+                },
+                {
+                    "part_number": 20,
+                    "chunk_filename": "500MB-CZIPtestfile.org.zip.zip.part_020",
+                    "message_id": 103,
+                    "file_id": "BQACAgUAAxkDAANnZ_86YNPbo0uFYHFXx6KCAAGVRkqrAAJHHwACFjYAAVRiGujb3aKgVzYE",
+                    "file_unique_id": "AgADRx8AAhY2AAFU"
+                },
+                {
+                    "part_number": 21,
+                    "chunk_filename": "500MB-CZIPtestfile.org.zip.zip.part_021",
+                    "message_id": 104,
+                    "file_id": "BQACAgUAAxkDAANoZ_86aFYc82Y9sbga8lHIcoYWf4cAAkgfAAIWNgABVOZmguxu4b1jNgQ",
+                    "file_unique_id": "AgADSB8AAhY2AAFU"
+                },
+                {
+                    "part_number": 22,
+                    "chunk_filename": "500MB-CZIPtestfile.org.zip.zip.part_022",
+                    "message_id": 105,
+                    "file_id": "BQACAgUAAxkDAANpZ_86cj71TII5ei2nx1eutvrK1JEAAkkfAAIWNgABVP61nXntlyCKNgQ",
+                    "file_unique_id": "AgADSR8AAhY2AAFU"
+                },
+                {
+                    "part_number": 23,
+                    "chunk_filename": "500MB-CZIPtestfile.org.zip.zip.part_023",
+                    "message_id": 106,
+                    "file_id": "BQACAgUAAxkDAANqZ_86iwMVrtuvl4tJDWtB3rcp1w0AAkofAAIWNgABVFXqTRM8evSdNgQ",
+                    "file_unique_id": "AgADSh8AAhY2AAFU"
+                },
+                {
+                    "part_number": 24,
+                    "chunk_filename": "500MB-CZIPtestfile.org.zip.zip.part_024",
+                    "message_id": 107,
+                    "file_id": "BQACAgUAAxkDAANrZ_86lq-PWG94VYy4s4GNmVOq4FQAAksfAAIWNgABVNeoOXsOvZXkNgQ",
+                    "file_unique_id": "AgADSx8AAhY2AAFU"
+                },
+                {
+                    "part_number": 25,
+                    "chunk_filename": "500MB-CZIPtestfile.org.zip.zip.part_025",
+                    "message_id": 108,
+                    "file_id": "BQACAgUAAxkDAANsZ_86nusEGQK4uGYrFQ-zGeZ4tsgAAkwfAAIWNgABVJYPSkVNo78VNgQ",
+                    "file_unique_id": "AgADTB8AAhY2AAFU"
+                },
+                {
+                    "part_number": 26,
+                    "chunk_filename": "500MB-CZIPtestfile.org.zip.zip.part_026",
+                    "message_id": 109,
+                    "file_id": "BQACAgUAAxkDAANtZ_86q5A0_VQM7QfOztRBM3yh12wAAk0fAAIWNgABVMhHglI1kwZMNgQ",
+                    "file_unique_id": "AgADTR8AAhY2AAFU"
+                },
+                {
+                    "part_number": 27,
+                    "chunk_filename": "500MB-CZIPtestfile.org.zip.zip.part_027",
+                    "message_id": 110,
+                    "file_id": "BQACAgUAAxkDAANuZ_86ss964lAux8e6dSQ3iv9flx8AAk4fAAIWNgABVAlsYJzobdh0NgQ",
+                    "file_unique_id": "AgADTh8AAhY2AAFU"
+                }
+            ],
+            "upload_timestamp": "2025-04-16T05:05:54.696652+00:00",
+            "username": "testt"
+        },
+        {
+            "original_filename": "file_9 (1).py",
+            "sent_filename": "file_9 (1).py.zip",
+            "is_split": false,
+            "is_compressed": true,
+            "original_size": 2350,
+            "compressed_size": 1086,
+            "telegram_message_id": 111,
+            "telegram_file_id": "BQACAgUAAxkDAANvZ_9Dpd9FyAWqsQZRp2vsbHnKlIsAAlgfAAIWNgABVJnBFrzUqH4eNgQ",
+            "telegram_file_unique_id": "AgADWB8AAhY2AAFU",
+            "upload_timestamp": "2025-04-16T05:44:05.420687+00:00",
+            "username": "testt"
         }
     ]
 }

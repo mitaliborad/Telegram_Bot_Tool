@@ -14,7 +14,7 @@ import tempfile
 TELEGRAM_BOT_TOKEN = '7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs' 
 TELEGRAM_CHAT_ID = '-4603853425'     
 METADATA_FILE = 'metadata.json'
-CHUNK_SIZE = 19 * 1024 * 1024 
+CHUNK_SIZE = 48 * 1024 * 1024 
 
 # --- Logging Setup ---
 LOG_DIR = "Selenium-Logs"

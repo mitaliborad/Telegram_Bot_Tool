@@ -17,7 +17,7 @@
     line-height: 1.6;
     margin: 200px;
     margin-top: 20px;
-    background-color: #fae2f2;}
+    background-color: #cff7f9;}
 
     .container {
     background-color: #fff;
@@ -40,7 +40,7 @@
     border-radius: 4px;}
 
     button {
-     background-color: #d373e0;
+     background-color: #337ab7;
      color: rgb(17, 14, 14);
      padding: 10px 15px;
      border: none;
@@ -75,7 +75,7 @@
 
     #drop-zone p {
         margin: 0;
-        color: #666;
+        color: #7d7c7c;
     }
 
     #upload-progress {
@@ -94,7 +94,7 @@
     }
 
     #file-list li {
-        background-color: #e9e9e9;
+        background-color: #f9f5f5;
         padding: 10px;
         margin-bottom: 8px;
         border-radius: 4px;
@@ -145,7 +145,6 @@
         <input type="text" id="list-username" placeholder="Enter username to list files">
         <button id="list-files-button">List Files</button>
         <ul id="file-list">
-            <!-- File list will be populated here -->
         </ul>
         <p id="list-status"></p>
     </div>
@@ -197,8 +196,8 @@
             fileToUpload = file;
             dropZone.querySelector('p').textContent = `Selected: ${file.name}`;
             uploadButton.disabled = false;
-            uploadStatus.textContent = ''; // Clear previous status
-            uploadProgress.style.display = 'none'; // Hide progress bar initially
+            uploadStatus.textContent = ''; 
+            uploadProgress.style.display = 'none'; 
             uploadProgress.value = 0;
         }
 
@@ -229,11 +228,10 @@
             formData.append('file', fileToUpload, fileToUpload.name);
             formData.append('username', username);
 
-            // --- Simulate Progress (optional but good for user experience) ---
             let progress = 0;
             const interval = setInterval(() => {
                  progress += 10;
-                 // Don't let simulation finish before actual request might start responding
+
                  uploadProgress.value = Math.min(progress, 90);
                  if (progress >= 100) clearInterval(interval);
             }, 200);    
@@ -242,15 +240,11 @@
                 const response = await fetch('/upload', {
                     method: 'POST',
                     body: formData,
-                    // Note: No 'Content-Type' header needed for FormData with fetch
-                    // It sets the boundary automatically.
+
                 });
-                
-                // --- Request finished: Stop simulation, set progress to 100% ---
+
                 clearInterval(interval);
                 uploadProgress.value = 100;
-
-                //const result = await response.json();
 
                 if (response.ok) {
                     uploadStatus.textContent = 'Upload processed. Reloading to show status...';
@@ -260,12 +254,6 @@
                          window.location.reload();
                      }, 1500); 
 
-                    // Reset form
-                    //fileToUpload = null;
-                    //dropZone.querySelector('p').textContent = 'Drag & Drop file here or click to select';
-                    //fileInput.value = ''; // Clear the file input
-                    // Optionally list files for the current user immediately
-                    // listFiles(username);
                 } else {
                     throw new Error(result.error || `HTTP error! status: ${response.status}`);
                 }
@@ -334,13 +322,10 @@
         async function downloadFile(username, filename) {
              listStatus.textContent = `Preparing download for ${filename}...`;
              try {
-                 // Use window.location for direct download trigger which handles headers correctly
                  window.location.href = `/download/${encodeURIComponent(username)}/${encodeURIComponent(filename)}`;
-                 // Clear status after initiating download (it happens in a new request)
-                 // We can't easily track progress or success here without websockets or polling
-                 setTimeout(() => { listStatus.textContent = ''; }, 3000); // Clear after a delay
+                 setTimeout(() => { listStatus.textContent = ''; }, 3000); 
 
-             } catch (error) { // This catch block might not be effective for window.location errors
+             } catch (error) { 
                  console.error('Download initiation error:', error);
                  listStatus.textContent = `Error starting download: ${error.message}`;
              }

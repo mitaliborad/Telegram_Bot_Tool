@@ -76,6 +76,17 @@ def save_metadata(data):
         logging.error(f"An unexpected error occurred saving metadata: {e}", exc_info=True)
         return False
 
+def format_time(seconds):
+    """Converts seconds into HH:MM:SS or MM:SS string."""
+    if seconds < 0: seconds = 0 # Avoid negative display
+    seconds = int(seconds)
+    minutes, seconds = divmod(seconds, 60)
+    hours, minutes = divmod(minutes, 60)
+    if hours > 0:
+        return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
+    else:
+        return f"{minutes:02d}:{seconds:02d}"
+
 # --- Flask Application Setup ---
 app = Flask(__name__, template_folder='.')
 app.secret_key = 'a_simple_secret_key_for_now' # Important for flashing messages
@@ -209,6 +220,7 @@ def download_telegram_file_content(file_id):
     else:
          # Should not happen if previous checks worked, but defensive coding
          return None, error_message
+    
 
 # --- Flask Routes ---
 @app.route('/')
@@ -223,7 +235,9 @@ def index():
 @app.route('/upload', methods=['POST'])
 def upload_file():
     logging.info("Received file upload request.")
-    start_time = time.time()
+    route_start_time = time.time()
+    #start_time = time.time()
+
 
     # Basic validation
     if 'file' not in request.files:
@@ -244,6 +258,7 @@ def upload_file():
         return redirect(url_for('index'))
 
     original_filename = file.filename
+    username = request.form.get('username')
     logging.info(f"Processing upload: User='{username}', File='{original_filename}'")
 
     try:
@@ -272,7 +287,21 @@ def upload_file():
             logging.info(f"Compressed '{original_filename}' to {compressed_size} bytes.")
             zip_buffer.seek(0)
             compressed_filename = f"{original_filename}.zip"
+
+            # --- Timing Start (Single File) ---
+            tg_send_start_time = time.time()
+            logging.info(f"Starting Telegram send for single compressed file '{compressed_filename}'...")
+
             success, message, tg_response_json = send_file_to_telegram(zip_buffer, compressed_filename)
+
+            # --- Timing End (Single File) ---
+            tg_send_end_time = time.time()
+            tg_send_duration = tg_send_end_time - tg_send_start_time
+            logging.info(f"Finished Telegram send for '{compressed_filename}'. Duration: {tg_send_duration:.2f} seconds.")
+            if compressed_size > 0 and tg_send_duration > 0:
+                rate_bps = compressed_size / tg_send_duration
+                logging.info(f"Average Upload Rate (Flask->Telegram): {rate_bps / 1024 / 1024:.2f} MB/s")
+
             zip_buffer.close()
             
             if success and tg_response_json:
@@ -304,7 +333,8 @@ def upload_file():
                         "telegram_file_id": file_id,
                         "telegram_file_unique_id": file_unique_id,
                         "upload_timestamp": timestamp,
-                        "username": username # Store username with file record
+                        "username": username ,
+                        "upload_duration_seconds": tg_send_duration
                     }
                     user_files_list = metadata.setdefault(username, [])
                     user_files_list.append(new_file_record)
@@ -324,158 +354,12 @@ def upload_file():
                 flash(message, 'error')
 
             # End of single file workflow
-            processing_time = time.time() - start_time
+            processing_time = time.time() - route_start_time
             logging.info(f"Finished processing single(compressed) file '{original_filename}' in {processing_time:.2f} seconds.")
             return redirect(url_for('index'))
 
         else:
-    #         # --- Split File Upload ---
-    #         logging.info(f"'{original_filename}' is large ({total_size} bytes). Starting split upload (Chunk size: {CHUNK_SIZE} bytes).")
-    #         chunk_number = 0
-    #         uploaded_chunks_metadata = []
-    #         bytes_read = 0
-    #         compressed_filename = f"{original_filename}.zip"
-    #         temp_zip_file = None
-    #         original_file_stream = file
 
-    #         try:
-    #             with tempfile.NamedTemporaryFile(suffix=".zip", delete=False) as temp_zip_handle:
-    #                 temp_zip_filepath = temp_zip_handle.name
-    #                 logging.info(f"Created temporary file for compression: {temp_zip_filepath}")
-    #             logging.info(f"Compressing '{original_filename}' into temporary file...")
-    #             compression_start_time = time.time()
-    #             with zipfile.ZipFile(temp_zip_filepath, 'w', zipfile.ZIP_DEFLATED) as zip_out:
-    #                 original_file_stream.seek(0) 
-    #                 buffer_size = 4 * 1024 * 1024
-    #                 with original_file_stream.stream as stream_in:
-    #                     with original_file_stream.stream as stream_in:
-    #                         while True:
-    #                             chunk = stream_in.read(buffer_size)
-    #                             if not chunk:
-    #                                 break
-    #                             zip_entry.write(chunk)
-
-    #             compression_time = time.time() - compression_start_time
-    #             compressed_total_size = os.path.getsize(temp_zip_filepath)
-    #             logging.info(f"Finished compressing to '{temp_zip_filepath}'. Size: {compressed_total_size} bytes. Time: {compression_time:.2f}s.")
-    #             logging.info(f"Starting split upload for compressed file '{compressed_filename}' (Chunk size: {CHUNK_SIZE} bytes).")
-    #             chunk_number = 0
-    #             uploaded_chunks_metadata = []
-    #             bytes_read = 0
-    #             with open(temp_zip_filepath, 'rb') as temp_file_to_read:
-
-    #                 while True:
-    #                     chunk_start_time = time.time()
-    #                     chunk_number += 1
-    #                     logging.info(f"Reading chunk {chunk_number} for '{original_filename}' starting at byte {bytes_read}.")
-    #                     file_chunk_data = file.read(CHUNK_SIZE)
-    #                     current_chunk_size = len(file_chunk_data)
-
-    #                     if not file_chunk_data:
-    #                         logging.info(f"Finished reading all chunks for '{original_filename}'.")
-    #                         break # End of file
-
-    #                     bytes_read += current_chunk_size
-    #                     logging.info(f"Read chunk {chunk_number} ({current_chunk_size} bytes) for '{original_filename}'. Total read: {bytes_read}/{total_size}")
-
-    #                     chunk_filename = f"{original_filename}.part_{str(chunk_number).zfill(3)}"
-    #                     chunk_file_object = io.BytesIO(file_chunk_data) # Wrap bytes chunk in a file-like object
-
-    #                     logging.info(f"Attempting to send chunk: '{chunk_filename}'")
-    #                     success, message, tg_response_json = send_file_to_telegram(chunk_file_object, chunk_filename)
-    #                     chunk_file_object.close() # Release memory for this chunk object
-
-    #                     if success and tg_response_json:
-    #                         logging.info(f"Chunk '{chunk_filename}' sent successfully.")
-    #                         try:
-    #                             result_data = tg_response_json.get('result', {})
-    #                             message_id = result_data.get('message_id')
-    #                             doc_data = result_data.get('document', {})
-    #                             file_id = doc_data.get('file_id')
-    #                             file_unique_id = doc_data.get('file_unique_id')
-
-    #                             if not message_id or not file_unique_id:
-    #                                 logging.error(f"Missing IDs in Telegram response for chunk '{chunk_filename}': {tg_response_json}")
-    #                                 raise ValueError("Missing message_id or file_unique_id in chunk response")
-
-    #                             chunk_meta = {
-    #                                 "part_number": chunk_number,
-    #                                 "chunk_filename": chunk_filename,
-    #                                 "message_id": message_id,
-    #                                 "file_id": file_id,
-    #                                 "file_unique_id": file_unique_id
-    #                             }
-    #                             uploaded_chunks_metadata.append(chunk_meta)
-    #                             chunk_send_time = time.time() - chunk_start_time
-    #                             logging.info(f"Successfully processed chunk '{chunk_filename}' (MsgID={message_id}) in {chunk_send_time:.2f}s.")
-
-    #                         except Exception as e:
-    #                             logging.error(f"Error processing Telegram response for chunk '{chunk_filename}': {e}. Aborting split upload.", exc_info=True)
-    #                             flash(f"Error processing response for chunk {chunk_number}. Upload incomplete. Please try again.", 'error')
-    #                             # TODO: Optional cleanup: Delete already uploaded chunks from Telegram?
-    #                             return redirect(url_for('index')) # Abort
-    #                     else:
-    #                         logging.error(f"Failed to send chunk '{chunk_filename}'. Aborting split upload. Error: {message}")
-    #                         flash(f"Error sending chunk {chunk_number} ('{chunk_filename}'): {message}. Upload incomplete. Please try again.", 'error')
-    #                         # TODO: Optional cleanup
-    #                         return redirect(url_for('index')) # Abort
-
-    #         except Exception as e:
-    #             logging.error(f"Unexpected error during upload processing for '{original_filename}' (user: {username}): {e}", exc_info=True)
-    #             flash(f"An internal error occurred processing your upload: {e}", 'error')
-    #             return redirect(url_for('index'))
-
-    #         # --- After the loop: Check if all chunks were processed ---
-    #         expected_chunks = (total_size + CHUNK_SIZE - 1) // CHUNK_SIZE
-    #         if len(uploaded_chunks_metadata) == expected_chunks:
-    #             logging.info(f"All {expected_chunks} chunks for '{original_filename}' uploaded successfully. Saving metadata.")
-    #             metadata = load_metadata()
-    #             timestamp = datetime.now(timezone.utc).isoformat()
-    #             new_file_record = {
-    #                 "original_filename": original_filename,
-    #                 "is_split": True,
-    #                 "is_compressed": False, # Compression was removed
-    #                 "total_size": total_size,
-    #                 "chunk_size": CHUNK_SIZE,
-    #                 "num_chunks": expected_chunks,
-    #                 "chunks": uploaded_chunks_metadata, # List of details for each chunk
-    #                 "upload_timestamp": timestamp,
-    #                 "username": username # Store username
-    #             }
-    #             user_files_list = metadata.setdefault(username, [])
-    #             user_files_list.append(new_file_record)
-
-    #             if save_metadata(metadata):
-    #                 logging.info(f"Successfully saved metadata for split file '{original_filename}'.")
-    #                 flash(f"Large file '{original_filename}' split and sent successfully!", 'success')
-    #             else:
-    #                 logging.error(f"CRITICAL: All chunks for '{original_filename}' sent, but FAILED TO SAVE METADATA.")
-    #                 flash(f"File '{original_filename}' sent, but error saving tracking info!", 'error')
-    #         else:
-    #             # This path indicates an inconsistency, though errors in the loop should prevent reaching here.
-    #             logging.error(f"Inconsistency after upload loop for '{original_filename}'. Expected {expected_chunks} chunks, got metadata for {len(uploaded_chunks_metadata)}. Aborting save.")
-    #             flash(f"An internal inconsistency occurred after uploading chunks for '{original_filename}'. Please check logs.", 'error')
-
-    #         # End of split file workflow
-    #         processing_time = time.time() - start_time
-    #         logging.info(f"Finished processing split file '{original_filename}' in {processing_time:.2f} seconds.")
-    #         return redirect(url_for('index'))
-        
-            
-
-    # finally:
-    #         # 9. --- Crucial Cleanup: Delete the temporary file ---
-    #         if temp_zip_filepath and os.path.exists(temp_zip_filepath):
-    #             try:
-    #                 os.remove(temp_zip_filepath)
-    #                 logging.info(f"Successfully deleted temporary compressed file: {temp_zip_filepath}")
-    #             except OSError as e:
-    #                 logging.error(f"Error deleting temporary compressed file '{temp_zip_filepath}': {e}", exc_info=True)
-    #         # Close the original file stream if it's still open (Flask might handle this, but belt-and-suspenders)
-    #         if original_file_stream and not original_file_stream.closed:
-    #              original_file_stream.close()
-
-            
             # --- Large File: Compress First, then Split ---
             logging.info(f"'{original_filename}' is large ({total_size} bytes). Compressing before splitting.")
             compressed_filename = f"{original_filename}.zip"
@@ -484,8 +368,6 @@ def upload_file():
 
             try:
                 # 1. Create a temporary file to store the compressed data
-                #    delete=False is important: we need to close it after writing and reopen for reading chunks.
-                #    We MUST manually delete it later in the finally block.
                 with tempfile.NamedTemporaryFile(suffix=".zip", delete=False) as temp_zip_handle:
                     temp_zip_filepath = temp_zip_handle.name # Get the actual path
                     logging.info(f"Created temporary file for compression: {temp_zip_filepath}")
@@ -513,14 +395,21 @@ def upload_file():
 
                 # --- Now Split the *Compressed* Temporary File ---
                 logging.info(f"Starting split upload for compressed file '{compressed_filename}' (Chunk size: {CHUNK_SIZE} bytes).")
+                
+                # --- ETA Initialization ---
+                start_time_split_upload = None 
+                bytes_successfully_sent = 0
+                # --- End ETA Initialization ---
+
                 chunk_number = 0
                 uploaded_chunks_metadata = []
                 bytes_read = 0
+                total_tg_send_duration_split = 0
 
                 # 3. Open the TEMPORARY COMPRESSED file for reading chunks
                 with open(temp_zip_filepath, 'rb') as temp_file_to_read:
                     while True:
-                        chunk_start_time = time.time()
+                        loop_chunk_start_time = time.time() 
                         chunk_number += 1
                         logging.info(f"Reading chunk {chunk_number} for COMPRESSED file '{compressed_filename}' starting at byte {bytes_read}.")
 
@@ -539,12 +428,58 @@ def upload_file():
                         chunk_filename = f"{compressed_filename}.part_{str(chunk_number).zfill(3)}"
                         chunk_file_object = io.BytesIO(file_chunk_data)
 
+                        # --- ETA: Record start time on first chunk ---
+                        if chunk_number == 1:
+                            start_time_split_upload = time.time()
+                        # --- End ETA Start Time ---
+
+
                         logging.info(f"Attempting to send chunk: '{chunk_filename}'")
+
+                        # --- Timing Start (Chunk) ---
+                        tg_chunk_send_start_time = time.time()
+                        # --- End Timing Start ---
+
                         success, message, tg_response_json = send_file_to_telegram(chunk_file_object, chunk_filename)
+                        
+                        # --- Timing End (Chunk) ---
+                        tg_chunk_send_end_time = time.time()
+                        tg_chunk_duration = tg_chunk_send_end_time - tg_chunk_send_start_time
+                        total_tg_send_duration_split += tg_chunk_duration # Accumulate
+                        logging.info(f"Finished Telegram send for chunk '{chunk_filename}'. Duration: {tg_chunk_duration:.2f} seconds.")
+                        if current_chunk_size > 0 and tg_chunk_duration > 0:
+                            rate_bps = current_chunk_size / tg_chunk_duration
+                            logging.info(f"  Chunk Upload Rate (Flask->Telegram): {rate_bps / 1024 / 1024:.2f} MB/s")
+                        
                         chunk_file_object.close()
 
                         if success and tg_response_json:
+                            bytes_successfully_sent += current_chunk_size
+
+                            # --- ETA Calculation and Logging ---
+                            if start_time_split_upload is not None and bytes_successfully_sent > 0:
+                                elapsed_time = time.time() - start_time_split_upload
+                                if elapsed_time > 0: # Avoid division by zero
+                                    average_speed_bps = bytes_successfully_sent / elapsed_time
+                                    if average_speed_bps > 0: # Avoid division by zero
+                                        remaining_bytes = compressed_total_size - bytes_successfully_sent
+                                        if remaining_bytes > 0:
+                                            eta_seconds = remaining_bytes / average_speed_bps
+                                            progress_percent = (bytes_successfully_sent / compressed_total_size) * 100
+                                            logging.info(f"  Progress: {bytes_successfully_sent / (1024*1024):.1f}/{compressed_total_size / (1024*1024):.1f} MB ({progress_percent:.1f}%)")
+                                            logging.info(f"  Average Speed: {average_speed_bps / (1024*1024):.2f} MB/s")
+                                            logging.info(f"  Estimated Time Remaining (ETA): {format_time(eta_seconds)}")
+                                        else:
+                                            # If remaining_bytes is 0 or less, upload is effectively complete
+                                            logging.info(f"  Progress: 100% - Final chunk processed.")
+                                    else:
+                                        logging.debug("  ETA calculation skipped: Average speed is zero.") # Less likely
+                                else:
+                                    logging.debug("  ETA calculation skipped: Elapsed time is zero.") # Should only happen briefly after first chunk
+                            # --- End ETA Calculation and Logging ---
+
                             logging.info(f"Chunk '{chunk_filename}' sent successfully.")
+
                             try:
                                 result_data = tg_response_json.get('result', {})
                                 message_id = result_data.get('message_id')
@@ -562,11 +497,12 @@ def upload_file():
                                     "chunk_filename": chunk_filename, # Correct name stored
                                     "message_id": message_id,
                                     "file_id": file_id,
-                                    "file_unique_id": file_unique_id
+                                    "file_unique_id": file_unique_id ,
+                                    "chunk_upload_duration_seconds": tg_chunk_duration
                                 }
                                 uploaded_chunks_metadata.append(chunk_meta)
-                                chunk_send_time = time.time() - chunk_start_time
-                                logging.info(f"Successfully processed chunk '{chunk_filename}' (MsgID={message_id}) in {chunk_send_time:.2f}s.")
+                                loop_chunk_process_time = time.time() - loop_chunk_start_time
+                                logging.info(f"Successfully processed chunk '{chunk_filename}' (MsgID={message_id}) in {tg_chunk_duration:.2f}s.")
 
                             except Exception as e:
                                 logging.error(f"Error processing Telegram response for chunk '{chunk_filename}': {e}. Aborting split upload.", exc_info=True)
@@ -584,6 +520,10 @@ def upload_file():
                 expected_chunks = (compressed_total_size + CHUNK_SIZE - 1) // CHUNK_SIZE
                 if len(uploaded_chunks_metadata) == expected_chunks:
                     logging.info(f"All {expected_chunks} chunks for compressed file '{compressed_filename}' uploaded successfully. Saving metadata.")
+                    if compressed_total_size > 0 and total_tg_send_duration_split > 0:
+                         avg_rate_bps = compressed_total_size / total_tg_send_duration_split
+                         logging.info(f"Overall Average Upload Rate (Flask->Telegram): {avg_rate_bps / 1024 / 1024:.2f} MB/s")
+                    
                     metadata = load_metadata()
                     timestamp = datetime.now(timezone.utc).isoformat()
 
@@ -599,7 +539,8 @@ def upload_file():
                         "num_chunks": expected_chunks,
                         "chunks": uploaded_chunks_metadata,         # List includes .zip.part_xxx names
                         "upload_timestamp": timestamp,
-                        "username": username
+                        "username": username,
+                        "total_upload_duration_seconds": total_tg_send_duration_split
                     }
                     user_files_list = metadata.setdefault(username, [])
                     user_files_list.append(new_file_record)
@@ -616,7 +557,7 @@ def upload_file():
                     flash(f"An internal inconsistency occurred after uploading chunks for '{original_filename}' (compressed). Please check logs.", 'error')
 
                 # End of split file workflow
-                processing_time = time.time() - start_time
+                processing_time = time.time() - route_start_time            
                 logging.info(f"Finished processing compressed split file '{original_filename}' in {processing_time:.2f} seconds.")
                 return redirect(url_for('index'))
 
@@ -642,6 +583,12 @@ def upload_file():
     except Exception as e:
         logging.error(f"Unexpected error during upload processing for '{original_filename}' (user: {username}): {e}", exc_info=True)
         flash(f"An internal error occurred processing your upload: {e}", 'error')
+        if 'temp_zip_filepath' in locals() and temp_zip_filepath and os.path.exists(temp_zip_filepath):
+             try: os.remove(temp_zip_filepath)
+             except Exception: pass
+        if 'original_file_stream' in locals() and original_file_stream and hasattr(original_file_stream, 'close') and not original_file_stream.closed:
+            try: original_file_stream.close()
+            except Exception: pass
         return redirect(url_for('index'))
 
 @app.route('/files/<username>', methods=['GET'])

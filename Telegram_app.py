@@ -1083,126 +1083,137 @@ def serve_temp_file(temp_id, filename):
 
 def _prepare_download_and_generate_updates(prep_id, username, filename):
     """
-    Generator function: Prepares the file for download and yields SSE updates.
-    Adapted logic from the original download_user_file route's preparation part.
+    Generator function: Prepares the file for download and yields SSE updates,
+    including estimated progress, speed, and ETA for the SERVER-SIDE preparation steps.
     """
     logging.info(f"[{prep_id}] Starting download preparation generator...")
     prep_data = download_prep_data.get(prep_id)
-    if not prep_data: # Should not happen if called via route
+    if not prep_data:
         logging.error(f"[{prep_id}] Critical: Prep data missing at generator start.")
         yield f"event: error\ndata: {json.dumps({'message': 'Internal Server Error: Prep data lost.'})}\n\n"
         return
 
-    # Ensure status is 'initiated' before starting expensive operations
     if prep_data.get('status') != 'initiated':
-         logging.warning(f"[{prep_id}] Preparation already in progress or finished (Status: {prep_data.get('status')}). Aborting duplicate run.")
-         # Optionally yield current status or just return
-         # yield f"event: status\ndata: {json.dumps({'message': f'Preparation status: {prep_data.get('status')}'})}\n\n"
+         logging.warning(f"[{prep_id}] Prep already running/finished (Status: {prep_data.get('status')}). Aborting.")
          return
 
     prep_data['status'] = 'preparing'
-    # --- Temporary file paths - LOCAL TO THIS FUNCTION, cleaned up in except block ---
     temp_decompressed_path_local = None
     temp_reassembled_zip_path_local = None
-    temp_final_file_path_local = None # This will hold the final result path
-    zip_file_handle = None # Ensure cleanup
+    temp_final_file_path_local = None
+    zip_file_handle = None
+    # --- Variables for split file progress tracking ---
+    start_time_part_fetch = None
+    bytes_fetched_from_tg = 0
+    total_bytes_to_fetch = 0 # Will be calculated for split files
 
     try:
-        logging.info(f"[{prep_id}] Finding metadata for User='{username}', File='{filename}'")
+        # Yield initial status immediately
+        yield f"event: filename\ndata: {json.dumps({'filename': filename})}\n\n" # Send initial filename
         yield f"event: status\ndata: {json.dumps({'message': 'Fetching file info...'})}\n\n"
-        time.sleep(0.1) # Tiny delay to allow UI update
+        yield f"event: progress\ndata: {json.dumps({'percentage': 0, 'processedUnits': 0, 'totalUnits': 1, 'speedMBps': 0, 'etaFormatted': '--:--'})}\n\n" # Initial 0% progress
+        time.sleep(0.1)
 
         metadata = load_metadata()
         user_files = metadata.get(username, [])
         file_info = next((f for f in user_files if f.get('original_filename') == filename), None)
 
-        if not file_info:
-            raise FileNotFoundError(f"File '{filename}' not found for user '{username}' in metadata.")
+        if not file_info: raise FileNotFoundError(f"File '{filename}' not found.")
 
         is_split = file_info.get('is_split', False)
         is_compressed = file_info.get('is_compressed', False)
-        original_filename = file_info.get('original_filename') # Should match 'filename' arg
+        original_filename = file_info.get('original_filename')
+        # Update filename if different (unlikely but possible)
+        if original_filename != filename:
+             yield f"event: filename\ndata: {json.dumps({'filename': original_filename})}\n\n"
 
 
         if not is_split:
             # --- Single File Download Prep ---
             logging.info(f"[{prep_id}] Prep non-split download for '{original_filename}'")
-            yield f"event: status\ndata: {json.dumps({'message': 'Downloading from source...'})}\n\n"
-            telegram_file_id = file_info.get('telegram_file_id')
-            sent_filename = file_info.get('sent_filename') # e.g., file.zip
-            if not telegram_file_id: raise ValueError("Missing 'telegram_file_id' in metadata")
+            total_units = 1 # Single operation
+            processed_units = 0
 
+            yield f"event: progress\ndata: {json.dumps({'percentage': 10, 'processedUnits': processed_units, 'totalUnits': total_units, 'speedMBps': 0, 'etaFormatted': '--:--'})}\n\n"
+            yield f"event: status\ndata: {json.dumps({'message': 'Downloading from source...'})}\n\n"
+
+            telegram_file_id = file_info.get('telegram_file_id')
+            sent_filename = file_info.get('sent_filename')
+            if not telegram_file_id: raise ValueError("Missing 'telegram_file_id'")
+
+            # Simulate download time - In reality, this happens here
+            # For UI demo, let's estimate progress
+            start_dl_time = time.time()
             file_content_bytes, error_msg = download_telegram_file_content(telegram_file_id)
+            dl_duration = time.time() - start_dl_time
+            dl_speed = (len(file_content_bytes) / (1024*1024) / dl_duration) if dl_duration > 0 and file_content_bytes else 0
+
             if error_msg: raise ValueError(f"Failed download from TG: {error_msg}")
             if not file_content_bytes: raise ValueError("Downloaded empty content from TG.")
-            logging.info(f"[{prep_id}] Downloaded TG content for '{sent_filename}', size: {len(file_content_bytes)} bytes.")
+            logging.info(f"[{prep_id}] Downloaded TG content size: {len(file_content_bytes)} bytes in {dl_duration:.2f}s.")
+            processed_units = 0.5 # Mark download as half the work
+
+            yield f"event: progress\ndata: {json.dumps({'percentage': 50, 'processedUnits': f'{processed_units:.1f}', 'totalUnits': total_units, 'speedMBps': dl_speed, 'etaFormatted': '--:--'})}\n\n"
 
             if is_compressed:
-                yield f"event: status\ndata: {json.dumps({'message': 'Decompressing file...'})}\n\n"
+                yield f"event: status\ndata: {json.dumps({'message': 'Decompressing...'})}\n\n"
                 logging.info(f"[{prep_id}] Decompressing single file '{sent_filename}'...")
                 try:
                     zip_buffer = io.BytesIO(file_content_bytes)
                     zip_file_handle = zipfile.ZipFile(zip_buffer, 'r')
                     file_list_in_zip = zip_file_handle.namelist()
-                    if not file_list_in_zip: raise ValueError("Downloaded zip is empty.")
-
-                    # Determine the correct filename inside the zip
+                    if not file_list_in_zip: raise ValueError("Zip empty.")
                     inner_filename = original_filename
                     if original_filename not in file_list_in_zip:
-                         # If the exact match isn't found, check if there's only one file
-                         if len(file_list_in_zip) == 1:
-                             inner_filename = file_list_in_zip[0]
-                             logging.warning(f"[{prep_id}] Filename inside zip ('{inner_filename}') doesn't exactly match original ('{original_filename}'). Using the only file found.")
-                         else:
-                             # If multiple files and no exact match, it's ambiguous
-                             raise ValueError(f"Cannot find '{original_filename}' inside the downloaded zip file. Contents: {file_list_in_zip}")
-                    
-                    # Create temp file *for the final output* using NamedTemporaryFile
-                    # delete=False is crucial so the file persists after the 'with' block
-                    # Using a context manager for the file handle is safer
+                         if len(file_list_in_zip) == 1: inner_filename = file_list_in_zip[0]
+                         else: raise ValueError(f"Cannot find '{original_filename}' in zip.")
+
                     with tempfile.NamedTemporaryFile(delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"dl_decomp_{prep_id}_") as tf:
-                        temp_decompressed_path_local = tf.name # Get path for later use
-                        logging.info(f"[{prep_id}] Extracting '{inner_filename}' to temp file: {temp_decompressed_path_local}")
+                        temp_decompressed_path_local = tf.name
                         with zip_file_handle.open(inner_filename, 'r') as inner_file_stream:
-                            shutil.copyfileobj(inner_file_stream, tf) # Efficiently copy stream to file
-
-                    # Now tf handle is closed, but file exists because delete=False
-                    logging.info(f"[{prep_id}] Extracted to {temp_decompressed_path_local}, size: {os.path.getsize(temp_decompressed_path_local)}")
-                    temp_final_file_path_local = temp_decompressed_path_local # This is the final file
+                            shutil.copyfileobj(inner_file_stream, tf)
+                    temp_final_file_path_local = temp_decompressed_path_local
                 finally:
-                    # Ensure zip handle is closed even if extraction fails
-                    if zip_file_handle: zip_file_handle.close()
-                    zip_file_handle = None # Reset handle
-
+                    if zip_file_handle: zip_file_handle.close(); zip_file_handle = None
             else: # Non-split, Non-compressed
-                logging.info(f"[{prep_id}] Writing non-compressed single file '{sent_filename}' to temp.")
+                yield f"event: status\ndata: {json.dumps({'message': 'Writing temporary file...'})}\n\n"
                 with tempfile.NamedTemporaryFile(delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"dl_nocomp_{prep_id}_") as tf:
                     temp_decompressed_path_local = tf.name
                     tf.write(file_content_bytes)
-                # File handle closed, file persists
-                temp_final_file_path_local = temp_decompressed_path_local # This is the final file
+                temp_final_file_path_local = temp_decompressed_path_local
+            processed_units = 1 # Mark as complete
+            yield f"event: progress\ndata: {json.dumps({'percentage': 100, 'processedUnits': processed_units, 'totalUnits': total_units, 'speedMBps': 0, 'etaFormatted': '00:00'})}\n\n"
+
 
         else: # is_split is True
             # --- Split File Download Prep ---
             logging.info(f"[{prep_id}] Prep SPLIT download for '{original_filename}'")
             chunks_metadata = file_info.get('chunks', [])
-            if not chunks_metadata: raise ValueError("Missing 'chunks' list for split file.")
+            if not chunks_metadata: raise ValueError("Missing 'chunks' list.")
             chunks_metadata.sort(key=lambda c: c.get('part_number', 0))
             num_chunks_total = len(chunks_metadata)
+            total_units = num_chunks_total # Total units are the number of chunks
+
+             # Estimate total bytes to fetch (approximate, based on metadata if available)
+            total_bytes_to_fetch = file_info.get('compressed_total_size', 0) # Use compressed size if known
+            if total_bytes_to_fetch == 0: # Fallback if size not in metadata
+                 logging.warning(f"[{prep_id}] Compressed size not found in metadata, cannot estimate fetch speed/ETA accurately.")
+
 
             yield f"event: status\ndata: {json.dumps({'message': 'Reassembling file parts...'})}\n\n"
+            yield f"event: progress\ndata: {json.dumps({'percentage': 0, 'processedUnits': 0, 'totalUnits': total_units, 'speedMBps': 0, 'etaFormatted': '--:--'})}\n\n"
 
-            # Create temp file for reassembly result
             with tempfile.NamedTemporaryFile(suffix=".zip.tmp", delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"dl_reass_{prep_id}_") as tf_reassemble:
                 temp_reassembled_zip_path_local = tf_reassemble.name
                 logging.info(f"[{prep_id}] Created temp file for reassembly: {temp_reassembled_zip_path_local}")
-                total_bytes_written = 0
+                start_time_part_fetch = time.time() # Start timer for fetching
+                bytes_fetched_from_tg = 0
+
                 for i, chunk_info in enumerate(chunks_metadata):
                     part_num = chunk_info.get('part_number')
                     chunk_file_id = chunk_info.get('file_id')
                     if not chunk_file_id: raise ValueError(f"Tracking info missing for part {part_num}.")
 
-                    # Yield status update for fetching each part
                     yield f"event: status\ndata: {json.dumps({'message': f'Fetching part {part_num}/{num_chunks_total}...'})}\n\n"
                     logging.debug(f"[{prep_id}] Downloading chunk {part_num}/{num_chunks_total}...")
 
@@ -1210,94 +1221,96 @@ def _prepare_download_and_generate_updates(prep_id, username, filename):
                     if error_msg: raise ValueError(f"Error downloading part {part_num}: {error_msg}")
                     if not chunk_content_bytes: raise ValueError(f"Downloaded part {part_num} was empty.")
                     tf_reassemble.write(chunk_content_bytes)
-                    total_bytes_written += len(chunk_content_bytes)
-            # Reassembly file handle closed, file persists
-            logging.info(f"[{prep_id}] Finished reassembling to '{temp_reassembled_zip_path_local}'. Size: {total_bytes_written} bytes.")
+
+                    bytes_fetched_from_tg += len(chunk_content_bytes)
+                    processed_units = i + 1
+
+                    # --- Calculate and Yield PROGRESS ---
+                    percentage = (processed_units / total_units) * 100
+                    current_speed_mbps = 0
+                    eta_formatted = "--:--"
+                    elapsed_time = time.time() - start_time_part_fetch
+                    if elapsed_time > 0 and bytes_fetched_from_tg > 0:
+                         average_speed_bps = bytes_fetched_from_tg / elapsed_time
+                         current_speed_mbps = average_speed_bps / (1024*1024)
+                         # Estimate ETA only if total size is known
+                         if total_bytes_to_fetch > 0 and average_speed_bps > 0:
+                              remaining_bytes = total_bytes_to_fetch - bytes_fetched_from_tg
+                              if remaining_bytes > 0:
+                                   eta_seconds = remaining_bytes / average_speed_bps
+                                   eta_formatted = format_time(eta_seconds)
+                              else:
+                                   eta_formatted = "00:00" # Fetching done
+                    
+                    yield f"event: progress\ndata: {json.dumps({'percentage': percentage, 'processedUnits': processed_units, 'totalUnits': total_units, 'speedMBps': current_speed_mbps, 'etaFormatted': eta_formatted})}\n\n"
+                    # --- End Progress Yield ---
+
+            logging.info(f"[{prep_id}] Finished reassembling. Total bytes: {bytes_fetched_from_tg}.")
+            # Ensure progress reflects completion of reassembly
+            yield f"event: progress\ndata: {json.dumps({'percentage': 100, 'processedUnits': total_units, 'totalUnits': total_units, 'speedMBps': current_speed_mbps, 'etaFormatted': '00:00'})}\n\n"
+
 
             if is_compressed:
-                yield f"event: status\ndata: {json.dumps({'message': 'Decompressing reassembled file...'})}\n\n"
-                logging.info(f"[{prep_id}] Decompressing reassembled file '{temp_reassembled_zip_path_local}'...")
+                yield f"event: status\ndata: {json.dumps({'message': 'Decompressing...'})}\n\n"
+                # Keep progress at 100% but change status
+                yield f"event: progress\ndata: {json.dumps({'percentage': 100, 'processedUnits': total_units, 'totalUnits': total_units, 'speedMBps': 0, 'etaFormatted': '--:--'})}\n\n"
+                logging.info(f"[{prep_id}] Decompressing reassembled file...")
                 try:
                     zip_file_handle = zipfile.ZipFile(temp_reassembled_zip_path_local, 'r')
                     file_list_in_zip = zip_file_handle.namelist()
-                    if not file_list_in_zip: raise ValueError("Reassembled zip is empty.")
-
-                    # Determine the correct filename inside the zip
+                    if not file_list_in_zip: raise ValueError("Reassembled zip empty.")
                     inner_filename = original_filename
                     if original_filename not in file_list_in_zip:
-                         if len(file_list_in_zip) == 1:
-                             inner_filename = file_list_in_zip[0]
-                             logging.warning(f"[{prep_id}] Filename inside reassembled zip ('{inner_filename}') doesn't match original ('{original_filename}'). Using the only file found.")
-                         else:
-                             raise ValueError(f"Cannot find '{original_filename}' inside the reassembled zip file. Contents: {file_list_in_zip}")
+                         if len(file_list_in_zip) == 1: inner_filename = file_list_in_zip[0]
+                         else: raise ValueError(f"Cannot find '{original_filename}' in zip.")
 
-                    # Create the *final* temp file for the decompressed output
                     with tempfile.NamedTemporaryFile(delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"dl_final_{prep_id}_") as tf_final:
                         temp_decompressed_path_local = tf_final.name
-                        logging.info(f"[{prep_id}] Extracting '{inner_filename}' from reassembled zip to final temp: {temp_decompressed_path_local}")
                         with zip_file_handle.open(inner_filename, 'r') as inner_file_stream:
                             shutil.copyfileobj(inner_file_stream, tf_final)
-                    # Final file handle closed, file persists
-                    logging.info(f"[{prep_id}] Extracted final file to {temp_decompressed_path_local}, size: {os.path.getsize(temp_decompressed_path_local)}")
-                    temp_final_file_path_local = temp_decompressed_path_local # This is the final file
+                    temp_final_file_path_local = temp_decompressed_path_local
                 finally:
-                     # Ensure zip handle is closed
-                     if zip_file_handle: zip_file_handle.close()
-                     zip_file_handle = None # Reset
-
+                     if zip_file_handle: zip_file_handle.close(); zip_file_handle = None
             else: # Split, Non-compressed
-                 logging.info(f"[{prep_id}] Split file was not compressed. Using reassembled file directly.")
-                 # The reassembled file *is* the final file
+                 logging.info(f"[{prep_id}] Split file not compressed. Using reassembled.")
                  temp_final_file_path_local = temp_reassembled_zip_path_local
-                 # Mark intermediate reassembled path as None so it's not deleted in error cleanup
                  temp_reassembled_zip_path_local = None
 
         # --- Preparation Complete ---
         if not temp_final_file_path_local or not os.path.exists(temp_final_file_path_local):
-            # This should ideally not happen if logic above is correct
-            raise RuntimeError("Internal error: Failed to produce the final temporary file.")
+            raise RuntimeError("Failed to produce final temp file.")
 
         final_size = os.path.getsize(temp_final_file_path_local)
         logging.info(f"[{prep_id}] Final prepared file: '{temp_final_file_path_local}', Size: {final_size}")
 
-        # Store final path and size in global dict for the next step ('serve-temp-file')
         prep_data['final_temp_file_path'] = temp_final_file_path_local
         prep_data['final_file_size'] = final_size
         prep_data['status'] = 'ready'
 
-        # Yield the 'ready' event with the prep_id (which acts as the temp file ID)
+        # Yield final status before ready
+        yield f"event: status\ndata: {json.dumps({'message': 'Preparation complete!'})}\n\n"
+        yield f"event: progress\ndata: {json.dumps({'percentage': 100, 'processedUnits': prep_data.get('totalUnits', 1), 'totalUnits': prep_data.get('totalUnits', 1), 'speedMBps': 0, 'etaFormatted': '00:00'})}\n\n"
+
         yield f"event: ready\ndata: {json.dumps({'temp_file_id': prep_id, 'final_filename': original_filename})}\n\n"
         logging.info(f"[{prep_id}] Preparation complete. Sent 'ready' event.")
 
-        # --- Cleanup intermediate reassembled file if it exists and is different from final ---
         if temp_reassembled_zip_path_local and os.path.exists(temp_reassembled_zip_path_local):
             logging.info(f"[{prep_id}] Cleaning up intermediate reassembled file: {temp_reassembled_zip_path_local}")
-            try:
-                os.remove(temp_reassembled_zip_path_local)
-            except OSError as e:
-                logging.error(f"[{prep_id}] Error deleting intermediate reassembled file '{temp_reassembled_zip_path_local}': {e}")
-
+            try: os.remove(temp_reassembled_zip_path_local)
+            except OSError as e: logging.error(f"[{prep_id}] Error deleting intermediate file: {e}")
 
     except Exception as e:
         error_message = f"Download preparation failed: {str(e) or type(e).__name__}"
         logging.error(f"[{prep_id}] {error_message}", exc_info=True)
         yield f"event: error\ndata: {json.dumps({'message': error_message})}\n\n"
-        # Update global status
-        prep_data['status'] = 'error'
-        prep_data['error'] = error_message
-        # --- Cleanup ALL potentially created temp files immediately on error during prep ---
-        logging.info(f"[{prep_id}] Cleaning up temp files due to preparation error.")
+        prep_data['status'] = 'error'; prep_data['error'] = error_message
+        logging.info(f"[{prep_id}] Cleaning up temp files due to prep error.")
         paths_to_clean = [p for p in [temp_decompressed_path_local, temp_reassembled_zip_path_local, temp_final_file_path_local] if p]
-        for path_to_delete in list(dict.fromkeys(paths_to_clean)): # Unique paths
+        for path_to_delete in list(dict.fromkeys(paths_to_clean)):
             if path_to_delete and os.path.exists(path_to_delete):
-                try:
-                    os.remove(path_to_delete)
-                    logging.info(f"[{prep_id}] Cleaned (error): {path_to_delete}")
-                except OSError as err:
-                    logging.error(f"[{prep_id}] Error deleting temp file {path_to_delete} on error: {err}")
+                try: os.remove(path_to_delete); logging.info(f"[{prep_id}] Cleaned (error): {path_to_delete}")
+                except OSError as err: logging.error(f"[{prep_id}] Error deleting temp file {path_to_delete} on error: {err}")
 
-    # Note: Successful completion should NOT clean up the *final* temp file here.
-    # It needs to persist until the '/serve-temp-file' route streams it.
     logging.info(f"[{prep_id}] Generator finished with status: {prep_data.get('status')}")
 
 @app.route('/files/<username>', methods=['GET'])

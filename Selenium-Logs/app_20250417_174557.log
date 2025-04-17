@@ -1,0 +1,261 @@
+2025-04-17 17:45:57,093 - INFO - [<module>] - Logging configured. Log file: Selenium-Logs\app_20250417_174557.log
+2025-04-17 17:45:57,094 - INFO - [<module>] - Flask application initialized.
+2025-04-17 17:45:57,098 - INFO - [<module>] - Starting Flask development server...
+2025-04-17 17:45:57,130 - WARNING - [_log] -  * Debugger is active!
+2025-04-17 17:45:57,137 - INFO - [_log] -  * Debugger PIN: 107-410-311
+2025-04-17 17:45:59,337 - INFO - [index] - Serving index page.
+2025-04-17 17:45:59,350 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:45:59] "GET / HTTP/1.1" 200 -
+2025-04-17 17:45:59,371 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:45:59] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-17 17:46:03,293 - INFO - [list_user_files] - Request received to list files for user: 'Bonniee'
+2025-04-17 17:46:03,295 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-17 17:46:03,296 - INFO - [list_user_files] - Found 3 file records for user 'Bonniee'.
+2025-04-17 17:46:03,297 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:46:03] "GET /files/Bonniee HTTP/1.1" 200 -
+2025-04-17 17:47:15,615 - INFO - [index] - Serving index page.
+2025-04-17 17:47:15,668 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:47:15] "GET / HTTP/1.1" 200 -
+2025-04-17 17:47:15,683 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:47:15] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-17 17:47:18,613 - INFO - [list_user_files] - Request received to list files for user: 'Bonniee'
+2025-04-17 17:47:18,614 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-17 17:47:18,615 - INFO - [list_user_files] - Found 3 file records for user 'Bonniee'.
+2025-04-17 17:47:18,616 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:47:18] "GET /files/Bonniee HTTP/1.1" 200 -
+2025-04-17 17:47:20,159 - INFO - [prepare_download_stream] - [67a7fbd8-9716-4f3d-9c3c-261740544cdb] SSE connection request for download prep: User='Bonniee', File='log.txt'
+2025-04-17 17:47:20,160 - INFO - [_prepare_download_and_generate_updates] - [67a7fbd8-9716-4f3d-9c3c-261740544cdb] Starting download preparation generator...
+2025-04-17 17:47:20,161 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:47:20] "GET /prepare-download/Bonniee/log.txt HTTP/1.1" 200 -
+2025-04-17 17:47:20,263 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-17 17:47:20,263 - INFO - [_prepare_download_and_generate_updates] - [67a7fbd8-9716-4f3d-9c3c-261740544cdb] Prep non-split download for 'log.txt'
+2025-04-17 17:47:20,264 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAP_aAABpCmzERSvjtFo0KStbi05mpsqAAIfFgACEK4BVMJwsishiJGzNgQ
+2025-04-17 17:47:21,162 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_112.zip
+2025-04-17 17:47:21,163 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_112.zip
+2025-04-17 17:47:21,684 - INFO - [download_telegram_file_content] - Successfully downloaded 4496 bytes for file_id BQACAgUAAxkDAAP_aAABpCmzERSvjtFo0KStbi05mpsqAAIfFgACEK4BVMJwsishiJGzNgQ.
+2025-04-17 17:47:21,684 - INFO - [_prepare_download_and_generate_updates] - [67a7fbd8-9716-4f3d-9c3c-261740544cdb] Downloaded TG content size: 4496 bytes in 1.42s.
+2025-04-17 17:47:21,685 - INFO - [_prepare_download_and_generate_updates] - [67a7fbd8-9716-4f3d-9c3c-261740544cdb] Decompressing single file 'log.txt.zip'...
+2025-04-17 17:47:21,692 - INFO - [_prepare_download_and_generate_updates] - [67a7fbd8-9716-4f3d-9c3c-261740544cdb] Final prepared file: 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_67a7fbd8-9716-4f3d-9c3c-261740544cdb_2_g8aeu8', Size: 23753
+2025-04-17 17:47:21,693 - INFO - [_prepare_download_and_generate_updates] - [67a7fbd8-9716-4f3d-9c3c-261740544cdb] Preparation complete. Sent 'ready' event.
+2025-04-17 17:47:21,699 - INFO - [_prepare_download_and_generate_updates] - [67a7fbd8-9716-4f3d-9c3c-261740544cdb] Generator finished with status: ready
+2025-04-17 17:47:21,706 - INFO - [serve_temp_file] - Request to serve temporary download file for ID: 67a7fbd8-9716-4f3d-9c3c-261740544cdb, Filename: log.txt
+2025-04-17 17:47:21,706 - INFO - [serve_temp_file] - [67a7fbd8-9716-4f3d-9c3c-261740544cdb] Preparing streaming response for 'log.txt' from 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_67a7fbd8-9716-4f3d-9c3c-261740544cdb_2_g8aeu8'
+2025-04-17 17:47:21,735 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:47:21] "GET /serve-temp-file/67a7fbd8-9716-4f3d-9c3c-261740544cdb/log.txt HTTP/1.1" 200 -
+2025-04-17 17:47:21,736 - INFO - [generate_and_cleanup] - [67a7fbd8-9716-4f3d-9c3c-261740544cdb] Finished streaming file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_67a7fbd8-9716-4f3d-9c3c-261740544cdb_2_g8aeu8
+2025-04-17 17:47:21,736 - INFO - [generate_and_cleanup] - [67a7fbd8-9716-4f3d-9c3c-261740544cdb] Cleaning up final temp file post-streaming: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_67a7fbd8-9716-4f3d-9c3c-261740544cdb_2_g8aeu8
+2025-04-17 17:47:21,737 - INFO - [generate_and_cleanup] - [67a7fbd8-9716-4f3d-9c3c-261740544cdb] Successfully deleted final temp file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_67a7fbd8-9716-4f3d-9c3c-261740544cdb_2_g8aeu8
+2025-04-17 17:48:09,670 - INFO - [prepare_download_stream] - [b4abc9b8-4007-4211-aa8d-6a765e9b142d] SSE connection request for download prep: User='Bonniee', File='log.txt'
+2025-04-17 17:48:09,671 - INFO - [_prepare_download_and_generate_updates] - [b4abc9b8-4007-4211-aa8d-6a765e9b142d] Starting download preparation generator...
+2025-04-17 17:48:09,671 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:48:09] "GET /prepare-download/Bonniee/log.txt HTTP/1.1" 200 -
+2025-04-17 17:48:09,774 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-17 17:48:09,774 - INFO - [_prepare_download_and_generate_updates] - [b4abc9b8-4007-4211-aa8d-6a765e9b142d] Prep non-split download for 'log.txt'
+2025-04-17 17:48:09,775 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAP_aAABpCmzERSvjtFo0KStbi05mpsqAAIfFgACEK4BVMJwsishiJGzNgQ
+2025-04-17 17:48:10,335 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_112.zip
+2025-04-17 17:48:10,336 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_112.zip
+2025-04-17 17:48:10,807 - INFO - [download_telegram_file_content] - Successfully downloaded 4496 bytes for file_id BQACAgUAAxkDAAP_aAABpCmzERSvjtFo0KStbi05mpsqAAIfFgACEK4BVMJwsishiJGzNgQ.
+2025-04-17 17:48:10,808 - INFO - [_prepare_download_and_generate_updates] - [b4abc9b8-4007-4211-aa8d-6a765e9b142d] Downloaded TG content size: 4496 bytes in 1.03s.
+2025-04-17 17:48:10,808 - INFO - [_prepare_download_and_generate_updates] - [b4abc9b8-4007-4211-aa8d-6a765e9b142d] Decompressing single file 'log.txt.zip'...
+2025-04-17 17:48:10,810 - INFO - [_prepare_download_and_generate_updates] - [b4abc9b8-4007-4211-aa8d-6a765e9b142d] Final prepared file: 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_b4abc9b8-4007-4211-aa8d-6a765e9b142d_ykf7syzk', Size: 23753
+2025-04-17 17:48:10,811 - INFO - [_prepare_download_and_generate_updates] - [b4abc9b8-4007-4211-aa8d-6a765e9b142d] Preparation complete. Sent 'ready' event.
+2025-04-17 17:48:10,813 - INFO - [_prepare_download_and_generate_updates] - [b4abc9b8-4007-4211-aa8d-6a765e9b142d] Generator finished with status: ready
+2025-04-17 17:48:10,826 - INFO - [serve_temp_file] - Request to serve temporary download file for ID: b4abc9b8-4007-4211-aa8d-6a765e9b142d, Filename: log.txt
+2025-04-17 17:48:10,826 - INFO - [serve_temp_file] - [b4abc9b8-4007-4211-aa8d-6a765e9b142d] Preparing streaming response for 'log.txt' from 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_b4abc9b8-4007-4211-aa8d-6a765e9b142d_ykf7syzk'
+2025-04-17 17:48:10,844 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:48:10] "GET /serve-temp-file/b4abc9b8-4007-4211-aa8d-6a765e9b142d/log.txt HTTP/1.1" 200 -
+2025-04-17 17:48:10,844 - INFO - [generate_and_cleanup] - [b4abc9b8-4007-4211-aa8d-6a765e9b142d] Finished streaming file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_b4abc9b8-4007-4211-aa8d-6a765e9b142d_ykf7syzk
+2025-04-17 17:48:10,845 - INFO - [generate_and_cleanup] - [b4abc9b8-4007-4211-aa8d-6a765e9b142d] Cleaning up final temp file post-streaming: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_b4abc9b8-4007-4211-aa8d-6a765e9b142d_ykf7syzk
+2025-04-17 17:48:10,846 - INFO - [generate_and_cleanup] - [b4abc9b8-4007-4211-aa8d-6a765e9b142d] Successfully deleted final temp file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_b4abc9b8-4007-4211-aa8d-6a765e9b142d_ykf7syzk
+2025-04-17 17:48:39,019 - INFO - [prepare_download_stream] - [80e8be48-c40a-43bf-a40d-17b1bf91dd76] SSE connection request for download prep: User='Bonniee', File='log.txt'
+2025-04-17 17:48:39,020 - INFO - [_prepare_download_and_generate_updates] - [80e8be48-c40a-43bf-a40d-17b1bf91dd76] Starting download preparation generator...
+2025-04-17 17:48:39,020 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:48:39] "GET /prepare-download/Bonniee/log.txt HTTP/1.1" 200 -
+2025-04-17 17:48:39,123 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-17 17:48:39,123 - INFO - [_prepare_download_and_generate_updates] - [80e8be48-c40a-43bf-a40d-17b1bf91dd76] Prep non-split download for 'log.txt'
+2025-04-17 17:48:39,124 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAP_aAABpCmzERSvjtFo0KStbi05mpsqAAIfFgACEK4BVMJwsishiJGzNgQ
+2025-04-17 17:48:39,666 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_112.zip
+2025-04-17 17:48:39,666 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_112.zip
+2025-04-17 17:48:40,137 - INFO - [download_telegram_file_content] - Successfully downloaded 4496 bytes for file_id BQACAgUAAxkDAAP_aAABpCmzERSvjtFo0KStbi05mpsqAAIfFgACEK4BVMJwsishiJGzNgQ.
+2025-04-17 17:48:40,140 - INFO - [_prepare_download_and_generate_updates] - [80e8be48-c40a-43bf-a40d-17b1bf91dd76] Downloaded TG content size: 4496 bytes in 1.02s.
+2025-04-17 17:48:40,143 - INFO - [_prepare_download_and_generate_updates] - [80e8be48-c40a-43bf-a40d-17b1bf91dd76] Decompressing single file 'log.txt.zip'...
+2025-04-17 17:48:40,144 - INFO - [_prepare_download_and_generate_updates] - [80e8be48-c40a-43bf-a40d-17b1bf91dd76] Final prepared file: 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_80e8be48-c40a-43bf-a40d-17b1bf91dd76_gq72r72b', Size: 23753
+2025-04-17 17:48:40,145 - INFO - [_prepare_download_and_generate_updates] - [80e8be48-c40a-43bf-a40d-17b1bf91dd76] Preparation complete. Sent 'ready' event.
+2025-04-17 17:48:40,147 - INFO - [_prepare_download_and_generate_updates] - [80e8be48-c40a-43bf-a40d-17b1bf91dd76] Generator finished with status: ready
+2025-04-17 17:48:40,163 - INFO - [serve_temp_file] - Request to serve temporary download file for ID: 80e8be48-c40a-43bf-a40d-17b1bf91dd76, Filename: log.txt
+2025-04-17 17:48:40,164 - INFO - [serve_temp_file] - [80e8be48-c40a-43bf-a40d-17b1bf91dd76] Preparing streaming response for 'log.txt' from 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_80e8be48-c40a-43bf-a40d-17b1bf91dd76_gq72r72b'
+2025-04-17 17:48:40,245 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:48:40] "GET /serve-temp-file/80e8be48-c40a-43bf-a40d-17b1bf91dd76/log.txt HTTP/1.1" 200 -
+2025-04-17 17:48:40,248 - INFO - [generate_and_cleanup] - [80e8be48-c40a-43bf-a40d-17b1bf91dd76] Finished streaming file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_80e8be48-c40a-43bf-a40d-17b1bf91dd76_gq72r72b
+2025-04-17 17:48:40,261 - INFO - [generate_and_cleanup] - [80e8be48-c40a-43bf-a40d-17b1bf91dd76] Cleaning up final temp file post-streaming: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_80e8be48-c40a-43bf-a40d-17b1bf91dd76_gq72r72b
+2025-04-17 17:48:40,274 - INFO - [generate_and_cleanup] - [80e8be48-c40a-43bf-a40d-17b1bf91dd76] Successfully deleted final temp file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_80e8be48-c40a-43bf-a40d-17b1bf91dd76_gq72r72b
+2025-04-17 17:49:12,445 - INFO - [index] - Serving index page.
+2025-04-17 17:49:12,492 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:49:12] "GET / HTTP/1.1" 200 -
+2025-04-17 17:49:12,507 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:49:12] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-17 17:49:15,580 - INFO - [list_user_files] - Request received to list files for user: 'Bonniee'
+2025-04-17 17:49:15,582 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-17 17:49:15,582 - INFO - [list_user_files] - Found 3 file records for user 'Bonniee'.
+2025-04-17 17:49:15,583 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:49:15] "GET /files/Bonniee HTTP/1.1" 200 -
+2025-04-17 17:50:25,351 - INFO - [list_user_files] - Request received to list files for user: 'Octopus'
+2025-04-17 17:50:25,353 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-17 17:50:25,354 - INFO - [list_user_files] - Found 18 file records for user 'Octopus'.
+2025-04-17 17:50:25,355 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:50:25] "GET /files/Octopus HTTP/1.1" 200 -
+2025-04-17 17:50:34,401 - INFO - [index] - Serving index page.
+2025-04-17 17:50:34,448 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:50:34] "GET / HTTP/1.1" 200 -
+2025-04-17 17:50:34,461 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:50:34] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-17 17:50:36,581 - INFO - [list_user_files] - Request received to list files for user: 'Octopus'
+2025-04-17 17:50:36,582 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-17 17:50:36,584 - INFO - [list_user_files] - Found 18 file records for user 'Octopus'.
+2025-04-17 17:50:36,586 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:50:36] "GET /files/Octopus HTTP/1.1" 200 -
+2025-04-17 17:50:38,957 - INFO - [prepare_download_stream] - [638fdc3a-64e8-4148-95b9-95ed3e6d863f] SSE connection request for download prep: User='Octopus', File='memtest.exe.mui'
+2025-04-17 17:50:38,957 - INFO - [_prepare_download_and_generate_updates] - [638fdc3a-64e8-4148-95b9-95ed3e6d863f] Starting download preparation generator...
+2025-04-17 17:50:38,958 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:50:38] "GET /prepare-download/Octopus/memtest.exe.mui HTTP/1.1" 200 -
+2025-04-17 17:50:39,061 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-17 17:50:39,061 - INFO - [_prepare_download_and_generate_updates] - [638fdc3a-64e8-4148-95b9-95ed3e6d863f] Prep non-split download for 'memtest.exe.mui'
+2025-04-17 17:50:39,062 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIBD2gAAb2n7zqvp1YIzw7fwLtjVRtl9AACXBkAAhCuCVR_SPiDNXSnKDYE
+2025-04-17 17:50:40,076 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_113.zip
+2025-04-17 17:50:40,077 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_113.zip
+2025-04-17 17:50:40,727 - INFO - [download_telegram_file_content] - Successfully downloaded 12143 bytes for file_id BQACAgUAAxkDAAIBD2gAAb2n7zqvp1YIzw7fwLtjVRtl9AACXBkAAhCuCVR_SPiDNXSnKDYE.
+2025-04-17 17:50:40,728 - INFO - [_prepare_download_and_generate_updates] - [638fdc3a-64e8-4148-95b9-95ed3e6d863f] Downloaded TG content size: 12143 bytes in 1.67s.
+2025-04-17 17:50:40,728 - INFO - [_prepare_download_and_generate_updates] - [638fdc3a-64e8-4148-95b9-95ed3e6d863f] Decompressing single file 'memtest.exe.mui.zip'...
+2025-04-17 17:50:40,730 - INFO - [_prepare_download_and_generate_updates] - [638fdc3a-64e8-4148-95b9-95ed3e6d863f] Final prepared file: 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_638fdc3a-64e8-4148-95b9-95ed3e6d863f_9u4p_s8k', Size: 45072
+2025-04-17 17:50:40,730 - INFO - [_prepare_download_and_generate_updates] - [638fdc3a-64e8-4148-95b9-95ed3e6d863f] Preparation complete. Sent 'ready' event.
+2025-04-17 17:50:40,737 - INFO - [_prepare_download_and_generate_updates] - [638fdc3a-64e8-4148-95b9-95ed3e6d863f] Generator finished with status: ready
+2025-04-17 17:50:40,741 - INFO - [serve_temp_file] - Request to serve temporary download file for ID: 638fdc3a-64e8-4148-95b9-95ed3e6d863f, Filename: memtest.exe.mui
+2025-04-17 17:50:40,742 - INFO - [serve_temp_file] - [638fdc3a-64e8-4148-95b9-95ed3e6d863f] Preparing streaming response for 'memtest.exe.mui' from 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_638fdc3a-64e8-4148-95b9-95ed3e6d863f_9u4p_s8k'
+2025-04-17 17:50:40,937 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:50:40] "GET /serve-temp-file/638fdc3a-64e8-4148-95b9-95ed3e6d863f/memtest.exe.mui HTTP/1.1" 200 -
+2025-04-17 17:50:40,938 - INFO - [generate_and_cleanup] - [638fdc3a-64e8-4148-95b9-95ed3e6d863f] Finished streaming file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_638fdc3a-64e8-4148-95b9-95ed3e6d863f_9u4p_s8k
+2025-04-17 17:50:40,939 - INFO - [generate_and_cleanup] - [638fdc3a-64e8-4148-95b9-95ed3e6d863f] Cleaning up final temp file post-streaming: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_638fdc3a-64e8-4148-95b9-95ed3e6d863f_9u4p_s8k
+2025-04-17 17:50:40,939 - INFO - [generate_and_cleanup] - [638fdc3a-64e8-4148-95b9-95ed3e6d863f] Successfully deleted final temp file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_638fdc3a-64e8-4148-95b9-95ed3e6d863f_9u4p_s8k
+2025-04-17 17:57:06,389 - INFO - [index] - Serving index page.
+2025-04-17 17:57:06,436 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:57:06] "GET / HTTP/1.1" 200 -
+2025-04-17 17:57:06,453 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:57:06] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-17 17:57:08,873 - INFO - [list_user_files] - Request received to list files for user: 'Octopus'
+2025-04-17 17:57:08,875 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-17 17:57:08,875 - INFO - [list_user_files] - Found 18 file records for user 'Octopus'.
+2025-04-17 17:57:08,877 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:57:08] "GET /files/Octopus HTTP/1.1" 200 -
+2025-04-17 17:57:11,647 - INFO - [prepare_download_stream] - [59a477be-7ad2-4960-9e66-fbaeac12838f] SSE connection request for download prep: User='Octopus', File='bot.py'
+2025-04-17 17:57:11,648 - INFO - [_prepare_download_and_generate_updates] - [59a477be-7ad2-4960-9e66-fbaeac12838f] Starting download preparation generator...
+2025-04-17 17:57:11,649 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:57:11] "GET /prepare-download/Octopus/bot.py HTTP/1.1" 200 -
+2025-04-17 17:57:11,754 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-17 17:57:11,754 - INFO - [_prepare_download_and_generate_updates] - [59a477be-7ad2-4960-9e66-fbaeac12838f] Prep non-split download for 'bot.py'
+2025-04-17 17:57:11,754 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAMsZ_3VQ1iV4TNRKX-U8XTu1bbL6vwAAqgSAAJhjfFXsZPK9QjLuuA2BA
+2025-04-17 17:57:12,610 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_114.py
+2025-04-17 17:57:12,610 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_114.py
+2025-04-17 17:57:13,078 - INFO - [download_telegram_file_content] - Successfully downloaded 2350 bytes for file_id BQACAgUAAxkDAAMsZ_3VQ1iV4TNRKX-U8XTu1bbL6vwAAqgSAAJhjfFXsZPK9QjLuuA2BA.
+2025-04-17 17:57:13,080 - INFO - [_prepare_download_and_generate_updates] - [59a477be-7ad2-4960-9e66-fbaeac12838f] Downloaded TG content size: 2350 bytes in 1.33s.
+2025-04-17 17:57:13,084 - INFO - [_prepare_download_and_generate_updates] - [59a477be-7ad2-4960-9e66-fbaeac12838f] Final prepared file: 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_nocomp_59a477be-7ad2-4960-9e66-fbaeac12838f_oz176dfv', Size: 2350
+2025-04-17 17:57:13,086 - INFO - [_prepare_download_and_generate_updates] - [59a477be-7ad2-4960-9e66-fbaeac12838f] Preparation complete. Sent 'ready' event.
+2025-04-17 17:57:13,090 - INFO - [_prepare_download_and_generate_updates] - [59a477be-7ad2-4960-9e66-fbaeac12838f] Generator finished with status: ready
+2025-04-17 17:57:13,096 - INFO - [serve_temp_file] - Request to serve temporary download file for ID: 59a477be-7ad2-4960-9e66-fbaeac12838f, Filename: bot.py
+2025-04-17 17:57:13,096 - INFO - [serve_temp_file] - [59a477be-7ad2-4960-9e66-fbaeac12838f] Preparing streaming response for 'bot.py' from 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_nocomp_59a477be-7ad2-4960-9e66-fbaeac12838f_oz176dfv'
+2025-04-17 17:57:13,098 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:57:13] "GET /serve-temp-file/59a477be-7ad2-4960-9e66-fbaeac12838f/bot.py HTTP/1.1" 200 -
+2025-04-17 17:57:13,102 - INFO - [generate_and_cleanup] - [59a477be-7ad2-4960-9e66-fbaeac12838f] Finished streaming file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_nocomp_59a477be-7ad2-4960-9e66-fbaeac12838f_oz176dfv
+2025-04-17 17:57:13,102 - INFO - [generate_and_cleanup] - [59a477be-7ad2-4960-9e66-fbaeac12838f] Cleaning up final temp file post-streaming: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_nocomp_59a477be-7ad2-4960-9e66-fbaeac12838f_oz176dfv
+2025-04-17 17:57:13,112 - INFO - [generate_and_cleanup] - [59a477be-7ad2-4960-9e66-fbaeac12838f] Successfully deleted final temp file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_nocomp_59a477be-7ad2-4960-9e66-fbaeac12838f_oz176dfv
+2025-04-17 17:58:30,298 - INFO - [prepare_download_stream] - [8ccdc5ad-24c8-4658-a12a-ef3a715b5d0e] SSE connection request for download prep: User='Octopus', File='memtest.exe.mui'
+2025-04-17 17:58:30,299 - INFO - [_prepare_download_and_generate_updates] - [8ccdc5ad-24c8-4658-a12a-ef3a715b5d0e] Starting download preparation generator...
+2025-04-17 17:58:30,299 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:58:30] "GET /prepare-download/Octopus/memtest.exe.mui HTTP/1.1" 200 -
+2025-04-17 17:58:30,402 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-17 17:58:30,402 - INFO - [_prepare_download_and_generate_updates] - [8ccdc5ad-24c8-4658-a12a-ef3a715b5d0e] Prep non-split download for 'memtest.exe.mui'
+2025-04-17 17:58:30,403 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIBD2gAAb2n7zqvp1YIzw7fwLtjVRtl9AACXBkAAhCuCVR_SPiDNXSnKDYE
+2025-04-17 17:58:30,916 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_113.zip
+2025-04-17 17:58:30,917 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_113.zip
+2025-04-17 17:58:31,515 - INFO - [download_telegram_file_content] - Successfully downloaded 12143 bytes for file_id BQACAgUAAxkDAAIBD2gAAb2n7zqvp1YIzw7fwLtjVRtl9AACXBkAAhCuCVR_SPiDNXSnKDYE.
+2025-04-17 17:58:31,516 - INFO - [_prepare_download_and_generate_updates] - [8ccdc5ad-24c8-4658-a12a-ef3a715b5d0e] Downloaded TG content size: 12143 bytes in 1.11s.
+2025-04-17 17:58:31,516 - INFO - [_prepare_download_and_generate_updates] - [8ccdc5ad-24c8-4658-a12a-ef3a715b5d0e] Decompressing single file 'memtest.exe.mui.zip'...
+2025-04-17 17:58:31,518 - INFO - [_prepare_download_and_generate_updates] - [8ccdc5ad-24c8-4658-a12a-ef3a715b5d0e] Final prepared file: 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_8ccdc5ad-24c8-4658-a12a-ef3a715b5d0e_pd35gc7i', Size: 45072
+2025-04-17 17:58:31,519 - INFO - [_prepare_download_and_generate_updates] - [8ccdc5ad-24c8-4658-a12a-ef3a715b5d0e] Preparation complete. Sent 'ready' event.
+2025-04-17 17:58:31,521 - INFO - [_prepare_download_and_generate_updates] - [8ccdc5ad-24c8-4658-a12a-ef3a715b5d0e] Generator finished with status: ready
+2025-04-17 17:58:31,534 - INFO - [serve_temp_file] - Request to serve temporary download file for ID: 8ccdc5ad-24c8-4658-a12a-ef3a715b5d0e, Filename: memtest.exe.mui
+2025-04-17 17:58:31,535 - INFO - [serve_temp_file] - [8ccdc5ad-24c8-4658-a12a-ef3a715b5d0e] Preparing streaming response for 'memtest.exe.mui' from 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_8ccdc5ad-24c8-4658-a12a-ef3a715b5d0e_pd35gc7i'
+2025-04-17 17:58:31,568 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:58:31] "GET /serve-temp-file/8ccdc5ad-24c8-4658-a12a-ef3a715b5d0e/memtest.exe.mui HTTP/1.1" 200 -
+2025-04-17 17:58:31,569 - INFO - [generate_and_cleanup] - [8ccdc5ad-24c8-4658-a12a-ef3a715b5d0e] Finished streaming file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_8ccdc5ad-24c8-4658-a12a-ef3a715b5d0e_pd35gc7i
+2025-04-17 17:58:31,570 - INFO - [generate_and_cleanup] - [8ccdc5ad-24c8-4658-a12a-ef3a715b5d0e] Cleaning up final temp file post-streaming: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_8ccdc5ad-24c8-4658-a12a-ef3a715b5d0e_pd35gc7i
+2025-04-17 17:58:31,571 - INFO - [generate_and_cleanup] - [8ccdc5ad-24c8-4658-a12a-ef3a715b5d0e] Successfully deleted final temp file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_8ccdc5ad-24c8-4658-a12a-ef3a715b5d0e_pd35gc7i
+2025-04-17 17:58:38,856 - INFO - [prepare_download_stream] - [19962276-970b-4540-85fa-e082b5a0aee6] SSE connection request for download prep: User='Octopus', File='memtest.exe.mui'
+2025-04-17 17:58:38,857 - INFO - [_prepare_download_and_generate_updates] - [19962276-970b-4540-85fa-e082b5a0aee6] Starting download preparation generator...
+2025-04-17 17:58:38,858 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:58:38] "GET /prepare-download/Octopus/memtest.exe.mui HTTP/1.1" 200 -
+2025-04-17 17:58:38,961 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-17 17:58:38,961 - INFO - [_prepare_download_and_generate_updates] - [19962276-970b-4540-85fa-e082b5a0aee6] Prep non-split download for 'memtest.exe.mui'
+2025-04-17 17:58:38,962 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIBD2gAAb2n7zqvp1YIzw7fwLtjVRtl9AACXBkAAhCuCVR_SPiDNXSnKDYE
+2025-04-17 17:58:39,508 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_113.zip
+2025-04-17 17:58:39,510 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_113.zip
+2025-04-17 17:58:40,079 - INFO - [download_telegram_file_content] - Successfully downloaded 12143 bytes for file_id BQACAgUAAxkDAAIBD2gAAb2n7zqvp1YIzw7fwLtjVRtl9AACXBkAAhCuCVR_SPiDNXSnKDYE.
+2025-04-17 17:58:40,080 - INFO - [_prepare_download_and_generate_updates] - [19962276-970b-4540-85fa-e082b5a0aee6] Downloaded TG content size: 12143 bytes in 1.12s.
+2025-04-17 17:58:40,081 - INFO - [_prepare_download_and_generate_updates] - [19962276-970b-4540-85fa-e082b5a0aee6] Decompressing single file 'memtest.exe.mui.zip'...
+2025-04-17 17:58:40,083 - INFO - [_prepare_download_and_generate_updates] - [19962276-970b-4540-85fa-e082b5a0aee6] Final prepared file: 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_19962276-970b-4540-85fa-e082b5a0aee6_whqw7ik_', Size: 45072
+2025-04-17 17:58:40,085 - INFO - [_prepare_download_and_generate_updates] - [19962276-970b-4540-85fa-e082b5a0aee6] Preparation complete. Sent 'ready' event.
+2025-04-17 17:58:40,085 - INFO - [_prepare_download_and_generate_updates] - [19962276-970b-4540-85fa-e082b5a0aee6] Generator finished with status: ready
+2025-04-17 17:58:40,100 - INFO - [serve_temp_file] - Request to serve temporary download file for ID: 19962276-970b-4540-85fa-e082b5a0aee6, Filename: memtest.exe.mui
+2025-04-17 17:58:40,101 - INFO - [serve_temp_file] - [19962276-970b-4540-85fa-e082b5a0aee6] Preparing streaming response for 'memtest.exe.mui' from 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_19962276-970b-4540-85fa-e082b5a0aee6_whqw7ik_'
+2025-04-17 17:58:40,138 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:58:40] "GET /serve-temp-file/19962276-970b-4540-85fa-e082b5a0aee6/memtest.exe.mui HTTP/1.1" 200 -
+2025-04-17 17:58:40,138 - INFO - [generate_and_cleanup] - [19962276-970b-4540-85fa-e082b5a0aee6] Finished streaming file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_19962276-970b-4540-85fa-e082b5a0aee6_whqw7ik_
+2025-04-17 17:58:40,139 - INFO - [generate_and_cleanup] - [19962276-970b-4540-85fa-e082b5a0aee6] Cleaning up final temp file post-streaming: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_19962276-970b-4540-85fa-e082b5a0aee6_whqw7ik_
+2025-04-17 17:58:40,140 - INFO - [generate_and_cleanup] - [19962276-970b-4540-85fa-e082b5a0aee6] Successfully deleted final temp file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_19962276-970b-4540-85fa-e082b5a0aee6_whqw7ik_
+2025-04-17 17:58:49,399 - INFO - [prepare_download_stream] - [a6a5991b-5e50-4fb2-87d7-5e0d3fc9c197] SSE connection request for download prep: User='Octopus', File='memtest.exe.mui'
+2025-04-17 17:58:49,400 - INFO - [_prepare_download_and_generate_updates] - [a6a5991b-5e50-4fb2-87d7-5e0d3fc9c197] Starting download preparation generator...
+2025-04-17 17:58:49,400 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:58:49] "GET /prepare-download/Octopus/memtest.exe.mui HTTP/1.1" 200 -
+2025-04-17 17:58:49,502 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-17 17:58:49,502 - INFO - [_prepare_download_and_generate_updates] - [a6a5991b-5e50-4fb2-87d7-5e0d3fc9c197] Prep non-split download for 'memtest.exe.mui'
+2025-04-17 17:58:49,503 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIBD2gAAb2n7zqvp1YIzw7fwLtjVRtl9AACXBkAAhCuCVR_SPiDNXSnKDYE
+2025-04-17 17:58:49,932 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_113.zip
+2025-04-17 17:58:49,932 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_113.zip
+2025-04-17 17:58:50,571 - INFO - [download_telegram_file_content] - Successfully downloaded 12143 bytes for file_id BQACAgUAAxkDAAIBD2gAAb2n7zqvp1YIzw7fwLtjVRtl9AACXBkAAhCuCVR_SPiDNXSnKDYE.
+2025-04-17 17:58:50,573 - INFO - [_prepare_download_and_generate_updates] - [a6a5991b-5e50-4fb2-87d7-5e0d3fc9c197] Downloaded TG content size: 12143 bytes in 1.07s.
+2025-04-17 17:58:50,574 - INFO - [_prepare_download_and_generate_updates] - [a6a5991b-5e50-4fb2-87d7-5e0d3fc9c197] Decompressing single file 'memtest.exe.mui.zip'...
+2025-04-17 17:58:50,579 - INFO - [_prepare_download_and_generate_updates] - [a6a5991b-5e50-4fb2-87d7-5e0d3fc9c197] Final prepared file: 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_a6a5991b-5e50-4fb2-87d7-5e0d3fc9c197_6mk56jr2', Size: 45072
+2025-04-17 17:58:50,580 - INFO - [_prepare_download_and_generate_updates] - [a6a5991b-5e50-4fb2-87d7-5e0d3fc9c197] Preparation complete. Sent 'ready' event.
+2025-04-17 17:58:50,583 - INFO - [_prepare_download_and_generate_updates] - [a6a5991b-5e50-4fb2-87d7-5e0d3fc9c197] Generator finished with status: ready
+2025-04-17 17:58:50,592 - INFO - [serve_temp_file] - Request to serve temporary download file for ID: a6a5991b-5e50-4fb2-87d7-5e0d3fc9c197, Filename: memtest.exe.mui
+2025-04-17 17:58:50,593 - INFO - [serve_temp_file] - [a6a5991b-5e50-4fb2-87d7-5e0d3fc9c197] Preparing streaming response for 'memtest.exe.mui' from 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_a6a5991b-5e50-4fb2-87d7-5e0d3fc9c197_6mk56jr2'
+2025-04-17 17:58:50,623 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:58:50] "GET /serve-temp-file/a6a5991b-5e50-4fb2-87d7-5e0d3fc9c197/memtest.exe.mui HTTP/1.1" 200 -
+2025-04-17 17:58:50,625 - INFO - [generate_and_cleanup] - [a6a5991b-5e50-4fb2-87d7-5e0d3fc9c197] Finished streaming file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_a6a5991b-5e50-4fb2-87d7-5e0d3fc9c197_6mk56jr2
+2025-04-17 17:58:50,626 - INFO - [generate_and_cleanup] - [a6a5991b-5e50-4fb2-87d7-5e0d3fc9c197] Cleaning up final temp file post-streaming: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_a6a5991b-5e50-4fb2-87d7-5e0d3fc9c197_6mk56jr2
+2025-04-17 17:58:50,626 - INFO - [generate_and_cleanup] - [a6a5991b-5e50-4fb2-87d7-5e0d3fc9c197] Successfully deleted final temp file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_a6a5991b-5e50-4fb2-87d7-5e0d3fc9c197_6mk56jr2
+2025-04-17 17:58:59,319 - INFO - [prepare_download_stream] - [18ff34bf-49bc-4383-a37e-4440c43ec2e4] SSE connection request for download prep: User='Octopus', File='log.txt'
+2025-04-17 17:58:59,320 - INFO - [_prepare_download_and_generate_updates] - [18ff34bf-49bc-4383-a37e-4440c43ec2e4] Starting download preparation generator...
+2025-04-17 17:58:59,321 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:58:59] "GET /prepare-download/Octopus/log.txt HTTP/1.1" 200 -
+2025-04-17 17:58:59,423 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-17 17:58:59,424 - INFO - [_prepare_download_and_generate_updates] - [18ff34bf-49bc-4383-a37e-4440c43ec2e4] Prep non-split download for 'log.txt'
+2025-04-17 17:58:59,424 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAP-aAABo80gW08VBnZWZdFDaALQTNTUAAIeFgACEK4BVGOKegp4RS0_NgQ
+2025-04-17 17:59:00,226 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_115.zip
+2025-04-17 17:59:00,227 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_115.zip
+2025-04-17 17:59:00,743 - INFO - [download_telegram_file_content] - Successfully downloaded 4496 bytes for file_id BQACAgUAAxkDAAP-aAABo80gW08VBnZWZdFDaALQTNTUAAIeFgACEK4BVGOKegp4RS0_NgQ.
+2025-04-17 17:59:00,746 - INFO - [_prepare_download_and_generate_updates] - [18ff34bf-49bc-4383-a37e-4440c43ec2e4] Downloaded TG content size: 4496 bytes in 1.32s.
+2025-04-17 17:59:00,747 - INFO - [_prepare_download_and_generate_updates] - [18ff34bf-49bc-4383-a37e-4440c43ec2e4] Decompressing single file 'log.txt.zip'...
+2025-04-17 17:59:00,751 - INFO - [_prepare_download_and_generate_updates] - [18ff34bf-49bc-4383-a37e-4440c43ec2e4] Final prepared file: 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_18ff34bf-49bc-4383-a37e-4440c43ec2e4_u5_qmv8i', Size: 23753
+2025-04-17 17:59:00,752 - INFO - [_prepare_download_and_generate_updates] - [18ff34bf-49bc-4383-a37e-4440c43ec2e4] Preparation complete. Sent 'ready' event.
+2025-04-17 17:59:00,753 - INFO - [_prepare_download_and_generate_updates] - [18ff34bf-49bc-4383-a37e-4440c43ec2e4] Generator finished with status: ready
+2025-04-17 17:59:00,763 - INFO - [serve_temp_file] - Request to serve temporary download file for ID: 18ff34bf-49bc-4383-a37e-4440c43ec2e4, Filename: log.txt
+2025-04-17 17:59:00,763 - INFO - [serve_temp_file] - [18ff34bf-49bc-4383-a37e-4440c43ec2e4] Preparing streaming response for 'log.txt' from 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_18ff34bf-49bc-4383-a37e-4440c43ec2e4_u5_qmv8i'
+2025-04-17 17:59:00,781 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:59:00] "GET /serve-temp-file/18ff34bf-49bc-4383-a37e-4440c43ec2e4/log.txt HTTP/1.1" 200 -
+2025-04-17 17:59:00,786 - INFO - [generate_and_cleanup] - [18ff34bf-49bc-4383-a37e-4440c43ec2e4] Finished streaming file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_18ff34bf-49bc-4383-a37e-4440c43ec2e4_u5_qmv8i
+2025-04-17 17:59:00,787 - INFO - [generate_and_cleanup] - [18ff34bf-49bc-4383-a37e-4440c43ec2e4] Cleaning up final temp file post-streaming: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_18ff34bf-49bc-4383-a37e-4440c43ec2e4_u5_qmv8i
+2025-04-17 17:59:00,788 - INFO - [generate_and_cleanup] - [18ff34bf-49bc-4383-a37e-4440c43ec2e4] Successfully deleted final temp file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_18ff34bf-49bc-4383-a37e-4440c43ec2e4_u5_qmv8i
+2025-04-17 18:00:10,716 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-17 18:00:10,718 - INFO - [initiate_upload] - Saving temporary file for upload_id '82ea8816-12b5-436a-af7f-d20195bd9668' to 'uploads_temp\82ea8816-12b5-436a-af7f-d20195bd9668_bot (1).py'
+2025-04-17 18:00:10,719 - INFO - [initiate_upload] - Temporary file saved successfully for 'bot (1).py' (ID: 82ea8816-12b5-436a-af7f-d20195bd9668).
+2025-04-17 18:00:10,720 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 18:00:10] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-17 18:00:10,725 - INFO - [stream_progress] - SSE connection request for upload_id: 82ea8816-12b5-436a-af7f-d20195bd9668
+2025-04-17 18:00:10,726 - INFO - [process_upload_and_generate_updates] - [82ea8816-12b5-436a-af7f-d20195bd9668] Starting processing...
+2025-04-17 18:00:10,726 - INFO - [process_upload_and_generate_updates] - [82ea8816-12b5-436a-af7f-d20195bd9668] Processing upload: User='Octopus', File='bot (1).py', TempPath='uploads_temp\82ea8816-12b5-436a-af7f-d20195bd9668_bot (1).py'
+2025-04-17 18:00:10,726 - INFO - [process_upload_and_generate_updates] - [82ea8816-12b5-436a-af7f-d20195bd9668] Original temp file size: 2350 bytes.
+2025-04-17 18:00:10,727 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 18:00:10] "GET /stream-progress/82ea8816-12b5-436a-af7f-d20195bd9668 HTTP/1.1" 200 -
+2025-04-17 18:00:10,731 - INFO - [process_upload_and_generate_updates] - [82ea8816-12b5-436a-af7f-d20195bd9668] 'bot (1).py' is small. Compressing and sending as single file.
+2025-04-17 18:00:10,735 - INFO - [process_upload_and_generate_updates] - [82ea8816-12b5-436a-af7f-d20195bd9668] Compressed 'bot (1).py' to 1080 bytes.
+2025-04-17 18:00:10,735 - INFO - [send_file_to_telegram] - Sending file 'bot (1).py.zip' to Telegram chat ID: -4603853425
+2025-04-17 18:00:11,785 - INFO - [send_file_to_telegram] - Telegram API success for 'bot (1).py.zip'.
+2025-04-17 18:00:11,788 - INFO - [process_upload_and_generate_updates] - [82ea8816-12b5-436a-af7f-d20195bd9668] Single file 'bot (1).py' sent successfully.
+2025-04-17 18:00:11,789 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-17 18:00:11,796 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-17 18:00:11,803 - INFO - [process_upload_and_generate_updates] - [82ea8816-12b5-436a-af7f-d20195bd9668] Entering final cleanup.
+2025-04-17 18:00:11,804 - INFO - [process_upload_and_generate_updates] - [82ea8816-12b5-436a-af7f-d20195bd9668] Successfully deleted original temporary file: uploads_temp\82ea8816-12b5-436a-af7f-d20195bd9668_bot (1).py
+2025-04-17 18:00:11,805 - INFO - [process_upload_and_generate_updates] - [82ea8816-12b5-436a-af7f-d20195bd9668] Processing finished with status: completed
+2025-04-17 18:00:23,310 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-17 18:00:23,311 - INFO - [initiate_upload] - Saving temporary file for upload_id 'b53776de-b04b-4040-9a8b-20987dad1547' to 'uploads_temp\b53776de-b04b-4040-9a8b-20987dad1547_log (3).txt'
+2025-04-17 18:00:23,312 - INFO - [initiate_upload] - Temporary file saved successfully for 'log (3).txt' (ID: b53776de-b04b-4040-9a8b-20987dad1547).
+2025-04-17 18:00:23,314 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 18:00:23] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-17 18:00:23,318 - INFO - [stream_progress] - SSE connection request for upload_id: b53776de-b04b-4040-9a8b-20987dad1547
+2025-04-17 18:00:23,319 - INFO - [process_upload_and_generate_updates] - [b53776de-b04b-4040-9a8b-20987dad1547] Starting processing...
+2025-04-17 18:00:23,319 - INFO - [process_upload_and_generate_updates] - [b53776de-b04b-4040-9a8b-20987dad1547] Processing upload: User='Octopus', File='log (3).txt', TempPath='uploads_temp\b53776de-b04b-4040-9a8b-20987dad1547_log (3).txt'
+2025-04-17 18:00:23,320 - INFO - [process_upload_and_generate_updates] - [b53776de-b04b-4040-9a8b-20987dad1547] Original temp file size: 23753 bytes.
+2025-04-17 18:00:23,320 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 18:00:23] "GET /stream-progress/b53776de-b04b-4040-9a8b-20987dad1547 HTTP/1.1" 200 -
+2025-04-17 18:00:23,323 - INFO - [process_upload_and_generate_updates] - [b53776de-b04b-4040-9a8b-20987dad1547] 'log (3).txt' is small. Compressing and sending as single file.
+2025-04-17 18:00:23,340 - INFO - [process_upload_and_generate_updates] - [b53776de-b04b-4040-9a8b-20987dad1547] Compressed 'log (3).txt' to 4504 bytes.
+2025-04-17 18:00:23,342 - INFO - [send_file_to_telegram] - Sending file 'log (3).txt.zip' to Telegram chat ID: -4603853425
+2025-04-17 18:00:24,189 - INFO - [send_file_to_telegram] - Telegram API success for 'log (3).txt.zip'.
+2025-04-17 18:00:24,190 - INFO - [process_upload_and_generate_updates] - [b53776de-b04b-4040-9a8b-20987dad1547] Single file 'log (3).txt' sent successfully.
+2025-04-17 18:00:24,204 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-17 18:00:24,210 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-17 18:00:24,211 - INFO - [process_upload_and_generate_updates] - [b53776de-b04b-4040-9a8b-20987dad1547] Entering final cleanup.
+2025-04-17 18:00:24,212 - INFO - [process_upload_and_generate_updates] - [b53776de-b04b-4040-9a8b-20987dad1547] Successfully deleted original temporary file: uploads_temp\b53776de-b04b-4040-9a8b-20987dad1547_log (3).txt
+2025-04-17 18:00:24,214 - INFO - [process_upload_and_generate_updates] - [b53776de-b04b-4040-9a8b-20987dad1547] Processing finished with status: completed

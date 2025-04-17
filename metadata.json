@@ -1236,6 +1236,34 @@
             "upload_timestamp": "2025-04-17T08:36:54.905578+00:00",
             "username": "Octopus",
             "upload_duration_seconds": 0.9493741989135742
+        },
+        {
+            "original_filename": "bot (1).py",
+            "sent_filename": "bot (1).py.zip",
+            "is_split": false,
+            "is_compressed": true,
+            "original_size": 2350,
+            "compressed_size": 1080,
+            "telegram_message_id": 296,
+            "telegram_file_id": "BQACAgUAAxkDAAIBKGgAAfRUfAooiRRGAAE1dw2XU9YQVSgAArkZAAIQrglU0SrKQ2EZlfw2BA",
+            "telegram_file_unique_id": "AgADuRkAAhCuCVQ",
+            "upload_timestamp": "2025-04-17T12:30:11.790619+00:00",
+            "username": "Octopus",
+            "upload_duration_seconds": 1.0529162883758545
+        },
+        {
+            "original_filename": "log (3).txt",
+            "sent_filename": "log (3).txt.zip",
+            "is_split": false,
+            "is_compressed": true,
+            "original_size": 23753,
+            "compressed_size": 4504,
+            "telegram_message_id": 297,
+            "telegram_file_id": "BQACAgUAAxkDAAIBKWgAAfRgHgNHSijz-YblOhhZo0HcOAACuhkAAhCuCVSUotrBTxE91TYE",
+            "telegram_file_unique_id": "AgADuhkAAhCuCVQ",
+            "upload_timestamp": "2025-04-17T12:30:24.204697+00:00",
+            "username": "Octopus",
+            "upload_duration_seconds": 0.8482367992401123
         }
     ],
     "Klaus": [
@@ -2358,6 +2386,53 @@
             "upload_timestamp": "2025-04-17T10:50:54.270906+00:00",
             "username": "testt",
             "upload_duration_seconds": 1.4347078800201416
+        },
+        {
+            "original_filename": "70mb (1).pdf",
+            "sent_filename": "70mb (1).pdf.zip",
+            "is_split": true,
+            "is_compressed": true,
+            "original_size": 73779590,
+            "compressed_total_size": 72649925,
+            "chunk_size": 20971520,
+            "num_chunks": 4,
+            "chunks": [
+                {
+                    "part_number": 1,
+                    "chunk_filename": "70mb (1).pdf.zip.part_001",
+                    "message_id": 292,
+                    "file_id": "BQACAgUAAxkDAAIBJGgAAe5XkUfPkE53HvbuFYKfWUhpWwACtRkAAhCuCVT94tBPDgImMDYE",
+                    "file_unique_id": "AgADtRkAAhCuCVQ",
+                    "chunk_upload_duration_seconds": 12.642460823059082
+                },
+                {
+                    "part_number": 2,
+                    "chunk_filename": "70mb (1).pdf.zip.part_002",
+                    "message_id": 293,
+                    "file_id": "BQACAgUAAxkDAAIBJWgAAe5iQgZc_N2Qf0XPQiOSrEy5egACthkAAhCuCVSkVVulynp-5jYE",
+                    "file_unique_id": "AgADthkAAhCuCVQ",
+                    "chunk_upload_duration_seconds": 11.39870023727417
+                },
+                {
+                    "part_number": 3,
+                    "chunk_filename": "70mb (1).pdf.zip.part_003",
+                    "message_id": 294,
+                    "file_id": "BQACAgUAAxkDAAIBJmgAAe5vvDhDB_JwW16WlOOVI1m1hQACtxkAAhCuCVR3JzSEoK9yrDYE",
+                    "file_unique_id": "AgADtxkAAhCuCVQ",
+                    "chunk_upload_duration_seconds": 12.811654329299927
+                },
+                {
+                    "part_number": 4,
+                    "chunk_filename": "70mb (1).pdf.zip.part_004",
+                    "message_id": 295,
+                    "file_id": "BQACAgUAAxkDAAIBJ2gAAe51Gj5TcIN8-mXodKKZAlQNIgACuBkAAhCuCVQ4Zrq2HvAVXjYE",
+                    "file_unique_id": "AgADuBkAAhCuCVQ",
+                    "chunk_upload_duration_seconds": 6.3190531730651855
+                }
+            ],
+            "upload_timestamp": "2025-04-17T12:05:09.736157+00:00",
+            "username": "testt",
+            "total_upload_duration_seconds": 43.171868562698364
         }
     ],
     "Tomy": [

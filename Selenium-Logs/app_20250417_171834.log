@@ -1,0 +1,82 @@
+2025-04-17 17:18:34,349 - INFO - [<module>] - Logging configured. Log file: Selenium-Logs\app_20250417_171834.log
+2025-04-17 17:18:34,352 - INFO - [<module>] - Flask application initialized.
+2025-04-17 17:18:34,357 - INFO - [<module>] - Starting Flask development server...
+2025-04-17 17:18:34,389 - WARNING - [_log] -  * Debugger is active!
+2025-04-17 17:18:34,393 - INFO - [_log] -  * Debugger PIN: 107-410-311
+2025-04-17 17:18:37,236 - INFO - [index] - Serving index page.
+2025-04-17 17:18:37,303 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:18:37] "GET / HTTP/1.1" 200 -
+2025-04-17 17:18:37,323 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:18:37] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-17 17:18:43,130 - INFO - [list_user_files] - Request received to list files for user: 'testt'
+2025-04-17 17:18:43,132 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-17 17:18:43,132 - INFO - [list_user_files] - Found 9 file records for user 'testt'.
+2025-04-17 17:18:43,133 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:18:43] "GET /files/testt HTTP/1.1" 200 -
+2025-04-17 17:18:45,895 - INFO - [prepare_download_stream] - [5d92ecf4-722b-40c1-963d-9620b2523d88] SSE connection request for download prep: User='testt', File='metadata.json'
+2025-04-17 17:18:45,896 - INFO - [_prepare_download_and_generate_updates] - [5d92ecf4-722b-40c1-963d-9620b2523d88] Starting download preparation generator...
+2025-04-17 17:18:45,896 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:18:45] "GET /prepare-download/testt/metadata.json HTTP/1.1" 200 -
+2025-04-17 17:18:45,998 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-17 17:18:45,998 - INFO - [_prepare_download_and_generate_updates] - [5d92ecf4-722b-40c1-963d-9620b2523d88] Prep non-split download for 'metadata.json'
+2025-04-17 17:18:45,999 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIBFWgAAd0OtvAy4l6hoXtsuMHvSeppuwACoBkAAhCuCVT1_QIuYa_OqTYE
+2025-04-17 17:18:47,060 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_111.zip
+2025-04-17 17:18:47,061 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_111.zip
+2025-04-17 17:18:47,700 - INFO - [download_telegram_file_content] - Successfully downloaded 18310 bytes for file_id BQACAgUAAxkDAAIBFWgAAd0OtvAy4l6hoXtsuMHvSeppuwACoBkAAhCuCVT1_QIuYa_OqTYE.
+2025-04-17 17:18:47,702 - INFO - [_prepare_download_and_generate_updates] - [5d92ecf4-722b-40c1-963d-9620b2523d88] Downloaded TG content size: 18310 bytes.
+2025-04-17 17:18:47,704 - INFO - [_prepare_download_and_generate_updates] - [5d92ecf4-722b-40c1-963d-9620b2523d88] Decompressing single file 'metadata.json.zip'...
+2025-04-17 17:18:47,709 - INFO - [_prepare_download_and_generate_updates] - [5d92ecf4-722b-40c1-963d-9620b2523d88] Extracting 'metadata.json' to: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_5d92ecf4-722b-40c1-963d-9620b2523d88_o7t7khbp
+2025-04-17 17:18:47,715 - INFO - [_prepare_download_and_generate_updates] - [5d92ecf4-722b-40c1-963d-9620b2523d88] Extracted to E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_5d92ecf4-722b-40c1-963d-9620b2523d88_o7t7khbp
+2025-04-17 17:18:47,716 - INFO - [_prepare_download_and_generate_updates] - [5d92ecf4-722b-40c1-963d-9620b2523d88] Final prepared file: 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_5d92ecf4-722b-40c1-963d-9620b2523d88_o7t7khbp', Size: 118730
+2025-04-17 17:18:47,718 - INFO - [_prepare_download_and_generate_updates] - [5d92ecf4-722b-40c1-963d-9620b2523d88] Preparation complete. Sent 'ready' event.
+2025-04-17 17:18:47,722 - INFO - [_prepare_download_and_generate_updates] - [5d92ecf4-722b-40c1-963d-9620b2523d88] Generator finished with status: ready
+2025-04-17 17:18:47,739 - INFO - [serve_temp_file] - Request to serve temporary download file for ID: 5d92ecf4-722b-40c1-963d-9620b2523d88, Filename: metadata.json
+2025-04-17 17:18:47,741 - INFO - [serve_temp_file] - [5d92ecf4-722b-40c1-963d-9620b2523d88] Preparing streaming response for 'metadata.json' from 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_5d92ecf4-722b-40c1-963d-9620b2523d88_o7t7khbp'
+2025-04-17 17:18:47,768 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:18:47] "GET /serve-temp-file/5d92ecf4-722b-40c1-963d-9620b2523d88/metadata.json HTTP/1.1" 200 -
+2025-04-17 17:18:47,769 - INFO - [generate_and_cleanup] - [5d92ecf4-722b-40c1-963d-9620b2523d88] Finished streaming file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_5d92ecf4-722b-40c1-963d-9620b2523d88_o7t7khbp
+2025-04-17 17:18:47,769 - INFO - [generate_and_cleanup] - [5d92ecf4-722b-40c1-963d-9620b2523d88] Cleaning up final temp file post-streaming: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_5d92ecf4-722b-40c1-963d-9620b2523d88_o7t7khbp
+2025-04-17 17:18:47,770 - INFO - [generate_and_cleanup] - [5d92ecf4-722b-40c1-963d-9620b2523d88] Successfully deleted final temp file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_5d92ecf4-722b-40c1-963d-9620b2523d88_o7t7khbp
+2025-04-17 17:18:58,294 - INFO - [prepare_download_stream] - [e6f4a1d1-9dce-487b-8f11-4ecb0e6ea881] SSE connection request for download prep: User='testt', File='metadata.json'
+2025-04-17 17:18:58,295 - INFO - [_prepare_download_and_generate_updates] - [e6f4a1d1-9dce-487b-8f11-4ecb0e6ea881] Starting download preparation generator...
+2025-04-17 17:18:58,295 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:18:58] "GET /prepare-download/testt/metadata.json HTTP/1.1" 200 -
+2025-04-17 17:18:58,397 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-17 17:18:58,398 - INFO - [_prepare_download_and_generate_updates] - [e6f4a1d1-9dce-487b-8f11-4ecb0e6ea881] Prep non-split download for 'metadata.json'
+2025-04-17 17:18:58,400 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIBFWgAAd0OtvAy4l6hoXtsuMHvSeppuwACoBkAAhCuCVT1_QIuYa_OqTYE
+2025-04-17 17:18:58,865 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_111.zip
+2025-04-17 17:18:58,866 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_111.zip
+2025-04-17 17:18:59,446 - INFO - [download_telegram_file_content] - Successfully downloaded 18310 bytes for file_id BQACAgUAAxkDAAIBFWgAAd0OtvAy4l6hoXtsuMHvSeppuwACoBkAAhCuCVT1_QIuYa_OqTYE.
+2025-04-17 17:18:59,448 - INFO - [_prepare_download_and_generate_updates] - [e6f4a1d1-9dce-487b-8f11-4ecb0e6ea881] Downloaded TG content size: 18310 bytes.
+2025-04-17 17:18:59,449 - INFO - [_prepare_download_and_generate_updates] - [e6f4a1d1-9dce-487b-8f11-4ecb0e6ea881] Decompressing single file 'metadata.json.zip'...
+2025-04-17 17:18:59,451 - INFO - [_prepare_download_and_generate_updates] - [e6f4a1d1-9dce-487b-8f11-4ecb0e6ea881] Extracting 'metadata.json' to: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_e6f4a1d1-9dce-487b-8f11-4ecb0e6ea881_1o59ihy0
+2025-04-17 17:18:59,455 - INFO - [_prepare_download_and_generate_updates] - [e6f4a1d1-9dce-487b-8f11-4ecb0e6ea881] Extracted to E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_e6f4a1d1-9dce-487b-8f11-4ecb0e6ea881_1o59ihy0
+2025-04-17 17:18:59,456 - INFO - [_prepare_download_and_generate_updates] - [e6f4a1d1-9dce-487b-8f11-4ecb0e6ea881] Final prepared file: 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_e6f4a1d1-9dce-487b-8f11-4ecb0e6ea881_1o59ihy0', Size: 118730
+2025-04-17 17:18:59,456 - INFO - [_prepare_download_and_generate_updates] - [e6f4a1d1-9dce-487b-8f11-4ecb0e6ea881] Preparation complete. Sent 'ready' event.
+2025-04-17 17:18:59,457 - INFO - [_prepare_download_and_generate_updates] - [e6f4a1d1-9dce-487b-8f11-4ecb0e6ea881] Generator finished with status: ready
+2025-04-17 17:18:59,467 - INFO - [serve_temp_file] - Request to serve temporary download file for ID: e6f4a1d1-9dce-487b-8f11-4ecb0e6ea881, Filename: metadata.json
+2025-04-17 17:18:59,470 - INFO - [serve_temp_file] - [e6f4a1d1-9dce-487b-8f11-4ecb0e6ea881] Preparing streaming response for 'metadata.json' from 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_e6f4a1d1-9dce-487b-8f11-4ecb0e6ea881_1o59ihy0'
+2025-04-17 17:18:59,494 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:18:59] "GET /serve-temp-file/e6f4a1d1-9dce-487b-8f11-4ecb0e6ea881/metadata.json HTTP/1.1" 200 -
+2025-04-17 17:18:59,495 - INFO - [generate_and_cleanup] - [e6f4a1d1-9dce-487b-8f11-4ecb0e6ea881] Finished streaming file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_e6f4a1d1-9dce-487b-8f11-4ecb0e6ea881_1o59ihy0
+2025-04-17 17:18:59,496 - INFO - [generate_and_cleanup] - [e6f4a1d1-9dce-487b-8f11-4ecb0e6ea881] Cleaning up final temp file post-streaming: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_e6f4a1d1-9dce-487b-8f11-4ecb0e6ea881_1o59ihy0
+2025-04-17 17:18:59,497 - INFO - [generate_and_cleanup] - [e6f4a1d1-9dce-487b-8f11-4ecb0e6ea881] Successfully deleted final temp file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_e6f4a1d1-9dce-487b-8f11-4ecb0e6ea881_1o59ihy0
+2025-04-17 17:19:04,788 - INFO - [prepare_download_stream] - [56566ac8-3621-475d-a3f9-734869ec6b7d] SSE connection request for download prep: User='testt', File='sample'
+2025-04-17 17:19:04,789 - INFO - [_prepare_download_and_generate_updates] - [56566ac8-3621-475d-a3f9-734869ec6b7d] Starting download preparation generator...
+2025-04-17 17:19:04,789 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:19:04] "GET /prepare-download/testt/sample HTTP/1.1" 200 -
+2025-04-17 17:19:04,891 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-17 17:19:04,892 - INFO - [_prepare_download_and_generate_updates] - [56566ac8-3621-475d-a3f9-734869ec6b7d] Prep non-split download for 'sample'
+2025-04-17 17:19:04,893 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIBFGgAAdy1I-XPbHehSTQ1u0iFlSOd3QACnxkAAhCuCVScDqqzlYdLyDYE
+2025-04-17 17:19:05,418 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_80.zip
+2025-04-17 17:19:05,419 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_80.zip
+2025-04-17 17:19:05,934 - INFO - [download_telegram_file_content] - Successfully downloaded 6689 bytes for file_id BQACAgUAAxkDAAIBFGgAAdy1I-XPbHehSTQ1u0iFlSOd3QACnxkAAhCuCVScDqqzlYdLyDYE.
+2025-04-17 17:19:05,936 - INFO - [_prepare_download_and_generate_updates] - [56566ac8-3621-475d-a3f9-734869ec6b7d] Downloaded TG content size: 6689 bytes.
+2025-04-17 17:19:05,938 - INFO - [_prepare_download_and_generate_updates] - [56566ac8-3621-475d-a3f9-734869ec6b7d] Decompressing single file 'sample.zip'...
+2025-04-17 17:19:05,940 - INFO - [_prepare_download_and_generate_updates] - [56566ac8-3621-475d-a3f9-734869ec6b7d] Extracting 'sample' to: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_56566ac8-3621-475d-a3f9-734869ec6b7d_nh04evhx
+2025-04-17 17:19:05,943 - INFO - [_prepare_download_and_generate_updates] - [56566ac8-3621-475d-a3f9-734869ec6b7d] Extracted to E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_56566ac8-3621-475d-a3f9-734869ec6b7d_nh04evhx
+2025-04-17 17:19:05,944 - INFO - [_prepare_download_and_generate_updates] - [56566ac8-3621-475d-a3f9-734869ec6b7d] Final prepared file: 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_56566ac8-3621-475d-a3f9-734869ec6b7d_nh04evhx', Size: 39326
+2025-04-17 17:19:05,945 - INFO - [_prepare_download_and_generate_updates] - [56566ac8-3621-475d-a3f9-734869ec6b7d] Preparation complete. Sent 'ready' event.
+2025-04-17 17:19:05,947 - INFO - [_prepare_download_and_generate_updates] - [56566ac8-3621-475d-a3f9-734869ec6b7d] Generator finished with status: ready
+2025-04-17 17:19:05,963 - INFO - [serve_temp_file] - Request to serve temporary download file for ID: 56566ac8-3621-475d-a3f9-734869ec6b7d, Filename: sample
+2025-04-17 17:19:05,964 - INFO - [serve_temp_file] - [56566ac8-3621-475d-a3f9-734869ec6b7d] Preparing streaming response for 'sample' from 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_56566ac8-3621-475d-a3f9-734869ec6b7d_nh04evhx'
+2025-04-17 17:19:06,008 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:19:06] "GET /serve-temp-file/56566ac8-3621-475d-a3f9-734869ec6b7d/sample HTTP/1.1" 200 -
+2025-04-17 17:19:06,012 - INFO - [generate_and_cleanup] - [56566ac8-3621-475d-a3f9-734869ec6b7d] Finished streaming file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_56566ac8-3621-475d-a3f9-734869ec6b7d_nh04evhx
+2025-04-17 17:19:06,014 - INFO - [generate_and_cleanup] - [56566ac8-3621-475d-a3f9-734869ec6b7d] Cleaning up final temp file post-streaming: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_56566ac8-3621-475d-a3f9-734869ec6b7d_nh04evhx
+2025-04-17 17:19:06,014 - INFO - [generate_and_cleanup] - [56566ac8-3621-475d-a3f9-734869ec6b7d] Successfully deleted final temp file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_56566ac8-3621-475d-a3f9-734869ec6b7d_nh04evhx
+2025-04-17 17:21:24,842 - INFO - [index] - Serving index page.
+2025-04-17 17:21:24,848 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:21:24] "GET / HTTP/1.1" 200 -
+2025-04-17 17:21:24,870 - INFO - [_log] - 127.0.0.1 - - [17/Apr/2025 17:21:24] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-17 17:26:00,853 - INFO - [_log] -  * Detected change in 'E:\\Telegram_tool\\Telegram_Bot_Tool\\Telegram_app.py', reloading

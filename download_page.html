@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Display filename in the title -->
+    <title>Download {{ filename }}</title>
+    <!-- Link to external CSS if you have one, or use internal styles -->
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> -->
+    <style>
+        /* Reusing some basic styles */
+        body {
+            font-family: sans-serif;
+            line-height: 1.6;
+            margin: 50px auto; /* Center content horizontally */
+            max-width: 800px; /* Limit width */
+            padding: 20px;
+            background-color: #d3e8ea;
+            color: #333;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: center; /* Center container content */
+        }
+        h1 {
+            color: #0d0c0c;
+            margin-bottom: 15px;
+            word-wrap: break-word; /* Wrap long filenames */
+        }
+        p {
+            margin-bottom: 10px;
+            color: #555;
+        }
+        .file-details span {
+            font-weight: bold;
+            color: #000;
+        }
+        button {
+            background-color: #337ab7; /* Blue */
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background-color 0.2s ease;
+            margin-top: 20px;
+        }
+        button:hover:not(:disabled) {
+            background-color: #286090; /* Darker blue */
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        /* Styles for progress display (copied/adapted from index.html) */
+        #download-details {
+            display: none; /* Hidden initially */
+            margin-top: 25px;
+            border: 1px solid #ccc;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            text-align: left; /* Align progress text left */
+        }
+        #download-details progress {
+            width: 100%;
+            height: 10px;
+            margin-bottom: 10px;
+            accent-color: #5cb85c; /* Green progress */
+        }
+        #download-details .progress-row {
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+             margin-bottom: 10px;
+             font-size: 0.9em;
+             color: #555;
+        }
+         #download-details .progress-row span {
+             word-break: break-all;
+         }
+        #download-details #download-filename {
+            font-weight: bold;
+        }
+        #download-details #download-prep-progress-text {
+             font-weight: bold;
+         }
+         #download-details #download-prep-mb-processed { color: rgb(54, 108, 235); }
+         #download-details #download-prep-mb-total { color: black; }
+         #download-details .progress-button {
+            background-color: #eee;
+            color: #333;
+            border: 1px solid #ccc;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            display: inline-flex;
+            align-items: center;
+        }
+        #download-details .progress-button:hover:not(:disabled) { background-color: #ddd; }
+        #download-details .progress-button:disabled { cursor: not-allowed; opacity: 0.6; }
+        #download-details .progress-button .button-text { margin-left: 5px; }
+
+        /* Status message below progress */
+        #download-prep-status {
+            margin-top: 15px;
+            font-weight: bold;
+            color: #337ab7; /* Default blue */
+            display: none; /* Hidden initially */
+            min-height: 1.2em; /* Prevent layout shift */
+        }
+        .footer-link {
+            margin-top: 30px;
+            font-size: 0.9em;
+        }
+        .footer-link a {
+            color: #337ab7;
+            text-decoration: none;
+        }
+         .footer-link a:hover {
+             text-decoration: underline;
+         }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ filename }}</h1>
+        <p class="file-details">
+            Size: <span id="display-filesize">Calculating...</span> | Uploaded: <span>{{ upload_date }}</span>
+        </p>
+
+        <!-- Download Button -->
+        <button id="start-download-button">Download File</button>
+
+        <!-- Download Preparation Progress Display Area -->
+        <div id="download-details">
+            <!-- Row 1: Filename and Progress Text -->
+            <div class="progress-row">
+                <span id="download-filename" style="font-weight: bold;">{{ filename }}</span>
+                <span id="download-prep-progress-text">
+                    <span id="download-prep-mb-processed">0.0 MB</span> / <span id="download-prep-mb-total">0.0 MB</span>
+                </span>
+            </div>
+            <!-- Row 2: Progress Bar -->
+            <progress id="download-prep-progress" value="0" max="100"></progress>
+            <!-- Row 3: ETA, Speed, Action Button -->
+            <div class="progress-row">
+                <div>
+                    <span title="Estimated Time Remaining (Preparation)">⏱️</span>
+                    <span id="download-prep-eta">--:--</span>
+                    <span style="margin-left: 15px;" title="Preparation Speed">⚙️</span> <!-- Gear icon for prep speed -->
+                    <span id="download-prep-speed">0.0 MB/s</span>
+                </div>
+                <!-- Placeholder buttons if needed later -->
+                <button id="download-pause-resume-button" class="progress-button" disabled>
+                    <span class="pause-icon">⏸️</span>
+                    <span class="button-text">Pause Prep</span>
+                </button>
+                 <button id="download-resume-button" class="progress-button" style="display: none;" disabled>
+                    <span class="resume-icon">▶️</span>
+                    <span class="button-text">Resume Prep</span>
+                 </button>
+            </div>
+        </div>
+
+        <!-- Status Message Area -->
+        <p id="download-prep-status"></p>
+
+        <p class="footer-link"><a href="/">Upload another file</a></p>
+
+    </div>
+
+    <script>
+        // --- Passed from Flask Template ---
+        const requestUsername = "testuser";
+        const requestFilename = "example.zip";
+        const requestFilesizeBytes = 1048576;
+
+        // --- Element References ---
+        const startDownloadButton = document.getElementById('start-download-button');
+        const downloadDetailsDiv = document.getElementById('download-details');
+        const downloadPrepStatus = document.getElementById('download-prep-status');
+        const displayFileSizeSpan = document.getElementById('display-filesize');
+
+        // --- Progress Elements (within downloadDetailsDiv) ---
+        const downloadFilenameSpan = document.getElementById('download-filename'); // Already set by template, but reference if needed
+        const downloadPrepMbProcessedSpan = document.getElementById('download-prep-mb-processed');
+        const downloadPrepMbTotalSpan = document.getElementById('download-prep-mb-total');
+        const downloadPrepProgress = document.getElementById('download-prep-progress');
+        const downloadPrepEtaSpan = document.getElementById('download-prep-eta');
+        const downloadPrepSpeedSpan = document.getElementById('download-prep-speed');
+        const downloadPauseResumeButton = document.getElementById('download-pause-resume-button');
+        // const downloadResumeButton = document.getElementById('download-resume-button');
+
+        // --- State ---
+        let downloadPrepEventSource = null;
+
+        // --- Helper Function: Format File Size ---
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+        }
+
+        // --- Initial Display ---
+        displayFileSizeSpan.textContent = formatFileSize(requestFilesizeBytes);
+        downloadPrepMbTotalSpan.textContent = formatFileSize(requestFilesizeBytes); // Set total size in progress area too
+
+        // --- Download Button Logic ---
+        startDownloadButton.addEventListener('click', () => {
+            console.log(`Download button clicked for: User='${requestUsername}', File='${requestFilename}'`);
+
+            // Disable button, show status
+            startDownloadButton.disabled = true;
+            startDownloadButton.textContent = 'Preparing...';
+            downloadDetailsDiv.style.display = 'block'; // Show progress area
+            downloadPrepStatus.textContent = `Preparing download for ${requestFilename}...`;
+            downloadPrepStatus.style.color = '#337ab7'; // Blue
+            downloadPrepStatus.style.display = 'block';
+
+            // Reset progress bar etc.
+            downloadPrepProgress.value = 0;
+            downloadPrepMbProcessedSpan.textContent = '0.0 MB';
+            downloadPrepEtaSpan.textContent = '--:--';
+            downloadPrepSpeedSpan.textContent = '0.0 MB/s';
+            // Ensure total size is set based on initial value
+            downloadPrepMbTotalSpan.textContent = formatFileSize(requestFilesizeBytes);
+
+
+            // Start the SSE connection for preparation status
+            startDownloadPreparationStream(requestUsername, requestFilename);
+        });
+
+        // --- Function to handle DOWNLOAD PREPARATION Server-Sent Events ---
+        function startDownloadPreparationStream(username, filename) {
+            if (downloadPrepEventSource) {
+                downloadPrepEventSource.close();
+                console.log("Closed existing Download Prep EventSource.");
+            }
+
+            const prepUrl = `/prepare-download/${encodeURIComponent(username)}/${encodeURIComponent(filename)}`;
+            console.log(`Connecting to DOWNLOAD PREP SSE stream: ${prepUrl}`);
+
+            downloadPrepEventSource = new EventSource(prepUrl);
+
+            downloadPrepEventSource.onopen = function() {
+                console.log("Download Prep SSE connection opened.");
+                downloadPrepStatus.textContent = 'Connection established. Preparing file...';
+            };
+
+            // Listener for 'filename' (might update if different from initial request)
+             downloadPrepEventSource.addEventListener('filename', function(event) {
+                 console.log("Download Prep 'filename' event:", event.data);
+                 try {
+                     const data = JSON.parse(event.data);
+                     if (data.filename) {
+                         downloadFilenameSpan.textContent = data.filename;
+                         // Update h1 title too? Optional.
+                         // document.querySelector('h1').textContent = data.filename;
+                     }
+                 } catch (e) { console.error("Error parsing download prep 'filename' data:", e); }
+             });
+
+            // Listener for 'status' events
+            downloadPrepEventSource.addEventListener('status', function(event) {
+                console.log("Download Prep 'status' event:", event.data);
+                try {
+                    const data = JSON.parse(event.data);
+                    downloadPrepStatus.textContent = data.message || 'Preparing...';
+                    downloadPrepStatus.style.color = '#337ab7'; // Default blue for status updates
+                } catch (e) {
+                    console.error("Error parsing download prep 'status' data:", e);
+                    downloadPrepStatus.textContent = 'Processing preparation step...';
+                }
+            });
+
+            // Listener for 'progress' events
+             downloadPrepEventSource.addEventListener('progress', function(event) {
+                 try {
+                     const data = JSON.parse(event.data);
+                     const percentage = data.percentage !== undefined ? Math.min(Math.max(data.percentage, 0), 100) : null;
+
+                     if (percentage !== null) {
+                         downloadPrepProgress.value = percentage;
+                     }
+
+                     const bytesProcessed = data.bytesProcessed !== undefined ? data.bytesProcessed : 0;
+                     const totalBytes = data.totalBytes !== undefined ? data.totalBytes : requestFilesizeBytes; // Use initial if not updated
+                     downloadPrepMbProcessedSpan.textContent = formatFileSize(bytesProcessed);
+                     downloadPrepMbTotalSpan.textContent = formatFileSize(totalBytes);
+
+                     const speed = data.speedMBps !== undefined ? data.speedMBps.toFixed(2) : '--';
+                     const eta = data.etaFormatted || '--:--';
+                     downloadPrepSpeedSpan.textContent = `${speed} MB/s`;
+                     downloadPrepEtaSpan.textContent = eta;
+
+                 } catch (e) {
+                     console.error("Error parsing download prep 'progress' data:", e);
+                 }
+             });
+
+             // Listener for 'totalSizeUpdate' (if backend sends actual size later)
+              downloadPrepEventSource.addEventListener('totalSizeUpdate', function(event) {
+                 console.log("Download Prep 'totalSizeUpdate' event:", event.data);
+                 try {
+                     const data = JSON.parse(event.data);
+                     const totalSize = data.totalSize;
+                     if (totalSize !== undefined) {
+                        downloadPrepMbTotalSpan.textContent = formatFileSize(totalSize);
+                     }
+                 } catch (e) { console.error("Error parsing download prep 'totalSizeUpdate' data:", e); }
+             });
+
+
+            // Listener for the 'ready' event
+            downloadPrepEventSource.addEventListener('ready', function(event) {
+                console.log("Download Prep 'ready' event:", event.data);
+                downloadPrepStatus.textContent = 'File ready! Starting download...';
+                downloadPrepStatus.style.color = 'green'; // Green for ready
+                downloadPrepProgress.value = 100;
+                downloadDetailsDiv.style.backgroundColor = '#dff0d8'; // Greenish background
+
+                if (downloadPrepEventSource) {
+                    downloadPrepEventSource.close();
+                    downloadPrepEventSource = null;
+                    console.log("Download Prep SSE connection closed on ready.");
+                }
+
+                try {
+                    const data = JSON.parse(event.data);
+                    const tempFileId = data.temp_file_id;
+                    // Use the filename potentially updated by the server
+                    const finalFilename = data.final_filename || requestFilename;
+
+                    if (!tempFileId) throw new Error("Missing temporary file ID.");
+
+                    // Trigger the actual browser file download
+                    const downloadUrl = `/serve-temp-file/${tempFileId}/${encodeURIComponent(finalFilename)}`;
+                    console.log(`Triggering final download from: ${downloadUrl}`);
+                    window.location.href = downloadUrl;
+
+                    // Update button text after triggering download
+                    startDownloadButton.textContent = 'Download Started';
+                    // Optionally re-enable after a delay, or leave disabled?
+                    // setTimeout(() => {
+                    //     startDownloadButton.disabled = false;
+                    //     startDownloadButton.textContent = 'Download Again';
+                    //     downloadDetailsDiv.style.display = 'none'; // Hide progress
+                    //     downloadPrepStatus.style.display = 'none'; // Hide status
+                    // }, 5000);
+
+
+                } catch (e) {
+                    console.error("Error parsing 'ready' event or starting download:", e);
+                    downloadPrepStatus.textContent = `Error starting download: ${e.message}`;
+                    downloadPrepStatus.style.color = 'red';
+                    downloadDetailsDiv.style.backgroundColor = '#f2dede'; // Error background
+                    startDownloadButton.disabled = false; // Re-enable button on error
+                    startDownloadButton.textContent = 'Download File';
+                }
+            });
+
+            // Listener for 'error' events
+            downloadPrepEventSource.addEventListener('error', function(event) {
+                console.error("Download Prep SSE 'error' event:", event);
+                let errorMsg = 'Download preparation failed.';
+                 try {
+                      if (event.data) { // Check if data exists before parsing
+                         const data = JSON.parse(event.data);
+                         errorMsg = `Error: ${data.message || 'Unknown preparation error.'}`;
+                      }
+                 } catch (e) { /* Ignore if data is not JSON */ }
+
+                downloadPrepStatus.textContent = errorMsg;
+                downloadPrepStatus.style.color = 'red';
+                downloadDetailsDiv.style.display = 'none'; // Hide progress on error
+
+                if (downloadPrepEventSource) {
+                    downloadPrepEventSource.close(); downloadPrepEventSource = null;
+                }
+                startDownloadButton.disabled = false; // Re-enable button
+                startDownloadButton.textContent = 'Download File';
+            });
+
+            // Handle generic SSE connection errors
+            downloadPrepEventSource.onerror = function(err) {
+                console.error("Download Prep EventSource failed:", err);
+                // Only show error if connection was actively trying/open and failed
+                if (downloadPrepEventSource && (downloadPrepEventSource.readyState === EventSource.CONNECTING || downloadPrepEventSource.readyState === EventSource.OPEN)) {
+                    downloadPrepStatus.textContent = 'Connection error during preparation.';
+                    downloadPrepStatus.style.color = 'red';
+                    downloadDetailsDiv.style.display = 'none';
+                    if (downloadPrepEventSource) {
+                        downloadPrepEventSource.close(); downloadPrepEventSource = null;
+                    }
+                    startDownloadButton.disabled = false;
+                     startDownloadButton.textContent = 'Download File';
+                } else {
+                    console.log("Download Prep EventSource onerror skipped (already closed or before opening).");
+                }
+            };
+        } // --- End of startDownloadPreparationStream ---
+
+    </script>
+</body>
+</html>

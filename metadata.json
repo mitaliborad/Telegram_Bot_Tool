@@ -3405,6 +3405,36 @@
             "upload_timestamp": "2025-04-18T06:33:14.737117+00:00",
             "username": "testt",
             "total_upload_duration_seconds": 403.69105434417725
+        },
+        {
+            "original_filename": "download_page.html",
+            "sent_filename": "download_page.html.zip",
+            "is_split": false,
+            "is_compressed": true,
+            "original_size": 19511,
+            "compressed_size": 4632,
+            "telegram_message_id": 464,
+            "telegram_file_id": "BQACAgUAAxkDAAIB0GgCQBlEIAjscxuzQGUhJYhPvAZgAAKDFwAC9EERVKhK-Ob6-lAeNgQ",
+            "telegram_file_unique_id": "AgADgxcAAvRBEVQ",
+            "upload_timestamp": "2025-04-18T12:05:45.511600+00:00",
+            "username": "testt",
+            "upload_duration_seconds": 1.114879846572876,
+            "access_id": "98c2042dff"
+        },
+        {
+            "original_filename": "download_page.html",
+            "sent_filename": "download_page.html.zip",
+            "is_split": false,
+            "is_compressed": true,
+            "original_size": 19511,
+            "compressed_size": 4632,
+            "telegram_message_id": 465,
+            "telegram_file_id": "BQACAgUAAxkDAAIB0WgCQJ1qbImAdWZYhuInK-IJUgrRAAKFFwAC9EERVGocMov-0tFXNgQ",
+            "telegram_file_unique_id": "AgADhRcAAvRBEVQ",
+            "upload_timestamp": "2025-04-18T12:07:57.252998+00:00",
+            "username": "testt",
+            "upload_duration_seconds": 1.1073122024536133,
+            "access_id": "d76c1b2854"
         }
     ],
     "Tomy": [

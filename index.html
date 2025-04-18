@@ -212,32 +212,41 @@
         <button id="list-files-button">List Files</button>
         <ul id="file-list">
         </ul>
+        
         <div id="download-details" style="display: none; margin-top: 15px; border: 1px solid #ccc; padding: 10px; border-radius: 5px; background-color: #f9f9f9;">
             <!-- Row 1: Filename and Progress Text -->
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                 <span id="download-filename" style="font-weight: bold; word-break: break-all;">filename.zip</span>
-                <span id="download-prep-progress-text" style="color: rgb(54, 108, 235);"> <!-- Style like upload -->
-                    <span id="download-prep-mb-processed">0.0 MB</span> / <span id="download-prep-mb-total">0.0 MB</span> <!-- Note: Using "Parts" or similar unit -->
+                <span id="download-prep-progress-text"> <!-- Green color like upload -->
+                    <span id="download-prep-mb-processed" style="color: rgb(54, 108, 235);">0.0 MB</span> / <span id="download-prep-mb-total" style="color:black">0.0 MB</span>
                 </span>
             </div>
             <!-- Row 2: Progress Bar -->
-            <progress id="download-prep-progress" value="0" max="100" style="width: 100%; height: 10px; margin-bottom: 10px; accent-color: #337ab7;"></progress> <!-- Blue progress bar -->
+            <progress id="download-prep-progress" value="0" max="100" style="width: 100%; height: 10px; margin-bottom: 10px;"></progress> <!-- Green accent color -->
             <!-- Row 3: ETA, Speed, Action Button -->
             <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.9em; color: #555;">
                 <div>
                     <span title="Estimated Time Remaining (Preparation)">⏱️</span>
-                    <span id="download-prep-eta">--:--</span> <!-- Placeholder -->
+                    <span id="download-prep-eta">--:--</span>
                     <span style="margin-left: 15px;" title="Preparation Speed">⬇️</span>
-                    <span id="download-prep-speed">-- MB/s</span> <!-- Placeholder -->
+                    <span id="download-prep-speed">0.0 MB/s</span>
                 </div>
-                <!-- Optional: Add a Cancel Prep button later if needed -->
-                <!-- <button id="cancel-prep-button" class="progress-button">Cancel</button> -->
+                <!-- Adding placeholder Pause/Resume buttons like upload -->
+                <button id="download-pause-resume-button" class="progress-button" disabled>
+                    <span class="pause-icon">⏸️</span>
+                    <span class="button-text">Pause Prep</span> <!-- Text indicates prep -->
+                </button>
+                 <button id="download-resume-button" class="progress-button" style="display: none;" disabled>
+                    <span class="resume-icon">▶️</span>
+                    <span class="button-text">Resume Prep</span>
+                 </button>
             </div>
-             <!-- Row 4: Detailed Status Message -->
-             <div style="margin-top: 5px;">
-                 <span id="download-prep-message" style="font-weight: bold;">Preparing...</span>
-             </div>
+             <!-- Row 4: Detailed Status Message IS REMOVED FROM HERE -->
         </div>
+        <!-- End replaced block -->
+
+        <!-- Download Prep Status message will now appear in the paragraph below -->
+        <p id="download-prep-status" style="margin-top: 10px; font-weight: bold; color: #337ab7; display: none;"></p>
         <p id="list-status"></p>
     </div>
 
@@ -263,10 +272,16 @@
         const progressEtaSpan = document.getElementById('progress-eta');
         const progressSpeedSpan = document.getElementById('progress-speed');
         const pauseResumeButton = document.getElementById('pause-resume-button');
+
         const downloadDetailsDiv = document.getElementById('download-details');
         const downloadFilenameSpan = document.getElementById('download-filename');
-        const downloadPrepProgress = document.getElementById('download-prep-progress');
-        const downloadPrepMessageSpan = document.getElementById('download-prep-message');
+        const downloadPrepProgressTextSpan = document.getElementById('download-prep-progress-text'); // The container span
+        const downloadPrepMbProcessedSpan = document.getElementById('download-prep-mb-processed'); // Specific span for processed MB/Units
+        const downloadPrepMbTotalSpan = document.getElementById('download-prep-mb-total');       // Specific span for total MB/Units
+        const downloadPrepProgress = document.getElementById('download-prep-progress');      // The progress bar
+        const downloadPrepEtaSpan = document.getElementById('download-prep-eta');          // ETA span
+        const downloadPrepSpeedSpan = document.getElementById('download-prep-speed');        // Speed span
+        const downloadPauseResumeButton = document.getElementById('download-pause-resume-button'); 
         // const resumeButton = document.getElementById('resume-button'); // Ref if needed later
 
         // --- State Variables ---
@@ -321,11 +336,10 @@
             }
             // Also close download prep SSE if user selects new file while prep is running
             if (downloadPrepEventSource) {
-                downloadPrepEventSource.close();
-                downloadPrepEventSource = null;
-                console.log("Closed previous DOWNLOAD PREP EventSource connection.");
-                downloadPrepStatus.style.display = 'none'; // Hide prep status too
-                downloadPrepStatus.textContent = '';
+                downloadPrepEventSource.close(); downloadPrepEventSource = null;
+                console.log("Closed DOWNLOAD PREP EventSource.");
+                downloadDetailsDiv.style.display = 'none'; // Hide download details
+                downloadPrepStatus.style.display = 'none'; // Hide download status p
             }
         }
 
@@ -637,205 +651,203 @@
 
          // --- Download File --- (Handles Preparation and Triggering) ---
          async function downloadFile(username, filename) {
-            console.log(`Requesting download prep for user: ${username}, file: ${filename}`);
+        console.log(`Requesting download prep for user: ${username}, file: ${filename}`);
 
-            // Close any previous download prep connection
-            if (downloadPrepEventSource) {
-                downloadPrepEventSource.close();
-                downloadPrepEventSource = null;
-                console.log("Closed previous download prep EventSource.");
-            }
+        if (downloadPrepEventSource) {
+            downloadPrepEventSource.close();
+            downloadPrepEventSource = null;
+        }
 
-            // --- UI Update: Show Download Prep Area ---
-            listStatus.textContent = ''; // Clear general list status first
-            uploadStatus.textContent = ''; // Clear upload status
-            progressDetailsDiv.style.display = 'none'; // Hide upload progress
+        // --- UI Update: Reset and Show Download Prep Area ---
+        listStatus.textContent = ''; // Clear general list status
+        uploadStatus.textContent = ''; // Clear upload status
+        progressDetailsDiv.style.display = 'none'; // Hide upload progress
 
-            // Reset download details area
-            downloadFilenameSpan.textContent = filename; // Show initial filename
-            downloadPrepMessageSpan.textContent = 'Initiating preparation...';
-            downloadPrepProgress.value = 0;
-            downloadPrepProgress.removeAttribute("max"); // Use indeterminate state initially
-            downloadDetailsDiv.style.backgroundColor = '#f9f9f9'; // Reset background
-            downloadDetailsDiv.style.display = 'block'; // Show the download prep area
-            // Reset text fields
-            document.getElementById('download-prep-mb-processed').textContent = '0';
-            document.getElementById('download-prep-mb-total').textContent = '? Units'; // Indicate unknown total initially
-            document.getElementById('download-prep-eta').textContent = '--:--';
-            document.getElementById('download-prep-speed').textContent = '-- MB/s';
+        // Reset specific download details elements
+        downloadFilenameSpan.textContent = filename;
+        downloadPrepMbProcessedSpan.textContent = '0.0 MB'; // Use MB initially
+        downloadPrepMbTotalSpan.textContent = '?.? MB';   // Indicate unknown total initially
+        downloadPrepProgress.value = 0;
+        downloadPrepProgress.style.accentColor = '#5cb85c'; // Match upload green
+        downloadPrepEtaSpan.textContent = '--:--';
+        downloadPrepSpeedSpan.textContent = '-- MB/s';
+        downloadPauseResumeButton.disabled = true; // Keep disabled
+        downloadDetailsDiv.style.backgroundColor = '#f9f9f9'; // Reset background
+        downloadDetailsDiv.style.display = 'block'; // Show the details div
 
+        // Set initial message in the paragraph BELOW the details div
+        downloadPrepStatus.textContent = `Preparing download for ${filename}...`;
+        downloadPrepStatus.style.color = '#337ab7'; // Blue for preparing
+        downloadPrepStatus.style.display = 'block'; // Show status paragraph
 
-            // Optional: Disable all download buttons while one is preparing
-            document.querySelectorAll('.download-button').forEach(btn => btn.disabled = true);
+        // Optional: Disable all download buttons
+        document.querySelectorAll('.download-button').forEach(btn => btn.disabled = true);
 
-            const prepUrl = `/prepare-download/${encodeURIComponent(username)}/${encodeURIComponent(filename)}`;
-            console.log(`Connecting to DOWNLOAD PREP SSE stream: ${prepUrl}`);
+        const prepUrl = `/prepare-download/${encodeURIComponent(username)}/${encodeURIComponent(filename)}`;
+        console.log(`Connecting to DOWNLOAD PREP SSE stream: ${prepUrl}`);
 
-            try {
-                // Create the new EventSource connection
-                downloadPrepEventSource = new EventSource(prepUrl);
+        try {
+            downloadPrepEventSource = new EventSource(prepUrl);
 
-                downloadPrepEventSource.onopen = function() {
-                    console.log("Download Prep SSE connection opened.");
-                    downloadPrepMessageSpan.textContent = 'Connection established. Preparing...';
-                };
+            downloadPrepEventSource.onopen = function() {
+                console.log("Download Prep SSE connection opened.");
+                downloadPrepStatus.textContent = 'Connection established. Preparing file...'; // Update external status
+            };
 
-                // --- Listener for 'filename' events (updates filename if needed) ---
-                downloadPrepEventSource.addEventListener('filename', function(event) {
-                     console.log("Download Prep 'filename' event:", event.data);
-                     try {
-                         const data = JSON.parse(event.data);
-                         if (data.filename) {
-                              downloadFilenameSpan.textContent = data.filename;
-                         }
-                     } catch (e) { console.error("Error parsing download prep 'filename' data:", e); }
-                 });
+            // --- Listener for 'filename' events ---
+            downloadPrepEventSource.addEventListener('filename', function(event) {
+                 console.log("Download Prep 'filename' event:", event.data);
+                 try {
+                     const data = JSON.parse(event.data);
+                     if (data.filename) { downloadFilenameSpan.textContent = data.filename; }
+                 } catch (e) { console.error("Error parsing download prep 'filename' data:", e); }
+             });
 
-                // --- Listener for 'status' events from backend prep ---
-                downloadPrepEventSource.addEventListener('status', function(event) {
-                    console.log("Download Prep 'status' event:", event.data);
-                    try {
-                        const data = JSON.parse(event.data);
-                        downloadPrepMessageSpan.textContent = data.message || 'Preparing...';
-                         if (data.filename) { // Update filename if sent with status
-                             downloadFilenameSpan.textContent = data.filename;
-                         }
-                    } catch (e) {
-                        console.error("Error parsing download prep 'status' data:", e);
-                        downloadPrepMessageSpan.textContent = 'Processing preparation step...';
-                    }
-                });
+            // --- Listener for 'status' events ---
+            downloadPrepEventSource.addEventListener('status', function(event) {
+                console.log("Download Prep 'status' event:", event.data);
+                try {
+                    const data = JSON.parse(event.data);
+                    // Update the external status paragraph
+                    downloadPrepStatus.textContent = data.message || 'Preparing...';
+                     if (data.filename) { downloadFilenameSpan.textContent = data.filename; }
+                } catch (e) {
+                    console.error("Error parsing download prep 'status' data:", e);
+                    downloadPrepStatus.textContent = 'Processing preparation step...';
+                }
+            });
 
-                 // --- Listener for 'progress' events during preparation ---
-                 downloadPrepEventSource.addEventListener('progress', function(event) {
-                     // console.log("Download Prep 'progress' event:", event.data); // Can be noisy
-                     try {
-                         const data = JSON.parse(event.data);
-                         const percentage = data.percentage !== undefined ? Math.min(Math.max(data.percentage, 0), 100) : null;
+             // --- Listener for 'progress' events ---
+             downloadPrepEventSource.addEventListener('progress', function(event) {
+                 try {
+                     const data = JSON.parse(event.data);
+                     const percentage = data.percentage !== undefined ? Math.min(Math.max(data.percentage, 0), 100) : null;
 
-                         if (percentage !== null) {
-                            downloadPrepProgress.removeAttribute("max"); // Remove indeterminate state if set
-                            downloadPrepProgress.value = percentage; // Update the prep progress bar
-                         } else {
-                             // Make progress bar indeterminate if percentage not sent
-                             downloadPrepProgress.setAttribute("max", "100"); // Need max for indeterminate look
-                             downloadPrepProgress.removeAttribute("value");
-                         }
-
-
-                         // Update units text (e.g., "5 / 10 Parts" or "1 / 1 Ops")
-                         const processedUnits = data.processedUnits !== undefined ? data.processedUnits : '-';
-                         const totalUnits = data.totalUnits !== undefined ? data.totalUnits : '?';
-                         const unitLabel = totalUnits === 1 ? "Op" : "Parts"; // Choose label based on total
-                         document.getElementById('download-prep-mb-processed').textContent = processedUnits;
-                         document.getElementById('download-prep-mb-total').textContent = `${totalUnits} ${unitLabel}`;
-
-                         // Update speed and ETA (show placeholders if not available)
-                         const speed = data.speedMBps !== undefined ? data.speedMBps.toFixed(2) : '--';
-                         const eta = data.etaFormatted || '--:--';
-                         document.getElementById('download-prep-speed').textContent = `${speed} MB/s`;
-                         document.getElementById('download-prep-eta').textContent = eta;
-
-                     } catch (e) {
-                         console.error("Error parsing download prep 'progress' data:", e);
+                     if (percentage !== null) {
+                         downloadPrepProgress.value = percentage;
+                     } else {
+                         // Handle indeterminate state if needed, but we expect percentage now
+                         downloadPrepProgress.value = 0; // Or keep previous value?
                      }
-                 });
 
-                // --- Listener for the 'ready' event ---
-                downloadPrepEventSource.addEventListener('ready', function(event) {
-                    console.log("Download Prep 'ready' event:", event.data);
-                    downloadPrepMessageSpan.textContent = 'Starting Download!';
-                    downloadPrepProgress.value = 100; // Ensure prep bar is full
-                    downloadDetailsDiv.style.backgroundColor = '#dff0d8'; // Green background
+                     // --- Update MB Text Display ---
+                     const bytesProcessed = data.bytesProcessed !== undefined ? data.bytesProcessed : 0;
+                     const totalBytes = data.totalBytes !== undefined ? data.totalBytes : 0;
+                     // Decide if showing units as "MB" or "Parts" makes sense
+                     // Let's try showing MB based on percentage *if* total size is known from metadata later
+                     // For now, let's use parts/ops for clarity if totalUnits > 1
+                     const processedMB = (bytesProcessed / (1024 * 1024)).toFixed(1);
+                     const totalMB = (totalBytes / (1024 * 1024)).toFixed(1);
+                     // Let's just show percentage for now in the text area for simplicity
+                     // downloadPrepMbProcessedSpan.textContent = processedUnits;
+                     // downloadPrepMbTotalSpan.textContent = `${totalUnits} ${unitLabel}`;
+                     // Alternative: Show percentage clearly
+                     downloadPrepMbProcessedSpan.textContent = `${processedMB} MB`;
+                     downloadPrepMbTotalSpan.textContent = `${totalMB} MB`;
 
-                    // Close the preparation SSE connection cleanly
-                    if (downloadPrepEventSource) {
-                        downloadPrepEventSource.close();
-                        downloadPrepEventSource = null;
-                        console.log("Download Prep SSE connection closed on ready.");
-                    }
 
-                    try {
-                        const data = JSON.parse(event.data);
-                        const tempFileId = data.temp_file_id;
-                        const finalFilename = data.final_filename || filename; // Use name from server
+                     // Update speed and ETA - Show placeholders as prep speed isn't user download speed
+                     const speed = data.speedMBps !== undefined ? data.speedMBps.toFixed(2) : '--'; // Server speed, might be confusing
+                     const eta = data.etaFormatted || '--:--'; // Server ETA, might be confusing
+                     downloadPrepSpeedSpan.textContent = `${speed} MB/s`; // Display the speed
+                     downloadPrepEtaSpan.textContent = eta; // Display the ETA
 
-                        if (!tempFileId) {
-                            throw new Error("Server ready signal missing temporary file ID.");
-                        }
+                 } catch (e) {
+                     console.error("Error parsing download prep 'progress' data:", e);
+                 }
+             });
 
-                        // Trigger the actual browser file download
-                        const downloadUrl = `/serve-temp-file/${tempFileId}/${encodeURIComponent(finalFilename)}`;
-                        console.log(`Triggering final download from: ${downloadUrl}`);
-                        window.location.href = downloadUrl;
+            // --- Listener for the 'ready' event ---
+            downloadPrepEventSource.addEventListener('ready', function(event) {
+                console.log("Download Prep 'ready' event:", event.data);
+                // The final status ("File ready...") should have been set by the last 'status' event
+                // We just confirm the visual state here
+                downloadPrepStatus.style.color = 'green'; // Ensure status text is green
+                downloadPrepProgress.value = 100;         // Ensure progress bar is full
+                downloadDetailsDiv.style.backgroundColor = '#dff0d8'; // Optional green background
 
-                        // Reset UI after a delay
-                        setTimeout(() => {
-                             downloadDetailsDiv.style.display = 'none';
-                             downloadDetailsDiv.style.backgroundColor = '#f9f9f9';
-                             // Re-enable download buttons
-                             document.querySelectorAll('.download-button').forEach(btn => btn.disabled = false);
-                         }, 4000);
+                // Close the preparation SSE connection cleanly
+                if (downloadPrepEventSource) {
+                    downloadPrepEventSource.close();
+                    downloadPrepEventSource = null;
+                    console.log("Download Prep SSE connection closed on ready.");
+                }
 
-                    } catch (e) {
-                         console.error("Error parsing 'ready' event or starting download:", e);
-                         downloadPrepMessageSpan.textContent = `Error starting download: ${e.message}`;
-                         downloadDetailsDiv.style.backgroundColor = '#f2dede'; // Red background
-                         // Re-enable download buttons
+                try {
+                    const data = JSON.parse(event.data);
+                    const tempFileId = data.temp_file_id;
+                    const finalFilename = data.final_filename || filename; // Use name from server
+
+                    if (!tempFileId) throw new Error("Missing temporary file ID.");
+
+                    // Trigger the actual browser file download
+                    const downloadUrl = `/serve-temp-file/${tempFileId}/${encodeURIComponent(finalFilename)}`;
+                    console.log(`Triggering final download from: ${downloadUrl}`);
+                    window.location.href = downloadUrl;
+
+                    // Reset UI after delay (Keep the "File ready..." message visible briefly)
+                    setTimeout(() => {
+                         downloadDetailsDiv.style.display = 'none'; // Hide the details box
+                         downloadPrepStatus.style.display = 'none'; // Hide the status paragraph
+                         downloadDetailsDiv.style.backgroundColor = '#f9f9f9'; // Reset background for next time
                          document.querySelectorAll('.download-button').forEach(btn => btn.disabled = false);
-                    }
-                });
+                     }, 4000); // Hide status message after 4 seconds
 
-                // --- Listener for 'error' events from backend prep ---
-                downloadPrepEventSource.addEventListener('error', function(event) {
-                    console.error("Download Prep 'error' event:", event.data);
-                    let errorMsg = 'Download preparation failed.';
-                     try {
-                         const data = JSON.parse(event.data);
-                         errorMsg = `Error: ${data.message || 'Unknown preparation error.'}`;
-                     } catch (e) { /* Ignore non-JSON */ }
+                } catch (e) {
+                     console.error("Error parsing 'ready' event or starting download:", e);
+                     // Show error in the dedicated status paragraph
+                     downloadPrepStatus.textContent = `Error starting download: ${e.message}`;
+                     downloadPrepStatus.style.color = 'red';
+                     downloadPrepStatus.style.display = 'block'; // Make sure it's visible
+                     downloadDetailsDiv.style.backgroundColor = '#f2dede'; // Error background
+                     document.querySelectorAll('.download-button').forEach(btn => btn.disabled = false);
+                }
+            });
 
-                    downloadPrepMessageSpan.textContent = errorMsg;
-                    downloadDetailsDiv.style.backgroundColor = '#f2dede';
-                    downloadPrepProgress.value = 0; // Reset progress on error
+            // --- Listener for 'error' events ---
+            downloadPrepEventSource.addEventListener('error', function(event) {
+                console.error("Download Prep 'error' event:", event.data);
+                let errorMsg = 'Download preparation failed.';
+                 try {
+                     const data = JSON.parse(event.data);
+                     errorMsg = `Error: ${data.message || 'Unknown preparation error.'}`;
+                 } catch (e) { /* Ignore */ }
+                downloadPrepStatus.textContent = errorMsg; // Use external status paragraph
+                downloadPrepStatus.style.color = 'red';
+                downloadDetailsDiv.style.display = 'none'; // Hide details on error
 
-                    if (downloadPrepEventSource) {
-                        downloadPrepEventSource.close();
-                        downloadPrepEventSource = null;
-                        console.log("Download Prep SSE connection closed on error event.");
-                    }
-                    // Re-enable download buttons
-                    document.querySelectorAll('.download-button').forEach(btn => btn.disabled = false);
-                });
+                if (downloadPrepEventSource) {
+                    downloadPrepEventSource.close(); downloadPrepEventSource = null;
+                }
+                document.querySelectorAll('.download-button').forEach(btn => btn.disabled = false);
+            });
 
-                // --- Handle generic SSE connection errors ---
-                downloadPrepEventSource.onerror = function(err) {
-                    console.error("Download Prep EventSource failed:", err);
-                    if (downloadPrepEventSource && downloadPrepEventSource.readyState !== EventSource.CLOSED) {
-                        downloadPrepMessageSpan.textContent = 'Connection error during preparation.';
-                        downloadDetailsDiv.style.backgroundColor = '#f2dede';
-                        downloadPrepProgress.value = 0;
-                         if (downloadPrepEventSource) {
-                             downloadPrepEventSource.close();
-                             downloadPrepEventSource = null;
-                         }
-                         // Re-enable download buttons
-                         document.querySelectorAll('.download-button').forEach(btn => btn.disabled = false);
-                    } else {
-                        console.log("Download Prep EventSource onerror handler skipped (already closed).");
-                    }
-                };
+            // --- Handle generic SSE connection errors ---
+            downloadPrepEventSource.onerror = function(err) {
+                console.error("Download Prep EventSource failed:", err);
+                if (downloadPrepEventSource && downloadPrepEventSource.readyState !== EventSource.CLOSED) {
+                    downloadPrepStatus.textContent = 'Connection error during preparation.'; // Use external status
+                    downloadPrepStatus.style.color = 'red';
+                    downloadDetailsDiv.style.display = 'none'; // Hide details
+                     if (downloadPrepEventSource) {
+                         downloadPrepEventSource.close(); downloadPrepEventSource = null;
+                     }
+                     document.querySelectorAll('.download-button').forEach(btn => btn.disabled = false);
+                } else {
+                    console.log("Download Prep EventSource onerror skipped (already closed).");
+                }
+            };
 
-            } catch (error) { // Catch errors setting up EventSource
-                console.error('Error setting up Download Prep EventSource:', error);
-                downloadPrepMessageSpan.textContent = `Error contacting server: ${error.message}`;
-                downloadDetailsDiv.style.backgroundColor = '#f2dede';
-                downloadDetailsDiv.style.display = 'block';
-                downloadPrepProgress.value = 0;
-                 // Re-enable download buttons
-                 document.querySelectorAll('.download-button').forEach(btn => btn.disabled = false);
-            }
-        } 
+        } catch (error) { // Catch setup errors
+            console.error('Error setting up Download Prep EventSource:', error);
+            downloadPrepStatus.textContent = `Error contacting server: ${error.message}`; // Use external status
+            downloadPrepStatus.style.color = 'red';
+            downloadPrepStatus.style.display = 'block';
+            downloadDetailsDiv.style.display = 'none'; // Ensure details are hidden
+             document.querySelectorAll('.download-button').forEach(btn => btn.disabled = false);
+        }
+    } // --- End of downloadFile function ---
+ 
 
     </script>
 </body>

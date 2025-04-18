@@ -1,0 +1,157 @@
+2025-04-18 12:43:42,996 - INFO - [<module>] - Logging configured. Log file: Selenium-Logs\app_20250418_124342.log
+2025-04-18 12:43:42,996 - INFO - [<module>] - Flask application initialized.
+2025-04-18 12:43:43,013 - INFO - [<module>] - Starting Flask development server...
+2025-04-18 12:43:43,031 - WARNING - [_log] -  * Debugger is active!
+2025-04-18 12:43:43,050 - INFO - [_log] -  * Debugger PIN: 107-410-311
+2025-04-18 12:43:48,302 - INFO - [index] - Serving index page.
+2025-04-18 12:43:48,364 - INFO - [_log] - 127.0.0.1 - - [18/Apr/2025 12:43:48] "GET / HTTP/1.1" 200 -
+2025-04-18 12:43:48,405 - INFO - [_log] - 127.0.0.1 - - [18/Apr/2025 12:43:48] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-18 12:43:55,015 - INFO - [list_user_files] - Request received to list files for user: 'testt'
+2025-04-18 12:43:55,015 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-18 12:43:55,015 - INFO - [list_user_files] - Found 17 file records for user 'testt'.
+2025-04-18 12:43:55,021 - INFO - [_log] - 127.0.0.1 - - [18/Apr/2025 12:43:55] "GET /files/testt HTTP/1.1" 200 -
+2025-04-18 12:43:57,659 - INFO - [prepare_download_stream] - [5d52da18-e4e6-4b19-b5e0-5103cc249d7e] SSE connection request for download prep: User='testt', File='[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv'
+2025-04-18 12:43:57,663 - INFO - [_prepare_download_and_generate_updates] - [5d52da18-e4e6-4b19-b5e0-5103cc249d7e] Starting download preparation generator...
+2025-04-18 12:43:57,664 - INFO - [_log] - 127.0.0.1 - - [18/Apr/2025 12:43:57] "GET /prepare-download/testt/[@TeamSeries]~Daredevil_%20Born%20Again%20S01%20E01%20720p%20WebRip%20x264.mkv HTTP/1.1" 200 -
+2025-04-18 12:43:57,865 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-18 12:43:57,865 - INFO - [_prepare_download_and_generate_updates] - [5d52da18-e4e6-4b19-b5e0-5103cc249d7e] Prep SPLIT download for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv'
+2025-04-18 12:43:57,865 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIBr2gB8KCYAUiod9flv-AXOUKn4GRMAAL3FQACEK4RVHxil3CBGNzlNgQ
+2025-04-18 12:43:58,410 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_205
+2025-04-18 12:43:58,411 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_205
+2025-04-18 12:44:04,486 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIBr2gB8KCYAUiod9flv-AXOUKn4GRMAAL3FQACEK4RVHxil3CBGNzlNgQ.
+2025-04-18 12:44:04,521 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIBsGgB8KuaAdWjYfBak4zTZkhp-MYEAAL4FQACEK4RVJUmxAOxdhovNgQ
+2025-04-18 12:44:05,015 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_206
+2025-04-18 12:44:05,015 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_206
+2025-04-18 12:44:08,975 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIBsGgB8KuaAdWjYfBak4zTZkhp-MYEAAL4FQACEK4RVJUmxAOxdhovNgQ.
+2025-04-18 12:44:09,020 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIBsWgB8LQmwJ-kG-MEw438B0IqBKleAAL5FQACEK4RVHbtoTXna5pWNgQ
+2025-04-18 12:44:09,433 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_207
+2025-04-18 12:44:09,433 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_207
+2025-04-18 12:44:13,999 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIBsWgB8LQmwJ-kG-MEw438B0IqBKleAAL5FQACEK4RVHbtoTXna5pWNgQ.
+2025-04-18 12:44:14,037 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIBsmgB8MbHf8t1LwVrExYrCzhAi0lAAAL6FQACEK4RVJfGkyPC9mzXNgQ
+2025-04-18 12:44:14,452 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_208
+2025-04-18 12:44:14,452 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_208
+2025-04-18 12:44:18,942 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIBsmgB8MbHf8t1LwVrExYrCzhAi0lAAAL6FQACEK4RVJfGkyPC9mzXNgQ.
+2025-04-18 12:44:18,987 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIBs2gB8NfajT8ZCLGqpdCy6ORAhebbAAL7FQACEK4RVD5R-KPNoV3QNgQ
+2025-04-18 12:44:19,403 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_209
+2025-04-18 12:44:19,403 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_209
+2025-04-18 12:44:23,085 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIBs2gB8NfajT8ZCLGqpdCy6ORAhebbAAL7FQACEK4RVD5R-KPNoV3QNgQ.
+2025-04-18 12:44:23,108 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIBtGgB8OkqU-EcUTMUK2eLzhfEuIN1AAL8FQACEK4RVMQRnrFMsrchNgQ
+2025-04-18 12:44:23,534 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_210
+2025-04-18 12:44:23,534 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_210
+2025-04-18 12:44:29,417 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIBtGgB8OkqU-EcUTMUK2eLzhfEuIN1AAL8FQACEK4RVMQRnrFMsrchNgQ.
+2025-04-18 12:44:29,459 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIBtWgB8PifM8MN7TRdGkfh1p4-64aEAAL9FQACEK4RVPl4dEccJZ44NgQ
+2025-04-18 12:44:29,873 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_211
+2025-04-18 12:44:29,873 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_211
+2025-04-18 12:44:34,837 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIBtWgB8PifM8MN7TRdGkfh1p4-64aEAAL9FQACEK4RVPl4dEccJZ44NgQ.
+2025-04-18 12:44:34,862 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIBtmgB8QTiJVxetzUXQ8v9dp1tbI21AAL-FQACEK4RVFh4cI99Xna0NgQ
+2025-04-18 12:44:35,300 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_212
+2025-04-18 12:44:35,300 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_212
+2025-04-18 12:44:41,035 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIBtmgB8QTiJVxetzUXQ8v9dp1tbI21AAL-FQACEK4RVFh4cI99Xna0NgQ.
+2025-04-18 12:44:41,066 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIBt2gB8RYAAR4OQz_NJe3vpzAqaJH19QAC_xUAAhCuEVR2KqrrSVzJSTYE
+2025-04-18 12:44:41,517 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_213
+2025-04-18 12:44:41,517 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_213
+2025-04-18 12:44:46,088 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIBt2gB8RYAAR4OQz_NJe3vpzAqaJH19QAC_xUAAhCuEVR2KqrrSVzJSTYE.
+2025-04-18 12:44:46,116 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIBuGgB8SItZq-9a8nZIbE6QGyjHEvcAAMWAAIQrhFUGSTxLAMDFYM2BA
+2025-04-18 12:44:46,548 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_214
+2025-04-18 12:44:46,548 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_214
+2025-04-18 12:45:16,408 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIBuGgB8SItZq-9a8nZIbE6QGyjHEvcAAMWAAIQrhFUGSTxLAMDFYM2BA.
+2025-04-18 12:45:16,441 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIBuWgB8TBS-TiZHIt2ejy5GEs2ZkEjAALQFAACN_wQVKeOtsb54ua2NgQ
+2025-04-18 12:45:16,919 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_215
+2025-04-18 12:45:16,921 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_215
+2025-04-18 12:45:23,911 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIBuWgB8TBS-TiZHIt2ejy5GEs2ZkEjAALQFAACN_wQVKeOtsb54ua2NgQ.
+2025-04-18 12:45:23,941 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIBumgB8TyeN2UGqzF12nt0cBwJc_pjAAIBFgACEK4RVEhNTd9V7NlpNgQ
+2025-04-18 12:45:25,382 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_216
+2025-04-18 12:45:25,382 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_216
+2025-04-18 12:45:32,164 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIBumgB8TyeN2UGqzF12nt0cBwJc_pjAAIBFgACEK4RVEhNTd9V7NlpNgQ.
+2025-04-18 12:45:32,198 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIBu2gB8U7arhMnJmybn2biHYkDHIWDAAICFgACEK4RVF04zDSdtON2NgQ
+2025-04-18 12:45:32,679 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_217
+2025-04-18 12:45:32,679 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_217
+2025-04-18 12:45:38,409 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIBu2gB8U7arhMnJmybn2biHYkDHIWDAAICFgACEK4RVF04zDSdtON2NgQ.
+2025-04-18 12:45:38,436 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIBvGgB8VU1XYnd8m6Xy5Rsm0Te_hw1AAIDFgACEK4RVEnCqEUX6wtuNgQ
+2025-04-18 12:45:38,911 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_218
+2025-04-18 12:45:38,911 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_218
+2025-04-18 12:45:41,862 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIBvGgB8VU1XYnd8m6Xy5Rsm0Te_hw1AAIDFgACEK4RVEnCqEUX6wtuNgQ.
+2025-04-18 12:45:41,897 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIBvWgB8WAZgMZ-AZAiRNbJEyEfKIpqAAIEFgACEK4RVJaG2RCg4AfoNgQ
+2025-04-18 12:45:42,346 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_219
+2025-04-18 12:45:42,346 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_219
+2025-04-18 12:45:46,978 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIBvWgB8WAZgMZ-AZAiRNbJEyEfKIpqAAIEFgACEK4RVJaG2RCg4AfoNgQ.
+2025-04-18 12:45:47,013 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIBvmgB8WrPBZ45CNJo-JWHfY8TEy1UAAIFFgACEK4RVPWqieYYUsdjNgQ
+2025-04-18 12:45:47,453 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_220
+2025-04-18 12:45:47,453 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_220
+2025-04-18 12:45:52,635 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIBvmgB8WrPBZ45CNJo-JWHfY8TEy1UAAIFFgACEK4RVPWqieYYUsdjNgQ.
+2025-04-18 12:45:52,687 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIBv2gB8XSMoY4o5wtG3CKGpkiK0c-gAAIGFgACEK4RVBOHiwk-ZdynNgQ
+2025-04-18 12:45:53,129 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_221
+2025-04-18 12:45:53,129 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_221
+2025-04-18 12:45:58,738 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIBv2gB8XSMoY4o5wtG3CKGpkiK0c-gAAIGFgACEK4RVBOHiwk-ZdynNgQ.
+2025-04-18 12:45:58,780 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIBwGgB8YRAWmbEv8vA43G6ELYV-QjkAAIHFgACEK4RVB8P642uyiZyNgQ
+2025-04-18 12:45:59,266 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_222
+2025-04-18 12:45:59,267 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_222
+2025-04-18 12:46:02,916 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIBwGgB8YRAWmbEv8vA43G6ELYV-QjkAAIHFgACEK4RVB8P642uyiZyNgQ.
+2025-04-18 12:46:02,955 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIBwWgB8ZE1srO13WqDwbMhr3RQY-_IAAIIFgACEK4RVG2buvg7JLJQNgQ
+2025-04-18 12:46:03,382 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_223
+2025-04-18 12:46:03,382 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_223
+2025-04-18 12:46:08,061 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIBwWgB8ZE1srO13WqDwbMhr3RQY-_IAAIIFgACEK4RVG2buvg7JLJQNgQ.
+2025-04-18 12:46:08,091 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIBwmgB8ZwxxAuM9y557vq9yIocKiT-AAIJFgACEK4RVH-BRfV2tXOONgQ
+2025-04-18 12:46:08,534 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_224
+2025-04-18 12:46:08,534 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_224
+2025-04-18 12:46:13,901 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIBwmgB8ZwxxAuM9y557vq9yIocKiT-AAIJFgACEK4RVH-BRfV2tXOONgQ.
+2025-04-18 12:46:13,946 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIBw2gB8a8PUGKiatW1V1xSGuLda9tpAAIKFgACEK4RVHlZsdldNf_QNgQ
+2025-04-18 12:46:14,368 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_225
+2025-04-18 12:46:14,369 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_225
+2025-04-18 12:46:20,143 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIBw2gB8a8PUGKiatW1V1xSGuLda9tpAAIKFgACEK4RVHlZsdldNf_QNgQ.
+2025-04-18 12:46:20,165 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIBxGgB8bpfKswVO0iBUAF0-tlGtvc5AAILFgACEK4RVJ_-45QDVEP0NgQ
+2025-04-18 12:46:20,597 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_226
+2025-04-18 12:46:20,612 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_226
+2025-04-18 12:46:29,517 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIBxGgB8bpfKswVO0iBUAF0-tlGtvc5AAILFgACEK4RVJ_-45QDVEP0NgQ.
+2025-04-18 12:46:29,544 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIBxWgB8cUAAc0BBXU2SR3QVfAobnZD-gACDBYAAhCuEVSCMjuhD0x9GTYE
+2025-04-18 12:46:29,988 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_227
+2025-04-18 12:46:29,988 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_227
+2025-04-18 12:46:34,916 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIBxWgB8cUAAc0BBXU2SR3QVfAobnZD-gACDBYAAhCuEVSCMjuhD0x9GTYE.
+2025-04-18 12:46:34,954 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIBxmgB8dBlyXlW7KeZqEWEM3-JuEpTAAINFgACEK4RVFuG0KbjpXUENgQ
+2025-04-18 12:46:35,427 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_228
+2025-04-18 12:46:35,429 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_228
+2025-04-18 12:46:38,822 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIBxmgB8dBlyXlW7KeZqEWEM3-JuEpTAAINFgACEK4RVFuG0KbjpXUENgQ.
+2025-04-18 12:46:38,849 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIBx2gB8eM9ifL6eXDa4ZrwM6bySPnyAAIPFgACEK4RVN6xkdNimNNHNgQ
+2025-04-18 12:46:39,314 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_229
+2025-04-18 12:46:39,314 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_229
+2025-04-18 12:46:43,691 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIBx2gB8eM9ifL6eXDa4ZrwM6bySPnyAAIPFgACEK4RVN6xkdNimNNHNgQ.
+2025-04-18 12:46:43,731 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIByGgB8e6veSbDUFO_sVU8vyqea2zAAAIQFgACEK4RVBKz0qDNzTzJNgQ
+2025-04-18 12:46:44,158 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_230
+2025-04-18 12:46:44,160 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_230
+2025-04-18 12:46:49,631 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIByGgB8e6veSbDUFO_sVU8vyqea2zAAAIQFgACEK4RVBKz0qDNzTzJNgQ.
+2025-04-18 12:46:49,670 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIByWgB8f5by5IgcXWx_uHLaGE4P8NUAAIRFgACEK4RVHQ-ASN2fFYHNgQ
+2025-04-18 12:46:50,143 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_231
+2025-04-18 12:46:50,143 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_231
+2025-04-18 12:46:54,635 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIByWgB8f5by5IgcXWx_uHLaGE4P8NUAAIRFgACEK4RVHQ-ASN2fFYHNgQ.
+2025-04-18 12:46:54,658 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIBymgB8giJZK30iOuCbk4kmSGz80GzAAISFgACEK4RVN7NHAMKdI9fNgQ
+2025-04-18 12:46:55,107 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_232
+2025-04-18 12:46:55,107 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_232
+2025-04-18 12:46:58,918 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIBymgB8giJZK30iOuCbk4kmSGz80GzAAISFgACEK4RVN7NHAMKdI9fNgQ.
+2025-04-18 12:46:58,949 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIBy2gB8hRIQrGu2a-nHVxt9K2gw5EQAAITFgACEK4RVIBZH-6ozWaCNgQ
+2025-04-18 12:46:59,385 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_233
+2025-04-18 12:46:59,401 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_233
+2025-04-18 12:47:04,959 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIBy2gB8hRIQrGu2a-nHVxt9K2gw5EQAAITFgACEK4RVIBZH-6ozWaCNgQ.
+2025-04-18 12:47:04,991 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIBzGgB8h64QngsvpnUX7bpECiWZTBbAAIVFgACEK4RVEP8qLxy9RwYNgQ
+2025-04-18 12:47:05,406 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_234
+2025-04-18 12:47:05,406 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_234
+2025-04-18 12:47:08,628 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIBzGgB8h64QngsvpnUX7bpECiWZTBbAAIVFgACEK4RVEP8qLxy9RwYNgQ.
+2025-04-18 12:47:08,656 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIBzWgB8ihJpcQ9woVgeAaWlUaFzuvaAAIWFgACEK4RVJjc2BVciu5GNgQ
+2025-04-18 12:47:09,084 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_235
+2025-04-18 12:47:09,084 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_235
+2025-04-18 12:47:13,546 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIBzWgB8ihJpcQ9woVgeAaWlUaFzuvaAAIWFgACEK4RVJjc2BVciu5GNgQ.
+2025-04-18 12:47:13,575 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIBzmgB8ipDyWqRVZ3YGXdJPq5pFQWpAAIXFgACEK4RVNODlnHhuFmTNgQ
+2025-04-18 12:47:14,041 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_236
+2025-04-18 12:47:14,041 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_236
+2025-04-18 12:47:15,377 - INFO - [download_telegram_file_content] - Successfully downloaded 1570035 bytes for file_id BQACAgUAAxkDAAIBzmgB8ipDyWqRVZ3YGXdJPq5pFQWpAAIXFgACEK4RVNODlnHhuFmTNgQ.
+2025-04-18 12:47:15,382 - INFO - [_prepare_download_and_generate_updates] - [5d52da18-e4e6-4b19-b5e0-5103cc249d7e] Finished reassembling. Total bytes: 651687155.
+2025-04-18 12:47:15,382 - INFO - [_prepare_download_and_generate_updates] - [5d52da18-e4e6-4b19-b5e0-5103cc249d7e] Decompressing reassembled file...
+2025-04-18 12:47:20,801 - INFO - [_prepare_download_and_generate_updates] - [5d52da18-e4e6-4b19-b5e0-5103cc249d7e] Final prepared file: 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_final_5d52da18-e4e6-4b19-b5e0-5103cc249d7e_ys87b1_h', Size: 654119416
+2025-04-18 12:47:20,801 - INFO - [_prepare_download_and_generate_updates] - [5d52da18-e4e6-4b19-b5e0-5103cc249d7e] Preparation complete. Sent 'ready' event.
+2025-04-18 12:47:20,801 - INFO - [_prepare_download_and_generate_updates] - [5d52da18-e4e6-4b19-b5e0-5103cc249d7e] Cleaning up intermediate file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_reass_5d52da18-e4e6-4b19-b5e0-5103cc249d7e_xtncmqe4.zip.tmp
+2025-04-18 12:47:20,830 - INFO - [serve_temp_file] - Request to serve temporary download file for ID: 5d52da18-e4e6-4b19-b5e0-5103cc249d7e, Filename: [@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv
+2025-04-18 12:47:20,834 - INFO - [serve_temp_file] - [5d52da18-e4e6-4b19-b5e0-5103cc249d7e] Preparing streaming response for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv' from 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_final_5d52da18-e4e6-4b19-b5e0-5103cc249d7e_ys87b1_h'
+2025-04-18 12:47:20,846 - INFO - [_log] - 127.0.0.1 - - [18/Apr/2025 12:47:20] "GET /serve-temp-file/5d52da18-e4e6-4b19-b5e0-5103cc249d7e/[@TeamSeries]~Daredevil_%20Born%20Again%20S01%20E01%20720p%20WebRip%20x264.mkv HTTP/1.1" 200 -
+2025-04-18 12:47:20,896 - INFO - [_prepare_download_and_generate_updates] - [5d52da18-e4e6-4b19-b5e0-5103cc249d7e] Generator finished with status: ready
+2025-04-18 12:47:23,701 - INFO - [generate_and_cleanup] - [5d52da18-e4e6-4b19-b5e0-5103cc249d7e] Finished streaming file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_final_5d52da18-e4e6-4b19-b5e0-5103cc249d7e_ys87b1_h
+2025-04-18 12:47:23,701 - INFO - [generate_and_cleanup] - [5d52da18-e4e6-4b19-b5e0-5103cc249d7e] Cleaning up final temp file post-streaming: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_final_5d52da18-e4e6-4b19-b5e0-5103cc249d7e_ys87b1_h
+2025-04-18 12:47:23,755 - INFO - [generate_and_cleanup] - [5d52da18-e4e6-4b19-b5e0-5103cc249d7e] Successfully deleted final temp file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_final_5d52da18-e4e6-4b19-b5e0-5103cc249d7e_ys87b1_h

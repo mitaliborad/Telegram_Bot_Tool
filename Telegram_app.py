@@ -1081,10 +1081,14 @@ def serve_temp_file(temp_id, filename):
         response.headers.set('Content-Length', str(file_size))
     return response
 
+# (Keep imports and other functions above as they are)
+
+# (Keep imports and other functions above as they are)
+
 def _prepare_download_and_generate_updates(prep_id, username, filename):
     """
-    Generator function: Prepares the file for download and yields SSE updates,
-    including estimated progress, speed, and ETA for the SERVER-SIDE preparation steps.
+    Generator function: Prepares file for download, yields status updates
+    matching the upload flow style, and estimated progress.
     """
     logging.info(f"[{prep_id}] Starting download preparation generator...")
     prep_data = download_prep_data.get(prep_id)
@@ -1102,63 +1106,65 @@ def _prepare_download_and_generate_updates(prep_id, username, filename):
     temp_reassembled_zip_path_local = None
     temp_final_file_path_local = None
     zip_file_handle = None
-    # --- Variables for split file progress tracking ---
     start_time_part_fetch = None
     bytes_fetched_from_tg = 0
-    total_bytes_to_fetch = 0 # Will be calculated for split files
+    total_bytes_to_fetch = 0
+    final_expected_size = 0
+    original_filename = filename # Default
 
     try:
-        # Yield initial status immediately
-        yield f"event: filename\ndata: {json.dumps({'filename': filename})}\n\n" # Send initial filename
-        yield f"event: status\ndata: {json.dumps({'message': 'Fetching file info...'})}\n\n"
-        yield f"event: progress\ndata: {json.dumps({'percentage': 0, 'processedUnits': 0, 'totalUnits': 1, 'speedMBps': 0, 'etaFormatted': '--:--'})}\n\n" # Initial 0% progress
-        time.sleep(0.1)
+        # --- Initializing Phase ---
+        yield f"event: filename\ndata: {json.dumps({'filename': filename})}\n\n"
+        yield f"event: status\ndata: {json.dumps({'message': 'Initializing...'})}\n\n" # UPDATED MESSAGE
+        yield f"event: progress\ndata: {json.dumps({'percentage': 0, 'bytesProcessed': 0, 'totalBytes': 0, 'speedMBps': 0, 'etaFormatted': '--:--'})}\n\n"
+        time.sleep(0.2) # Slightly longer pause for "Initializing"
 
         metadata = load_metadata()
         user_files = metadata.get(username, [])
         file_info = next((f for f in user_files if f.get('original_filename') == filename), None)
-
         if not file_info: raise FileNotFoundError(f"File '{filename}' not found.")
 
         is_split = file_info.get('is_split', False)
         is_compressed = file_info.get('is_compressed', False)
         original_filename = file_info.get('original_filename')
-        # Update filename if different (unlikely but possible)
+        final_expected_size = file_info.get('original_size', 0)
+        prep_data['original_filename'] = original_filename
         if original_filename != filename:
              yield f"event: filename\ndata: {json.dumps({'filename': original_filename})}\n\n"
+        yield f"event: totalSizeUpdate\ndata: {json.dumps({'totalSize': final_expected_size})}\n\n"
 
+        # --- Preparing Phase ---
+        yield f"event: status\ndata: {json.dumps({'message': 'Preparing file...'})}\n\n" # UPDATED MESSAGE
 
         if not is_split:
-            # --- Single File Download Prep ---
-            logging.info(f"[{prep_id}] Prep non-split download for '{original_filename}'")
-            total_units = 1 # Single operation
-            processed_units = 0
-
-            yield f"event: progress\ndata: {json.dumps({'percentage': 10, 'processedUnits': processed_units, 'totalUnits': total_units, 'speedMBps': 0, 'etaFormatted': '--:--'})}\n\n"
-            yield f"event: status\ndata: {json.dumps({'message': 'Downloading from source...'})}\n\n"
+            # --- Single File Prep ---
+            logging.info(f"[{prep_id}] Prep non-split '{original_filename}'")
+            percentage = 10 # Represents starting the download part of prep
+            bytes_processed = int(final_expected_size * (percentage / 100))
+            yield f"event: progress\ndata: {json.dumps({'percentage': percentage, 'bytesProcessed': bytes_processed, 'totalBytes': final_expected_size, 'speedMBps': 0, 'etaFormatted': '--:--'})}\n\n"
+            # yield f"event: status\ndata: {json.dumps({'message': 'Downloading from source...'})}\n\n" # Subsumed into "Preparing"
 
             telegram_file_id = file_info.get('telegram_file_id')
-            sent_filename = file_info.get('sent_filename')
             if not telegram_file_id: raise ValueError("Missing 'telegram_file_id'")
+            sent_filename = file_info.get('sent_filename')
 
-            # Simulate download time - In reality, this happens here
-            # For UI demo, let's estimate progress
             start_dl_time = time.time()
             file_content_bytes, error_msg = download_telegram_file_content(telegram_file_id)
             dl_duration = time.time() - start_dl_time
             dl_speed = (len(file_content_bytes) / (1024*1024) / dl_duration) if dl_duration > 0 and file_content_bytes else 0
 
-            if error_msg: raise ValueError(f"Failed download from TG: {error_msg}")
-            if not file_content_bytes: raise ValueError("Downloaded empty content from TG.")
-            logging.info(f"[{prep_id}] Downloaded TG content size: {len(file_content_bytes)} bytes in {dl_duration:.2f}s.")
-            processed_units = 0.5 # Mark download as half the work
+            if error_msg: raise ValueError(f"TG download failed: {error_msg}")
+            if not file_content_bytes: raise ValueError("TG downloaded empty content.")
 
-            yield f"event: progress\ndata: {json.dumps({'percentage': 50, 'processedUnits': f'{processed_units:.1f}', 'totalUnits': total_units, 'speedMBps': dl_speed, 'etaFormatted': '--:--'})}\n\n"
+            percentage = 50 # Download complete, before potential decompression
+            bytes_processed = int(final_expected_size * (percentage / 100))
+            yield f"event: progress\ndata: {json.dumps({'percentage': percentage, 'bytesProcessed': bytes_processed, 'totalBytes': final_expected_size, 'speedMBps': dl_speed, 'etaFormatted': '--:--'})}\n\n"
 
             if is_compressed:
-                yield f"event: status\ndata: {json.dumps({'message': 'Decompressing...'})}\n\n"
-                logging.info(f"[{prep_id}] Decompressing single file '{sent_filename}'...")
+                # yield f"event: status\ndata: {json.dumps({'message': 'Decompressing...'})}\n\n" # Subsumed
+                logging.info(f"[{prep_id}] Decompressing single file...")
                 try:
+                    # ... (decompression logic as before) ...
                     zip_buffer = io.BytesIO(file_content_bytes)
                     zip_file_handle = zipfile.ZipFile(zip_buffer, 'r')
                     file_list_in_zip = zip_file_handle.namelist()
@@ -1167,7 +1173,6 @@ def _prepare_download_and_generate_updates(prep_id, username, filename):
                     if original_filename not in file_list_in_zip:
                          if len(file_list_in_zip) == 1: inner_filename = file_list_in_zip[0]
                          else: raise ValueError(f"Cannot find '{original_filename}' in zip.")
-
                     with tempfile.NamedTemporaryFile(delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"dl_decomp_{prep_id}_") as tf:
                         temp_decompressed_path_local = tf.name
                         with zip_file_handle.open(inner_filename, 'r') as inner_file_stream:
@@ -1176,94 +1181,86 @@ def _prepare_download_and_generate_updates(prep_id, username, filename):
                 finally:
                     if zip_file_handle: zip_file_handle.close(); zip_file_handle = None
             else: # Non-split, Non-compressed
-                yield f"event: status\ndata: {json.dumps({'message': 'Writing temporary file...'})}\n\n"
+                # yield f"event: status\ndata: {json.dumps({'message': 'Writing temporary file...'})}\n\n" # Subsumed
                 with tempfile.NamedTemporaryFile(delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"dl_nocomp_{prep_id}_") as tf:
                     temp_decompressed_path_local = tf.name
                     tf.write(file_content_bytes)
                 temp_final_file_path_local = temp_decompressed_path_local
-            processed_units = 1 # Mark as complete
-            yield f"event: progress\ndata: {json.dumps({'percentage': 100, 'processedUnits': processed_units, 'totalUnits': total_units, 'speedMBps': 0, 'etaFormatted': '00:00'})}\n\n"
+            
+            percentage = 100 # Final prep stage done
+            bytes_processed = final_expected_size
+            yield f"event: progress\ndata: {json.dumps({'percentage': 100, 'bytesProcessed': bytes_processed, 'totalBytes': final_expected_size, 'speedMBps': 0, 'etaFormatted': '00:00'})}\n\n"
 
 
         else: # is_split is True
-            # --- Split File Download Prep ---
+            # --- Split File Prep ---
             logging.info(f"[{prep_id}] Prep SPLIT download for '{original_filename}'")
             chunks_metadata = file_info.get('chunks', [])
             if not chunks_metadata: raise ValueError("Missing 'chunks' list.")
             chunks_metadata.sort(key=lambda c: c.get('part_number', 0))
             num_chunks_total = len(chunks_metadata)
-            total_units = num_chunks_total # Total units are the number of chunks
+            total_bytes_to_fetch = file_info.get('compressed_total_size', 0)
+            if total_bytes_to_fetch == 0: logging.warning(f"[{prep_id}] Compressed size unknown.")
 
-             # Estimate total bytes to fetch (approximate, based on metadata if available)
-            total_bytes_to_fetch = file_info.get('compressed_total_size', 0) # Use compressed size if known
-            if total_bytes_to_fetch == 0: # Fallback if size not in metadata
-                 logging.warning(f"[{prep_id}] Compressed size not found in metadata, cannot estimate fetch speed/ETA accurately.")
-
-
-            yield f"event: status\ndata: {json.dumps({'message': 'Reassembling file parts...'})}\n\n"
-            yield f"event: progress\ndata: {json.dumps({'percentage': 0, 'processedUnits': 0, 'totalUnits': total_units, 'speedMBps': 0, 'etaFormatted': '--:--'})}\n\n"
+            # Still use "Preparing file..." as the main status during fetch
+            # yield f"event: status\ndata: {json.dumps({'message': 'Reassembling file parts...'})}\n\n"
+            yield f"event: progress\ndata: {json.dumps({'percentage': 0, 'bytesProcessed': 0, 'totalBytes': final_expected_size, 'speedMBps': 0, 'etaFormatted': '--:--'})}\n\n"
 
             with tempfile.NamedTemporaryFile(suffix=".zip.tmp", delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"dl_reass_{prep_id}_") as tf_reassemble:
                 temp_reassembled_zip_path_local = tf_reassemble.name
-                logging.info(f"[{prep_id}] Created temp file for reassembly: {temp_reassembled_zip_path_local}")
-                start_time_part_fetch = time.time() # Start timer for fetching
+                start_time_part_fetch = time.time()
                 bytes_fetched_from_tg = 0
 
                 for i, chunk_info in enumerate(chunks_metadata):
                     part_num = chunk_info.get('part_number')
                     chunk_file_id = chunk_info.get('file_id')
-                    if not chunk_file_id: raise ValueError(f"Tracking info missing for part {part_num}.")
+                    if not chunk_file_id: raise ValueError(f"Tracking info missing part {part_num}.")
 
-                    yield f"event: status\ndata: {json.dumps({'message': f'Fetching part {part_num}/{num_chunks_total}...'})}\n\n"
+                    # Maybe don't yield status for every part? Or make it less prominent?
+                    # Let's keep it in logs but not send to UI for now to simplify status text
                     logging.debug(f"[{prep_id}] Downloading chunk {part_num}/{num_chunks_total}...")
 
                     chunk_content_bytes, error_msg = download_telegram_file_content(chunk_file_id)
                     if error_msg: raise ValueError(f"Error downloading part {part_num}: {error_msg}")
-                    if not chunk_content_bytes: raise ValueError(f"Downloaded part {part_num} was empty.")
+                    if not chunk_content_bytes: raise ValueError(f"Part {part_num} empty.")
                     tf_reassemble.write(chunk_content_bytes)
 
                     bytes_fetched_from_tg += len(chunk_content_bytes)
-                    processed_units = i + 1
+                    percentage = ((i + 1) / num_chunks_total) * 100
+                    bytes_processed = int(final_expected_size * (percentage / 100)) # Estimate final bytes based on parts %
 
-                    # --- Calculate and Yield PROGRESS ---
-                    percentage = (processed_units / total_units) * 100
-                    current_speed_mbps = 0
-                    eta_formatted = "--:--"
+                    # Calculate Fetch Speed/ETA
+                    current_speed_mbps = 0; eta_formatted = "--:--"
                     elapsed_time = time.time() - start_time_part_fetch
                     if elapsed_time > 0 and bytes_fetched_from_tg > 0:
                          average_speed_bps = bytes_fetched_from_tg / elapsed_time
                          current_speed_mbps = average_speed_bps / (1024*1024)
-                         # Estimate ETA only if total size is known
                          if total_bytes_to_fetch > 0 and average_speed_bps > 0:
                               remaining_bytes = total_bytes_to_fetch - bytes_fetched_from_tg
-                              if remaining_bytes > 0:
-                                   eta_seconds = remaining_bytes / average_speed_bps
-                                   eta_formatted = format_time(eta_seconds)
-                              else:
-                                   eta_formatted = "00:00" # Fetching done
+                              if remaining_bytes > 0: eta_formatted = format_time(remaining_bytes / average_speed_bps)
+                              else: eta_formatted = "00:00"
                     
-                    yield f"event: progress\ndata: {json.dumps({'percentage': percentage, 'processedUnits': processed_units, 'totalUnits': total_units, 'speedMBps': current_speed_mbps, 'etaFormatted': eta_formatted})}\n\n"
-                    # --- End Progress Yield ---
+                    yield f"event: progress\ndata: {json.dumps({'percentage': percentage, 'bytesProcessed': bytes_processed, 'totalBytes': final_expected_size, 'speedMBps': current_speed_mbps, 'etaFormatted': eta_formatted})}\n\n"
 
             logging.info(f"[{prep_id}] Finished reassembling. Total bytes: {bytes_fetched_from_tg}.")
-            # Ensure progress reflects completion of reassembly
-            yield f"event: progress\ndata: {json.dumps({'percentage': 100, 'processedUnits': total_units, 'totalUnits': total_units, 'speedMBps': current_speed_mbps, 'etaFormatted': '00:00'})}\n\n"
+            # Ensure progress shows 100% fetch complete
+            yield f"event: progress\ndata: {json.dumps({'percentage': 100, 'bytesProcessed': int(final_expected_size * 0.9), 'totalBytes': final_expected_size, 'speedMBps': current_speed_mbps, 'etaFormatted': '00:00'})}\n\n"
 
 
             if is_compressed:
-                yield f"event: status\ndata: {json.dumps({'message': 'Decompressing...'})}\n\n"
-                # Keep progress at 100% but change status
-                yield f"event: progress\ndata: {json.dumps({'percentage': 100, 'processedUnits': total_units, 'totalUnits': total_units, 'speedMBps': 0, 'etaFormatted': '--:--'})}\n\n"
+                # Keep "Preparing file..." status during decompression
+                # yield f"event: status\ndata: {json.dumps({'message': 'Decompressing...'})}\n\n"
+                yield f"event: progress\ndata: {json.dumps({'percentage': 100, 'bytesProcessed': int(final_expected_size * 0.95), 'totalBytes': final_expected_size, 'speedMBps': 0, 'etaFormatted': '--:--'})}\n\n" # Show 95%
                 logging.info(f"[{prep_id}] Decompressing reassembled file...")
                 try:
+                    # ... (decompression logic as before) ...
                     zip_file_handle = zipfile.ZipFile(temp_reassembled_zip_path_local, 'r')
                     file_list_in_zip = zip_file_handle.namelist()
-                    if not file_list_in_zip: raise ValueError("Reassembled zip empty.")
+                    if not file_list_in_zip: raise ValueError("Zip empty.")
                     inner_filename = original_filename
                     if original_filename not in file_list_in_zip:
                          if len(file_list_in_zip) == 1: inner_filename = file_list_in_zip[0]
                          else: raise ValueError(f"Cannot find '{original_filename}' in zip.")
-
                     with tempfile.NamedTemporaryFile(delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"dl_final_{prep_id}_") as tf_final:
                         temp_decompressed_path_local = tf_final.name
                         with zip_file_handle.open(inner_filename, 'r') as inner_file_stream:
@@ -1271,7 +1268,7 @@ def _prepare_download_and_generate_updates(prep_id, username, filename):
                     temp_final_file_path_local = temp_decompressed_path_local
                 finally:
                      if zip_file_handle: zip_file_handle.close(); zip_file_handle = None
-            else: # Split, Non-compressed
+            else:
                  logging.info(f"[{prep_id}] Split file not compressed. Using reassembled.")
                  temp_final_file_path_local = temp_reassembled_zip_path_local
                  temp_reassembled_zip_path_local = None
@@ -1280,22 +1277,23 @@ def _prepare_download_and_generate_updates(prep_id, username, filename):
         if not temp_final_file_path_local or not os.path.exists(temp_final_file_path_local):
             raise RuntimeError("Failed to produce final temp file.")
 
-        final_size = os.path.getsize(temp_final_file_path_local)
-        logging.info(f"[{prep_id}] Final prepared file: '{temp_final_file_path_local}', Size: {final_size}")
+        final_actual_size = os.path.getsize(temp_final_file_path_local)
+        logging.info(f"[{prep_id}] Final prepared file: '{temp_final_file_path_local}', Size: {final_actual_size}")
 
         prep_data['final_temp_file_path'] = temp_final_file_path_local
-        prep_data['final_file_size'] = final_size
+        prep_data['final_file_size'] = final_actual_size
         prep_data['status'] = 'ready'
 
-        # Yield final status before ready
-        yield f"event: status\ndata: {json.dumps({'message': 'Preparation complete!'})}\n\n"
-        yield f"event: progress\ndata: {json.dumps({'percentage': 100, 'processedUnits': prep_data.get('totalUnits', 1), 'totalUnits': prep_data.get('totalUnits', 1), 'speedMBps': 0, 'etaFormatted': '00:00'})}\n\n"
+        # Yield final "Ready" status and 100% progress
+        yield f"event: status\ndata: {json.dumps({'message': f'File {original_filename} ready for download.'})}\n\n" # UPDATED MESSAGE
+        yield f"event: progress\ndata: {json.dumps({'percentage': 100, 'bytesProcessed': final_actual_size, 'totalBytes': final_actual_size, 'speedMBps': 0, 'etaFormatted': '00:00'})}\n\n"
 
         yield f"event: ready\ndata: {json.dumps({'temp_file_id': prep_id, 'final_filename': original_filename})}\n\n"
         logging.info(f"[{prep_id}] Preparation complete. Sent 'ready' event.")
 
-        if temp_reassembled_zip_path_local and os.path.exists(temp_reassembled_zip_path_local):
-            logging.info(f"[{prep_id}] Cleaning up intermediate reassembled file: {temp_reassembled_zip_path_local}")
+        # Cleanup intermediate reassembled file (if applicable and different)
+        if temp_reassembled_zip_path_local and temp_reassembled_zip_path_local != temp_final_file_path_local and os.path.exists(temp_reassembled_zip_path_local):
+            logging.info(f"[{prep_id}] Cleaning up intermediate file: {temp_reassembled_zip_path_local}")
             try: os.remove(temp_reassembled_zip_path_local)
             except OSError as e: logging.error(f"[{prep_id}] Error deleting intermediate file: {e}")
 
@@ -1304,6 +1302,7 @@ def _prepare_download_and_generate_updates(prep_id, username, filename):
         logging.error(f"[{prep_id}] {error_message}", exc_info=True)
         yield f"event: error\ndata: {json.dumps({'message': error_message})}\n\n"
         prep_data['status'] = 'error'; prep_data['error'] = error_message
+        # Cleanup ALL potential temp files on error
         logging.info(f"[{prep_id}] Cleaning up temp files due to prep error.")
         paths_to_clean = [p for p in [temp_decompressed_path_local, temp_reassembled_zip_path_local, temp_final_file_path_local] if p]
         for path_to_delete in list(dict.fromkeys(paths_to_clean)):

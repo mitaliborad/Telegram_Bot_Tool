@@ -1,0 +1,200 @@
+2025-04-18 10:45:54,179 - INFO - [<module>] - Logging configured. Log file: Selenium-Logs\app_20250418_104554.log
+2025-04-18 10:45:54,181 - INFO - [<module>] - Flask application initialized.
+2025-04-18 10:45:54,183 - INFO - [<module>] - Starting Flask development server...
+2025-04-18 10:45:54,213 - WARNING - [_log] -  * Debugger is active!
+2025-04-18 10:45:54,217 - INFO - [_log] -  * Debugger PIN: 107-410-311
+2025-04-18 10:45:56,129 - INFO - [index] - Serving index page.
+2025-04-18 10:45:56,201 - INFO - [_log] - 127.0.0.1 - - [18/Apr/2025 10:45:56] "GET / HTTP/1.1" 200 -
+2025-04-18 10:45:56,227 - INFO - [_log] - 127.0.0.1 - - [18/Apr/2025 10:45:56] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-18 10:45:59,913 - INFO - [list_user_files] - Request received to list files for user: 'John'
+2025-04-18 10:45:59,946 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-18 10:45:59,947 - INFO - [list_user_files] - Found 6 file records for user 'John'.
+2025-04-18 10:45:59,949 - INFO - [_log] - 127.0.0.1 - - [18/Apr/2025 10:45:59] "GET /files/John HTTP/1.1" 200 -
+2025-04-18 10:46:02,478 - INFO - [prepare_download_stream] - [30b9e561-8ebf-4419-837e-7ecc25d4ce0c] SSE connection request for download prep: User='John', File='requirements.txt'
+2025-04-18 10:46:02,478 - INFO - [_prepare_download_and_generate_updates] - [30b9e561-8ebf-4419-837e-7ecc25d4ce0c] Starting download preparation generator...
+2025-04-18 10:46:02,478 - INFO - [_log] - 127.0.0.1 - - [18/Apr/2025 10:46:02] "GET /prepare-download/John/requirements.txt HTTP/1.1" 200 -
+2025-04-18 10:46:02,582 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-18 10:46:02,582 - INFO - [_prepare_download_and_generate_updates] - [30b9e561-8ebf-4419-837e-7ecc25d4ce0c] Prep non-split 'requirements.txt'
+2025-04-18 10:46:02,582 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIBK2gB1TBrCK_dtWoOhN5Rxq4k5A-xAAJYFQACEK4RVAnOETNW5mb_NgQ
+2025-04-18 10:46:03,057 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_120.zip
+2025-04-18 10:46:03,057 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_120.zip
+2025-04-18 10:46:03,488 - INFO - [download_telegram_file_content] - Successfully downloaded 180 bytes for file_id BQACAgUAAxkDAAIBK2gB1TBrCK_dtWoOhN5Rxq4k5A-xAAJYFQACEK4RVAnOETNW5mb_NgQ.
+2025-04-18 10:46:03,489 - INFO - [_prepare_download_and_generate_updates] - [30b9e561-8ebf-4419-837e-7ecc25d4ce0c] Downloaded TG content size: 180 bytes in 0.91s.
+2025-04-18 10:46:03,490 - INFO - [_prepare_download_and_generate_updates] - [30b9e561-8ebf-4419-837e-7ecc25d4ce0c] Decompressing single file...
+2025-04-18 10:46:03,495 - INFO - [_prepare_download_and_generate_updates] - [30b9e561-8ebf-4419-837e-7ecc25d4ce0c] Final prepared file: 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_30b9e561-8ebf-4419-837e-7ecc25d4ce0c_vm1_7vx0', Size: 48
+2025-04-18 10:46:03,495 - INFO - [_prepare_download_and_generate_updates] - [30b9e561-8ebf-4419-837e-7ecc25d4ce0c] Preparation complete. Sent 'ready' event.
+2025-04-18 10:46:03,498 - INFO - [_prepare_download_and_generate_updates] - [30b9e561-8ebf-4419-837e-7ecc25d4ce0c] Generator finished with status: ready
+2025-04-18 10:46:03,518 - INFO - [serve_temp_file] - Request to serve temporary download file for ID: 30b9e561-8ebf-4419-837e-7ecc25d4ce0c, Filename: requirements.txt
+2025-04-18 10:46:03,518 - INFO - [serve_temp_file] - [30b9e561-8ebf-4419-837e-7ecc25d4ce0c] Preparing streaming response for 'requirements.txt' from 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_30b9e561-8ebf-4419-837e-7ecc25d4ce0c_vm1_7vx0'
+2025-04-18 10:46:03,518 - INFO - [_log] - 127.0.0.1 - - [18/Apr/2025 10:46:03] "GET /serve-temp-file/30b9e561-8ebf-4419-837e-7ecc25d4ce0c/requirements.txt HTTP/1.1" 200 -
+2025-04-18 10:46:03,518 - INFO - [generate_and_cleanup] - [30b9e561-8ebf-4419-837e-7ecc25d4ce0c] Finished streaming file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_30b9e561-8ebf-4419-837e-7ecc25d4ce0c_vm1_7vx0
+2025-04-18 10:46:03,518 - INFO - [generate_and_cleanup] - [30b9e561-8ebf-4419-837e-7ecc25d4ce0c] Cleaning up final temp file post-streaming: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_30b9e561-8ebf-4419-837e-7ecc25d4ce0c_vm1_7vx0
+2025-04-18 10:46:03,526 - INFO - [generate_and_cleanup] - [30b9e561-8ebf-4419-837e-7ecc25d4ce0c] Successfully deleted final temp file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_30b9e561-8ebf-4419-837e-7ecc25d4ce0c_vm1_7vx0
+2025-04-18 10:46:08,398 - INFO - [prepare_download_stream] - [00f684fb-3834-47df-80d4-7cf2dcc8552c] SSE connection request for download prep: User='John', File='500MB-CZIPtestfile.org (1).zip'
+2025-04-18 10:46:08,398 - INFO - [_prepare_download_and_generate_updates] - [00f684fb-3834-47df-80d4-7cf2dcc8552c] Starting download preparation generator...
+2025-04-18 10:46:08,398 - INFO - [_log] - 127.0.0.1 - - [18/Apr/2025 10:46:08] "GET /prepare-download/John/500MB-CZIPtestfile.org%20(1).zip HTTP/1.1" 200 -
+2025-04-18 10:46:08,504 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-18 10:46:08,504 - INFO - [_prepare_download_and_generate_updates] - [00f684fb-3834-47df-80d4-7cf2dcc8552c] Prep SPLIT download for '500MB-CZIPtestfile.org (1).zip'
+2025-04-18 10:46:08,504 - INFO - [_prepare_download_and_generate_updates] - [00f684fb-3834-47df-80d4-7cf2dcc8552c] Reassembly temp file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_reass_00f684fb-3834-47df-80d4-7cf2dcc8552c_38d5ph00.zip.tmp
+2025-04-18 10:46:08,504 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAPdaAABnrK_WWQNNDvjuR-tVrmA2gnqAAL7FQACEK4BVFEyJmiLYYdyNgQ
+2025-04-18 10:46:11,968 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_126.part_001
+2025-04-18 10:46:11,968 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_126.part_001
+2025-04-18 10:46:15,980 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAPdaAABnrK_WWQNNDvjuR-tVrmA2gnqAAL7FQACEK4BVFEyJmiLYYdyNgQ.
+2025-04-18 10:46:16,020 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAPeaAABnsKxicoOOuCn3gobTJKWIvwXAAL8FQACEK4BVP_MtizBmE4-NgQ
+2025-04-18 10:46:18,660 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_127.part_002
+2025-04-18 10:46:18,660 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_127.part_002
+2025-04-18 10:46:24,548 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAPeaAABnsKxicoOOuCn3gobTJKWIvwXAAL8FQACEK4BVP_MtizBmE4-NgQ.
+2025-04-18 10:46:24,592 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAPfaAABntRYpvpPe10IWfZP4kvREc4HAAL9FQACEK4BVDcFxmlAAbFLNgQ
+2025-04-18 10:46:27,567 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_128.part_003
+2025-04-18 10:46:27,568 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_128.part_003
+2025-04-18 10:46:33,195 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAPfaAABntRYpvpPe10IWfZP4kvREc4HAAL9FQACEK4BVDcFxmlAAbFLNgQ.
+2025-04-18 10:46:33,230 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAPgaAABnt_RkK6wfppciaz-xVONgEHAAAL-FQACEK4BVHI67r72hKjjNgQ
+2025-04-18 10:46:36,364 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_129.part_004
+2025-04-18 10:46:36,364 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_129.part_004
+2025-04-18 10:46:41,116 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAPgaAABnt_RkK6wfppciaz-xVONgEHAAAL-FQACEK4BVHI67r72hKjjNgQ.
+2025-04-18 10:46:41,147 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAPhaAABnuoSAAHsEAfXbhqlMuW6azv23gAC_xUAAhCuAVQVFJWpQZZSETYE
+2025-04-18 10:46:43,743 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_130.part_005
+2025-04-18 10:46:43,743 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_130.part_005
+2025-04-18 10:46:48,322 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAPhaAABnuoSAAHsEAfXbhqlMuW6azv23gAC_xUAAhCuAVQVFJWpQZZSETYE.
+2025-04-18 10:46:48,351 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAPiaAABnvMZPtePDmhVvPPWcpa_66ecAAMWAAIQrgFUTxhahXhEkug2BA
+2025-04-18 10:46:51,257 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_131.part_006
+2025-04-18 10:46:51,257 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_131.part_006
+2025-04-18 10:46:55,319 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAPiaAABnvMZPtePDmhVvPPWcpa_66ecAAMWAAIQrgFUTxhahXhEkug2BA.
+2025-04-18 10:46:55,349 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAPjaAABnwABvVUlVuB6ZTxVeSx1Sdjk8wACARYAAhCuAVRbg0puL1dA1DYE
+2025-04-18 10:46:57,990 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_132.part_007
+2025-04-18 10:46:57,990 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_132.part_007
+2025-04-18 10:47:03,140 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAPjaAABnwABvVUlVuB6ZTxVeSx1Sdjk8wACARYAAhCuAVRbg0puL1dA1DYE.
+2025-04-18 10:47:12,485 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-18 10:47:12,485 - INFO - [initiate_upload] - Saving temporary file for upload_id '361df188-0d8c-4616-81e0-b3605aaf0878' to 'uploads_temp\361df188-0d8c-4616-81e0-b3605aaf0878_Telegram_app.py'
+2025-04-18 10:47:12,485 - INFO - [initiate_upload] - Temporary file saved successfully for 'Telegram_app.py' (ID: 361df188-0d8c-4616-81e0-b3605aaf0878).
+2025-04-18 10:47:12,485 - INFO - [_log] - 127.0.0.1 - - [18/Apr/2025 10:47:12] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-18 10:47:12,507 - INFO - [stream_progress] - SSE connection request for upload_id: 361df188-0d8c-4616-81e0-b3605aaf0878
+2025-04-18 10:47:12,507 - INFO - [process_upload_and_generate_updates] - [361df188-0d8c-4616-81e0-b3605aaf0878] Starting processing...
+2025-04-18 10:47:12,508 - INFO - [process_upload_and_generate_updates] - [361df188-0d8c-4616-81e0-b3605aaf0878] Processing upload: User='testt', File='Telegram_app.py', TempPath='uploads_temp\361df188-0d8c-4616-81e0-b3605aaf0878_Telegram_app.py'
+2025-04-18 10:47:12,511 - INFO - [process_upload_and_generate_updates] - [361df188-0d8c-4616-81e0-b3605aaf0878] Original temp file size: 96886 bytes.
+2025-04-18 10:47:12,513 - INFO - [_log] - 127.0.0.1 - - [18/Apr/2025 10:47:12] "GET /stream-progress/361df188-0d8c-4616-81e0-b3605aaf0878 HTTP/1.1" 200 -
+2025-04-18 10:47:12,515 - INFO - [process_upload_and_generate_updates] - [361df188-0d8c-4616-81e0-b3605aaf0878] 'Telegram_app.py' is small. Compressing and sending as single file.
+2025-04-18 10:47:12,548 - INFO - [process_upload_and_generate_updates] - [361df188-0d8c-4616-81e0-b3605aaf0878] Compressed 'Telegram_app.py' to 17758 bytes.
+2025-04-18 10:47:12,548 - INFO - [send_file_to_telegram] - Sending file 'Telegram_app.py.zip' to Telegram chat ID: -4603853425
+2025-04-18 10:47:13,903 - INFO - [send_file_to_telegram] - Telegram API success for 'Telegram_app.py.zip'.
+2025-04-18 10:47:13,909 - INFO - [process_upload_and_generate_updates] - [361df188-0d8c-4616-81e0-b3605aaf0878] Single file 'Telegram_app.py' sent successfully.
+2025-04-18 10:47:13,910 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-18 10:47:13,916 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-18 10:47:13,919 - INFO - [process_upload_and_generate_updates] - [361df188-0d8c-4616-81e0-b3605aaf0878] Entering final cleanup.
+2025-04-18 10:47:13,920 - INFO - [process_upload_and_generate_updates] - [361df188-0d8c-4616-81e0-b3605aaf0878] Successfully deleted original temporary file: uploads_temp\361df188-0d8c-4616-81e0-b3605aaf0878_Telegram_app.py
+2025-04-18 10:47:13,921 - INFO - [process_upload_and_generate_updates] - [361df188-0d8c-4616-81e0-b3605aaf0878] Processing finished with status: completed
+2025-04-18 10:47:38,670 - INFO - [list_user_files] - Request received to list files for user: 'John'
+2025-04-18 10:47:38,670 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-18 10:47:38,670 - INFO - [list_user_files] - Found 6 file records for user 'John'.
+2025-04-18 10:47:38,670 - INFO - [_log] - 127.0.0.1 - - [18/Apr/2025 10:47:38] "GET /files/John HTTP/1.1" 200 -
+2025-04-18 10:48:32,132 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-18 10:48:32,136 - INFO - [initiate_upload] - Saving temporary file for upload_id '741796ba-ed84-461d-b720-9dd730f76b73' to 'uploads_temp\741796ba-ed84-461d-b720-9dd730f76b73_Telegram_app.py'
+2025-04-18 10:48:32,137 - INFO - [initiate_upload] - Temporary file saved successfully for 'Telegram_app.py' (ID: 741796ba-ed84-461d-b720-9dd730f76b73).
+2025-04-18 10:48:32,138 - INFO - [_log] - 127.0.0.1 - - [18/Apr/2025 10:48:32] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-18 10:48:32,146 - INFO - [stream_progress] - SSE connection request for upload_id: 741796ba-ed84-461d-b720-9dd730f76b73
+2025-04-18 10:48:32,147 - INFO - [process_upload_and_generate_updates] - [741796ba-ed84-461d-b720-9dd730f76b73] Starting processing...
+2025-04-18 10:48:32,148 - INFO - [process_upload_and_generate_updates] - [741796ba-ed84-461d-b720-9dd730f76b73] Processing upload: User='testt', File='Telegram_app.py', TempPath='uploads_temp\741796ba-ed84-461d-b720-9dd730f76b73_Telegram_app.py'
+2025-04-18 10:48:32,149 - INFO - [process_upload_and_generate_updates] - [741796ba-ed84-461d-b720-9dd730f76b73] Original temp file size: 96886 bytes.
+2025-04-18 10:48:32,149 - INFO - [_log] - 127.0.0.1 - - [18/Apr/2025 10:48:32] "GET /stream-progress/741796ba-ed84-461d-b720-9dd730f76b73 HTTP/1.1" 200 -
+2025-04-18 10:48:32,149 - INFO - [process_upload_and_generate_updates] - [741796ba-ed84-461d-b720-9dd730f76b73] 'Telegram_app.py' is small. Compressing and sending as single file.
+2025-04-18 10:48:32,172 - INFO - [process_upload_and_generate_updates] - [741796ba-ed84-461d-b720-9dd730f76b73] Compressed 'Telegram_app.py' to 17758 bytes.
+2025-04-18 10:48:32,172 - INFO - [send_file_to_telegram] - Sending file 'Telegram_app.py.zip' to Telegram chat ID: -4603853425
+2025-04-18 10:48:33,656 - INFO - [send_file_to_telegram] - Telegram API success for 'Telegram_app.py.zip'.
+2025-04-18 10:48:33,656 - INFO - [process_upload_and_generate_updates] - [741796ba-ed84-461d-b720-9dd730f76b73] Single file 'Telegram_app.py' sent successfully.
+2025-04-18 10:48:33,674 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-18 10:48:33,679 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-18 10:48:33,680 - INFO - [process_upload_and_generate_updates] - [741796ba-ed84-461d-b720-9dd730f76b73] Entering final cleanup.
+2025-04-18 10:48:33,681 - INFO - [process_upload_and_generate_updates] - [741796ba-ed84-461d-b720-9dd730f76b73] Successfully deleted original temporary file: uploads_temp\741796ba-ed84-461d-b720-9dd730f76b73_Telegram_app.py
+2025-04-18 10:48:33,683 - INFO - [process_upload_and_generate_updates] - [741796ba-ed84-461d-b720-9dd730f76b73] Processing finished with status: completed
+2025-04-18 10:49:37,585 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-18 10:49:38,238 - INFO - [initiate_upload] - Saving temporary file for upload_id 'ff4c60fe-de34-4fff-8794-319f6a6c020e' to 'uploads_temp\ff4c60fe-de34-4fff-8794-319f6a6c020e_60mb.zip'
+2025-04-18 10:49:38,320 - INFO - [initiate_upload] - Temporary file saved successfully for '60mb.zip' (ID: ff4c60fe-de34-4fff-8794-319f6a6c020e).
+2025-04-18 10:49:38,321 - INFO - [_log] - 127.0.0.1 - - [18/Apr/2025 10:49:38] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-18 10:49:38,331 - INFO - [stream_progress] - SSE connection request for upload_id: ff4c60fe-de34-4fff-8794-319f6a6c020e
+2025-04-18 10:49:38,331 - INFO - [process_upload_and_generate_updates] - [ff4c60fe-de34-4fff-8794-319f6a6c020e] Starting processing...
+2025-04-18 10:49:38,332 - INFO - [process_upload_and_generate_updates] - [ff4c60fe-de34-4fff-8794-319f6a6c020e] Processing upload: User='testt', File='60mb.zip', TempPath='uploads_temp\ff4c60fe-de34-4fff-8794-319f6a6c020e_60mb.zip'
+2025-04-18 10:49:38,332 - INFO - [process_upload_and_generate_updates] - [ff4c60fe-de34-4fff-8794-319f6a6c020e] Original temp file size: 63133909 bytes.
+2025-04-18 10:49:38,332 - INFO - [_log] - 127.0.0.1 - - [18/Apr/2025 10:49:38] "GET /stream-progress/ff4c60fe-de34-4fff-8794-319f6a6c020e HTTP/1.1" 200 -
+2025-04-18 10:49:38,332 - INFO - [process_upload_and_generate_updates] - [ff4c60fe-de34-4fff-8794-319f6a6c020e] '60mb.zip' is large. Compressing before splitting.
+2025-04-18 10:49:38,336 - INFO - [process_upload_and_generate_updates] - [ff4c60fe-de34-4fff-8794-319f6a6c020e] Created temporary file for compression result: C:\Users\DELL\AppData\Local\Temp\ff4c60fe-de34-4fff-8794-319f6a6c020e_comp_wd3avd5a.zip
+2025-04-18 10:49:40,196 - INFO - [process_upload_and_generate_updates] - [ff4c60fe-de34-4fff-8794-319f6a6c020e] Finished compressing to 'C:\Users\DELL\AppData\Local\Temp\ff4c60fe-de34-4fff-8794-319f6a6c020e_comp_wd3avd5a.zip'. Size: 63153263 bytes. Time: 1.86s.
+2025-04-18 10:49:40,211 - INFO - [process_upload_and_generate_updates] - [ff4c60fe-de34-4fff-8794-319f6a6c020e] Reading chunk 1 for COMPRESSED file starting at byte 0.
+2025-04-18 10:49:40,236 - INFO - [process_upload_and_generate_updates] - [ff4c60fe-de34-4fff-8794-319f6a6c020e] Read chunk 1 (20971520 bytes). Total read: 20971520/63153263
+2025-04-18 10:49:40,236 - INFO - [process_upload_and_generate_updates] - [ff4c60fe-de34-4fff-8794-319f6a6c020e] Attempting to send chunk: '60mb.zip.zip.part_001'
+2025-04-18 10:49:40,237 - INFO - [send_file_to_telegram] - Sending file '60mb.zip.zip.part_001' to Telegram chat ID: -4603853425
+2025-04-18 10:49:43,089 - INFO - [index] - Serving index page.
+2025-04-18 10:49:43,089 - INFO - [_log] - 127.0.0.1 - - [18/Apr/2025 10:49:43] "GET / HTTP/1.1" 200 -
+2025-04-18 10:49:43,119 - INFO - [_log] - 127.0.0.1 - - [18/Apr/2025 10:49:43] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-18 10:49:53,375 - INFO - [send_file_to_telegram] - Telegram API success for '60mb.zip.zip.part_001'.
+2025-04-18 10:49:53,391 - INFO - [process_upload_and_generate_updates] - [ff4c60fe-de34-4fff-8794-319f6a6c020e] Chunk '60mb.zip.zip.part_001' sent successfully.
+2025-04-18 10:49:53,391 - INFO - [process_upload_and_generate_updates] - [ff4c60fe-de34-4fff-8794-319f6a6c020e] Entering final cleanup.
+2025-04-18 10:49:53,404 - INFO - [process_upload_and_generate_updates] - [ff4c60fe-de34-4fff-8794-319f6a6c020e] Successfully deleted original temporary file: uploads_temp\ff4c60fe-de34-4fff-8794-319f6a6c020e_60mb.zip
+2025-04-18 10:49:53,411 - INFO - [process_upload_and_generate_updates] - [ff4c60fe-de34-4fff-8794-319f6a6c020e] Successfully deleted temporary compressed file: C:\Users\DELL\AppData\Local\Temp\ff4c60fe-de34-4fff-8794-319f6a6c020e_comp_wd3avd5a.zip
+2025-04-18 10:49:53,411 - INFO - [process_upload_and_generate_updates] - [ff4c60fe-de34-4fff-8794-319f6a6c020e] Processing finished with status: processing
+2025-04-18 10:49:55,290 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-18 10:49:55,814 - INFO - [initiate_upload] - Saving temporary file for upload_id '5a03aa30-3bb7-4862-9350-d3a80f30184c' to 'uploads_temp\5a03aa30-3bb7-4862-9350-d3a80f30184c_60mb.pdf'
+2025-04-18 10:49:55,900 - INFO - [initiate_upload] - Temporary file saved successfully for '60mb.pdf' (ID: 5a03aa30-3bb7-4862-9350-d3a80f30184c).
+2025-04-18 10:49:55,916 - INFO - [_log] - 127.0.0.1 - - [18/Apr/2025 10:49:55] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-18 10:49:55,926 - INFO - [stream_progress] - SSE connection request for upload_id: 5a03aa30-3bb7-4862-9350-d3a80f30184c
+2025-04-18 10:49:55,926 - INFO - [process_upload_and_generate_updates] - [5a03aa30-3bb7-4862-9350-d3a80f30184c] Starting processing...
+2025-04-18 10:49:55,926 - INFO - [process_upload_and_generate_updates] - [5a03aa30-3bb7-4862-9350-d3a80f30184c] Processing upload: User='testt', File='60mb.pdf', TempPath='uploads_temp\5a03aa30-3bb7-4862-9350-d3a80f30184c_60mb.pdf'
+2025-04-18 10:49:55,926 - INFO - [process_upload_and_generate_updates] - [5a03aa30-3bb7-4862-9350-d3a80f30184c] Original temp file size: 63862122 bytes.
+2025-04-18 10:49:55,926 - INFO - [_log] - 127.0.0.1 - - [18/Apr/2025 10:49:55] "GET /stream-progress/5a03aa30-3bb7-4862-9350-d3a80f30184c HTTP/1.1" 200 -
+2025-04-18 10:49:55,926 - INFO - [process_upload_and_generate_updates] - [5a03aa30-3bb7-4862-9350-d3a80f30184c] '60mb.pdf' is large. Compressing before splitting.
+2025-04-18 10:49:55,926 - INFO - [process_upload_and_generate_updates] - [5a03aa30-3bb7-4862-9350-d3a80f30184c] Created temporary file for compression result: C:\Users\DELL\AppData\Local\Temp\5a03aa30-3bb7-4862-9350-d3a80f30184c_comp_21hnjl8g.zip
+2025-04-18 10:49:57,998 - INFO - [process_upload_and_generate_updates] - [5a03aa30-3bb7-4862-9350-d3a80f30184c] Finished compressing to 'C:\Users\DELL\AppData\Local\Temp\5a03aa30-3bb7-4862-9350-d3a80f30184c_comp_21hnjl8g.zip'. Size: 62754351 bytes. Time: 2.07s.
+2025-04-18 10:49:58,014 - INFO - [process_upload_and_generate_updates] - [5a03aa30-3bb7-4862-9350-d3a80f30184c] Reading chunk 1 for COMPRESSED file starting at byte 0.
+2025-04-18 10:49:58,033 - INFO - [process_upload_and_generate_updates] - [5a03aa30-3bb7-4862-9350-d3a80f30184c] Read chunk 1 (20971520 bytes). Total read: 20971520/62754351
+2025-04-18 10:49:58,033 - INFO - [process_upload_and_generate_updates] - [5a03aa30-3bb7-4862-9350-d3a80f30184c] Attempting to send chunk: '60mb.pdf.zip.part_001'
+2025-04-18 10:49:58,034 - INFO - [send_file_to_telegram] - Sending file '60mb.pdf.zip.part_001' to Telegram chat ID: -4603853425
+2025-04-18 10:49:59,021 - INFO - [index] - Serving index page.
+2025-04-18 10:49:59,021 - INFO - [_log] - 127.0.0.1 - - [18/Apr/2025 10:49:59] "GET / HTTP/1.1" 200 -
+2025-04-18 10:49:59,038 - INFO - [_log] - 127.0.0.1 - - [18/Apr/2025 10:49:59] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-18 10:50:09,687 - INFO - [send_file_to_telegram] - Telegram API success for '60mb.pdf.zip.part_001'.
+2025-04-18 10:50:09,687 - INFO - [process_upload_and_generate_updates] - [5a03aa30-3bb7-4862-9350-d3a80f30184c] Chunk '60mb.pdf.zip.part_001' sent successfully.
+2025-04-18 10:50:09,687 - INFO - [process_upload_and_generate_updates] - [5a03aa30-3bb7-4862-9350-d3a80f30184c] Entering final cleanup.
+2025-04-18 10:50:09,704 - INFO - [process_upload_and_generate_updates] - [5a03aa30-3bb7-4862-9350-d3a80f30184c] Successfully deleted original temporary file: uploads_temp\5a03aa30-3bb7-4862-9350-d3a80f30184c_60mb.pdf
+2025-04-18 10:50:09,710 - INFO - [process_upload_and_generate_updates] - [5a03aa30-3bb7-4862-9350-d3a80f30184c] Successfully deleted temporary compressed file: C:\Users\DELL\AppData\Local\Temp\5a03aa30-3bb7-4862-9350-d3a80f30184c_comp_21hnjl8g.zip
+2025-04-18 10:50:09,710 - INFO - [process_upload_and_generate_updates] - [5a03aa30-3bb7-4862-9350-d3a80f30184c] Processing finished with status: processing
+2025-04-18 10:50:11,965 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-18 10:50:12,194 - INFO - [initiate_upload] - Saving temporary file for upload_id '421e8bcc-ccd7-4448-825d-0fed85a10373' to 'uploads_temp\421e8bcc-ccd7-4448-825d-0fed85a10373_60mb.pdf'
+2025-04-18 10:50:12,274 - INFO - [initiate_upload] - Temporary file saved successfully for '60mb.pdf' (ID: 421e8bcc-ccd7-4448-825d-0fed85a10373).
+2025-04-18 10:50:12,275 - INFO - [_log] - 127.0.0.1 - - [18/Apr/2025 10:50:12] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-18 10:50:12,286 - INFO - [stream_progress] - SSE connection request for upload_id: 421e8bcc-ccd7-4448-825d-0fed85a10373
+2025-04-18 10:50:12,286 - INFO - [process_upload_and_generate_updates] - [421e8bcc-ccd7-4448-825d-0fed85a10373] Starting processing...
+2025-04-18 10:50:12,286 - INFO - [process_upload_and_generate_updates] - [421e8bcc-ccd7-4448-825d-0fed85a10373] Processing upload: User='testt', File='60mb.pdf', TempPath='uploads_temp\421e8bcc-ccd7-4448-825d-0fed85a10373_60mb.pdf'
+2025-04-18 10:50:12,288 - INFO - [process_upload_and_generate_updates] - [421e8bcc-ccd7-4448-825d-0fed85a10373] Original temp file size: 63862122 bytes.
+2025-04-18 10:50:12,288 - INFO - [_log] - 127.0.0.1 - - [18/Apr/2025 10:50:12] "GET /stream-progress/421e8bcc-ccd7-4448-825d-0fed85a10373 HTTP/1.1" 200 -
+2025-04-18 10:50:12,288 - INFO - [process_upload_and_generate_updates] - [421e8bcc-ccd7-4448-825d-0fed85a10373] '60mb.pdf' is large. Compressing before splitting.
+2025-04-18 10:50:12,289 - INFO - [process_upload_and_generate_updates] - [421e8bcc-ccd7-4448-825d-0fed85a10373] Created temporary file for compression result: C:\Users\DELL\AppData\Local\Temp\421e8bcc-ccd7-4448-825d-0fed85a10373_comp_6lz371kq.zip
+2025-04-18 10:50:14,486 - INFO - [process_upload_and_generate_updates] - [421e8bcc-ccd7-4448-825d-0fed85a10373] Finished compressing to 'C:\Users\DELL\AppData\Local\Temp\421e8bcc-ccd7-4448-825d-0fed85a10373_comp_6lz371kq.zip'. Size: 62754351 bytes. Time: 2.20s.
+2025-04-18 10:50:14,508 - INFO - [process_upload_and_generate_updates] - [421e8bcc-ccd7-4448-825d-0fed85a10373] Reading chunk 1 for COMPRESSED file starting at byte 0.
+2025-04-18 10:50:14,523 - INFO - [process_upload_and_generate_updates] - [421e8bcc-ccd7-4448-825d-0fed85a10373] Read chunk 1 (20971520 bytes). Total read: 20971520/62754351
+2025-04-18 10:50:14,524 - INFO - [process_upload_and_generate_updates] - [421e8bcc-ccd7-4448-825d-0fed85a10373] Attempting to send chunk: '60mb.pdf.zip.part_001'
+2025-04-18 10:50:14,524 - INFO - [send_file_to_telegram] - Sending file '60mb.pdf.zip.part_001' to Telegram chat ID: -4603853425
+2025-04-18 10:50:25,620 - INFO - [send_file_to_telegram] - Telegram API success for '60mb.pdf.zip.part_001'.
+2025-04-18 10:50:25,620 - INFO - [process_upload_and_generate_updates] - [421e8bcc-ccd7-4448-825d-0fed85a10373] Chunk '60mb.pdf.zip.part_001' sent successfully.
+2025-04-18 10:50:25,620 - INFO - [process_upload_and_generate_updates] - [421e8bcc-ccd7-4448-825d-0fed85a10373] Successfully processed chunk '60mb.pdf.zip.part_001' (MsgID=304) in 11.10s.
+2025-04-18 10:50:25,635 - INFO - [process_upload_and_generate_updates] - [421e8bcc-ccd7-4448-825d-0fed85a10373] Reading chunk 2 for COMPRESSED file starting at byte 20971520.
+2025-04-18 10:50:25,653 - INFO - [process_upload_and_generate_updates] - [421e8bcc-ccd7-4448-825d-0fed85a10373] Read chunk 2 (20971520 bytes). Total read: 41943040/62754351
+2025-04-18 10:50:25,654 - INFO - [process_upload_and_generate_updates] - [421e8bcc-ccd7-4448-825d-0fed85a10373] Attempting to send chunk: '60mb.pdf.zip.part_002'
+2025-04-18 10:50:25,654 - INFO - [send_file_to_telegram] - Sending file '60mb.pdf.zip.part_002' to Telegram chat ID: -4603853425
+2025-04-18 10:50:42,557 - INFO - [send_file_to_telegram] - Telegram API success for '60mb.pdf.zip.part_002'.
+2025-04-18 10:50:42,559 - INFO - [process_upload_and_generate_updates] - [421e8bcc-ccd7-4448-825d-0fed85a10373] Chunk '60mb.pdf.zip.part_002' sent successfully.
+2025-04-18 10:50:42,559 - INFO - [process_upload_and_generate_updates] - [421e8bcc-ccd7-4448-825d-0fed85a10373] Successfully processed chunk '60mb.pdf.zip.part_002' (MsgID=305) in 16.90s.
+2025-04-18 10:50:42,559 - INFO - [process_upload_and_generate_updates] - [421e8bcc-ccd7-4448-825d-0fed85a10373] Reading chunk 3 for COMPRESSED file starting at byte 41943040.
+2025-04-18 10:50:42,572 - INFO - [process_upload_and_generate_updates] - [421e8bcc-ccd7-4448-825d-0fed85a10373] Read chunk 3 (20811311 bytes). Total read: 62754351/62754351
+2025-04-18 10:50:42,574 - INFO - [process_upload_and_generate_updates] - [421e8bcc-ccd7-4448-825d-0fed85a10373] Attempting to send chunk: '60mb.pdf.zip.part_003'
+2025-04-18 10:50:42,574 - INFO - [send_file_to_telegram] - Sending file '60mb.pdf.zip.part_003' to Telegram chat ID: -4603853425
+2025-04-18 10:51:00,175 - INFO - [send_file_to_telegram] - Telegram API success for '60mb.pdf.zip.part_003'.
+2025-04-18 10:51:00,178 - INFO - [process_upload_and_generate_updates] - [421e8bcc-ccd7-4448-825d-0fed85a10373] Chunk '60mb.pdf.zip.part_003' sent successfully.
+2025-04-18 10:51:00,178 - INFO - [process_upload_and_generate_updates] - [421e8bcc-ccd7-4448-825d-0fed85a10373] Successfully processed chunk '60mb.pdf.zip.part_003' (MsgID=306) in 17.60s.
+2025-04-18 10:51:00,179 - INFO - [process_upload_and_generate_updates] - [421e8bcc-ccd7-4448-825d-0fed85a10373] Reading chunk 4 for COMPRESSED file starting at byte 62754351.
+2025-04-18 10:51:00,185 - INFO - [process_upload_and_generate_updates] - [421e8bcc-ccd7-4448-825d-0fed85a10373] Finished reading all chunks for compressed file.
+2025-04-18 10:51:00,185 - INFO - [process_upload_and_generate_updates] - [421e8bcc-ccd7-4448-825d-0fed85a10373] All 3 chunks uploaded successfully. Saving metadata.
+2025-04-18 10:51:00,187 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-18 10:51:00,194 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-18 10:51:00,196 - INFO - [process_upload_and_generate_updates] - [421e8bcc-ccd7-4448-825d-0fed85a10373] Entering final cleanup.
+2025-04-18 10:51:00,203 - INFO - [process_upload_and_generate_updates] - [421e8bcc-ccd7-4448-825d-0fed85a10373] Successfully deleted original temporary file: uploads_temp\421e8bcc-ccd7-4448-825d-0fed85a10373_60mb.pdf
+2025-04-18 10:51:00,208 - INFO - [process_upload_and_generate_updates] - [421e8bcc-ccd7-4448-825d-0fed85a10373] Successfully deleted temporary compressed file: C:\Users\DELL\AppData\Local\Temp\421e8bcc-ccd7-4448-825d-0fed85a10373_comp_6lz371kq.zip
+2025-04-18 10:51:00,209 - INFO - [process_upload_and_generate_updates] - [421e8bcc-ccd7-4448-825d-0fed85a10373] Processing finished with status: completed

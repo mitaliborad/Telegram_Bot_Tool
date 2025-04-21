@@ -1,0 +1,329 @@
+2025-04-21 12:23:43,751 - INFO - [<module>] - Logging configured. Log file: Selenium-Logs\app_20250421_122343.log
+2025-04-21 12:23:43,752 - INFO - [<module>] - Flask application initialized.
+2025-04-21 12:23:43,756 - INFO - [<module>] - Starting Flask development server...
+2025-04-21 12:23:43,784 - WARNING - [_log] -  * Debugger is active!
+2025-04-21 12:23:43,784 - INFO - [_log] -  * Debugger PIN: 107-410-311
+2025-04-21 12:23:45,445 - INFO - [index] - Serving index page.
+2025-04-21 12:23:45,460 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 12:23:45] "GET / HTTP/1.1" 200 -
+2025-04-21 12:23:45,482 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 12:23:45] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-21 12:23:53,129 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-21 12:23:53,129 - INFO - [initiate_upload] - Saving temporary file for upload_id 'b49c6f50-c488-46e5-b69d-5dda398a7b44' to 'uploads_temp\b49c6f50-c488-46e5-b69d-5dda398a7b44_handler.py'
+2025-04-21 12:23:53,129 - INFO - [initiate_upload] - Temporary file saved successfully for 'handler.py' (ID: b49c6f50-c488-46e5-b69d-5dda398a7b44).
+2025-04-21 12:23:53,129 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 12:23:53] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-21 12:23:53,129 - INFO - [stream_progress] - SSE connection request for upload_id: b49c6f50-c488-46e5-b69d-5dda398a7b44
+2025-04-21 12:23:53,129 - INFO - [process_upload_and_generate_updates] - [b49c6f50-c488-46e5-b69d-5dda398a7b44] Starting processing...
+2025-04-21 12:23:53,129 - INFO - [process_upload_and_generate_updates] - [b49c6f50-c488-46e5-b69d-5dda398a7b44] Processing upload: User='cad', File='handler.py', TempPath='uploads_temp\b49c6f50-c488-46e5-b69d-5dda398a7b44_handler.py'
+2025-04-21 12:23:53,129 - INFO - [process_upload_and_generate_updates] - [b49c6f50-c488-46e5-b69d-5dda398a7b44] Original temp file size: 38638 bytes.
+2025-04-21 12:23:53,140 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 12:23:53] "GET /stream-progress/b49c6f50-c488-46e5-b69d-5dda398a7b44 HTTP/1.1" 200 -
+2025-04-21 12:23:53,140 - INFO - [process_upload_and_generate_updates] - [b49c6f50-c488-46e5-b69d-5dda398a7b44] 'handler.py' is small. Compressing and sending as single file.
+2025-04-21 12:23:53,171 - INFO - [process_upload_and_generate_updates] - [b49c6f50-c488-46e5-b69d-5dda398a7b44] Compressed 'handler.py' to 8081 bytes.
+2025-04-21 12:23:53,172 - INFO - [send_file_to_telegram] - Sending file 'handler.py.zip' to Telegram chat ID: -4603853425
+2025-04-21 12:23:54,228 - INFO - [send_file_to_telegram] - Telegram API success for 'handler.py.zip'.
+2025-04-21 12:23:54,229 - INFO - [process_upload_and_generate_updates] - [b49c6f50-c488-46e5-b69d-5dda398a7b44] Single file 'handler.py' sent successfully.
+2025-04-21 12:23:54,232 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 12:23:54,241 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-21 12:23:54,242 - INFO - [process_upload_and_generate_updates] - [b49c6f50-c488-46e5-b69d-5dda398a7b44] Entering final cleanup.
+2025-04-21 12:23:54,242 - INFO - [process_upload_and_generate_updates] - [b49c6f50-c488-46e5-b69d-5dda398a7b44] Successfully deleted original temporary file: uploads_temp\b49c6f50-c488-46e5-b69d-5dda398a7b44_handler.py
+2025-04-21 12:23:54,243 - INFO - [process_upload_and_generate_updates] - [b49c6f50-c488-46e5-b69d-5dda398a7b44] Processing finished with status: completed_metadata_error
+2025-04-21 12:24:01,913 - INFO - [get_file_by_access_id] - Received request for access_id: e67148d463
+2025-04-21 12:24:01,939 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 12:24:01,939 - INFO - [get_file_by_access_id] - Found file 'handler.py' for user 'cad' with access_id 'e67148d463'. Rendering download page.
+2025-04-21 12:24:01,949 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 12:24:01] "GET /get/e67148d463 HTTP/1.1" 200 -
+2025-04-21 12:24:03,928 - INFO - [prepare_download_stream] - [ca4f6eed-4f89-4c5f-919d-14c9a2c21e6c] SSE connection request for download prep: User='testuser', File='example.zip'
+2025-04-21 12:24:03,928 - INFO - [_prepare_download_and_generate_updates] - [ca4f6eed-4f89-4c5f-919d-14c9a2c21e6c] Starting download preparation generator...
+2025-04-21 12:24:03,928 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 12:24:03] "GET /prepare-download/testuser/example.zip HTTP/1.1" 200 -
+2025-04-21 12:24:04,133 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 12:24:04,133 - ERROR - [_prepare_download_and_generate_updates] - [ca4f6eed-4f89-4c5f-919d-14c9a2c21e6c] Download preparation failed: File 'example.zip' not found.
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\Telegram_app.py", line 1147, in _prepare_download_and_generate_updates
+    if not file_info: raise FileNotFoundError(f"File '{filename}' not found.")
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: File 'example.zip' not found.
+2025-04-21 12:24:04,133 - INFO - [_prepare_download_and_generate_updates] - [ca4f6eed-4f89-4c5f-919d-14c9a2c21e6c] Cleaning up temp files due to prep error.
+2025-04-21 12:24:04,133 - INFO - [_prepare_download_and_generate_updates] - [ca4f6eed-4f89-4c5f-919d-14c9a2c21e6c] Generator finished with status: error
+2025-04-21 12:24:05,008 - INFO - [prepare_download_stream] - [cfa4ba86-dcd1-42f5-8fbc-26512d15d04f] SSE connection request for download prep: User='testuser', File='example.zip'
+2025-04-21 12:24:05,008 - INFO - [_prepare_download_and_generate_updates] - [cfa4ba86-dcd1-42f5-8fbc-26512d15d04f] Starting download preparation generator...
+2025-04-21 12:24:05,008 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 12:24:05] "GET /prepare-download/testuser/example.zip HTTP/1.1" 200 -
+2025-04-21 12:24:05,212 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 12:24:05,212 - ERROR - [_prepare_download_and_generate_updates] - [cfa4ba86-dcd1-42f5-8fbc-26512d15d04f] Download preparation failed: File 'example.zip' not found.
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\Telegram_app.py", line 1147, in _prepare_download_and_generate_updates
+    if not file_info: raise FileNotFoundError(f"File '{filename}' not found.")
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: File 'example.zip' not found.
+2025-04-21 12:24:05,220 - INFO - [_prepare_download_and_generate_updates] - [cfa4ba86-dcd1-42f5-8fbc-26512d15d04f] Cleaning up temp files due to prep error.
+2025-04-21 12:24:05,221 - INFO - [_prepare_download_and_generate_updates] - [cfa4ba86-dcd1-42f5-8fbc-26512d15d04f] Generator finished with status: error
+2025-04-21 12:24:12,252 - INFO - [get_file_by_access_id] - Received request for access_id: e67148d463
+2025-04-21 12:24:12,255 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 12:24:12,256 - INFO - [get_file_by_access_id] - Found file 'handler.py' for user 'cad' with access_id 'e67148d463'. Rendering download page.
+2025-04-21 12:24:12,257 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 12:24:12] "GET /get/e67148d463 HTTP/1.1" 200 -
+2025-04-21 12:24:15,455 - INFO - [get_file_by_access_id] - Received request for access_id: e67148d463
+2025-04-21 12:24:15,457 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 12:24:15,460 - INFO - [get_file_by_access_id] - Found file 'handler.py' for user 'cad' with access_id 'e67148d463'. Rendering download page.
+2025-04-21 12:24:15,461 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 12:24:15] "GET /get/e67148d463 HTTP/1.1" 200 -
+2025-04-21 12:24:19,250 - INFO - [prepare_download_stream] - [b904db50-43d0-4bf5-ac7b-fd1a29ab5dd5] SSE connection request for download prep: User='testuser', File='example.zip'
+2025-04-21 12:24:19,253 - INFO - [_prepare_download_and_generate_updates] - [b904db50-43d0-4bf5-ac7b-fd1a29ab5dd5] Starting download preparation generator...
+2025-04-21 12:24:19,253 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 12:24:19] "GET /prepare-download/testuser/example.zip HTTP/1.1" 200 -
+2025-04-21 12:24:19,458 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 12:24:19,458 - ERROR - [_prepare_download_and_generate_updates] - [b904db50-43d0-4bf5-ac7b-fd1a29ab5dd5] Download preparation failed: File 'example.zip' not found.
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\Telegram_app.py", line 1147, in _prepare_download_and_generate_updates
+    if not file_info: raise FileNotFoundError(f"File '{filename}' not found.")
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: File 'example.zip' not found.
+2025-04-21 12:24:19,460 - INFO - [_prepare_download_and_generate_updates] - [b904db50-43d0-4bf5-ac7b-fd1a29ab5dd5] Cleaning up temp files due to prep error.
+2025-04-21 12:24:19,461 - INFO - [_prepare_download_and_generate_updates] - [b904db50-43d0-4bf5-ac7b-fd1a29ab5dd5] Generator finished with status: error
+2025-04-21 12:24:20,123 - INFO - [prepare_download_stream] - [21a3cd99-ed77-4029-8161-52129f6db247] SSE connection request for download prep: User='testuser', File='example.zip'
+2025-04-21 12:24:20,123 - INFO - [_prepare_download_and_generate_updates] - [21a3cd99-ed77-4029-8161-52129f6db247] Starting download preparation generator...
+2025-04-21 12:24:20,123 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 12:24:20] "GET /prepare-download/testuser/example.zip HTTP/1.1" 200 -
+2025-04-21 12:24:20,329 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 12:24:20,330 - ERROR - [_prepare_download_and_generate_updates] - [21a3cd99-ed77-4029-8161-52129f6db247] Download preparation failed: File 'example.zip' not found.
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\Telegram_app.py", line 1147, in _prepare_download_and_generate_updates
+    if not file_info: raise FileNotFoundError(f"File '{filename}' not found.")
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: File 'example.zip' not found.
+2025-04-21 12:24:20,332 - INFO - [_prepare_download_and_generate_updates] - [21a3cd99-ed77-4029-8161-52129f6db247] Cleaning up temp files due to prep error.
+2025-04-21 12:24:20,334 - INFO - [_prepare_download_and_generate_updates] - [21a3cd99-ed77-4029-8161-52129f6db247] Generator finished with status: error
+2025-04-21 12:24:21,014 - INFO - [prepare_download_stream] - [4af94d05-520a-436f-be35-b6746a42a266] SSE connection request for download prep: User='testuser', File='example.zip'
+2025-04-21 12:24:21,014 - INFO - [_prepare_download_and_generate_updates] - [4af94d05-520a-436f-be35-b6746a42a266] Starting download preparation generator...
+2025-04-21 12:24:21,014 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 12:24:21] "GET /prepare-download/testuser/example.zip HTTP/1.1" 200 -
+2025-04-21 12:24:21,219 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 12:24:21,219 - ERROR - [_prepare_download_and_generate_updates] - [4af94d05-520a-436f-be35-b6746a42a266] Download preparation failed: File 'example.zip' not found.
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\Telegram_app.py", line 1147, in _prepare_download_and_generate_updates
+    if not file_info: raise FileNotFoundError(f"File '{filename}' not found.")
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: File 'example.zip' not found.
+2025-04-21 12:24:21,226 - INFO - [_prepare_download_and_generate_updates] - [4af94d05-520a-436f-be35-b6746a42a266] Cleaning up temp files due to prep error.
+2025-04-21 12:24:21,227 - INFO - [_prepare_download_and_generate_updates] - [4af94d05-520a-436f-be35-b6746a42a266] Generator finished with status: error
+2025-04-21 12:24:21,702 - INFO - [prepare_download_stream] - [830f2a98-9f1b-4139-a350-96348c026565] SSE connection request for download prep: User='testuser', File='example.zip'
+2025-04-21 12:24:21,702 - INFO - [_prepare_download_and_generate_updates] - [830f2a98-9f1b-4139-a350-96348c026565] Starting download preparation generator...
+2025-04-21 12:24:21,702 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 12:24:21] "GET /prepare-download/testuser/example.zip HTTP/1.1" 200 -
+2025-04-21 12:24:21,906 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 12:24:21,906 - ERROR - [_prepare_download_and_generate_updates] - [830f2a98-9f1b-4139-a350-96348c026565] Download preparation failed: File 'example.zip' not found.
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\Telegram_app.py", line 1147, in _prepare_download_and_generate_updates
+    if not file_info: raise FileNotFoundError(f"File '{filename}' not found.")
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: File 'example.zip' not found.
+2025-04-21 12:24:21,913 - INFO - [_prepare_download_and_generate_updates] - [830f2a98-9f1b-4139-a350-96348c026565] Cleaning up temp files due to prep error.
+2025-04-21 12:24:21,914 - INFO - [_prepare_download_and_generate_updates] - [830f2a98-9f1b-4139-a350-96348c026565] Generator finished with status: error
+2025-04-21 12:24:22,568 - INFO - [prepare_download_stream] - [989939a0-1e17-464b-844b-961caf9a8199] SSE connection request for download prep: User='testuser', File='example.zip'
+2025-04-21 12:24:22,568 - INFO - [_prepare_download_and_generate_updates] - [989939a0-1e17-464b-844b-961caf9a8199] Starting download preparation generator...
+2025-04-21 12:24:22,568 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 12:24:22] "GET /prepare-download/testuser/example.zip HTTP/1.1" 200 -
+2025-04-21 12:24:22,772 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 12:24:22,772 - ERROR - [_prepare_download_and_generate_updates] - [989939a0-1e17-464b-844b-961caf9a8199] Download preparation failed: File 'example.zip' not found.
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\Telegram_app.py", line 1147, in _prepare_download_and_generate_updates
+    if not file_info: raise FileNotFoundError(f"File '{filename}' not found.")
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: File 'example.zip' not found.
+2025-04-21 12:24:22,772 - INFO - [_prepare_download_and_generate_updates] - [989939a0-1e17-464b-844b-961caf9a8199] Cleaning up temp files due to prep error.
+2025-04-21 12:24:22,772 - INFO - [_prepare_download_and_generate_updates] - [989939a0-1e17-464b-844b-961caf9a8199] Generator finished with status: error
+2025-04-21 12:25:37,314 - INFO - [get_file_by_access_id] - Received request for access_id: e67148d463
+2025-04-21 12:25:37,316 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 12:25:37,318 - INFO - [get_file_by_access_id] - Found file 'handler.py' for user 'cad' with access_id 'e67148d463'. Rendering download page.
+2025-04-21 12:25:37,319 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 12:25:37] "GET /get/e67148d463 HTTP/1.1" 200 -
+2025-04-21 12:25:39,212 - INFO - [prepare_download_stream] - [c30ba167-093b-40e9-9fb0-4ef506df6412] SSE connection request for download prep: User='testuser', File='example.zip'
+2025-04-21 12:25:39,212 - INFO - [_prepare_download_and_generate_updates] - [c30ba167-093b-40e9-9fb0-4ef506df6412] Starting download preparation generator...
+2025-04-21 12:25:39,212 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 12:25:39] "GET /prepare-download/testuser/example.zip HTTP/1.1" 200 -
+2025-04-21 12:25:39,420 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 12:25:39,420 - ERROR - [_prepare_download_and_generate_updates] - [c30ba167-093b-40e9-9fb0-4ef506df6412] Download preparation failed: File 'example.zip' not found.
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\Telegram_app.py", line 1147, in _prepare_download_and_generate_updates
+    if not file_info: raise FileNotFoundError(f"File '{filename}' not found.")
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: File 'example.zip' not found.
+2025-04-21 12:25:39,422 - INFO - [_prepare_download_and_generate_updates] - [c30ba167-093b-40e9-9fb0-4ef506df6412] Cleaning up temp files due to prep error.
+2025-04-21 12:25:39,424 - INFO - [_prepare_download_and_generate_updates] - [c30ba167-093b-40e9-9fb0-4ef506df6412] Generator finished with status: error
+2025-04-21 12:25:39,964 - INFO - [prepare_download_stream] - [280b7c63-4538-4fab-b393-a945dd37793e] SSE connection request for download prep: User='testuser', File='example.zip'
+2025-04-21 12:25:39,964 - INFO - [_prepare_download_and_generate_updates] - [280b7c63-4538-4fab-b393-a945dd37793e] Starting download preparation generator...
+2025-04-21 12:25:39,964 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 12:25:39] "GET /prepare-download/testuser/example.zip HTTP/1.1" 200 -
+2025-04-21 12:25:40,171 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 12:25:40,172 - ERROR - [_prepare_download_and_generate_updates] - [280b7c63-4538-4fab-b393-a945dd37793e] Download preparation failed: File 'example.zip' not found.
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\Telegram_app.py", line 1147, in _prepare_download_and_generate_updates
+    if not file_info: raise FileNotFoundError(f"File '{filename}' not found.")
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: File 'example.zip' not found.
+2025-04-21 12:25:40,174 - INFO - [_prepare_download_and_generate_updates] - [280b7c63-4538-4fab-b393-a945dd37793e] Cleaning up temp files due to prep error.
+2025-04-21 12:25:40,175 - INFO - [_prepare_download_and_generate_updates] - [280b7c63-4538-4fab-b393-a945dd37793e] Generator finished with status: error
+2025-04-21 12:25:40,618 - INFO - [prepare_download_stream] - [161ded47-53a1-4c59-ace0-b1ac881a1e96] SSE connection request for download prep: User='testuser', File='example.zip'
+2025-04-21 12:25:40,621 - INFO - [_prepare_download_and_generate_updates] - [161ded47-53a1-4c59-ace0-b1ac881a1e96] Starting download preparation generator...
+2025-04-21 12:25:40,622 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 12:25:40] "GET /prepare-download/testuser/example.zip HTTP/1.1" 200 -
+2025-04-21 12:25:40,825 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 12:25:40,825 - ERROR - [_prepare_download_and_generate_updates] - [161ded47-53a1-4c59-ace0-b1ac881a1e96] Download preparation failed: File 'example.zip' not found.
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\Telegram_app.py", line 1147, in _prepare_download_and_generate_updates
+    if not file_info: raise FileNotFoundError(f"File '{filename}' not found.")
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: File 'example.zip' not found.
+2025-04-21 12:25:40,826 - INFO - [_prepare_download_and_generate_updates] - [161ded47-53a1-4c59-ace0-b1ac881a1e96] Cleaning up temp files due to prep error.
+2025-04-21 12:25:40,827 - INFO - [_prepare_download_and_generate_updates] - [161ded47-53a1-4c59-ace0-b1ac881a1e96] Generator finished with status: error
+2025-04-21 12:25:41,344 - INFO - [prepare_download_stream] - [5cb80bc5-0b5c-454a-9e73-6635beef85b6] SSE connection request for download prep: User='testuser', File='example.zip'
+2025-04-21 12:25:41,344 - INFO - [_prepare_download_and_generate_updates] - [5cb80bc5-0b5c-454a-9e73-6635beef85b6] Starting download preparation generator...
+2025-04-21 12:25:41,344 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 12:25:41] "GET /prepare-download/testuser/example.zip HTTP/1.1" 200 -
+2025-04-21 12:25:41,546 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 12:25:41,546 - ERROR - [_prepare_download_and_generate_updates] - [5cb80bc5-0b5c-454a-9e73-6635beef85b6] Download preparation failed: File 'example.zip' not found.
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\Telegram_app.py", line 1147, in _prepare_download_and_generate_updates
+    if not file_info: raise FileNotFoundError(f"File '{filename}' not found.")
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: File 'example.zip' not found.
+2025-04-21 12:25:41,546 - INFO - [_prepare_download_and_generate_updates] - [5cb80bc5-0b5c-454a-9e73-6635beef85b6] Cleaning up temp files due to prep error.
+2025-04-21 12:25:41,546 - INFO - [_prepare_download_and_generate_updates] - [5cb80bc5-0b5c-454a-9e73-6635beef85b6] Generator finished with status: error
+2025-04-21 12:25:41,942 - INFO - [prepare_download_stream] - [bd51a3b8-1b1f-4566-80fe-8735b6ff40f8] SSE connection request for download prep: User='testuser', File='example.zip'
+2025-04-21 12:25:41,942 - INFO - [_prepare_download_and_generate_updates] - [bd51a3b8-1b1f-4566-80fe-8735b6ff40f8] Starting download preparation generator...
+2025-04-21 12:25:41,942 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 12:25:41] "GET /prepare-download/testuser/example.zip HTTP/1.1" 200 -
+2025-04-21 12:25:42,146 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 12:25:42,146 - ERROR - [_prepare_download_and_generate_updates] - [bd51a3b8-1b1f-4566-80fe-8735b6ff40f8] Download preparation failed: File 'example.zip' not found.
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\Telegram_app.py", line 1147, in _prepare_download_and_generate_updates
+    if not file_info: raise FileNotFoundError(f"File '{filename}' not found.")
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: File 'example.zip' not found.
+2025-04-21 12:25:42,146 - INFO - [_prepare_download_and_generate_updates] - [bd51a3b8-1b1f-4566-80fe-8735b6ff40f8] Cleaning up temp files due to prep error.
+2025-04-21 12:25:42,146 - INFO - [_prepare_download_and_generate_updates] - [bd51a3b8-1b1f-4566-80fe-8735b6ff40f8] Generator finished with status: error
+2025-04-21 12:25:42,345 - INFO - [prepare_download_stream] - [ca8f3667-13c1-460b-9dfb-906e7027957f] SSE connection request for download prep: User='testuser', File='example.zip'
+2025-04-21 12:25:42,345 - INFO - [_prepare_download_and_generate_updates] - [ca8f3667-13c1-460b-9dfb-906e7027957f] Starting download preparation generator...
+2025-04-21 12:25:42,345 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 12:25:42] "GET /prepare-download/testuser/example.zip HTTP/1.1" 200 -
+2025-04-21 12:25:42,549 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 12:25:42,549 - ERROR - [_prepare_download_and_generate_updates] - [ca8f3667-13c1-460b-9dfb-906e7027957f] Download preparation failed: File 'example.zip' not found.
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\Telegram_app.py", line 1147, in _prepare_download_and_generate_updates
+    if not file_info: raise FileNotFoundError(f"File '{filename}' not found.")
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: File 'example.zip' not found.
+2025-04-21 12:25:42,549 - INFO - [_prepare_download_and_generate_updates] - [ca8f3667-13c1-460b-9dfb-906e7027957f] Cleaning up temp files due to prep error.
+2025-04-21 12:25:42,549 - INFO - [_prepare_download_and_generate_updates] - [ca8f3667-13c1-460b-9dfb-906e7027957f] Generator finished with status: error
+2025-04-21 12:25:42,730 - INFO - [prepare_download_stream] - [a03691b3-a36a-4110-bbef-794370da6a03] SSE connection request for download prep: User='testuser', File='example.zip'
+2025-04-21 12:25:42,730 - INFO - [_prepare_download_and_generate_updates] - [a03691b3-a36a-4110-bbef-794370da6a03] Starting download preparation generator...
+2025-04-21 12:25:42,730 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 12:25:42] "GET /prepare-download/testuser/example.zip HTTP/1.1" 200 -
+2025-04-21 12:25:42,934 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 12:25:42,934 - ERROR - [_prepare_download_and_generate_updates] - [a03691b3-a36a-4110-bbef-794370da6a03] Download preparation failed: File 'example.zip' not found.
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\Telegram_app.py", line 1147, in _prepare_download_and_generate_updates
+    if not file_info: raise FileNotFoundError(f"File '{filename}' not found.")
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: File 'example.zip' not found.
+2025-04-21 12:25:42,934 - INFO - [_prepare_download_and_generate_updates] - [a03691b3-a36a-4110-bbef-794370da6a03] Cleaning up temp files due to prep error.
+2025-04-21 12:25:42,934 - INFO - [_prepare_download_and_generate_updates] - [a03691b3-a36a-4110-bbef-794370da6a03] Generator finished with status: error
+2025-04-21 12:25:42,967 - INFO - [prepare_download_stream] - [33976084-ee63-4e03-8c15-8a6f860e94f0] SSE connection request for download prep: User='testuser', File='example.zip'
+2025-04-21 12:25:42,967 - INFO - [_prepare_download_and_generate_updates] - [33976084-ee63-4e03-8c15-8a6f860e94f0] Starting download preparation generator...
+2025-04-21 12:25:42,967 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 12:25:42] "GET /prepare-download/testuser/example.zip HTTP/1.1" 200 -
+2025-04-21 12:25:43,170 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 12:25:43,170 - ERROR - [_prepare_download_and_generate_updates] - [33976084-ee63-4e03-8c15-8a6f860e94f0] Download preparation failed: File 'example.zip' not found.
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\Telegram_app.py", line 1147, in _prepare_download_and_generate_updates
+    if not file_info: raise FileNotFoundError(f"File '{filename}' not found.")
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: File 'example.zip' not found.
+2025-04-21 12:25:43,170 - INFO - [_prepare_download_and_generate_updates] - [33976084-ee63-4e03-8c15-8a6f860e94f0] Cleaning up temp files due to prep error.
+2025-04-21 12:25:43,174 - INFO - [_prepare_download_and_generate_updates] - [33976084-ee63-4e03-8c15-8a6f860e94f0] Generator finished with status: error
+2025-04-21 12:27:03,174 - INFO - [list_user_files] - Request received to list files for user: 'siren'
+2025-04-21 12:27:03,179 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 12:27:03,180 - INFO - [list_user_files] - Found 1 file records for user 'siren'.
+2025-04-21 12:27:03,180 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 12:27:03] "GET /files/siren HTTP/1.1" 200 -
+2025-04-21 12:27:05,034 - INFO - [prepare_download_stream] - [c57ec9b3-f749-46a8-aa1b-3018e1421c99] SSE connection request for download prep: User='siren', File='bot.py'
+2025-04-21 12:27:05,034 - INFO - [_prepare_download_and_generate_updates] - [c57ec9b3-f749-46a8-aa1b-3018e1421c99] Starting download preparation generator...
+2025-04-21 12:27:05,034 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 12:27:05] "GET /prepare-download/siren/bot.py HTTP/1.1" 200 -
+2025-04-21 12:27:05,238 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 12:27:05,238 - INFO - [_prepare_download_and_generate_updates] - [c57ec9b3-f749-46a8-aa1b-3018e1421c99] Prep non-split 'bot.py'
+2025-04-21 12:27:05,238 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIB5GgF5g0hC6k28hVIrAEzCsPPuCGoAAIIFQACYy8wVPse3alwNeeCNgQ
+2025-04-21 12:27:06,088 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_241.zip
+2025-04-21 12:27:06,088 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_241.zip
+2025-04-21 12:27:06,617 - INFO - [download_telegram_file_content] - Successfully downloaded 1072 bytes for file_id BQACAgUAAxkDAAIB5GgF5g0hC6k28hVIrAEzCsPPuCGoAAIIFQACYy8wVPse3alwNeeCNgQ.
+2025-04-21 12:27:06,617 - INFO - [_prepare_download_and_generate_updates] - [c57ec9b3-f749-46a8-aa1b-3018e1421c99] Decompressing single file...
+2025-04-21 12:27:06,639 - INFO - [_prepare_download_and_generate_updates] - [c57ec9b3-f749-46a8-aa1b-3018e1421c99] Final prepared file: 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_c57ec9b3-f749-46a8-aa1b-3018e1421c99_kutd9lh_', Size: 2350
+2025-04-21 12:27:06,643 - INFO - [_prepare_download_and_generate_updates] - [c57ec9b3-f749-46a8-aa1b-3018e1421c99] Preparation complete. Sent 'ready' event.
+2025-04-21 12:27:06,644 - INFO - [_prepare_download_and_generate_updates] - [c57ec9b3-f749-46a8-aa1b-3018e1421c99] Generator finished with status: ready
+2025-04-21 12:27:06,658 - INFO - [serve_temp_file] - Request to serve temporary download file for ID: c57ec9b3-f749-46a8-aa1b-3018e1421c99, Filename: bot.py
+2025-04-21 12:27:06,660 - INFO - [serve_temp_file] - [c57ec9b3-f749-46a8-aa1b-3018e1421c99] Preparing streaming response for 'bot.py' from 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_c57ec9b3-f749-46a8-aa1b-3018e1421c99_kutd9lh_'
+2025-04-21 12:27:06,660 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 12:27:06] "GET /serve-temp-file/c57ec9b3-f749-46a8-aa1b-3018e1421c99/bot.py HTTP/1.1" 200 -
+2025-04-21 12:27:06,660 - INFO - [generate_and_cleanup] - [c57ec9b3-f749-46a8-aa1b-3018e1421c99] Finished streaming file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_c57ec9b3-f749-46a8-aa1b-3018e1421c99_kutd9lh_
+2025-04-21 12:27:06,660 - INFO - [generate_and_cleanup] - [c57ec9b3-f749-46a8-aa1b-3018e1421c99] Cleaning up final temp file post-streaming: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_c57ec9b3-f749-46a8-aa1b-3018e1421c99_kutd9lh_
+2025-04-21 12:27:06,668 - INFO - [generate_and_cleanup] - [c57ec9b3-f749-46a8-aa1b-3018e1421c99] Successfully deleted final temp file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_c57ec9b3-f749-46a8-aa1b-3018e1421c99_kutd9lh_
+2025-04-21 12:27:13,991 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-21 12:27:13,991 - INFO - [initiate_upload] - Saving temporary file for upload_id '5751f271-3714-4167-8d1e-e3eb85bb3506' to 'uploads_temp\5751f271-3714-4167-8d1e-e3eb85bb3506_bot.py'
+2025-04-21 12:27:13,991 - INFO - [initiate_upload] - Temporary file saved successfully for 'bot.py' (ID: 5751f271-3714-4167-8d1e-e3eb85bb3506).
+2025-04-21 12:27:13,991 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 12:27:13] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-21 12:27:13,999 - INFO - [stream_progress] - SSE connection request for upload_id: 5751f271-3714-4167-8d1e-e3eb85bb3506
+2025-04-21 12:27:14,001 - INFO - [process_upload_and_generate_updates] - [5751f271-3714-4167-8d1e-e3eb85bb3506] Starting processing...
+2025-04-21 12:27:14,001 - INFO - [process_upload_and_generate_updates] - [5751f271-3714-4167-8d1e-e3eb85bb3506] Processing upload: User='siren', File='bot.py', TempPath='uploads_temp\5751f271-3714-4167-8d1e-e3eb85bb3506_bot.py'
+2025-04-21 12:27:14,002 - INFO - [process_upload_and_generate_updates] - [5751f271-3714-4167-8d1e-e3eb85bb3506] Original temp file size: 2350 bytes.
+2025-04-21 12:27:14,003 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 12:27:14] "GET /stream-progress/5751f271-3714-4167-8d1e-e3eb85bb3506 HTTP/1.1" 200 -
+2025-04-21 12:27:14,003 - INFO - [process_upload_and_generate_updates] - [5751f271-3714-4167-8d1e-e3eb85bb3506] 'bot.py' is small. Compressing and sending as single file.
+2025-04-21 12:27:14,007 - INFO - [process_upload_and_generate_updates] - [5751f271-3714-4167-8d1e-e3eb85bb3506] Compressed 'bot.py' to 1072 bytes.
+2025-04-21 12:27:14,007 - INFO - [send_file_to_telegram] - Sending file 'bot.py.zip' to Telegram chat ID: -4603853425
+2025-04-21 12:27:15,033 - INFO - [send_file_to_telegram] - Telegram API success for 'bot.py.zip'.
+2025-04-21 12:27:15,043 - INFO - [process_upload_and_generate_updates] - [5751f271-3714-4167-8d1e-e3eb85bb3506] Single file 'bot.py' sent successfully.
+2025-04-21 12:27:15,045 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 12:27:15,054 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-21 12:27:15,057 - INFO - [process_upload_and_generate_updates] - [5751f271-3714-4167-8d1e-e3eb85bb3506] Entering final cleanup.
+2025-04-21 12:27:15,061 - INFO - [process_upload_and_generate_updates] - [5751f271-3714-4167-8d1e-e3eb85bb3506] Successfully deleted original temporary file: uploads_temp\5751f271-3714-4167-8d1e-e3eb85bb3506_bot.py
+2025-04-21 12:27:15,062 - INFO - [process_upload_and_generate_updates] - [5751f271-3714-4167-8d1e-e3eb85bb3506] Processing finished with status: completed_metadata_error
+2025-04-21 12:27:18,904 - INFO - [get_file_by_access_id] - Received request for access_id: 89147fc5f3
+2025-04-21 12:27:18,930 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 12:27:18,931 - INFO - [get_file_by_access_id] - Found file 'bot.py' for user 'siren' with access_id '89147fc5f3'. Rendering download page.
+2025-04-21 12:27:18,935 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 12:27:18] "GET /get/89147fc5f3 HTTP/1.1" 200 -
+2025-04-21 12:27:20,630 - INFO - [prepare_download_stream] - [b9bc15fa-5a66-4b6d-a58f-c59795a21c0b] SSE connection request for download prep: User='testuser', File='example.zip'
+2025-04-21 12:27:20,631 - INFO - [_prepare_download_and_generate_updates] - [b9bc15fa-5a66-4b6d-a58f-c59795a21c0b] Starting download preparation generator...
+2025-04-21 12:27:20,632 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 12:27:20] "GET /prepare-download/testuser/example.zip HTTP/1.1" 200 -
+2025-04-21 12:27:20,835 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 12:27:20,836 - ERROR - [_prepare_download_and_generate_updates] - [b9bc15fa-5a66-4b6d-a58f-c59795a21c0b] Download preparation failed: File 'example.zip' not found.
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\Telegram_app.py", line 1147, in _prepare_download_and_generate_updates
+    if not file_info: raise FileNotFoundError(f"File '{filename}' not found.")
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: File 'example.zip' not found.
+2025-04-21 12:27:20,837 - INFO - [_prepare_download_and_generate_updates] - [b9bc15fa-5a66-4b6d-a58f-c59795a21c0b] Cleaning up temp files due to prep error.
+2025-04-21 12:27:20,837 - INFO - [_prepare_download_and_generate_updates] - [b9bc15fa-5a66-4b6d-a58f-c59795a21c0b] Generator finished with status: error
+2025-04-21 12:27:21,509 - INFO - [prepare_download_stream] - [d7e599f2-fd08-4c8d-b961-e238987854ba] SSE connection request for download prep: User='testuser', File='example.zip'
+2025-04-21 12:27:21,510 - INFO - [_prepare_download_and_generate_updates] - [d7e599f2-fd08-4c8d-b961-e238987854ba] Starting download preparation generator...
+2025-04-21 12:27:21,511 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 12:27:21] "GET /prepare-download/testuser/example.zip HTTP/1.1" 200 -
+2025-04-21 12:27:21,716 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 12:27:21,717 - ERROR - [_prepare_download_and_generate_updates] - [d7e599f2-fd08-4c8d-b961-e238987854ba] Download preparation failed: File 'example.zip' not found.
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\Telegram_app.py", line 1147, in _prepare_download_and_generate_updates
+    if not file_info: raise FileNotFoundError(f"File '{filename}' not found.")
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: File 'example.zip' not found.
+2025-04-21 12:27:21,720 - INFO - [_prepare_download_and_generate_updates] - [d7e599f2-fd08-4c8d-b961-e238987854ba] Cleaning up temp files due to prep error.
+2025-04-21 12:27:21,721 - INFO - [_prepare_download_and_generate_updates] - [d7e599f2-fd08-4c8d-b961-e238987854ba] Generator finished with status: error
+2025-04-21 12:27:23,015 - INFO - [prepare_download_stream] - [72dc9544-6fb9-4940-ac64-61337dc05586] SSE connection request for download prep: User='testuser', File='example.zip'
+2025-04-21 12:27:23,015 - INFO - [_prepare_download_and_generate_updates] - [72dc9544-6fb9-4940-ac64-61337dc05586] Starting download preparation generator...
+2025-04-21 12:27:23,015 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 12:27:23] "GET /prepare-download/testuser/example.zip HTTP/1.1" 200 -
+2025-04-21 12:27:23,219 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 12:27:23,219 - ERROR - [_prepare_download_and_generate_updates] - [72dc9544-6fb9-4940-ac64-61337dc05586] Download preparation failed: File 'example.zip' not found.
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\Telegram_app.py", line 1147, in _prepare_download_and_generate_updates
+    if not file_info: raise FileNotFoundError(f"File '{filename}' not found.")
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: File 'example.zip' not found.
+2025-04-21 12:27:23,219 - INFO - [_prepare_download_and_generate_updates] - [72dc9544-6fb9-4940-ac64-61337dc05586] Cleaning up temp files due to prep error.
+2025-04-21 12:27:23,219 - INFO - [_prepare_download_and_generate_updates] - [72dc9544-6fb9-4940-ac64-61337dc05586] Generator finished with status: error
+2025-04-21 12:27:23,696 - INFO - [prepare_download_stream] - [791e064d-d493-422f-bafb-2123793e6048] SSE connection request for download prep: User='testuser', File='example.zip'
+2025-04-21 12:27:23,696 - INFO - [_prepare_download_and_generate_updates] - [791e064d-d493-422f-bafb-2123793e6048] Starting download preparation generator...
+2025-04-21 12:27:23,699 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 12:27:23] "GET /prepare-download/testuser/example.zip HTTP/1.1" 200 -
+2025-04-21 12:27:23,903 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 12:27:23,904 - ERROR - [_prepare_download_and_generate_updates] - [791e064d-d493-422f-bafb-2123793e6048] Download preparation failed: File 'example.zip' not found.
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\Telegram_app.py", line 1147, in _prepare_download_and_generate_updates
+    if not file_info: raise FileNotFoundError(f"File '{filename}' not found.")
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: File 'example.zip' not found.
+2025-04-21 12:27:23,905 - INFO - [_prepare_download_and_generate_updates] - [791e064d-d493-422f-bafb-2123793e6048] Cleaning up temp files due to prep error.
+2025-04-21 12:27:23,905 - INFO - [_prepare_download_and_generate_updates] - [791e064d-d493-422f-bafb-2123793e6048] Generator finished with status: error
+2025-04-21 12:27:25,214 - INFO - [prepare_download_stream] - [c1dda209-5232-4509-998c-09e5030edfaf] SSE connection request for download prep: User='testuser', File='example.zip'
+2025-04-21 12:27:25,214 - INFO - [_prepare_download_and_generate_updates] - [c1dda209-5232-4509-998c-09e5030edfaf] Starting download preparation generator...
+2025-04-21 12:27:25,214 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 12:27:25] "GET /prepare-download/testuser/example.zip HTTP/1.1" 200 -
+2025-04-21 12:27:25,422 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 12:27:25,424 - ERROR - [_prepare_download_and_generate_updates] - [c1dda209-5232-4509-998c-09e5030edfaf] Download preparation failed: File 'example.zip' not found.
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\Telegram_app.py", line 1147, in _prepare_download_and_generate_updates
+    if not file_info: raise FileNotFoundError(f"File '{filename}' not found.")
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: File 'example.zip' not found.
+2025-04-21 12:27:25,426 - INFO - [_prepare_download_and_generate_updates] - [c1dda209-5232-4509-998c-09e5030edfaf] Cleaning up temp files due to prep error.
+2025-04-21 12:27:25,427 - INFO - [_prepare_download_and_generate_updates] - [c1dda209-5232-4509-998c-09e5030edfaf] Generator finished with status: error

@@ -153,7 +153,7 @@
         .progress-button .button-text {
             margin-left: 5px; /* Space between icon and text */
         }
-        /* --- End added styles --- */
+        /*--- End added styles ---*/
 
 
     </style>
@@ -529,7 +529,8 @@
             });
 
             // Listener for 'complete' events for UPLOAD
-            uploadEventSource.addEventListener('complete', function(event) {
+                        // Listener for 'complete' events for UPLOAD
+                        uploadEventSource.addEventListener('complete', function(event) {
                 console.log("UPLOAD SSE 'complete' event:", event.data);
                 try {
                     const data = JSON.parse(event.data);
@@ -537,22 +538,19 @@
                     uploadStatus.style.color = 'green';
                     uploadProgress.value = 100; // Ensure progress bar is full
 
-                    // <<< STEP 2 START: Handle access_id and display link >>>
-                    if (data.access_id) {
-                        // Construct the URL (adjust hostname/port if necessary)
-                        // window.location.origin provides protocol://hostname:port
-                        const shareUrl = `${window.location.origin}/get/${data.access_id}`;
-                        console.log("Generated Share URL:", shareUrl);
+                    // --- CORRECTED: Handle download_url and display link ---
+                    if (data.download_url) { // <<<--- NEW CHECK for download_url
+                        const directDownloadUrl = data.download_url; // <<<--- Use the URL directly from backend
+                        console.log("Received Direct Download URL:", directDownloadUrl);
 
-                        shareLinkInput.value = shareUrl;
+                        shareLinkInput.value = directDownloadUrl; // <<<--- SETTING THE CORRECT URL
                         shareLinkContainer.style.display = 'block'; // Show the container
                         copyStatusSpan.textContent = ''; // Clear previous status
                     } else {
-                        console.warn("Upload complete event missing access_id.");
-                        shareLinkContainer.style.display = 'none'; // Hide if no ID
+                        console.warn("Upload complete event missing download_url."); // <<<--- NEW WARNING
+                        shareLinkContainer.style.display = 'none'; // Hide if no URL
                     }
-                    // <<< STEP 2 END: Handle access_id and display link >>>
-
+                    // --- END CORRECTED ---
 
                     finalizeUploadUI(true); // Call helper function to clean up UI
 
@@ -564,7 +562,6 @@
                     finalizeUploadUI(false); // Treat as error for UI reset
                 }
             });
-
             // Listener for 'error' events from the UPLOAD stream
             uploadEventSource.addEventListener('error', function(event) {
                 console.error("UPLOAD SSE 'error' event received:", event.data);

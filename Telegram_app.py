@@ -785,8 +785,14 @@ def process_upload_and_generate_updates(upload_id):
                          # Yield a warning/error event even on success? Maybe just log.
 
                     # --- Yield Completion Event (Modified) ---
-                    yield f"event: complete\ndata: {json.dumps({'message': f'File {original_filename} uploaded successfully!', 'access_id': access_id, 'filename': original_filename})}\n\n" # <<< Step 1: Send access_id
+                    # Construct the direct download URL
+                    direct_download_url = url_for('direct_download_file', access_id=access_id, _external=True)
+                    logging.info(f"[{upload_id}] Generated direct download URL: {direct_download_url}")
+
+                    # Yield completion event with the direct URL
+                    yield f"event: complete\ndata: {json.dumps({'message': f'File {original_filename} uploaded successfully!', 'download_url': direct_download_url, 'filename': original_filename})}\n\n" # <<< Send download_url
                     upload_data['status'] = 'completed'
+                   
                     
 
                 except Exception as e:
@@ -960,7 +966,12 @@ def process_upload_and_generate_updates(upload_id):
 
                 # --- Yield Completion ---
                 # --- Yield Completion (Modified for Split File) ---
-                yield f"event: complete\ndata: {json.dumps({'message': f'Large file {original_filename} uploaded successfully!', 'access_id': access_id, 'filename': original_filename})}\n\n" # <<< Step 1: Send access_id
+                # Construct the direct download URL
+                direct_download_url = url_for('direct_download_file', access_id=access_id, _external=True)
+                logging.info(f"[{upload_id}] Generated direct download URL: {direct_download_url}")
+
+                # Yield completion event with the direct URL
+                yield f"event: complete\ndata: {json.dumps({'message': f'Large file {original_filename} uploaded successfully!', 'download_url': direct_download_url, 'filename': original_filename})}\n\n" # <<< Send download_url
                 upload_data['status'] = 'completed'
 
             else: # Inconsistency
@@ -1348,6 +1359,300 @@ def list_user_files(username):
     # Return the list (even if empty) as JSON
     return jsonify(user_files)
 
+@app.route('/download/<access_id>')
+def direct_download_file(access_id):
+    """
+    Handles direct download requests. Looks up the file, prepares it,
+    and streams it directly to the user.
+    """
+    logging.info(f"[Direct DL:{access_id}] Received direct download request.")
+    route_start_time = time.time()
+
+    # 1. --- Metadata Lookup ---
+    logging.debug(f"[Direct DL:{access_id}] Looking up metadata...")
+    metadata = load_metadata()
+    found_file_info = None
+    found_username = None
+
+    # Iterate through all users and their files to find the access_id
+    for username, files in metadata.items():
+        for file_info in files:
+            if file_info.get('access_id') == access_id:
+                found_file_info = file_info
+                found_username = username
+                logging.info(f"[Direct DL:{access_id}] Found file metadata for user '{found_username}'.")
+                break # Stop inner loop once found
+        if found_file_info:
+            break # Stop outer loop once found
+
+    if not found_file_info:
+        logging.warning(f"[Direct DL:{access_id}] Access ID not found in metadata.")
+        # Render the existing 404 error page for consistency
+        return make_response(render_template('404_error.html', message=f"Direct download link '{access_id}' not found or expired."), 404)
+
+    original_filename = found_file_info.get('original_filename', f'download_{access_id}.dat') # Provide a default
+    logging.info(f"[Direct DL:{access_id}] Preparing to download '{original_filename}'.")
+
+    # --- Placeholder for Preparation & Sending Logic (Steps 2, 3, 4) ---
+    # In the next steps, we will add the code here to:
+    #   - Prepare the file (fetch from Telegram, reassemble, decompress)
+    #   - Send the prepared file back to the user
+
+    
+
+    # # For now, just return a temporary message
+    # return f"Step 1 Complete: Found metadata for file associated with access_id '{access_id}'. Preparation logic goes here next."
+        # ... (Keep the metadata lookup code from Step 1 above this point) ...
+
+    # 2. --- File Preparation Logic ---
+    logging.info(f"[Direct DL:{access_id}] Starting file preparation for '{original_filename}'.")
+    prep_start_time = time.time()
+
+    is_split = found_file_info.get('is_split', False)
+    is_compressed = found_file_info.get('is_compressed', False)
+    final_expected_size = found_file_info.get('original_size', 0) # For logging/potential headers later
+
+    # --- Temporary file paths - Initialize ---
+    temp_decompressed_path = None
+    temp_reassembled_zip_path = None
+    temp_final_file_path = None # This will hold the path to the file we eventually serve
+    zip_file_handle = None      # For cleanup
+
+    try:
+        if not is_split:
+            # --- Prepare Single File ---
+            logging.info(f"[Direct DL:{access_id}] Preparing non-split file.")
+            telegram_file_id = found_file_info.get('telegram_file_id')
+            if not telegram_file_id:
+                raise ValueError("Missing 'telegram_file_id' in metadata for non-split file.")
+
+            logging.debug(f"[Direct DL:{access_id}] Downloading single file content (FileID: {telegram_file_id})...")
+            dl_start = time.time()
+            file_content_bytes, error_msg = download_telegram_file_content(telegram_file_id)
+            dl_duration = time.time() - dl_start
+            logging.debug(f"[Direct DL:{access_id}] Download completed in {dl_duration:.2f}s.")
+
+            if error_msg:
+                raise ValueError(f"Telegram download failed: {error_msg}")
+            if not file_content_bytes:
+                raise ValueError("Telegram download returned empty content.")
+
+            if is_compressed:
+                logging.info(f"[Direct DL:{access_id}] Decompressing single downloaded file...")
+                decompress_start = time.time()
+                zip_buffer = io.BytesIO(file_content_bytes)
+                # Ensure temp file is created in our UPLOADS_TEMP_DIR for consistency
+                with tempfile.NamedTemporaryFile(delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"directDL_decomp_{access_id}_", suffix=os.path.splitext(original_filename)[1] or ".tmp") as tf:
+                    temp_decompressed_path = tf.name
+                    try:
+                        zip_file_handle = zipfile.ZipFile(zip_buffer, 'r')
+                        file_list_in_zip = zip_file_handle.namelist()
+                        if not file_list_in_zip:
+                             raise ValueError("Downloaded zip file is empty.")
+
+                        # Try to find the original filename, fallback to the first entry if only one
+                        inner_filename_to_extract = original_filename
+                        if original_filename not in file_list_in_zip:
+                            if len(file_list_in_zip) == 1:
+                                inner_filename_to_extract = file_list_in_zip[0]
+                                logging.warning(f"[Direct DL:{access_id}] Original filename '{original_filename}' not in zip, using the only entry '{inner_filename_to_extract}'.")
+                            else:
+                                raise ValueError(f"Cannot find '{original_filename}' in downloaded zip and multiple entries exist: {file_list_in_zip}")
+
+                        logging.debug(f"[Direct DL:{access_id}] Extracting '{inner_filename_to_extract}' to '{temp_decompressed_path}'.")
+                        with zip_file_handle.open(inner_filename_to_extract, 'r') as inner_file_stream:
+                            shutil.copyfileobj(inner_file_stream, tf) # Copy stream to temp file handle
+                    finally:
+                         if zip_file_handle: zip_file_handle.close(); zip_file_handle = None # Ensure closed
+
+                temp_final_file_path = temp_decompressed_path # The decompressed file is our final file
+                decompress_duration = time.time() - decompress_start
+                logging.info(f"[Direct DL:{access_id}] Decompression finished in {decompress_duration:.2f}s. Final file: {temp_final_file_path}")
+
+            else: # Non-split, Non-compressed
+                logging.info(f"[Direct DL:{access_id}] Writing non-compressed single file to temporary location...")
+                write_start = time.time()
+                # Ensure temp file is created in our UPLOADS_TEMP_DIR
+                with tempfile.NamedTemporaryFile(delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"directDL_nocomp_{access_id}_", suffix=os.path.splitext(original_filename)[1] or ".tmp") as tf:
+                    temp_final_file_path = tf.name # This will be the path to serve
+                    tf.write(file_content_bytes)
+                write_duration = time.time() - write_start
+                logging.info(f"[Direct DL:{access_id}] Finished writing in {write_duration:.2f}s. Final file: {temp_final_file_path}")
+
+        else: # is_split is True
+            # --- Prepare Split File ---
+            logging.info(f"[Direct DL:{access_id}] Preparing split file.")
+            chunks_metadata = found_file_info.get('chunks', [])
+            if not chunks_metadata:
+                raise ValueError("Missing 'chunks' metadata for split file.")
+
+            chunks_metadata.sort(key=lambda c: c.get('part_number', 0)) # Ensure correct order
+            num_chunks_total = len(chunks_metadata)
+            logging.info(f"[Direct DL:{access_id}] Found {num_chunks_total} chunks to reassemble.")
+
+            reassemble_start = time.time()
+            # Create a temporary file to reassemble the parts (likely a zip)
+            # Ensure temp file is created in our UPLOADS_TEMP_DIR
+            with tempfile.NamedTemporaryFile(delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"directDL_reass_{access_id}_", suffix=".zip.tmp") as tf_reassemble:
+                temp_reassembled_zip_path = tf_reassemble.name
+                logging.debug(f"[Direct DL:{access_id}] Reassembling chunks into: {temp_reassembled_zip_path}")
+                total_bytes_fetched = 0
+
+                for i, chunk_info in enumerate(chunks_metadata):
+                    part_num = chunk_info.get('part_number')
+                    chunk_file_id = chunk_info.get('file_id')
+                    chunk_filename = chunk_info.get('chunk_filename', f'part_{part_num}') # For logging
+                    if not chunk_file_id:
+                        raise ValueError(f"Missing 'file_id' for chunk part {part_num}.")
+
+                    logging.debug(f"[Direct DL:{access_id}] Downloading chunk {part_num}/{num_chunks_total} ('{chunk_filename}', FileID: {chunk_file_id})...")
+                    chunk_dl_start = time.time()
+                    chunk_content_bytes, error_msg = download_telegram_file_content(chunk_file_id)
+                    chunk_dl_duration = time.time() - chunk_dl_start
+
+                    if error_msg:
+                        raise ValueError(f"Error downloading chunk {part_num}: {error_msg}")
+                    if not chunk_content_bytes:
+                        raise ValueError(f"Downloaded chunk {part_num} is empty.")
+
+                    tf_reassemble.write(chunk_content_bytes)
+                    bytes_in_chunk = len(chunk_content_bytes)
+                    total_bytes_fetched += bytes_in_chunk
+                    logging.debug(f"[Direct DL:{access_id}] Downloaded chunk {part_num} ({bytes_in_chunk} bytes) in {chunk_dl_duration:.2f}s. Written to temp file.")
+
+            reassemble_duration = time.time() - reassemble_start
+            logging.info(f"[Direct DL:{access_id}] Finished reassembling {num_chunks_total} chunks in {reassemble_duration:.2f}s. Total bytes reassembled: {total_bytes_fetched}.")
+
+            if is_compressed:
+                # The reassembled file is a zip that needs decompressing
+                logging.info(f"[Direct DL:{access_id}] Decompressing reassembled file: {temp_reassembled_zip_path}")
+                decompress_start = time.time()
+                # Create the final decompressed temp file
+                # Ensure temp file is created in our UPLOADS_TEMP_DIR
+                with tempfile.NamedTemporaryFile(delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"directDL_final_{access_id}_", suffix=os.path.splitext(original_filename)[1] or ".tmp") as tf_final:
+                    temp_decompressed_path = tf_final.name # Path to the actual final content
+                    try:
+                        zip_file_handle = zipfile.ZipFile(temp_reassembled_zip_path, 'r')
+                        file_list_in_zip = zip_file_handle.namelist()
+                        if not file_list_in_zip:
+                            raise ValueError("Reassembled zip file is empty.")
+
+                        # Try to find the original filename, fallback to the first entry if only one
+                        inner_filename_to_extract = original_filename
+                        if original_filename not in file_list_in_zip:
+                             if len(file_list_in_zip) == 1:
+                                 inner_filename_to_extract = file_list_in_zip[0]
+                                 logging.warning(f"[Direct DL:{access_id}] Original filename '{original_filename}' not in reassembled zip, using the only entry '{inner_filename_to_extract}'.")
+                             else:
+                                 raise ValueError(f"Cannot find '{original_filename}' in reassembled zip and multiple entries exist: {file_list_in_zip}")
+
+                        logging.debug(f"[Direct DL:{access_id}] Extracting '{inner_filename_to_extract}' from reassembled zip to '{temp_decompressed_path}'.")
+                        with zip_file_handle.open(inner_filename_to_extract, 'r') as inner_file_stream:
+                            shutil.copyfileobj(inner_file_stream, tf_final)
+                    finally:
+                        if zip_file_handle: zip_file_handle.close(); zip_file_handle = None # Ensure closed
+
+                temp_final_file_path = temp_decompressed_path # The decompressed file is final
+                decompress_duration = time.time() - decompress_start
+                logging.info(f"[Direct DL:{access_id}] Decompression finished in {decompress_duration:.2f}s. Final file: {temp_final_file_path}")
+
+            else: # Split, but not compressed (unlikely with current upload logic, but handle it)
+                logging.info(f"[Direct DL:{access_id}] Split file was not compressed. Using reassembled file directly.")
+                # The reassembled file *is* the final file in this case
+                temp_final_file_path = temp_reassembled_zip_path
+                temp_reassembled_zip_path = None # Prevent deletion in finally block yet
+
+        # --- Preparation Complete ---
+        if not temp_final_file_path or not os.path.exists(temp_final_file_path):
+            raise RuntimeError("File preparation failed: Final temporary file was not created or is missing.")
+
+        final_prep_size = os.path.getsize(temp_final_file_path)
+        prep_duration = time.time() - prep_start_time
+        logging.info(f"[Direct DL:{access_id}] File preparation successful. Final file: '{temp_final_file_path}', Size: {final_prep_size} bytes. Prep time: {prep_duration:.2f}s.")
+
+        # --- Placeholder for Streaming Logic (Step 3) ---
+        # We now have temp_final_file_path pointing to the ready file.
+        # The next step is to stream this file back to the client.
+        # 3. --- Stream the Prepared File ---
+        logging.info(f"[Direct DL:{access_id}] Starting file stream for '{original_filename}' from '{temp_final_file_path}'.")
+
+        # Define a generator function for streaming and cleanup
+        def generate_file_chunks(file_path_to_stream, access_id_for_log):
+            try:
+                logging.debug(f"[Direct DL:{access_id_for_log}] Generator opening file: {file_path_to_stream}")
+                with open(file_path_to_stream, 'rb') as f:
+                    while True:
+                        chunk = f.read(65536) # Stream in 64KB chunks
+                        if not chunk:
+                            logging.debug(f"[Direct DL:{access_id_for_log}] EOF reached for {file_path_to_stream}")
+                            break
+                        yield chunk
+                logging.info(f"[Direct DL:{access_id_for_log}] Finished streaming file content: {file_path_to_stream}")
+            except Exception as stream_error:
+                logging.error(f"[Direct DL:{access_id_for_log}] Error during file streaming from {file_path_to_stream}: {stream_error}", exc_info=True)
+                # Optional: You could yield an error message chunk, but typically just stop streaming.
+            finally:
+                # --- CRITICAL: Cleanup the final temp file ---
+                logging.info(f"[Direct DL:{access_id_for_log}] Generator cleaning up final temp file: {file_path_to_stream}")
+                if file_path_to_stream and os.path.exists(file_path_to_stream):
+                    try:
+                        os.remove(file_path_to_stream)
+                        logging.info(f"[Direct DL:{access_id_for_log}] Successfully deleted final temp file via generator: {file_path_to_stream}")
+                    except OSError as delete_error:
+                        logging.error(f"[Direct DL:{access_id_for_log}] Error deleting final temp file {file_path_to_stream} in generator: {delete_error}")
+                else:
+                     logging.warning(f"[Direct DL:{access_id_for_log}] Final temp file already deleted or path invalid before generator cleanup: {file_path_to_stream}")
+
+
+        # Create the Flask response
+        response = Response(stream_with_context(generate_file_chunks(temp_final_file_path, access_id)), mimetype='application/octet-stream')
+
+        # Set headers for download
+        response.headers.set('Content-Disposition', 'attachment', filename=original_filename)
+
+        # Set Content-Length if possible (helps browsers show progress)
+        if final_prep_size > 0:
+            response.headers.set('Content-Length', str(final_prep_size))
+            logging.debug(f"[Direct DL:{access_id}] Set Content-Length header to {final_prep_size}")
+        else:
+             logging.warning(f"[Direct DL:{access_id}] Could not determine final file size for Content-Length header.")
+
+        total_route_duration = time.time() - route_start_time
+        logging.info(f"[Direct DL:{access_id}] Returning streaming response. Total request time (incl. prep): {total_route_duration:.2f}s.")
+        return response
+
+
+    except Exception as e:
+        # --- Handle Errors During Preparation ---
+        prep_duration = time.time() - prep_start_time
+        logging.error(f"[Direct DL:{access_id}] Error during file preparation (after {prep_duration:.2f}s): {e}", exc_info=True)
+        # Return a server error response
+        return make_response(f"Error preparing file for download: {e}", 500)
+
+    finally:
+        # --- Cleanup Intermediate Files ---
+        # This block runs even if errors occurred during 'try'
+        logging.debug(f"[Direct DL:{access_id}] Entering final cleanup for intermediate prep files.")
+        # Close zip file handle if it's somehow still open
+        if zip_file_handle:
+             try: zip_file_handle.close()
+             except Exception: pass
+
+        # Delete the reassembled zip file ONLY if it's NOT the final file
+        # (temp_final_file_path cleanup is handled by the streaming generator)
+        if temp_reassembled_zip_path and temp_reassembled_zip_path != temp_final_file_path and os.path.exists(temp_reassembled_zip_path):
+            try:
+                os.remove(temp_reassembled_zip_path)
+                logging.info(f"[Direct DL:{access_id}] Cleaned up intermediate reassembled file: {temp_reassembled_zip_path}")
+            except OSError as e:
+                logging.error(f"[Direct DL:{access_id}] Error deleting intermediate reassembled file '{temp_reassembled_zip_path}': {e}")
+
+        # NO Deletion of temp_final_file_path here!
+        logging.debug(f"[Direct DL:{access_id}] Intermediate cleanup finished (final file cleanup delegated to stream generator).")
+
+
+# ... (rest of your Flask app code) ...
+    
 
 @app.route('/get/<access_id>')
 def get_file_by_access_id(access_id):

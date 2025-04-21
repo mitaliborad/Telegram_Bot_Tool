@@ -1,0 +1,326 @@
+2025-04-21 09:10:14,208 - INFO - [<module>] - Logging configured. Log file: Selenium-Logs\app_20250421_091014.log
+2025-04-21 09:10:14,209 - INFO - [<module>] - Flask application initialized.
+2025-04-21 09:10:14,213 - INFO - [<module>] - Starting Flask development server...
+2025-04-21 09:10:14,244 - WARNING - [_log] -  * Debugger is active!
+2025-04-21 09:10:14,244 - INFO - [_log] -  * Debugger PIN: 107-410-311
+2025-04-21 09:10:19,816 - INFO - [index] - Serving index page.
+2025-04-21 09:10:19,944 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 09:10:19] "GET / HTTP/1.1" 200 -
+2025-04-21 09:10:19,959 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 09:10:19] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-21 09:10:20,001 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 09:10:20] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-04-21 09:11:08,485 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-21 09:11:14,927 - INFO - [initiate_upload] - Saving temporary file for upload_id 'fd389635-27bf-4070-9d69-503b911eccbe' to 'uploads_temp\fd389635-27bf-4070-9d69-503b911eccbe_[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv'
+2025-04-21 09:11:17,645 - INFO - [initiate_upload] - Temporary file saved successfully for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv' (ID: fd389635-27bf-4070-9d69-503b911eccbe).
+2025-04-21 09:11:17,710 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 09:11:17] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-21 09:11:17,723 - INFO - [stream_progress] - SSE connection request for upload_id: fd389635-27bf-4070-9d69-503b911eccbe
+2025-04-21 09:11:17,724 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Starting processing...
+2025-04-21 09:11:17,724 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Processing upload: User='cad', File='[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv', TempPath='uploads_temp\fd389635-27bf-4070-9d69-503b911eccbe_[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv'
+2025-04-21 09:11:17,873 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Original temp file size: 654119416 bytes.
+2025-04-21 09:11:17,873 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 09:11:17] "GET /stream-progress/fd389635-27bf-4070-9d69-503b911eccbe HTTP/1.1" 200 -
+2025-04-21 09:11:17,873 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv' is large. Compressing before splitting.
+2025-04-21 09:11:17,873 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Created temporary file for compression result: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\fd389635-27bf-4070-9d69-503b911eccbe_comp_i1mj3z_s.zip
+2025-04-21 09:11:38,137 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Finished compressing to 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\fd389635-27bf-4070-9d69-503b911eccbe_comp_i1mj3z_s.zip'. Size: 651687163 bytes. Time: 20.26s.
+2025-04-21 09:11:38,160 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Reading chunk 1 for COMPRESSED file starting at byte 0.
+2025-04-21 09:11:38,177 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Read chunk 1 (20971520 bytes). Total read: 20971520/651687163
+2025-04-21 09:11:38,178 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Attempting to send chunk: '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_001'
+2025-04-21 09:11:38,178 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_001' to Telegram chat ID: -4603853425
+2025-04-21 09:11:49,238 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_001'.
+2025-04-21 09:11:49,242 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_001' sent successfully.
+2025-04-21 09:11:49,243 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Successfully processed chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_001' (MsgID=466) in 11.06s.
+2025-04-21 09:11:49,243 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Reading chunk 2 for COMPRESSED file starting at byte 20971520.
+2025-04-21 09:11:49,262 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Read chunk 2 (20971520 bytes). Total read: 41943040/651687163
+2025-04-21 09:11:49,264 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Attempting to send chunk: '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_002'
+2025-04-21 09:11:49,264 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_002' to Telegram chat ID: -4603853425
+2025-04-21 09:12:00,889 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_002'.
+2025-04-21 09:12:00,895 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_002' sent successfully.
+2025-04-21 09:12:00,896 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Successfully processed chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_002' (MsgID=467) in 11.63s.
+2025-04-21 09:12:00,899 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Reading chunk 3 for COMPRESSED file starting at byte 41943040.
+2025-04-21 09:12:00,915 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Read chunk 3 (20971520 bytes). Total read: 62914560/651687163
+2025-04-21 09:12:00,915 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Attempting to send chunk: '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_003'
+2025-04-21 09:12:00,916 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_003' to Telegram chat ID: -4603853425
+2025-04-21 09:12:13,944 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_003'.
+2025-04-21 09:12:13,947 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_003' sent successfully.
+2025-04-21 09:12:13,948 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Successfully processed chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_003' (MsgID=468) in 13.03s.
+2025-04-21 09:12:13,948 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Reading chunk 4 for COMPRESSED file starting at byte 62914560.
+2025-04-21 09:12:13,962 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Read chunk 4 (20971520 bytes). Total read: 83886080/651687163
+2025-04-21 09:12:13,962 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Attempting to send chunk: '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_004'
+2025-04-21 09:12:13,963 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_004' to Telegram chat ID: -4603853425
+2025-04-21 09:12:26,194 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_004'.
+2025-04-21 09:12:26,196 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_004' sent successfully.
+2025-04-21 09:12:26,197 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Successfully processed chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_004' (MsgID=469) in 12.23s.
+2025-04-21 09:12:26,198 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Reading chunk 5 for COMPRESSED file starting at byte 83886080.
+2025-04-21 09:12:26,211 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Read chunk 5 (20971520 bytes). Total read: 104857600/651687163
+2025-04-21 09:12:26,211 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Attempting to send chunk: '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_005'
+2025-04-21 09:12:26,212 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_005' to Telegram chat ID: -4603853425
+2025-04-21 09:12:34,725 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_005'.
+2025-04-21 09:12:34,730 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_005' sent successfully.
+2025-04-21 09:12:34,731 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Successfully processed chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_005' (MsgID=470) in 8.52s.
+2025-04-21 09:12:34,731 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Reading chunk 6 for COMPRESSED file starting at byte 104857600.
+2025-04-21 09:12:34,745 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Read chunk 6 (20971520 bytes). Total read: 125829120/651687163
+2025-04-21 09:12:34,747 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Attempting to send chunk: '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_006'
+2025-04-21 09:12:34,748 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_006' to Telegram chat ID: -4603853425
+2025-04-21 09:12:49,696 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_006'.
+2025-04-21 09:12:49,702 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_006' sent successfully.
+2025-04-21 09:12:49,704 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Successfully processed chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_006' (MsgID=471) in 14.95s.
+2025-04-21 09:12:49,707 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Reading chunk 7 for COMPRESSED file starting at byte 125829120.
+2025-04-21 09:12:49,722 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Read chunk 7 (20971520 bytes). Total read: 146800640/651687163
+2025-04-21 09:12:49,723 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Attempting to send chunk: '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_007'
+2025-04-21 09:12:49,724 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_007' to Telegram chat ID: -4603853425
+2025-04-21 09:13:07,943 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_007'.
+2025-04-21 09:13:07,945 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_007' sent successfully.
+2025-04-21 09:13:07,946 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Successfully processed chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_007' (MsgID=472) in 18.22s.
+2025-04-21 09:13:07,947 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Reading chunk 8 for COMPRESSED file starting at byte 146800640.
+2025-04-21 09:13:07,959 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Read chunk 8 (20971520 bytes). Total read: 167772160/651687163
+2025-04-21 09:13:07,960 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Attempting to send chunk: '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_008'
+2025-04-21 09:13:07,960 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_008' to Telegram chat ID: -4603853425
+2025-04-21 09:13:18,678 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_008'.
+2025-04-21 09:13:18,683 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_008' sent successfully.
+2025-04-21 09:13:18,684 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Successfully processed chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_008' (MsgID=473) in 10.72s.
+2025-04-21 09:13:18,684 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Reading chunk 9 for COMPRESSED file starting at byte 167772160.
+2025-04-21 09:13:18,698 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Read chunk 9 (20971520 bytes). Total read: 188743680/651687163
+2025-04-21 09:13:18,699 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Attempting to send chunk: '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_009'
+2025-04-21 09:13:18,700 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_009' to Telegram chat ID: -4603853425
+2025-04-21 09:13:30,841 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_009'.
+2025-04-21 09:13:30,846 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_009' sent successfully.
+2025-04-21 09:13:30,846 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Successfully processed chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_009' (MsgID=474) in 12.15s.
+2025-04-21 09:13:30,849 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Reading chunk 10 for COMPRESSED file starting at byte 188743680.
+2025-04-21 09:13:30,867 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Read chunk 10 (20971520 bytes). Total read: 209715200/651687163
+2025-04-21 09:13:30,868 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Attempting to send chunk: '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_010'
+2025-04-21 09:13:30,869 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_010' to Telegram chat ID: -4603853425
+2025-04-21 09:13:41,588 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_010'.
+2025-04-21 09:13:41,593 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_010' sent successfully.
+2025-04-21 09:13:41,594 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Successfully processed chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_010' (MsgID=475) in 10.72s.
+2025-04-21 09:13:41,594 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Reading chunk 11 for COMPRESSED file starting at byte 209715200.
+2025-04-21 09:13:41,611 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Read chunk 11 (20971520 bytes). Total read: 230686720/651687163
+2025-04-21 09:13:41,611 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Attempting to send chunk: '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_011'
+2025-04-21 09:13:41,612 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_011' to Telegram chat ID: -4603853425
+2025-04-21 09:13:52,282 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_011'.
+2025-04-21 09:13:52,288 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_011' sent successfully.
+2025-04-21 09:13:52,290 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Successfully processed chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_011' (MsgID=476) in 10.68s.
+2025-04-21 09:13:52,290 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Reading chunk 12 for COMPRESSED file starting at byte 230686720.
+2025-04-21 09:13:52,302 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Read chunk 12 (20971520 bytes). Total read: 251658240/651687163
+2025-04-21 09:13:52,302 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Attempting to send chunk: '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_012'
+2025-04-21 09:13:52,304 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_012' to Telegram chat ID: -4603853425
+2025-04-21 09:14:04,554 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_012'.
+2025-04-21 09:14:04,559 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_012' sent successfully.
+2025-04-21 09:14:04,560 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Successfully processed chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_012' (MsgID=477) in 12.26s.
+2025-04-21 09:14:04,564 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Reading chunk 13 for COMPRESSED file starting at byte 251658240.
+2025-04-21 09:14:04,581 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Read chunk 13 (20971520 bytes). Total read: 272629760/651687163
+2025-04-21 09:14:04,582 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Attempting to send chunk: '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_013'
+2025-04-21 09:14:04,583 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_013' to Telegram chat ID: -4603853425
+2025-04-21 09:14:22,457 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_013'.
+2025-04-21 09:14:22,461 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_013' sent successfully.
+2025-04-21 09:14:22,462 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Successfully processed chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_013' (MsgID=478) in 17.88s.
+2025-04-21 09:14:22,463 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Reading chunk 14 for COMPRESSED file starting at byte 272629760.
+2025-04-21 09:14:22,478 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Read chunk 14 (20971520 bytes). Total read: 293601280/651687163
+2025-04-21 09:14:22,479 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Attempting to send chunk: '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_014'
+2025-04-21 09:14:22,479 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_014' to Telegram chat ID: -4603853425
+2025-04-21 09:14:29,544 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_014'.
+2025-04-21 09:14:29,548 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_014' sent successfully.
+2025-04-21 09:14:29,550 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Successfully processed chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_014' (MsgID=479) in 7.07s.
+2025-04-21 09:14:29,551 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Reading chunk 15 for COMPRESSED file starting at byte 293601280.
+2025-04-21 09:14:29,563 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Read chunk 15 (20971520 bytes). Total read: 314572800/651687163
+2025-04-21 09:14:29,564 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Attempting to send chunk: '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_015'
+2025-04-21 09:14:29,564 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_015' to Telegram chat ID: -4603853425
+2025-04-21 09:14:47,258 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_015'.
+2025-04-21 09:14:47,263 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_015' sent successfully.
+2025-04-21 09:14:47,264 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Successfully processed chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_015' (MsgID=480) in 17.70s.
+2025-04-21 09:14:47,266 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Reading chunk 16 for COMPRESSED file starting at byte 314572800.
+2025-04-21 09:14:47,280 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Read chunk 16 (20971520 bytes). Total read: 335544320/651687163
+2025-04-21 09:14:47,281 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Attempting to send chunk: '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_016'
+2025-04-21 09:14:47,281 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_016' to Telegram chat ID: -4603853425
+2025-04-21 09:15:05,756 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_016'.
+2025-04-21 09:15:05,758 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_016' sent successfully.
+2025-04-21 09:15:05,759 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Successfully processed chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_016' (MsgID=481) in 18.48s.
+2025-04-21 09:15:05,760 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Reading chunk 17 for COMPRESSED file starting at byte 335544320.
+2025-04-21 09:15:05,772 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Read chunk 17 (20971520 bytes). Total read: 356515840/651687163
+2025-04-21 09:15:05,772 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Attempting to send chunk: '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_017'
+2025-04-21 09:15:05,772 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_017' to Telegram chat ID: -4603853425
+2025-04-21 09:15:13,741 - INFO - [index] - Serving index page.
+2025-04-21 09:15:13,741 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 09:15:13] "GET / HTTP/1.1" 200 -
+2025-04-21 09:15:13,790 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 09:15:13] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-21 09:15:16,474 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_017'.
+2025-04-21 09:15:16,479 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv.zip.part_017' sent successfully.
+2025-04-21 09:15:16,482 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Entering final cleanup.
+2025-04-21 09:15:16,547 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Successfully deleted original temporary file: uploads_temp\fd389635-27bf-4070-9d69-503b911eccbe_[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264 (2).mkv
+2025-04-21 09:15:16,616 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Successfully deleted temporary compressed file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\fd389635-27bf-4070-9d69-503b911eccbe_comp_i1mj3z_s.zip
+2025-04-21 09:15:16,617 - INFO - [process_upload_and_generate_updates] - [fd389635-27bf-4070-9d69-503b911eccbe] Processing finished with status: processing
+2025-04-21 09:15:26,011 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-21 09:15:26,049 - INFO - [initiate_upload] - Saving temporary file for upload_id '02a52a80-dd22-44d2-a599-b8a780d7c703' to 'uploads_temp\02a52a80-dd22-44d2-a599-b8a780d7c703_VLC Installer.exe'
+2025-04-21 09:15:26,051 - INFO - [initiate_upload] - Temporary file saved successfully for 'VLC Installer.exe' (ID: 02a52a80-dd22-44d2-a599-b8a780d7c703).
+2025-04-21 09:15:26,051 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 09:15:26] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-21 09:15:26,058 - INFO - [stream_progress] - SSE connection request for upload_id: 02a52a80-dd22-44d2-a599-b8a780d7c703
+2025-04-21 09:15:26,059 - INFO - [process_upload_and_generate_updates] - [02a52a80-dd22-44d2-a599-b8a780d7c703] Starting processing...
+2025-04-21 09:15:26,059 - INFO - [process_upload_and_generate_updates] - [02a52a80-dd22-44d2-a599-b8a780d7c703] Processing upload: User='cad', File='VLC Installer.exe', TempPath='uploads_temp\02a52a80-dd22-44d2-a599-b8a780d7c703_VLC Installer.exe'
+2025-04-21 09:15:26,060 - INFO - [process_upload_and_generate_updates] - [02a52a80-dd22-44d2-a599-b8a780d7c703] Original temp file size: 1096224 bytes.
+2025-04-21 09:15:26,060 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 09:15:26] "GET /stream-progress/02a52a80-dd22-44d2-a599-b8a780d7c703 HTTP/1.1" 200 -
+2025-04-21 09:15:26,061 - INFO - [process_upload_and_generate_updates] - [02a52a80-dd22-44d2-a599-b8a780d7c703] 'VLC Installer.exe' is small. Compressing and sending as single file.
+2025-04-21 09:15:26,260 - INFO - [process_upload_and_generate_updates] - [02a52a80-dd22-44d2-a599-b8a780d7c703] Compressed 'VLC Installer.exe' to 485269 bytes.
+2025-04-21 09:15:26,262 - INFO - [send_file_to_telegram] - Sending file 'VLC Installer.exe.zip' to Telegram chat ID: -4603853425
+2025-04-21 09:15:27,842 - INFO - [send_file_to_telegram] - Telegram API success for 'VLC Installer.exe.zip'.
+2025-04-21 09:15:27,844 - INFO - [process_upload_and_generate_updates] - [02a52a80-dd22-44d2-a599-b8a780d7c703] Single file 'VLC Installer.exe' sent successfully.
+2025-04-21 09:15:27,896 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 09:15:27,916 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-21 09:15:27,916 - INFO - [process_upload_and_generate_updates] - [02a52a80-dd22-44d2-a599-b8a780d7c703] Entering final cleanup.
+2025-04-21 09:15:27,918 - INFO - [process_upload_and_generate_updates] - [02a52a80-dd22-44d2-a599-b8a780d7c703] Successfully deleted original temporary file: uploads_temp\02a52a80-dd22-44d2-a599-b8a780d7c703_VLC Installer.exe
+2025-04-21 09:15:27,918 - INFO - [process_upload_and_generate_updates] - [02a52a80-dd22-44d2-a599-b8a780d7c703] Processing finished with status: completed_metadata_error
+2025-04-21 09:15:46,400 - INFO - [get_file_by_access_id] - Received request for access_id: 4a200779e1
+2025-04-21 09:15:46,420 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 09:15:46,423 - INFO - [get_file_by_access_id] - Found file 'VLC Installer.exe' for user 'cad' with access_id '4a200779e1'. Rendering download page.
+2025-04-21 09:15:46,428 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 09:15:46] "GET /get/4a200779e1 HTTP/1.1" 200 -
+2025-04-21 09:15:46,508 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 09:15:46] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-04-21 09:15:49,129 - INFO - [prepare_download_stream] - [2a38924f-0f16-4211-b18f-2b0893450a22] SSE connection request for download prep: User='testuser', File='example.zip'
+2025-04-21 09:15:49,129 - INFO - [_prepare_download_and_generate_updates] - [2a38924f-0f16-4211-b18f-2b0893450a22] Starting download preparation generator...
+2025-04-21 09:15:49,129 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 09:15:49] "GET /prepare-download/testuser/example.zip HTTP/1.1" 200 -
+2025-04-21 09:15:49,333 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 09:15:49,333 - ERROR - [_prepare_download_and_generate_updates] - [2a38924f-0f16-4211-b18f-2b0893450a22] Download preparation failed: File 'example.zip' not found.
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\Telegram_app.py", line 1147, in _prepare_download_and_generate_updates
+    if not file_info: raise FileNotFoundError(f"File '{filename}' not found.")
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: File 'example.zip' not found.
+2025-04-21 09:15:49,354 - INFO - [_prepare_download_and_generate_updates] - [2a38924f-0f16-4211-b18f-2b0893450a22] Cleaning up temp files due to prep error.
+2025-04-21 09:15:49,354 - INFO - [_prepare_download_and_generate_updates] - [2a38924f-0f16-4211-b18f-2b0893450a22] Generator finished with status: error
+2025-04-21 09:15:50,076 - INFO - [prepare_download_stream] - [906b3187-cdaa-4d77-82a3-570fb7585028] SSE connection request for download prep: User='testuser', File='example.zip'
+2025-04-21 09:15:50,076 - INFO - [_prepare_download_and_generate_updates] - [906b3187-cdaa-4d77-82a3-570fb7585028] Starting download preparation generator...
+2025-04-21 09:15:50,076 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 09:15:50] "GET /prepare-download/testuser/example.zip HTTP/1.1" 200 -
+2025-04-21 09:15:50,285 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 09:15:50,286 - ERROR - [_prepare_download_and_generate_updates] - [906b3187-cdaa-4d77-82a3-570fb7585028] Download preparation failed: File 'example.zip' not found.
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\Telegram_app.py", line 1147, in _prepare_download_and_generate_updates
+    if not file_info: raise FileNotFoundError(f"File '{filename}' not found.")
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: File 'example.zip' not found.
+2025-04-21 09:15:50,288 - INFO - [_prepare_download_and_generate_updates] - [906b3187-cdaa-4d77-82a3-570fb7585028] Cleaning up temp files due to prep error.
+2025-04-21 09:15:50,290 - INFO - [_prepare_download_and_generate_updates] - [906b3187-cdaa-4d77-82a3-570fb7585028] Generator finished with status: error
+2025-04-21 09:15:50,858 - INFO - [prepare_download_stream] - [c04f78af-4259-4601-87cd-daef36f0188b] SSE connection request for download prep: User='testuser', File='example.zip'
+2025-04-21 09:15:50,858 - INFO - [_prepare_download_and_generate_updates] - [c04f78af-4259-4601-87cd-daef36f0188b] Starting download preparation generator...
+2025-04-21 09:15:50,858 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 09:15:50] "GET /prepare-download/testuser/example.zip HTTP/1.1" 200 -
+2025-04-21 09:15:51,063 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 09:15:51,063 - ERROR - [_prepare_download_and_generate_updates] - [c04f78af-4259-4601-87cd-daef36f0188b] Download preparation failed: File 'example.zip' not found.
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\Telegram_app.py", line 1147, in _prepare_download_and_generate_updates
+    if not file_info: raise FileNotFoundError(f"File '{filename}' not found.")
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: File 'example.zip' not found.
+2025-04-21 09:15:51,069 - INFO - [_prepare_download_and_generate_updates] - [c04f78af-4259-4601-87cd-daef36f0188b] Cleaning up temp files due to prep error.
+2025-04-21 09:15:51,070 - INFO - [_prepare_download_and_generate_updates] - [c04f78af-4259-4601-87cd-daef36f0188b] Generator finished with status: error
+2025-04-21 09:15:51,590 - INFO - [prepare_download_stream] - [56f5a24b-0c6c-499d-8b68-a78287f58a8c] SSE connection request for download prep: User='testuser', File='example.zip'
+2025-04-21 09:15:51,591 - INFO - [_prepare_download_and_generate_updates] - [56f5a24b-0c6c-499d-8b68-a78287f58a8c] Starting download preparation generator...
+2025-04-21 09:15:51,591 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 09:15:51] "GET /prepare-download/testuser/example.zip HTTP/1.1" 200 -
+2025-04-21 09:15:51,792 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 09:15:51,792 - ERROR - [_prepare_download_and_generate_updates] - [56f5a24b-0c6c-499d-8b68-a78287f58a8c] Download preparation failed: File 'example.zip' not found.
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\Telegram_app.py", line 1147, in _prepare_download_and_generate_updates
+    if not file_info: raise FileNotFoundError(f"File '{filename}' not found.")
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: File 'example.zip' not found.
+2025-04-21 09:15:51,792 - INFO - [_prepare_download_and_generate_updates] - [56f5a24b-0c6c-499d-8b68-a78287f58a8c] Cleaning up temp files due to prep error.
+2025-04-21 09:15:51,792 - INFO - [_prepare_download_and_generate_updates] - [56f5a24b-0c6c-499d-8b68-a78287f58a8c] Generator finished with status: error
+2025-04-21 09:15:52,341 - INFO - [prepare_download_stream] - [49cc8b16-bb1e-4ede-888a-f424b8a45bb8] SSE connection request for download prep: User='testuser', File='example.zip'
+2025-04-21 09:15:52,341 - INFO - [_prepare_download_and_generate_updates] - [49cc8b16-bb1e-4ede-888a-f424b8a45bb8] Starting download preparation generator...
+2025-04-21 09:15:52,341 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 09:15:52] "GET /prepare-download/testuser/example.zip HTTP/1.1" 200 -
+2025-04-21 09:15:52,548 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 09:15:52,548 - ERROR - [_prepare_download_and_generate_updates] - [49cc8b16-bb1e-4ede-888a-f424b8a45bb8] Download preparation failed: File 'example.zip' not found.
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\Telegram_app.py", line 1147, in _prepare_download_and_generate_updates
+    if not file_info: raise FileNotFoundError(f"File '{filename}' not found.")
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: File 'example.zip' not found.
+2025-04-21 09:15:52,548 - INFO - [_prepare_download_and_generate_updates] - [49cc8b16-bb1e-4ede-888a-f424b8a45bb8] Cleaning up temp files due to prep error.
+2025-04-21 09:15:52,548 - INFO - [_prepare_download_and_generate_updates] - [49cc8b16-bb1e-4ede-888a-f424b8a45bb8] Generator finished with status: error
+2025-04-21 09:15:53,061 - INFO - [prepare_download_stream] - [5cfe7f72-5785-44fb-be45-d625cb549293] SSE connection request for download prep: User='testuser', File='example.zip'
+2025-04-21 09:15:53,062 - INFO - [_prepare_download_and_generate_updates] - [5cfe7f72-5785-44fb-be45-d625cb549293] Starting download preparation generator...
+2025-04-21 09:15:53,062 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 09:15:53] "GET /prepare-download/testuser/example.zip HTTP/1.1" 200 -
+2025-04-21 09:15:53,264 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 09:15:53,264 - ERROR - [_prepare_download_and_generate_updates] - [5cfe7f72-5785-44fb-be45-d625cb549293] Download preparation failed: File 'example.zip' not found.
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\Telegram_app.py", line 1147, in _prepare_download_and_generate_updates
+    if not file_info: raise FileNotFoundError(f"File '{filename}' not found.")
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: File 'example.zip' not found.
+2025-04-21 09:15:53,264 - INFO - [_prepare_download_and_generate_updates] - [5cfe7f72-5785-44fb-be45-d625cb549293] Cleaning up temp files due to prep error.
+2025-04-21 09:15:53,264 - INFO - [_prepare_download_and_generate_updates] - [5cfe7f72-5785-44fb-be45-d625cb549293] Generator finished with status: error
+2025-04-21 09:15:53,882 - INFO - [prepare_download_stream] - [e6f59d05-7404-438b-92d4-58a6d6b78467] SSE connection request for download prep: User='testuser', File='example.zip'
+2025-04-21 09:15:53,882 - INFO - [_prepare_download_and_generate_updates] - [e6f59d05-7404-438b-92d4-58a6d6b78467] Starting download preparation generator...
+2025-04-21 09:15:53,882 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 09:15:53] "GET /prepare-download/testuser/example.zip HTTP/1.1" 200 -
+2025-04-21 09:15:54,087 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 09:15:54,087 - ERROR - [_prepare_download_and_generate_updates] - [e6f59d05-7404-438b-92d4-58a6d6b78467] Download preparation failed: File 'example.zip' not found.
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\Telegram_app.py", line 1147, in _prepare_download_and_generate_updates
+    if not file_info: raise FileNotFoundError(f"File '{filename}' not found.")
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: File 'example.zip' not found.
+2025-04-21 09:15:54,087 - INFO - [_prepare_download_and_generate_updates] - [e6f59d05-7404-438b-92d4-58a6d6b78467] Cleaning up temp files due to prep error.
+2025-04-21 09:15:54,087 - INFO - [_prepare_download_and_generate_updates] - [e6f59d05-7404-438b-92d4-58a6d6b78467] Generator finished with status: error
+2025-04-21 09:15:54,576 - INFO - [prepare_download_stream] - [109a036d-ca77-4148-b414-e34ca5845c9d] SSE connection request for download prep: User='testuser', File='example.zip'
+2025-04-21 09:15:54,576 - INFO - [_prepare_download_and_generate_updates] - [109a036d-ca77-4148-b414-e34ca5845c9d] Starting download preparation generator...
+2025-04-21 09:15:54,577 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 09:15:54] "GET /prepare-download/testuser/example.zip HTTP/1.1" 200 -
+2025-04-21 09:15:54,783 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 09:15:54,784 - ERROR - [_prepare_download_and_generate_updates] - [109a036d-ca77-4148-b414-e34ca5845c9d] Download preparation failed: File 'example.zip' not found.
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\Telegram_app.py", line 1147, in _prepare_download_and_generate_updates
+    if not file_info: raise FileNotFoundError(f"File '{filename}' not found.")
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: File 'example.zip' not found.
+2025-04-21 09:15:54,788 - INFO - [_prepare_download_and_generate_updates] - [109a036d-ca77-4148-b414-e34ca5845c9d] Cleaning up temp files due to prep error.
+2025-04-21 09:15:54,796 - INFO - [_prepare_download_and_generate_updates] - [109a036d-ca77-4148-b414-e34ca5845c9d] Generator finished with status: error
+2025-04-21 09:15:55,588 - INFO - [prepare_download_stream] - [e6fa93da-8c73-4554-a15a-0c83b4da7bad] SSE connection request for download prep: User='testuser', File='example.zip'
+2025-04-21 09:15:55,588 - INFO - [_prepare_download_and_generate_updates] - [e6fa93da-8c73-4554-a15a-0c83b4da7bad] Starting download preparation generator...
+2025-04-21 09:15:55,588 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 09:15:55] "GET /prepare-download/testuser/example.zip HTTP/1.1" 200 -
+2025-04-21 09:15:55,793 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 09:15:55,793 - ERROR - [_prepare_download_and_generate_updates] - [e6fa93da-8c73-4554-a15a-0c83b4da7bad] Download preparation failed: File 'example.zip' not found.
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\Telegram_app.py", line 1147, in _prepare_download_and_generate_updates
+    if not file_info: raise FileNotFoundError(f"File '{filename}' not found.")
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: File 'example.zip' not found.
+2025-04-21 09:15:55,793 - INFO - [_prepare_download_and_generate_updates] - [e6fa93da-8c73-4554-a15a-0c83b4da7bad] Cleaning up temp files due to prep error.
+2025-04-21 09:15:55,793 - INFO - [_prepare_download_and_generate_updates] - [e6fa93da-8c73-4554-a15a-0c83b4da7bad] Generator finished with status: error
+2025-04-21 09:15:55,838 - INFO - [prepare_download_stream] - [0d0a81a9-c8a0-4be1-b7c8-7c13ce3a0303] SSE connection request for download prep: User='testuser', File='example.zip'
+2025-04-21 09:15:55,838 - INFO - [_prepare_download_and_generate_updates] - [0d0a81a9-c8a0-4be1-b7c8-7c13ce3a0303] Starting download preparation generator...
+2025-04-21 09:15:55,838 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 09:15:55] "GET /prepare-download/testuser/example.zip HTTP/1.1" 200 -
+2025-04-21 09:15:56,043 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 09:15:56,043 - ERROR - [_prepare_download_and_generate_updates] - [0d0a81a9-c8a0-4be1-b7c8-7c13ce3a0303] Download preparation failed: File 'example.zip' not found.
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\Telegram_app.py", line 1147, in _prepare_download_and_generate_updates
+    if not file_info: raise FileNotFoundError(f"File '{filename}' not found.")
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: File 'example.zip' not found.
+2025-04-21 09:15:56,045 - INFO - [_prepare_download_and_generate_updates] - [0d0a81a9-c8a0-4be1-b7c8-7c13ce3a0303] Cleaning up temp files due to prep error.
+2025-04-21 09:15:56,046 - INFO - [_prepare_download_and_generate_updates] - [0d0a81a9-c8a0-4be1-b7c8-7c13ce3a0303] Generator finished with status: error
+2025-04-21 09:15:56,239 - INFO - [prepare_download_stream] - [fcb066f3-c8d3-4260-b93c-c704fe10757f] SSE connection request for download prep: User='testuser', File='example.zip'
+2025-04-21 09:15:56,239 - INFO - [_prepare_download_and_generate_updates] - [fcb066f3-c8d3-4260-b93c-c704fe10757f] Starting download preparation generator...
+2025-04-21 09:15:56,239 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 09:15:56] "GET /prepare-download/testuser/example.zip HTTP/1.1" 200 -
+2025-04-21 09:15:56,443 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 09:15:56,443 - ERROR - [_prepare_download_and_generate_updates] - [fcb066f3-c8d3-4260-b93c-c704fe10757f] Download preparation failed: File 'example.zip' not found.
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\Telegram_app.py", line 1147, in _prepare_download_and_generate_updates
+    if not file_info: raise FileNotFoundError(f"File '{filename}' not found.")
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: File 'example.zip' not found.
+2025-04-21 09:15:56,443 - INFO - [_prepare_download_and_generate_updates] - [fcb066f3-c8d3-4260-b93c-c704fe10757f] Cleaning up temp files due to prep error.
+2025-04-21 09:15:56,443 - INFO - [_prepare_download_and_generate_updates] - [fcb066f3-c8d3-4260-b93c-c704fe10757f] Generator finished with status: error
+2025-04-21 09:15:56,607 - INFO - [prepare_download_stream] - [35094d0d-75ce-428a-9b05-f4c588e5701f] SSE connection request for download prep: User='testuser', File='example.zip'
+2025-04-21 09:15:56,607 - INFO - [_prepare_download_and_generate_updates] - [35094d0d-75ce-428a-9b05-f4c588e5701f] Starting download preparation generator...
+2025-04-21 09:15:56,607 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 09:15:56] "GET /prepare-download/testuser/example.zip HTTP/1.1" 200 -
+2025-04-21 09:15:56,811 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 09:15:56,811 - ERROR - [_prepare_download_and_generate_updates] - [35094d0d-75ce-428a-9b05-f4c588e5701f] Download preparation failed: File 'example.zip' not found.
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\Telegram_app.py", line 1147, in _prepare_download_and_generate_updates
+    if not file_info: raise FileNotFoundError(f"File '{filename}' not found.")
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: File 'example.zip' not found.
+2025-04-21 09:15:56,811 - INFO - [_prepare_download_and_generate_updates] - [35094d0d-75ce-428a-9b05-f4c588e5701f] Cleaning up temp files due to prep error.
+2025-04-21 09:15:56,811 - INFO - [_prepare_download_and_generate_updates] - [35094d0d-75ce-428a-9b05-f4c588e5701f] Generator finished with status: error
+2025-04-21 09:15:57,009 - INFO - [prepare_download_stream] - [80062bcf-908b-4a15-843f-722ebb207822] SSE connection request for download prep: User='testuser', File='example.zip'
+2025-04-21 09:15:57,009 - INFO - [_prepare_download_and_generate_updates] - [80062bcf-908b-4a15-843f-722ebb207822] Starting download preparation generator...
+2025-04-21 09:15:57,009 - INFO - [_log] - 127.0.0.1 - - [21/Apr/2025 09:15:57] "GET /prepare-download/testuser/example.zip HTTP/1.1" 200 -
+2025-04-21 09:15:57,213 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-21 09:15:57,213 - ERROR - [_prepare_download_and_generate_updates] - [80062bcf-908b-4a15-843f-722ebb207822] Download preparation failed: File 'example.zip' not found.
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\Telegram_app.py", line 1147, in _prepare_download_and_generate_updates
+    if not file_info: raise FileNotFoundError(f"File '{filename}' not found.")
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: File 'example.zip' not found.
+2025-04-21 09:15:57,213 - INFO - [_prepare_download_and_generate_updates] - [80062bcf-908b-4a15-843f-722ebb207822] Cleaning up temp files due to prep error.
+2025-04-21 09:15:57,213 - INFO - [_prepare_download_and_generate_updates] - [80062bcf-908b-4a15-843f-722ebb207822] Generator finished with status: error

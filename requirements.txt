@@ -1,3 +1,11 @@
+# Flask>=2.0
+# python-telegram-bot==13.15
+# requests
+
 Flask>=2.0
-python-telegram-bot==13.15
 requests
+python-dotenv
+python-dateutil
+pytz
+# Keep python-telegram-bot if you still use bot.py separately
+python-telegram-bot==13.15

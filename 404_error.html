@@ -2,12 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>File Not Found</title>
-    <style> body { font-family: sans-serif; padding: 20px; text-align: center; } </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error - Not Found</title>
+    <style>
+        body { font-family: sans-serif; padding: 2em; line-height: 1.6; background-color: #fdf6f6; color: #521c1c; }
+        .container { max-width: 600px; margin: 2em auto; border: 1px solid #f5c6cb; padding: 2em; border-radius: 8px; background-color: #f8d7da; }
+        h1 { color: #721c24; text-align: center; }
+        p { margin: 1em 0; }
+        a { color: #0056b3; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
 </head>
 <body>
-    <h1>404 - File Not Found</h1>
-    <p>{{ message or "The requested file link could not be found or may have expired." }}</p>
-    <p><a href="/">Go to Homepage</a></p>
+    <div class="container">
+        <h1><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 5px;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>Not Found</h1>
+        {# Display the specific message passed from Flask #}
+        <p>{{ message | default('The requested resource could not be found.') }}</p>
+        <p>The link you followed may be broken, expired, or the file may have been removed by the uploader.</p>
+        <p style="text-align:center; margin-top: 1.5em;">
+            <a href="/">Return to Home Page</a>
+        </p>
+    </div>
 </body>
 </html>

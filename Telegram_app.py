@@ -13,6 +13,7 @@ import uuid
 import shutil
 from dateutil import parser as dateutil_parser
 import pytz
+import math
 
 # --- Configuration ---
 TELEGRAM_BOT_TOKEN = '7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs' 
@@ -100,9 +101,26 @@ def format_time(seconds):
     else:
         return f"{minutes:02d}:{seconds:02d}"
 
+# --- Helper Functions ---
+# ... (format_time function) ...
+
+def format_bytes(size_bytes):
+    """Converts bytes to a human-readable format (KB, MB, GB)."""
+    if size_bytes is None or size_bytes < 0:
+        return "N/A"
+    if size_bytes == 0:
+        return "0 B"
+    size_name = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
+    i = int(math.floor(math.log(size_bytes, 1024)))
+    p = math.pow(1024, i)
+    s = round(size_bytes / p, 2)
+    return f"{s} {size_name[i]}"
+
 # --- Flask Application Setup ---
 app = Flask(__name__, template_folder='.')
 app.secret_key = 'a_simple_secret_key_for_now' # Important for flashing messages
+# Register the custom filter with Jinja
+app.jinja_env.filters['format_bytes'] = format_bytes
 logging.info("Flask application initialized.")
 
 upload_progress_data = {}
@@ -786,12 +804,21 @@ def process_upload_and_generate_updates(upload_id):
 
                     # --- Yield Completion Event (Modified) ---
                     # Construct the direct download URL
-                    direct_download_url = url_for('direct_download_file', access_id=access_id, _external=True)
-                    logging.info(f"[{upload_id}] Generated direct download URL: {direct_download_url}")
+                    #direct_download_url = url_for('direct_download_file', access_id=access_id, _external=True)
+                    #logging.info(f"[{upload_id}] Generated direct download URL: {direct_download_url}")
 
-                    # Yield completion event with the direct URL
-                    yield f"event: complete\ndata: {json.dumps({'message': f'File {original_filename} uploaded successfully!', 'download_url': direct_download_url, 'filename': original_filename})}\n\n" # <<< Send download_url
+                    # --- Yield Completion Event (Modified) ---
+                    # Construct the LANDING PAGE URL
+                    landing_page_url = url_for('get_file_by_access_id', access_id=access_id, _external=True) # <<< CORRECTED
+                    logging.info(f"[{upload_id}] Generated landing page URL: {landing_page_url}") # Log updated
+
+                    # Yield completion event with the landing page URL
+                    yield f"event: complete\ndata: {json.dumps({'message': f'File {original_filename} uploaded successfully!', 'download_url': landing_page_url, 'filename': original_filename})}\n\n" # <<< Send landing_page_url
                     upload_data['status'] = 'completed'
+
+                    # # Yield completion event with the direct URL
+                    # yield f"event: complete\ndata: {json.dumps({'message': f'File {original_filename} uploaded successfully!', 'download_url': direct_download_url, 'filename': original_filename})}\n\n" # <<< Send download_url
+                    # upload_data['status'] = 'completed'
                    
                     
 
@@ -967,11 +994,16 @@ def process_upload_and_generate_updates(upload_id):
                 # --- Yield Completion ---
                 # --- Yield Completion (Modified for Split File) ---
                 # Construct the direct download URL
-                direct_download_url = url_for('direct_download_file', access_id=access_id, _external=True)
-                logging.info(f"[{upload_id}] Generated direct download URL: {direct_download_url}")
+                #direct_download_url = url_for('direct_download_file', access_id=access_id, _external=True)
+                #logging.info(f"[{upload_id}] Generated direct download URL: {direct_download_url}")
 
-                # Yield completion event with the direct URL
-                yield f"event: complete\ndata: {json.dumps({'message': f'Large file {original_filename} uploaded successfully!', 'download_url': direct_download_url, 'filename': original_filename})}\n\n" # <<< Send download_url
+                # --- Yield Completion (Modified for Split File) ---
+                # Construct the LANDING PAGE URL
+                landing_page_url = url_for('get_file_by_access_id', access_id=access_id, _external=True) # <<< CORRECTED
+                logging.info(f"[{upload_id}] Generated landing page URL: {landing_page_url}") # Log updated
+
+                # Yield completion event with the landing page URL
+                yield f"event: complete\ndata: {json.dumps({'message': f'Large file {original_filename} uploaded successfully!', 'download_url': landing_page_url, 'filename': original_filename})}\n\n" # <<< Send landing_page_url
                 upload_data['status'] = 'completed'
 
             else: # Inconsistency
@@ -1676,16 +1708,19 @@ def get_file_by_access_id(access_id):
 
     if not found_file_info:
         logging.warning(f"Access ID '{access_id}' not found in metadata.")
-        # You could render a nicer 404 template here
+        # Render the 404 error page
         return make_response(render_template('404_error.html', message=f"File link '{access_id}' not found or expired."), 404)
-        #return make_response("File not found or link expired.", 404)
 
     # Extract details for the download page
     original_filename = found_file_info.get('original_filename', 'Unknown Filename')
     # Show original size if available, otherwise maybe compressed size as fallback?
     file_size_bytes = found_file_info.get('original_size')
-    if not file_size_bytes: # Fallback if original_size wasn't stored correctly
-         file_size_bytes = found_file_info.get('compressed_total_size', 0)
+    if file_size_bytes is None: # Explicitly check for None
+         file_size_bytes = found_file_info.get('compressed_total_size')
+         # Handle case where both might be missing or zero
+         if file_size_bytes is None:
+              file_size_bytes = 0
+
 
     upload_timestamp_iso = found_file_info.get('upload_timestamp')
     upload_datetime_str = "Unknown date" # Default
@@ -1696,12 +1731,16 @@ def get_file_by_access_id(access_id):
             # Parse the ISO string (aware of timezone offset from isoformat())
             upload_dt_utc = dateutil_parser.isoparse(upload_timestamp_iso)
             # Convert to local timezone (or keep as UTC if preferred)
-            # Example: Convert to US Eastern time
-            # local_tz = pytz.timezone('America/New_York')
-            # upload_dt_local = upload_dt_utc.astimezone(local_tz)
-            # upload_datetime_str = upload_dt_local.strftime('%Y-%m-%d %H:%M:%S %Z') # Format with timezone
+            # Example: Convert to US Eastern time (adjust timezone as needed)
+            # try:
+            #     local_tz = pytz.timezone('America/New_York') # Choose your desired timezone
+            #     upload_dt_local = upload_dt_utc.astimezone(local_tz)
+            #     upload_datetime_str = upload_dt_local.strftime('%Y-%m-%d %H:%M:%S %Z') # Format with timezone
+            # except pytz.UnknownTimeZoneError:
+            #     logging.warning("Timezone 'America/New_York' not found, using UTC.")
+            #     upload_datetime_str = upload_dt_utc.strftime('%Y-%m-%d %H:%M:%S UTC')
 
-            # Simpler: Format as UTC or just date/time
+            # Simpler: Format as UTC (usually safer for web display)
             upload_datetime_str = upload_dt_utc.strftime('%Y-%m-%d %H:%M:%S UTC')
 
         except Exception as e:
@@ -1713,10 +1752,10 @@ def get_file_by_access_id(access_id):
     # Render the NEW download page template, passing necessary info
     return render_template('download_page.html',
                            filename=original_filename,
-                           filesize=file_size_bytes, # Pass raw bytes
+                           filesize=file_size_bytes, # Pass raw bytes (filter handles formatting)
                            upload_date=upload_datetime_str,
-                           username=found_username, # Needed for the download button action
-                           access_id=access_id      # May not be strictly needed by template, but good practice
+                           username=found_username,
+                           access_id=access_id      # Pass access_id for the download button link
                            )
 
 # --- Application Runner ---

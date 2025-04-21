@@ -1,5 +1,0 @@
-2025-04-17 16:59:32,925 - INFO - [<module>] - Logging configured. Log file: Selenium-Logs\app_20250417_165932.log
-2025-04-17 16:59:32,927 - INFO - [<module>] - Flask application initialized.
-2025-04-17 16:59:32,931 - INFO - [<module>] - Starting Flask development server...
-2025-04-17 16:59:32,961 - WARNING - [_log] -  * Debugger is active!
-2025-04-17 16:59:32,972 - INFO - [_log] -  * Debugger PIN: 107-410-311

@@ -1264,6 +1264,46 @@
             "upload_timestamp": "2025-04-17T12:30:24.204697+00:00",
             "username": "Octopus",
             "upload_duration_seconds": 0.8482367992401123
+        },
+        {
+            "original_filename": "tsetup-x64.5.12.3.exe",
+            "sent_filename": "tsetup-x64.5.12.3.exe.zip",
+            "is_split": true,
+            "is_compressed": true,
+            "original_size": 47399640,
+            "compressed_total_size": 46911635,
+            "chunk_size": 20971520,
+            "num_chunks": 3,
+            "chunks": [
+                {
+                    "part_number": 1,
+                    "chunk_filename": "tsetup-x64.5.12.3.exe.zip.part_001",
+                    "message_id": 501,
+                    "file_id": "BQACAgUAAxkDAAIB9WgF9R_O_mGwFuHtWecZsrfhdVF-AAIxFQACYy8wVPmxojQ53RKtNgQ",
+                    "file_unique_id": "AgADMRUAAmMvMFQ",
+                    "chunk_upload_duration_seconds": 16.49552869796753
+                },
+                {
+                    "part_number": 2,
+                    "chunk_filename": "tsetup-x64.5.12.3.exe.zip.part_002",
+                    "message_id": 502,
+                    "file_id": "BQACAgUAAxkDAAIB9mgF9SyXplyIG-0BaeTSCqvBShGUAAIyFQACYy8wVGpqnk_I2GESNgQ",
+                    "file_unique_id": "AgADMhUAAmMvMFQ",
+                    "chunk_upload_duration_seconds": 12.533204317092896
+                },
+                {
+                    "part_number": 3,
+                    "chunk_filename": "tsetup-x64.5.12.3.exe.zip.part_003",
+                    "message_id": 503,
+                    "file_id": "BQACAgUAAxkDAAIB92gF9TBV2ti3qu4AATGXelpRhUhe5gACMxUAAmMvMFQxdRRDmrmZ_jYE",
+                    "file_unique_id": "AgADMxUAAmMvMFQ",
+                    "chunk_upload_duration_seconds": 4.333070516586304
+                }
+            ],
+            "upload_timestamp": "2025-04-21T07:35:12.484039+00:00",
+            "username": "Octopus",
+            "total_upload_duration_seconds": 33.36180353164673,
+            "access_id": "254f3b552b"
         }
     ],
     "Klaus": [
@@ -1382,6 +1422,21 @@
             "upload_timestamp": "2025-04-17T06:48:09.047117+00:00",
             "username": "Bonniee",
             "upload_duration_seconds": 0.9640951156616211
+        },
+        {
+            "original_filename": "metadata.json",
+            "sent_filename": "metadata.json.zip",
+            "is_split": false,
+            "is_compressed": true,
+            "original_size": 191779,
+            "compressed_size": 29594,
+            "telegram_message_id": 506,
+            "telegram_file_id": "BQACAgUAAxkDAAIB-mgGKJ9iXuMP5GXUQW10DrfEwt4yAALOFQACYy8wVNs7wTtuk0CpNgQ",
+            "telegram_file_unique_id": "AgADzhUAAmMvMFQ",
+            "upload_timestamp": "2025-04-21T11:14:38.547174+00:00",
+            "username": "Bonniee",
+            "upload_duration_seconds": 1.436720371246338,
+            "access_id": "2d302acf30"
         }
     ],
     "mitali": [
@@ -3450,6 +3505,36 @@
             "username": "testt",
             "upload_duration_seconds": 1.1260812282562256,
             "access_id": "3d4aae2c0d"
+        },
+        {
+            "original_filename": "index.html",
+            "sent_filename": "index.html.zip",
+            "is_split": false,
+            "is_compressed": true,
+            "original_size": 47554,
+            "compressed_size": 9405,
+            "telegram_message_id": 507,
+            "telegram_file_id": "BQACAgUAAxkDAAIB-2gGNiARB0l0UoCWLLTdQETjsoBZAAIUFgACYy8wVNNoro3nDIwPNgQ",
+            "telegram_file_unique_id": "AgADFBYAAmMvMFQ",
+            "upload_timestamp": "2025-04-21T12:12:15.522392+00:00",
+            "username": "testt",
+            "upload_duration_seconds": 1.0204977989196777,
+            "access_id": "97c47509bf"
+        },
+        {
+            "original_filename": "download_page.html",
+            "sent_filename": "download_page.html.zip",
+            "is_split": false,
+            "is_compressed": true,
+            "original_size": 2237,
+            "compressed_size": 1040,
+            "telegram_message_id": 508,
+            "telegram_file_id": "BQACAgUAAxkDAAIB_GgGOoQyCNeWjoai-uF3rJzZVJAuAAIEGAACYy84VFRyxgoMzdUONgQ",
+            "telegram_file_unique_id": "AgADBBgAAmMvOFQ",
+            "upload_timestamp": "2025-04-21T12:30:59.684870+00:00",
+            "username": "testt",
+            "upload_duration_seconds": 1.059675931930542,
+            "access_id": "3c9869686a"
         }
     ],
     "Tomy": [
@@ -3764,6 +3849,36 @@
             "username": "siren",
             "upload_duration_seconds": 0.8844048976898193,
             "access_id": "9cccd8c800"
+        },
+        {
+            "original_filename": "requirements.txt",
+            "sent_filename": "requirements.txt.zip",
+            "is_split": false,
+            "is_compressed": true,
+            "original_size": 207,
+            "compressed_size": 255,
+            "telegram_message_id": 504,
+            "telegram_file_id": "BQACAgUAAxkDAAIB-GgGDwu1wPRHx0I5K4ERfRwSrDL5AAJ5FQACYy8wVJ0p53vgOFyzNgQ",
+            "telegram_file_unique_id": "AgADeRUAAmMvMFQ",
+            "upload_timestamp": "2025-04-21T09:25:31.596927+00:00",
+            "username": "siren",
+            "upload_duration_seconds": 1.17512845993042,
+            "access_id": "e269c7eb12"
+        },
+        {
+            "original_filename": "requirements.txt",
+            "sent_filename": "requirements.txt.zip",
+            "is_split": false,
+            "is_compressed": true,
+            "original_size": 207,
+            "compressed_size": 255,
+            "telegram_message_id": 505,
+            "telegram_file_id": "BQACAgUAAxkDAAIB-WgGES8jAU6w5W0AAThnQcZ7fdvJwQACgBUAAmMvMFSDe4zyLLuQUTYE",
+            "telegram_file_unique_id": "AgADgBUAAmMvMFQ",
+            "upload_timestamp": "2025-04-21T09:34:39.538532+00:00",
+            "username": "siren",
+            "upload_duration_seconds": 1.1253063678741455,
+            "access_id": "ebac12f04f"
         }
     ]
 }

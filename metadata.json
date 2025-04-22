@@ -1437,6 +1437,293 @@
             "username": "Bonniee",
             "upload_duration_seconds": 1.436720371246338,
             "access_id": "2d302acf30"
+        },
+        {
+            "original_filename": "[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv",
+            "sent_filename": "[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip",
+            "is_split": true,
+            "is_compressed": true,
+            "original_size": 654119416,
+            "compressed_total_size": 651687155,
+            "chunk_size": 20971520,
+            "num_chunks": 32,
+            "chunks": [
+                {
+                    "part_number": 1,
+                    "chunk_filename": "[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_001",
+                    "message_id": 579,
+                    "file_id": "BQACAgUAAxkDAAICQ2gHVSHzQX4ZtSc0YrAQmUh6_C5eAALBFgACYy9AVHVw0wu-oiqKNgQ",
+                    "file_unique_id": "AgADwRYAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 11.767261505126953
+                },
+                {
+                    "part_number": 2,
+                    "chunk_filename": "[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_002",
+                    "message_id": 580,
+                    "file_id": "BQACAgUAAxkDAAICRGgHVSs6VxEUGuKDGeTh54zApm4oAALCFgACYy9AVAty_yifCss-NgQ",
+                    "file_unique_id": "AgADwhYAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 10.089059591293335
+                },
+                {
+                    "part_number": 3,
+                    "chunk_filename": "[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_003",
+                    "message_id": 581,
+                    "file_id": "BQACAgUAAxkDAAICRWgHVTYjuW6xNjHgfUONUq1ybutzAALDFgACYy9AVPjQ6xqbSvbxNgQ",
+                    "file_unique_id": "AgADwxYAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 10.726040840148926
+                },
+                {
+                    "part_number": 4,
+                    "chunk_filename": "[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_004",
+                    "message_id": 582,
+                    "file_id": "BQACAgUAAxkDAAICRmgHVUHMNnms9sf5S9d5l5XW-_HfAALEFgACYy9AVNsBR6cK9mUFNgQ",
+                    "file_unique_id": "AgADxBYAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 11.262528419494629
+                },
+                {
+                    "part_number": 5,
+                    "chunk_filename": "[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_005",
+                    "message_id": 583,
+                    "file_id": "BQACAgUAAxkDAAICR2gHVVSDMTwwjN43EAy_8mfRP12oAALFFgACYy9AVEUFiiz3g7RlNgQ",
+                    "file_unique_id": "AgADxRYAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 19.300700664520264
+                },
+                {
+                    "part_number": 6,
+                    "chunk_filename": "[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_006",
+                    "message_id": 584,
+                    "file_id": "BQACAgUAAxkDAAICSGgHVV5l14rWdpM3MgABZyS0W9zVOQACxxYAAmMvQFTMcAABr4JwkGs2BA",
+                    "file_unique_id": "AgADxxYAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 9.773327589035034
+                },
+                {
+                    "part_number": 7,
+                    "chunk_filename": "[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_007",
+                    "message_id": 585,
+                    "file_id": "BQACAgUAAxkDAAICSWgHVWpav6VO_FJTqKumZ8ubNII9AALIFgACYy9AVFzW53lQXrDHNgQ",
+                    "file_unique_id": "AgADyBYAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 12.26931357383728
+                },
+                {
+                    "part_number": 8,
+                    "chunk_filename": "[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_008",
+                    "message_id": 586,
+                    "file_id": "BQACAgUAAxkDAAICSmgHVXQSV0Eei9q0TSih2A1NdUhiAALKFgACYy9AVOkoHkG-kMt7NgQ",
+                    "file_unique_id": "AgADyhYAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 9.722379684448242
+                },
+                {
+                    "part_number": 9,
+                    "chunk_filename": "[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_009",
+                    "message_id": 587,
+                    "file_id": "BQACAgUAAxkDAAICS2gHVYVF5f8cSPgY9J_N_NLbTh5ZAALLFgACYy9AVFmNmvFLjGvHNgQ",
+                    "file_unique_id": "AgADyxYAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 17.23206663131714
+                },
+                {
+                    "part_number": 10,
+                    "chunk_filename": "[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_010",
+                    "message_id": 588,
+                    "file_id": "BQACAgUAAxkDAAICTGgHVZH8-vPdWb1zmxdbhor7Y5njAALMFgACYy9AVB2VIoiCRgQRNgQ",
+                    "file_unique_id": "AgADzBYAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 11.976990938186646
+                },
+                {
+                    "part_number": 11,
+                    "chunk_filename": "[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_011",
+                    "message_id": 589,
+                    "file_id": "BQACAgUAAxkDAAICTWgHVaQiaLM0p69_pj-Zxh22LAWFAALNFgACYy9AVKTQnnyMbB7ENgQ",
+                    "file_unique_id": "AgADzRYAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 18.90473437309265
+                },
+                {
+                    "part_number": 12,
+                    "chunk_filename": "[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_012",
+                    "message_id": 590,
+                    "file_id": "BQACAgUAAxkDAAICTmgHVbTcWocLOWUxAAG4LdMKcGcEugACzxYAAmMvQFSucBcNRUJ10jYE",
+                    "file_unique_id": "AgADzxYAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 15.779360294342041
+                },
+                {
+                    "part_number": 13,
+                    "chunk_filename": "[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_013",
+                    "message_id": 591,
+                    "file_id": "BQACAgUAAxkDAAICT2gHVb-bv3kXxQNJi6YQP_IQXyvbAALQFgACYy9AVItcRm_6dPQ4NgQ",
+                    "file_unique_id": "AgAD0BYAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 10.419582605361938
+                },
+                {
+                    "part_number": 14,
+                    "chunk_filename": "[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_014",
+                    "message_id": 592,
+                    "file_id": "BQACAgUAAxkDAAICUGgHVcfTYVqICGx1aDKmHVCdeD9VAALSFgACYy9AVKxzQWxDh6LxNgQ",
+                    "file_unique_id": "AgAD0hYAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 8.609071969985962
+                },
+                {
+                    "part_number": 15,
+                    "chunk_filename": "[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_015",
+                    "message_id": 593,
+                    "file_id": "BQACAgUAAxkDAAICUWgHVdBQZyoxlCLYcZLK-Hc0LZL7AALTFgACYy9AVKEfWoc-11VCNgQ",
+                    "file_unique_id": "AgAD0xYAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 8.740129709243774
+                },
+                {
+                    "part_number": 16,
+                    "chunk_filename": "[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_016",
+                    "message_id": 594,
+                    "file_id": "BQACAgUAAxkDAAICUmgHVePQH_Dup4DKAAEJNIwIklCjEgAC1BYAAmMvQFSazV6m4457ZDYE",
+                    "file_unique_id": "AgAD1BYAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 19.48495841026306
+                },
+                {
+                    "part_number": 17,
+                    "chunk_filename": "[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_017",
+                    "message_id": 595,
+                    "file_id": "BQACAgUAAxkDAAICU2gHVe92k-1OFwo-HTTSYDn0Y0aTAALVFgACYy9AVEpnfjIS4xvQNgQ",
+                    "file_unique_id": "AgAD1RYAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 11.2099449634552
+                },
+                {
+                    "part_number": 18,
+                    "chunk_filename": "[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_018",
+                    "message_id": 596,
+                    "file_id": "BQACAgUAAxkDAAICVGgHVfpgiQTFwef1wc_6qeUVnWMoAALXFgACYy9AVHsIomxEn9geNgQ",
+                    "file_unique_id": "AgAD1xYAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 11.38776969909668
+                },
+                {
+                    "part_number": 19,
+                    "chunk_filename": "[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_019",
+                    "message_id": 597,
+                    "file_id": "BQACAgUAAxkDAAICVWgHVggAAaBdI7nHj_m_8sN7Lzw9fQAC2BYAAmMvQFTcqkvxPqK9OTYE",
+                    "file_unique_id": "AgAD2BYAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 13.77462887763977
+                },
+                {
+                    "part_number": 20,
+                    "chunk_filename": "[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_020",
+                    "message_id": 598,
+                    "file_id": "BQACAgUAAxkDAAICVmgHVhvGSAx42XX0XRL7BC6_olgWAALZFgACYy9AVGvffz2ZdDnhNgQ",
+                    "file_unique_id": "AgAD2RYAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 18.997596502304077
+                },
+                {
+                    "part_number": 21,
+                    "chunk_filename": "[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_021",
+                    "message_id": 599,
+                    "file_id": "BQACAgUAAxkDAAICV2gHVidgueRTLRsRohINZhPe2mZIAALbFgACYy9AVMzIKzpr11w_NgQ",
+                    "file_unique_id": "AgAD2xYAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 11.632058382034302
+                },
+                {
+                    "part_number": 22,
+                    "chunk_filename": "[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_022",
+                    "message_id": 600,
+                    "file_id": "BQACAgUAAxkDAAICWGgHVjFXtrH3GdddsTawFEBtgmmGAALcFgACYy9AVOf6t3xpsLf1NgQ",
+                    "file_unique_id": "AgAD3BYAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 10.455078601837158
+                },
+                {
+                    "part_number": 23,
+                    "chunk_filename": "[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_023",
+                    "message_id": 601,
+                    "file_id": "BQACAgUAAxkDAAICWWgHVjkNReawXPjwiw_64loAAfatBQAC3RYAAmMvQFRDrl-eF9MtrDYE",
+                    "file_unique_id": "AgAD3RYAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 7.909195423126221
+                },
+                {
+                    "part_number": 24,
+                    "chunk_filename": "[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_024",
+                    "message_id": 602,
+                    "file_id": "BQACAgUAAxkDAAICWmgHVkyiXef-H4Sb4m-Bu75rSH0wAALfFgACYy9AVLl5TVmqGitbNgQ",
+                    "file_unique_id": "AgAD3xYAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 18.7284939289093
+                },
+                {
+                    "part_number": 25,
+                    "chunk_filename": "[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_025",
+                    "message_id": 603,
+                    "file_id": "BQACAgUAAxkDAAICW2gHVlMzVEmJTCBXa06qNshTOev9AALgFgACYy9AVAdoI3VKkaitNgQ",
+                    "file_unique_id": "AgAD4BYAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 7.34946608543396
+                },
+                {
+                    "part_number": 26,
+                    "chunk_filename": "[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_026",
+                    "message_id": 604,
+                    "file_id": "BQACAgUAAxkDAAICXGgHVl3FLDzk17rlLlUQnqjcdsEcAALiFgACYy9AVKVQOLEK4a12NgQ",
+                    "file_unique_id": "AgAD4hYAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 10.02485728263855
+                },
+                {
+                    "part_number": 27,
+                    "chunk_filename": "[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_027",
+                    "message_id": 605,
+                    "file_id": "BQACAgUAAxkDAAICXWgHVmi-e-rWxh7NUfZchgqQaHQ2AALjFgACYy9AVOg9xF5MXpm-NgQ",
+                    "file_unique_id": "AgAD4xYAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 10.501068830490112
+                },
+                {
+                    "part_number": 28,
+                    "chunk_filename": "[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_028",
+                    "message_id": 606,
+                    "file_id": "BQACAgUAAxkDAAICXmgHVnPApE4-s1IDyEOorDkMUEdeAALlFgACYy9AVAipMA5Xvr6KNgQ",
+                    "file_unique_id": "AgAD5RYAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 11.492220401763916
+                },
+                {
+                    "part_number": 29,
+                    "chunk_filename": "[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_029",
+                    "message_id": 607,
+                    "file_id": "BQACAgUAAxkDAAICX2gHVoHdKr5D3I1vgiec8_-sFFHAAALmFgACYy9AVG64-C9YwKVsNgQ",
+                    "file_unique_id": "AgAD5hYAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 13.580909252166748
+                },
+                {
+                    "part_number": 30,
+                    "chunk_filename": "[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_030",
+                    "message_id": 608,
+                    "file_id": "BQACAgUAAxkDAAICYGgHVoyyKPArKDKJ47s1qVXhR_LYAALnFgACYy9AVOLr60TKxDUTNgQ",
+                    "file_unique_id": "AgAD5xYAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 11.18534779548645
+                },
+                {
+                    "part_number": 31,
+                    "chunk_filename": "[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_031",
+                    "message_id": 609,
+                    "file_id": "BQACAgUAAxkDAAICYWgHVpXGClSoPAOMwpcwyEqGNmGwAALoFgACYy9AVE_k-rG2fiPkNgQ",
+                    "file_unique_id": "AgAD6BYAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 9.104526996612549
+                },
+                {
+                    "part_number": 32,
+                    "chunk_filename": "[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_032",
+                    "message_id": 610,
+                    "file_id": "BQACAgUAAxkDAAICYmgHVpf3vSwP13rj3-s_UqAztafVAALpFgACYy9AVAtEb4hNXjdyNgQ",
+                    "file_unique_id": "AgAD6RYAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 1.720958948135376
+                }
+            ],
+            "upload_timestamp": "2025-04-22T08:43:03.852802+00:00",
+            "username": "Bonniee",
+            "total_upload_duration_seconds": 385.11162877082825,
+            "access_id": "dba560a5db"
+        },
+        {
+            "original_filename": "metadata (3).json",
+            "sent_filename": "metadata (3).json.zip",
+            "is_split": false,
+            "is_compressed": true,
+            "original_size": 191779,
+            "compressed_size": 29602,
+            "telegram_message_id": 611,
+            "telegram_file_id": "BQACAgUAAxkDAAICY2gHWDmYvDeCpOrC94mp4NfyZueRAALvFgACYy9AVLb3wF4bKxiKNgQ",
+            "telegram_file_unique_id": "AgAD7xYAAmMvQFQ",
+            "upload_timestamp": "2025-04-22T08:50:01.518326+00:00",
+            "username": "Bonniee",
+            "upload_duration_seconds": 1.4315268993377686,
+            "access_id": "134c96cf73"
         }
     ],
     "mitali": [
@@ -3535,6 +3822,857 @@
             "username": "testt",
             "upload_duration_seconds": 1.059675931930542,
             "access_id": "3c9869686a"
+        },
+        {
+            "original_filename": "Telegram_app.py",
+            "sent_filename": "Telegram_app.py.zip",
+            "is_split": false,
+            "is_compressed": true,
+            "original_size": 104336,
+            "compressed_size": 19716,
+            "telegram_message_id": 509,
+            "telegram_file_id": "BQACAgUAAxkDAAIB_WgHEc4Nj9FzBumP3i-7pHGFTIGeAALBGQACYy84VK9Z9oiBFJPCNgQ",
+            "telegram_file_unique_id": "AgADwRkAAmMvOFQ",
+            "upload_timestamp": "2025-04-22T03:49:35.017601+00:00",
+            "username": "testt",
+            "upload_duration_seconds": 1.4554760456085205,
+            "access_id": "016ba7cc53"
+        },
+        {
+            "original_filename": "ScreamingFrogSEOSpider-20.3.exe",
+            "sent_filename": "ScreamingFrogSEOSpider-20.3.exe.zip",
+            "is_split": true,
+            "is_compressed": true,
+            "original_size": 695857376,
+            "compressed_total_size": 654609775,
+            "chunk_size": 20971520,
+            "num_chunks": 32,
+            "chunks": [
+                {
+                    "part_number": 1,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3.exe.zip.part_001",
+                    "message_id": 535,
+                    "file_id": "BQACAgUAAxkDAAICF2gHJlIl2QmvtkbuC_Kho3cO_VRrAAIDGgACYy84VCXoiKJuDyjYNgQ",
+                    "file_unique_id": "AgADAxoAAmMvOFQ",
+                    "chunk_upload_duration_seconds": 12.947587728500366
+                },
+                {
+                    "part_number": 2,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3.exe.zip.part_002",
+                    "message_id": 536,
+                    "file_id": "BQACAgUAAxkDAAICGGgHJmX-AYfypd1Kw8b4G6IdZBhyAAIEGgACYy84VPAkFfvg8zVKNgQ",
+                    "file_unique_id": "AgADBBoAAmMvOFQ",
+                    "chunk_upload_duration_seconds": 18.441744327545166
+                },
+                {
+                    "part_number": 3,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3.exe.zip.part_003",
+                    "message_id": 537,
+                    "file_id": "BQACAgUAAxkDAAICGWgHJm1tXKhV5DwZJJJPeokcmsWsAAIFGgACYy84VK-uWYnKtfk-NgQ",
+                    "file_unique_id": "AgADBRoAAmMvOFQ",
+                    "chunk_upload_duration_seconds": 8.314523935317993
+                },
+                {
+                    "part_number": 4,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3.exe.zip.part_004",
+                    "message_id": 538,
+                    "file_id": "BQACAgUAAxkDAAICGmgHJnd4BA8EHR6ls7h5cEk6HNdFAAIGGgACYy84VJ04Vl2X9deLNgQ",
+                    "file_unique_id": "AgADBhoAAmMvOFQ",
+                    "chunk_upload_duration_seconds": 9.350136756896973
+                },
+                {
+                    "part_number": 5,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3.exe.zip.part_005",
+                    "message_id": 539,
+                    "file_id": "BQACAgUAAxkDAAICG2gHJoGsewAB6p04i03juJxnm9OGXgACBxoAAmMvOFQgMZljAkuxgjYE",
+                    "file_unique_id": "AgADBxoAAmMvOFQ",
+                    "chunk_upload_duration_seconds": 10.355872631072998
+                },
+                {
+                    "part_number": 6,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3.exe.zip.part_006",
+                    "message_id": 540,
+                    "file_id": "BQACAgUAAxkDAAICHGgHJpj4xOQ25QLSbWur2HLdJcGbAAIIGgACYy84VC_8BdtGcVGBNgQ",
+                    "file_unique_id": "AgADCBoAAmMvOFQ",
+                    "chunk_upload_duration_seconds": 23.134924173355103
+                },
+                {
+                    "part_number": 7,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3.exe.zip.part_007",
+                    "message_id": 541,
+                    "file_id": "BQACAgUAAxkDAAICHWgHJqSanRTjfnfr6vpFunwNIdF5AAIJGgACYy84VEOEWykHcWi4NgQ",
+                    "file_unique_id": "AgADCRoAAmMvOFQ",
+                    "chunk_upload_duration_seconds": 11.605512380599976
+                },
+                {
+                    "part_number": 8,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3.exe.zip.part_008",
+                    "message_id": 542,
+                    "file_id": "BQACAgUAAxkDAAICHmgHJrWfLPzrwiDUeEHgtYNDN8z3AAIKGgACYy84VBpSltHVPTgnNgQ",
+                    "file_unique_id": "AgADChoAAmMvOFQ",
+                    "chunk_upload_duration_seconds": 17.032341480255127
+                },
+                {
+                    "part_number": 9,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3.exe.zip.part_009",
+                    "message_id": 543,
+                    "file_id": "BQACAgUAAxkDAAICH2gHJsKu4Dl5YLm02jz0Z3eTSzguAAILGgACYy84VJ8kx5ygprY4NgQ",
+                    "file_unique_id": "AgADCxoAAmMvOFQ",
+                    "chunk_upload_duration_seconds": 12.885998487472534
+                },
+                {
+                    "part_number": 10,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3.exe.zip.part_010",
+                    "message_id": 544,
+                    "file_id": "BQACAgUAAxkDAAICIGgHJtAWIHZQAk6gMg0RH5CbFe_UAAIMGgACYy84VIlC01rrOsS5NgQ",
+                    "file_unique_id": "AgADDBoAAmMvOFQ",
+                    "chunk_upload_duration_seconds": 14.113456964492798
+                },
+                {
+                    "part_number": 11,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3.exe.zip.part_011",
+                    "message_id": 545,
+                    "file_id": "BQACAgUAAxkDAAICIWgHJuOdKW9xiqM9VrlsvE7NRempAAINGgACYy84VF2CbkYjrODjNgQ",
+                    "file_unique_id": "AgADDRoAAmMvOFQ",
+                    "chunk_upload_duration_seconds": 18.569891691207886
+                },
+                {
+                    "part_number": 12,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3.exe.zip.part_012",
+                    "message_id": 546,
+                    "file_id": "BQACAgUAAxkDAAICImgHJuy9J2C9eCLpOyNl3xMjAZADAAIOGgACYy84VGMTjXiLoG8dNgQ",
+                    "file_unique_id": "AgADDhoAAmMvOFQ",
+                    "chunk_upload_duration_seconds": 9.108485460281372
+                },
+                {
+                    "part_number": 13,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3.exe.zip.part_013",
+                    "message_id": 547,
+                    "file_id": "BQACAgUAAxkDAAICI2gHJvWmzoA7D54VYn25VXPaFSRpAAIPGgACYy84VITbM3Q36jTjNgQ",
+                    "file_unique_id": "AgADDxoAAmMvOFQ",
+                    "chunk_upload_duration_seconds": 9.456917524337769
+                },
+                {
+                    "part_number": 14,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3.exe.zip.part_014",
+                    "message_id": 548,
+                    "file_id": "BQACAgUAAxkDAAICJGgHJwABtxcrL13SkiQkdRhO-Lr-pgACEBoAAmMvOFSGo7559mjPHjYE",
+                    "file_unique_id": "AgADEBoAAmMvOFQ",
+                    "chunk_upload_duration_seconds": 10.524582386016846
+                },
+                {
+                    "part_number": 15,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3.exe.zip.part_015",
+                    "message_id": 549,
+                    "file_id": "BQACAgUAAxkDAAICJWgHJxIyagWrZGAAAYP9oGDyaPd47wACERoAAmMvOFTFjOfPixS2eTYE",
+                    "file_unique_id": "AgADERoAAmMvOFQ",
+                    "chunk_upload_duration_seconds": 18.50316548347473
+                },
+                {
+                    "part_number": 16,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3.exe.zip.part_016",
+                    "message_id": 550,
+                    "file_id": "BQACAgUAAxkDAAICJmgHJx5WhOqFhJSOgOvWK8EnV9LcAAISGgACYy84VEeEv_ssOtx3NgQ",
+                    "file_unique_id": "AgADEhoAAmMvOFQ",
+                    "chunk_upload_duration_seconds": 11.551625490188599
+                },
+                {
+                    "part_number": 17,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3.exe.zip.part_017",
+                    "message_id": 551,
+                    "file_id": "BQACAgUAAxkDAAICJ2gHJyx4Sc7aR1KvJHTvblDQ3zj8AAIUGgACYy84VOUh7G3rPbcuNgQ",
+                    "file_unique_id": "AgADFBoAAmMvOFQ",
+                    "chunk_upload_duration_seconds": 14.227787733078003
+                },
+                {
+                    "part_number": 18,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3.exe.zip.part_018",
+                    "message_id": 552,
+                    "file_id": "BQACAgUAAxkDAAICKGgHJzbrzTyubsj1Xd_0CdZiE6urAAIVGgACYy84VMd5x2dfpq-BNgQ",
+                    "file_unique_id": "AgADFRoAAmMvOFQ",
+                    "chunk_upload_duration_seconds": 9.736980676651001
+                },
+                {
+                    "part_number": 19,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3.exe.zip.part_019",
+                    "message_id": 553,
+                    "file_id": "BQACAgUAAxkDAAICKWgHJz5YIjheCjERA3tkK3iILKrrAAIWGgACYy84VCzvS7IJcvjLNgQ",
+                    "file_unique_id": "AgADFhoAAmMvOFQ",
+                    "chunk_upload_duration_seconds": 7.8990185260772705
+                },
+                {
+                    "part_number": 20,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3.exe.zip.part_020",
+                    "message_id": 554,
+                    "file_id": "BQACAgUAAxkDAAICKmgHJ0lLO8hy0SOTW2giStXXps9DAAIXGgACYy84VPaocZstnZXhNgQ",
+                    "file_unique_id": "AgADFxoAAmMvOFQ",
+                    "chunk_upload_duration_seconds": 10.468179702758789
+                },
+                {
+                    "part_number": 21,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3.exe.zip.part_021",
+                    "message_id": 555,
+                    "file_id": "BQACAgUAAxkDAAICK2gHJ1IIgmBxQts0gf_lyxbDHOOTAAIYGgACYy84VJjWpa4m-aA7NgQ",
+                    "file_unique_id": "AgADGBoAAmMvOFQ",
+                    "chunk_upload_duration_seconds": 9.779459714889526
+                },
+                {
+                    "part_number": 22,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3.exe.zip.part_022",
+                    "message_id": 556,
+                    "file_id": "BQACAgUAAxkDAAICLGgHJ11WeavNaZENGp7xBMfwrYTDAAIZGgACYy84VBiw7qP3nQxxNgQ",
+                    "file_unique_id": "AgADGRoAAmMvOFQ",
+                    "chunk_upload_duration_seconds": 10.89373254776001
+                },
+                {
+                    "part_number": 23,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3.exe.zip.part_023",
+                    "message_id": 557,
+                    "file_id": "BQACAgUAAxkDAAICLWgHJ3B422nCO07wLultLDfk_dy2AAIbGgACYy84VJ7M-DxNz5CyNgQ",
+                    "file_unique_id": "AgADGxoAAmMvOFQ",
+                    "chunk_upload_duration_seconds": 18.34315276145935
+                },
+                {
+                    "part_number": 24,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3.exe.zip.part_024",
+                    "message_id": 558,
+                    "file_id": "BQACAgUAAxkDAAICLmgHJ3lk2sgY241BBwvPHYfs61FGAAIdGgACYy84VHCSr2VvmQKSNgQ",
+                    "file_unique_id": "AgADHRoAAmMvOFQ",
+                    "chunk_upload_duration_seconds": 8.844010591506958
+                },
+                {
+                    "part_number": 25,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3.exe.zip.part_025",
+                    "message_id": 559,
+                    "file_id": "BQACAgUAAxkDAAICL2gHJ4qOfNbuunaA2SutdXAVjejbAAIeGgACYy84VAiH3PfMZmbnNgQ",
+                    "file_unique_id": "AgADHhoAAmMvOFQ",
+                    "chunk_upload_duration_seconds": 17.737821102142334
+                },
+                {
+                    "part_number": 26,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3.exe.zip.part_026",
+                    "message_id": 560,
+                    "file_id": "BQACAgUAAxkDAAICMGgHJ5YPpOZsEy2OJJwcZJkWw_jvAAIfGgACYy84VG_4-AhpScI4NgQ",
+                    "file_unique_id": "AgADHxoAAmMvOFQ",
+                    "chunk_upload_duration_seconds": 12.069581270217896
+                },
+                {
+                    "part_number": 27,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3.exe.zip.part_027",
+                    "message_id": 561,
+                    "file_id": "BQACAgUAAxkDAAICMWgHJ6KeNE2TnEV_UONynF9vJr4nAAIgGgACYy84VLetXNU5idIrNgQ",
+                    "file_unique_id": "AgADIBoAAmMvOFQ",
+                    "chunk_upload_duration_seconds": 11.35816502571106
+                },
+                {
+                    "part_number": 28,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3.exe.zip.part_028",
+                    "message_id": 562,
+                    "file_id": "BQACAgUAAxkDAAICMmgHJ7MXeljxZgthsvrqK4-o_80mAAIiGgACYy84VFNTqI-lqWLINgQ",
+                    "file_unique_id": "AgADIhoAAmMvOFQ",
+                    "chunk_upload_duration_seconds": 17.397725820541382
+                },
+                {
+                    "part_number": 29,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3.exe.zip.part_029",
+                    "message_id": 563,
+                    "file_id": "BQACAgUAAxkDAAICM2gHJ776gEXd0tUuslhCloOPYoBXAAIkGgACYy84VNv_DTUS2E3aNgQ",
+                    "file_unique_id": "AgADJBoAAmMvOFQ",
+                    "chunk_upload_duration_seconds": 10.58373236656189
+                },
+                {
+                    "part_number": 30,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3.exe.zip.part_030",
+                    "message_id": 564,
+                    "file_id": "BQACAgUAAxkDAAICNGgHJ9FfaXM7wjNH7jzlnsQaYwcnAAIlGgACYy84VDAuqc9ptg8TNgQ",
+                    "file_unique_id": "AgADJRoAAmMvOFQ",
+                    "chunk_upload_duration_seconds": 18.949004888534546
+                },
+                {
+                    "part_number": 31,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3.exe.zip.part_031",
+                    "message_id": 565,
+                    "file_id": "BQACAgUAAxkDAAICNWgHJ-N61-nmRHczcX5qp8iyFjYjAAImGgACYy84VLqR10tYQNDnNgQ",
+                    "file_unique_id": "AgADJhoAAmMvOFQ",
+                    "chunk_upload_duration_seconds": 17.850780487060547
+                },
+                {
+                    "part_number": 32,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3.exe.zip.part_032",
+                    "message_id": 566,
+                    "file_id": "BQACAgUAAxkDAAICNmgHJ-4V47Qrdg4u3urEQCt5ZvmUAAInGgACYy84VJopclkituVwNgQ",
+                    "file_unique_id": "AgADJxoAAmMvOFQ",
+                    "chunk_upload_duration_seconds": 11.771891117095947
+                }
+            ],
+            "upload_timestamp": "2025-04-22T05:24:00.089139+00:00",
+            "username": "testt",
+            "total_upload_duration_seconds": 423.80779123306274,
+            "access_id": "6746af8afc"
+        },
+        {
+            "original_filename": "Telegram_app (3).py",
+            "sent_filename": "Telegram_app (3).py.zip",
+            "is_split": false,
+            "is_compressed": true,
+            "original_size": 96886,
+            "compressed_size": 17766,
+            "telegram_message_id": 567,
+            "telegram_file_id": "BQACAgUAAxkDAAICN2gHKz2QZmJIXtNgY5i_tv_UWx1OAAIqGgACYy84VAyka29NyjvXNgQ",
+            "telegram_file_unique_id": "AgADKhoAAmMvOFQ",
+            "upload_timestamp": "2025-04-22T05:38:06.612422+00:00",
+            "username": "testt",
+            "upload_duration_seconds": 1.3140885829925537,
+            "access_id": "ec1a71e9ea"
+        },
+        {
+            "original_filename": "download_page.html",
+            "sent_filename": "download_page.html.zip",
+            "is_split": false,
+            "is_compressed": true,
+            "original_size": 2237,
+            "compressed_size": 1040,
+            "telegram_message_id": 568,
+            "telegram_file_id": "BQACAgUAAxkDAAICOGgHLEm88xaXebcm6YEDS7F4UqdEAAItGgACYy84VGUpJW78kOMUNgQ",
+            "telegram_file_unique_id": "AgADLRoAAmMvOFQ",
+            "upload_timestamp": "2025-04-22T05:42:34.611466+00:00",
+            "username": "testt",
+            "upload_duration_seconds": 0.9241621494293213,
+            "access_id": "8a397d5b44"
+        },
+        {
+            "original_filename": "index.html",
+            "sent_filename": "index.html.zip",
+            "is_split": false,
+            "is_compressed": true,
+            "original_size": 47554,
+            "compressed_size": 9405,
+            "telegram_message_id": 569,
+            "telegram_file_id": "BQACAgUAAxkDAAICOWgHLFuDuqNadsmZ-6XXxQABmHFxWwACLhoAAmMvOFRMuTdLe1m5qzYE",
+            "telegram_file_unique_id": "AgADLhoAAmMvOFQ",
+            "upload_timestamp": "2025-04-22T05:42:52.931322+00:00",
+            "username": "testt",
+            "upload_duration_seconds": 0.9805448055267334,
+            "access_id": "55965025c3"
+        },
+        {
+            "original_filename": "AnyDesk.exe",
+            "sent_filename": "AnyDesk.exe.zip",
+            "is_split": false,
+            "is_compressed": true,
+            "original_size": 5371208,
+            "compressed_size": 5346220,
+            "telegram_message_id": 570,
+            "telegram_file_id": "BQACAgUAAxkDAAICOmgHN3yWWof4mfCEq_onsYl8ZpUYAAI-GgACYy84VB098ZC_3gyHNgQ",
+            "telegram_file_unique_id": "AgADPhoAAmMvOFQ",
+            "upload_timestamp": "2025-04-22T06:30:21.377524+00:00",
+            "username": "testt",
+            "upload_duration_seconds": 7.473406791687012,
+            "access_id": "b150ba287a"
+        },
+        {
+            "original_filename": "Sublime Text Build 3211 x64 Setup.exe",
+            "sent_filename": "Sublime Text Build 3211 x64 Setup.exe.zip",
+            "is_split": false,
+            "is_compressed": true,
+            "original_size": 10931184,
+            "compressed_size": 10852207,
+            "telegram_message_id": 571,
+            "telegram_file_id": "BQACAgUAAxkDAAICO2gHN9Lt3VTw5yNbK3kXV-DITVvDAAI_GgACYy84VNllxEYPLTyANgQ",
+            "telegram_file_unique_id": "AgADPxoAAmMvOFQ",
+            "upload_timestamp": "2025-04-22T06:31:47.645845+00:00",
+            "username": "testt",
+            "upload_duration_seconds": 6.008644104003906,
+            "access_id": "b005c0ba7a"
+        },
+        {
+            "original_filename": "test download (1).mkv",
+            "sent_filename": "test download (1).mkv.zip",
+            "is_split": true,
+            "is_compressed": true,
+            "original_size": 132739902,
+            "compressed_total_size": 129562600,
+            "chunk_size": 20971520,
+            "num_chunks": 7,
+            "chunks": [
+                {
+                    "part_number": 1,
+                    "chunk_filename": "test download (1).mkv.zip.part_001",
+                    "message_id": 572,
+                    "file_id": "BQACAgUAAxkDAAICPGgHODut3aSdyf1hQDKhKtnSPpjVAAJyFgACYy9AVK9OQDYvtwFRNgQ",
+                    "file_unique_id": "AgADchYAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 11.887619256973267
+                },
+                {
+                    "part_number": 2,
+                    "chunk_filename": "test download (1).mkv.zip.part_002",
+                    "message_id": 573,
+                    "file_id": "BQACAgUAAxkDAAICPWgHOEalHQL6isGHOPsJG15dJgsfAAJzFgACYy9AVN0QglBoJgsdNgQ",
+                    "file_unique_id": "AgADcxYAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 10.52184271812439
+                },
+                {
+                    "part_number": 3,
+                    "chunk_filename": "test download (1).mkv.zip.part_003",
+                    "message_id": 574,
+                    "file_id": "BQACAgUAAxkDAAICPmgHOE4hhAXgXxvssd5s06ADPLwoAAJ0FgACYy9AVFNT-chG6F_gNgQ",
+                    "file_unique_id": "AgADdBYAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 8.628227472305298
+                },
+                {
+                    "part_number": 4,
+                    "chunk_filename": "test download (1).mkv.zip.part_004",
+                    "message_id": 575,
+                    "file_id": "BQACAgUAAxkDAAICP2gHOFoImeglrYO1wzzz7ubJg6FYAAJ1FgACYy9AVHtE8GEa5tmeNgQ",
+                    "file_unique_id": "AgADdRYAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 12.070604801177979
+                },
+                {
+                    "part_number": 5,
+                    "chunk_filename": "test download (1).mkv.zip.part_005",
+                    "message_id": 576,
+                    "file_id": "BQACAgUAAxkDAAICQGgHOG1A9au5m4CWxwrrRggj60QrAAJ2FgACYy9AVNOWUKR6PLi1NgQ",
+                    "file_unique_id": "AgADdhYAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 18.665994882583618
+                },
+                {
+                    "part_number": 6,
+                    "chunk_filename": "test download (1).mkv.zip.part_006",
+                    "message_id": 577,
+                    "file_id": "BQACAgUAAxkDAAICQWgHOHj2fRzd8lHY1nrZw5ywLgAB6QACeBYAAmMvQFQQAq3JoW74aDYE",
+                    "file_unique_id": "AgADeBYAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 11.151928901672363
+                },
+                {
+                    "part_number": 7,
+                    "chunk_filename": "test download (1).mkv.zip.part_007",
+                    "message_id": 578,
+                    "file_id": "BQACAgUAAxkDAAICQmgHOHp9H2QtHdeyGGZXQfMEnWb5AAJ6FgACYy9AVO-7sPXeH8j0NgQ",
+                    "file_unique_id": "AgADehYAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 2.2804219722747803
+                }
+            ],
+            "upload_timestamp": "2025-04-22T06:34:36.061375+00:00",
+            "username": "testt",
+            "total_upload_duration_seconds": 75.2066400051117,
+            "access_id": "be45e9f73f"
+        },
+        {
+            "original_filename": "requirements.txt",
+            "sent_filename": "requirements.txt.zip",
+            "is_split": false,
+            "is_compressed": true,
+            "original_size": 207,
+            "compressed_size": 255,
+            "telegram_message_id": 612,
+            "telegram_file_id": "BQACAgUAAxkDAAICZGgHaGnpOAjNiBJYKzmD4_FUAyFjAAIOFwACYy9AVPB83sszQ7fUNgQ",
+            "telegram_file_unique_id": "AgADDhcAAmMvQFQ",
+            "upload_timestamp": "2025-04-22T09:59:05.800573+00:00",
+            "username": "testt",
+            "upload_duration_seconds": 1.0536596775054932,
+            "access_id": "c0d5c5a466"
+        },
+        {
+            "original_filename": "Website (boodmo)-20250421T040727Z-001.zip",
+            "sent_filename": "Website (boodmo)-20250421T040727Z-001.zip.zip",
+            "is_split": false,
+            "is_compressed": true,
+            "original_size": 543189,
+            "compressed_size": 531906,
+            "telegram_message_id": 613,
+            "telegram_file_id": "BQACAgUAAxkDAAICZWgHaH48djfxVquatFn7QoIvugg4AAIQFwACYy9AVPcS_cLM8vrVNgQ",
+            "telegram_file_unique_id": "AgADEBcAAmMvQFQ",
+            "upload_timestamp": "2025-04-22T09:59:26.588204+00:00",
+            "username": "testt",
+            "upload_duration_seconds": 2.3809287548065186,
+            "access_id": "5ced91eeaa"
+        },
+        {
+            "original_filename": "download_page.html",
+            "sent_filename": "download_page.html.zip",
+            "is_split": false,
+            "is_compressed": true,
+            "original_size": 2237,
+            "compressed_size": 1040,
+            "telegram_message_id": 614,
+            "telegram_file_id": "BQACAgUAAxkDAAICZmgHar_ef28HnFsCfFvTfYIwZm0oAAIbFwACYy9AVMQCuCBKNKwINgQ",
+            "telegram_file_unique_id": "AgADGxcAAmMvQFQ",
+            "upload_timestamp": "2025-04-22T10:09:03.614052+00:00",
+            "username": "testt",
+            "upload_duration_seconds": 1.0219180583953857,
+            "access_id": "ecff20feaa"
+        },
+        {
+            "original_filename": "VLC Installer (2).exe",
+            "sent_filename": "VLC Installer (2).exe.zip",
+            "is_split": false,
+            "is_compressed": true,
+            "original_size": 1096224,
+            "compressed_size": 485277,
+            "telegram_message_id": 615,
+            "telegram_file_id": "BQACAgUAAxkDAAICZ2gHatm4U1T4Asyna9QqfgTimdc6AAIcFwACYy9AVBcXP4i4si52NgQ",
+            "telegram_file_unique_id": "AgADHBcAAmMvQFQ",
+            "upload_timestamp": "2025-04-22T10:09:30.310640+00:00",
+            "username": "testt",
+            "upload_duration_seconds": 2.0579674243927,
+            "access_id": "555cb80dc3"
+        },
+        {
+            "original_filename": "ScreamingFrogSEOSpider-20.3 (1).exe",
+            "sent_filename": "ScreamingFrogSEOSpider-20.3 (1).exe.zip",
+            "is_split": true,
+            "is_compressed": true,
+            "original_size": 695857376,
+            "compressed_total_size": 654609783,
+            "chunk_size": 20971520,
+            "num_chunks": 32,
+            "chunks": [
+                {
+                    "part_number": 1,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_001",
+                    "message_id": 616,
+                    "file_id": "BQACAgUAAxkDAAICaGgHaxh2xhFqBtHx0Aox4j2WBB3RAAIeFwACYy9AVON_Rze2WwABXjYE",
+                    "file_unique_id": "AgADHhcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 18.04414200782776
+                },
+                {
+                    "part_number": 2,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_002",
+                    "message_id": 617,
+                    "file_id": "BQACAgUAAxkDAAICaWgHayklxnGDPXYBRNu1laL4VwzbAAIfFwACYy9AVBoQS51K3SjuNgQ",
+                    "file_unique_id": "AgADHxcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 17.551412105560303
+                },
+                {
+                    "part_number": 3,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_003",
+                    "message_id": 618,
+                    "file_id": "BQACAgUAAxkDAAICamgHazSOuJtcEIMP-fOLJgaNCv9YAAIgFwACYy9AVEJr9qVhU6-2NgQ",
+                    "file_unique_id": "AgADIBcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 10.331898212432861
+                },
+                {
+                    "part_number": 4,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_004",
+                    "message_id": 619,
+                    "file_id": "BQACAgUAAxkDAAICa2gHaz36cxC67kHR8AsvWyRL4Gm2AAIhFwACYy9AVBRRxtNw9SuhNgQ",
+                    "file_unique_id": "AgADIRcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 8.908188343048096
+                },
+                {
+                    "part_number": 5,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_005",
+                    "message_id": 620,
+                    "file_id": "BQACAgUAAxkDAAICbGgHa0fNlZ7vWkUCjLpenO1LuiUhAAIiFwACYy9AVB_0OBlHCUqINgQ",
+                    "file_unique_id": "AgADIhcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 10.025137901306152
+                },
+                {
+                    "part_number": 6,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_006",
+                    "message_id": 621,
+                    "file_id": "BQACAgUAAxkDAAICbWgHa1VUqcTmvRGh1mSkIxNCs-n5AAIjFwACYy9AVNfBk8NUBfirNgQ",
+                    "file_unique_id": "AgADIxcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 14.251950740814209
+                },
+                {
+                    "part_number": 7,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_007",
+                    "message_id": 622,
+                    "file_id": "BQACAgUAAxkDAAICbmgHa2eLdz-EZluXH02uGk2ynqcpAAIkFwACYy9AVKhS0_oa3iQnNgQ",
+                    "file_unique_id": "AgADJBcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 18.376426935195923
+                },
+                {
+                    "part_number": 8,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_008",
+                    "message_id": 623,
+                    "file_id": "BQACAgUAAxkDAAICb2gHa3KKMS1sqsGEvRciv7cLaoUIAAIlFwACYy9AVIWFfqWQ7FFhNgQ",
+                    "file_unique_id": "AgADJRcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 11.12309980392456
+                },
+                {
+                    "part_number": 9,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_009",
+                    "message_id": 624,
+                    "file_id": "BQACAgUAAxkDAAICcGgHa3oL450mSExUNNLOx6C4-BDEAAImFwACYy9AVMXvEYLPV02ZNgQ",
+                    "file_unique_id": "AgADJhcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 7.619568109512329
+                },
+                {
+                    "part_number": 10,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_010",
+                    "message_id": 625,
+                    "file_id": "BQACAgUAAxkDAAICcWgHa4XsasvNlTeDJXGdHDnTo5KhAAInFwACYy9AVEBX4jjUXgGqNgQ",
+                    "file_unique_id": "AgADJxcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 11.345069169998169
+                },
+                {
+                    "part_number": 11,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_011",
+                    "message_id": 626,
+                    "file_id": "BQACAgUAAxkDAAICcmgHa5LCt5e9c98n90TqnI26EIwIAAIoFwACYy9AVLh21iCoCz7uNgQ",
+                    "file_unique_id": "AgADKBcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 12.576140403747559
+                },
+                {
+                    "part_number": 12,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_012",
+                    "message_id": 627,
+                    "file_id": "BQACAgUAAxkDAAICc2gHa51RSjcnjjACIJ1Ht382Qoy8AAIpFwACYy9AVMcIy9jXcOQ6NgQ",
+                    "file_unique_id": "AgADKRcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 10.963063716888428
+                },
+                {
+                    "part_number": 13,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_013",
+                    "message_id": 628,
+                    "file_id": "BQACAgUAAxkDAAICdGgHa6bFGWAlQH7CWeSpH43Lb_chAAIqFwACYy9AVBx8T0rBKQhuNgQ",
+                    "file_unique_id": "AgADKhcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 8.587980270385742
+                },
+                {
+                    "part_number": 14,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_014",
+                    "message_id": 629,
+                    "file_id": "BQACAgUAAxkDAAICdWgHa68yzIcqAAEhJMeA7ouUcmF44QACKxcAAmMvQFTYszK_Km0jDjYE",
+                    "file_unique_id": "AgADKxcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 9.842150211334229
+                },
+                {
+                    "part_number": 15,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_015",
+                    "message_id": 630,
+                    "file_id": "BQACAgUAAxkDAAICdmgHa7w9_2a4S0ePTHDHJ0-py0iHAAIsFwACYy9AVEV-p14PcOjBNgQ",
+                    "file_unique_id": "AgADLBcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 12.527756690979004
+                },
+                {
+                    "part_number": 16,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_016",
+                    "message_id": 631,
+                    "file_id": "BQACAgUAAxkDAAICd2gHa8lOXM_q3QTAjzR0d6CRgbNkAAItFwACYy9AVEvhiWeiX3PGNgQ",
+                    "file_unique_id": "AgADLRcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 13.3771812915802
+                },
+                {
+                    "part_number": 17,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_017",
+                    "message_id": 632,
+                    "file_id": "BQACAgUAAxkDAAICeGgHa9Yh43Th4TKNXMsfSNOG1u7cAAIuFwACYy9AVDE4a3VoInxPNgQ",
+                    "file_unique_id": "AgADLhcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 12.41596794128418
+                },
+                {
+                    "part_number": 18,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_018",
+                    "message_id": 633,
+                    "file_id": "BQACAgUAAxkDAAICeWgHa-UOgLMMOv160zOAjTVKJruiAAIvFwACYy9AVJ5x32l7yrEXNgQ",
+                    "file_unique_id": "AgADLxcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 14.685370206832886
+                },
+                {
+                    "part_number": 19,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_019",
+                    "message_id": 634,
+                    "file_id": "BQACAgUAAxkDAAICemgHa--xmYFPMXkwepLZ2lxr7U7QAAIwFwACYy9AVOZvS1K5RHIkNgQ",
+                    "file_unique_id": "AgADMBcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 10.82769513130188
+                },
+                {
+                    "part_number": 20,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_020",
+                    "message_id": 635,
+                    "file_id": "BQACAgUAAxkDAAICe2gHbAJMS47jaMySOD_7eMCsFdhRAAIxFwACYy9AVK-XQntoVp8-NgQ",
+                    "file_unique_id": "AgADMRcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 18.352432250976562
+                },
+                {
+                    "part_number": 21,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_021",
+                    "message_id": 636,
+                    "file_id": "BQACAgUAAxkDAAICfGgHbAvvjMda95CDSP11j2omsdlHAAIyFwACYy9AVLyiV49Bh8UlNgQ",
+                    "file_unique_id": "AgADMhcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 9.418691635131836
+                },
+                {
+                    "part_number": 22,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_022",
+                    "message_id": 637,
+                    "file_id": "BQACAgUAAxkDAAICfWgHbBaZ1y8MfE5mv3WrbxfcZhlYAAIzFwACYy9AVKBT29mItkWJNgQ",
+                    "file_unique_id": "AgADMxcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 10.295445919036865
+                },
+                {
+                    "part_number": 23,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_023",
+                    "message_id": 638,
+                    "file_id": "BQACAgUAAxkDAAICfmgHbCLwMo_D9qZMmsZSWw1aqx7KAAI0FwACYy9AVKTxEeSAciSHNgQ",
+                    "file_unique_id": "AgADNBcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 12.02779746055603
+                },
+                {
+                    "part_number": 24,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_024",
+                    "message_id": 639,
+                    "file_id": "BQACAgUAAxkDAAICf2gHbCvaU8enNoJg-8PYvr7txjSDAAI1FwACYy9AVM16MY_iGfO_NgQ",
+                    "file_unique_id": "AgADNRcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 9.75629711151123
+                },
+                {
+                    "part_number": 25,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_025",
+                    "message_id": 640,
+                    "file_id": "BQACAgUAAxkDAAICgGgHbDUfN-Hdqr7hoSTKm675ta7YAAI2FwACYy9AVGveigJeZ40TNgQ",
+                    "file_unique_id": "AgADNhcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 9.902700185775757
+                },
+                {
+                    "part_number": 26,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_026",
+                    "message_id": 641,
+                    "file_id": "BQACAgUAAxkDAAICgWgHbEAZnk4ZpLjXfmxw5FyP3j4mAAI3FwACYy9AVHtGmaJXaiACNgQ",
+                    "file_unique_id": "AgADNxcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 10.663615465164185
+                },
+                {
+                    "part_number": 27,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_027",
+                    "message_id": 642,
+                    "file_id": "BQACAgUAAxkDAAICgmgHbE5LBub9g9gzFTm4nT4OPsJSAAI4FwACYy9AVJxIga32mlPZNgQ",
+                    "file_unique_id": "AgADOBcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 13.883012056350708
+                },
+                {
+                    "part_number": 28,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_028",
+                    "message_id": 643,
+                    "file_id": "BQACAgUAAxkDAAICg2gHbGAM507wUcFUOt64N4G6LG0CAAI5FwACYy9AVMkF23HCPJS2NgQ",
+                    "file_unique_id": "AgADORcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 17.862632274627686
+                },
+                {
+                    "part_number": 29,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_029",
+                    "message_id": 644,
+                    "file_id": "BQACAgUAAxkDAAIChGgHbHID6UjEGFGRiOU0MvkQMsX_AAI6FwACYy9AVD6slVS_ZMmGNgQ",
+                    "file_unique_id": "AgADOhcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 17.93725848197937
+                },
+                {
+                    "part_number": 30,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_030",
+                    "message_id": 645,
+                    "file_id": "BQACAgUAAxkDAAIChWgHbIkDrzLT1gzZDP7jtD7jUwXnAAI7FwACYy9AVEG0EJRm7swnNgQ",
+                    "file_unique_id": "AgADOxcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 23.659545421600342
+                },
+                {
+                    "part_number": 31,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_031",
+                    "message_id": 646,
+                    "file_id": "BQACAgUAAxkDAAIChmgHbJOMB7RY_sXOMqhO3zouKJ0KAAI8FwACYy9AVFdlnb1XbgABGjYE",
+                    "file_unique_id": "AgADPBcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 9.713675260543823
+                },
+                {
+                    "part_number": 32,
+                    "chunk_filename": "ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_032",
+                    "message_id": 647,
+                    "file_id": "BQACAgUAAxkDAAICh2gHbJe9FgM-9AuKcuVCattExjhmAAI9FwACYy9AVBN5z1pp098INgQ",
+                    "file_unique_id": "AgADPRcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 4.2151734828948975
+                }
+            ],
+            "upload_timestamp": "2025-04-22T10:16:56.392051+00:00",
+            "username": "testt",
+            "total_upload_duration_seconds": 401.06847620010376,
+            "access_id": "39cbdab826"
+        },
+        {
+            "original_filename": "download_page.html",
+            "sent_filename": "download_page.html.zip",
+            "is_split": false,
+            "is_compressed": true,
+            "original_size": 2237,
+            "compressed_size": 1040,
+            "telegram_message_id": 648,
+            "telegram_file_id": "BQACAgUAAxkDAAICiGgHbqfYKti04rf98DnaIyrnmOUlAAJAFwACYy9AVNaICgmjvL7INgQ",
+            "telegram_file_unique_id": "AgADQBcAAmMvQFQ",
+            "upload_timestamp": "2025-04-22T10:25:44.302051+00:00",
+            "username": "testt",
+            "upload_duration_seconds": 0.9805350303649902,
+            "access_id": "53d7362275"
+        },
+        {
+            "original_filename": "download_page.html",
+            "sent_filename": "download_page.html.zip",
+            "is_split": false,
+            "is_compressed": true,
+            "original_size": 2237,
+            "compressed_size": 1040,
+            "telegram_message_id": 649,
+            "telegram_file_id": "BQACAgUAAxkDAAICiWgHbrLwRCML0PhPSNFKYcZ2ZdNcAAJBFwACYy9AVOUGNG0mmk-cNgQ",
+            "telegram_file_unique_id": "AgADQRcAAmMvQFQ",
+            "upload_timestamp": "2025-04-22T10:25:55.312696+00:00",
+            "username": "testt",
+            "upload_duration_seconds": 0.9608707427978516,
+            "access_id": "8289effbea"
+        },
+        {
+            "original_filename": "Website (boodmo)-20250421T040727Z-001 (1).zip",
+            "sent_filename": "Website (boodmo)-20250421T040727Z-001 (1).zip.zip",
+            "is_split": false,
+            "is_compressed": true,
+            "original_size": 543189,
+            "compressed_size": 531914,
+            "telegram_message_id": 650,
+            "telegram_file_id": "BQACAgUAAxkDAAICimgHbsAtptfcVO30wNMMncl8exGxAAJCFwACYy9AVNyn4fpNgfMYNgQ",
+            "telegram_file_unique_id": "AgADQhcAAmMvQFQ",
+            "upload_timestamp": "2025-04-22T10:26:09.160674+00:00",
+            "username": "testt",
+            "upload_duration_seconds": 2.060399293899536,
+            "access_id": "6c91a24bb0"
+        },
+        {
+            "original_filename": "60mb (2).pdf",
+            "sent_filename": "60mb (2).pdf.zip",
+            "is_split": true,
+            "is_compressed": true,
+            "original_size": 63862122,
+            "compressed_total_size": 62754359,
+            "chunk_size": 20971520,
+            "num_chunks": 3,
+            "chunks": [
+                {
+                    "part_number": 1,
+                    "chunk_filename": "60mb (2).pdf.zip.part_001",
+                    "message_id": 651,
+                    "file_id": "BQACAgUAAxkDAAICi2gHbtxc5g1vB8-_DvNhXX4ZwS3bAAJDFwACYy9AVNOJ8gABj2pcyjYE",
+                    "file_unique_id": "AgADQxcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 11.251303911209106
+                },
+                {
+                    "part_number": 2,
+                    "chunk_filename": "60mb (2).pdf.zip.part_002",
+                    "message_id": 652,
+                    "file_id": "BQACAgUAAxkDAAICjGgHbugRNMvQWWNQeCwhoAipDCS9AAJEFwACYy9AVOHVLTN0u5wxNgQ",
+                    "file_unique_id": "AgADRBcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 11.275460243225098
+                },
+                {
+                    "part_number": 3,
+                    "chunk_filename": "60mb (2).pdf.zip.part_003",
+                    "message_id": 653,
+                    "file_id": "BQACAgUAAxkDAAICjWgHbvvg7ZywYaphMsbYngjj0pduAAJFFwACYy9AVP-0puI-OERHNgQ",
+                    "file_unique_id": "AgADRRcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 19.200706720352173
+                }
+            ],
+            "upload_timestamp": "2025-04-22T10:27:07.718812+00:00",
+            "username": "testt",
+            "total_upload_duration_seconds": 41.72747087478638,
+            "access_id": "b052fe3b98"
         }
     ],
     "Tomy": [

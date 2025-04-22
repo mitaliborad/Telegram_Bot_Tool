@@ -11,9 +11,11 @@
         p { margin: 0.5em 0; }
         strong { color: #555; }
         hr { border: none; border-top: 1px solid #eee; margin: 1.5em 0; }
+
+        /* Style for the Button (can be same as original link style) */
         .download-button {
             display: inline-block;
-            background-color: #007bff;
+            background-color: #337ab7;
             color: white;
             padding: 12px 25px;
             text-align: center;
@@ -24,30 +26,309 @@
             cursor: pointer;
             transition: background-color 0.2s ease;
         }
-        .download-button:hover { background-color: #0056b3; }
+        .download-button:hover:not(:disabled) { background-color: #0056b3; }
+        .download-button:disabled {
+             background-color: #cccccc;
+             cursor: not-allowed;
+             opacity: 0.7;
+        }
+
         .center-button { text-align: center; margin-top: 1em; }
+
+        /* --- START: Added styles for progress details (similar to index.html) --- */
+        #download-progress-details {
+            margin-top: 15px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f9f9f9; /* Match container background */
+        }
+        #download-progress-details progress {
+            width: 100%;
+            height: 10px;
+            margin-bottom: 10px;
+            /* Optional: Add specific styling for the progress bar appearance */
+            accent-color: #337ab7; /* Match button color */
+        }
+        #download-progress-details .progress-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+         #download-progress-details .progress-info span {
+             word-break: break-all; /* Prevent long filenames from breaking layout */
+         }
+        #download-progress-details .progress-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9em;
+            color: #555;
+        }
+        #download-progress-details .progress-meta span {
+             margin-right: 5px; /* Spacing for icons/text */
+        }
+        #download-progress-details .progress-meta span[title] {
+            cursor: help; /* Indicate tooltips */
+        }
+        /* Status message styling */
+        #download-status {
+             margin-top: 10px;
+             font-weight: bold;
+             text-align: center; /* Center status messages */
+             min-height: 1.2em; /* Prevent layout jumps */
+        }
+        /* --- END: Added styles --- */
+
     </style>
 </head>
 <body>
     <div class="container">
         <h1>File Ready for Download</h1>
-        <p><strong>Filename:</strong> {{ filename }}</p>
-        {# Use the custom filter 'format_bytes' we registered #}
-        <p><strong>Size:</strong> {{ filesize | format_bytes }}</p>
+        <p><strong>Filename:</strong> <span id="static-filename">{{ filename }}</span></p> {# Added span ID #}
+        <p><strong>Size:</strong> {{ filesize | format_bytes }}</p> {# Keep original size display #}
         <p><strong>Uploaded:</strong> {{ upload_date }}</p>
-        {# Optionally display the username if desired #}
-        {# <p><strong>Uploaded By:</strong> {{ username }}</p> #}
         <hr>
-        <div class="center-button">
-            {# This link points to the renamed /download/<access_id> route #}
-            <a href="{{ url_for('direct_download_file', access_id=access_id) }}" class="download-button" download>
-                Download Now
-            </a>
-            {# Note: The 'download' attribute suggests the browser should download the linked URL #}
+
+        <!-- === START: Added Download Progress Details Section (Hidden Initially) === -->
+        <div id="download-progress-details" style="display: none;">
+            <div class="progress-info">
+                <span id="download-progress-filename" style="font-weight: bold;">filename.zip</span>
+                <span> <!-- Progress text (MB/MB) -->
+                    <span id="download-mb-received" style="color: #337ab7;">0.0 MB</span> / <span id="download-mb-total">0.0 MB</span>
+                </span>
+            </div>
+            <progress id="download-progress-bar" value="0" max="100"></progress>
+            <div class="progress-meta">
+                <div>
+                    <span title="Estimated Time Remaining">⏱️</span>
+                    <span id="download-eta">--:--</span>
+                    <span style="margin-left: 15px;" title="Download Speed">⬇️</span>
+                    <span id="download-speed">0.0 MB/s</span>
+                </div>
+                <!-- Optional: Could add a Cancel button here later -->
+                <!-- <button id="cancel-download-button" class="progress-button">Cancel</button> -->
+            </div>
         </div>
+        <!-- Status Message Area -->
+        <p id="download-status"></p>
+        <!-- === END: Added Download Progress Details Section === -->
+
+
+        <div class="center-button">
+            <!-- === START: Replaced Link with Button === -->
+            <button id="download-button"
+                    class="download-button"
+                    data-download-url="{{ url_for('direct_download_file', access_id=access_id) }}"
+                    data-filename="{{ filename }}">
+                Download Now
+            </button>
+            <!-- === END: Replaced Link with Button === -->
+        </div>
+
         <p style="text-align:center; font-size: 0.8em; color: #777; margin-top: 1.5em;">
             Link generated by Telegram Uploader.
         </p>
     </div>
+
+    <!-- === JavaScript will be added in the next step === -->
+    <script>
+        
+        console.log("Download page JavaScript executing.");
+
+// --- Element References ---
+const downloadButton = document.getElementById('download-button');
+const progressDetailsDiv = document.getElementById('download-progress-details');
+const progressFilenameSpan = document.getElementById('download-progress-filename');
+const mbReceivedSpan = document.getElementById('download-mb-received');
+const mbTotalSpan = document.getElementById('download-mb-total');
+const progressBar = document.getElementById('download-progress-bar');
+const etaSpan = document.getElementById('download-eta');
+const speedSpan = document.getElementById('download-speed');
+const statusPara = document.getElementById('download-status'); // The paragraph for status messages
+const staticFilenameSpan = document.getElementById('static-filename'); // To get initial filename
+
+// --- Helper Function: Format Time ---
+function formatTime(seconds) {
+    if (isNaN(seconds) || seconds < 0) return "--:--";
+    seconds = Math.round(seconds);
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+
+    if (hours > 0) {
+        return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    } else {
+        return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+}
+
+// --- Download Logic ---
+// --- Download Logic ---
+downloadButton.addEventListener('click', async (event) => {
+    event.preventDefault(); // Stop default link behavior
+
+    const downloadUrl = downloadButton.dataset.downloadUrl;
+    let filename = downloadButton.dataset.filename || 'downloaded_file';
+
+    // === START: Step 2 Modifications ===
+    let progressInterval = null; // Variable to hold the interval ID
+    // === END: Step 2 Modifications ===
+
+    // --- UI Setup ---
+    downloadButton.disabled = true;
+    statusPara.textContent = 'Initiating download...';
+    statusPara.style.color = '#333';
+    progressDetailsDiv.style.display = 'block';
+    progressBar.value = 0;
+    mbReceivedSpan.textContent = '0.0 MB';
+    mbTotalSpan.textContent = '?.? MB';
+    etaSpan.textContent = '--:--';
+    speedSpan.textContent = '0.0 MB/s';
+    progressFilenameSpan.textContent = filename;
+
+    const startTime = Date.now();
+    let bytesReceived = 0;
+    const chunks = [];
+    let totalBytes = 0; // Make totalBytes accessible to the interval function
+
+    // === START: Step 2 - Define the UI Update function ===
+    const updateUI = () => {
+        const elapsedTime = (Date.now() - startTime) / 1000; // seconds
+        const speed = elapsedTime > 0 ? bytesReceived / elapsedTime : 0; // bytes/sec
+        const speedMBps = speed / (1024 * 1024);
+        let percentage = 0;
+        let eta = -1; // Unknown/Infinite
+
+        if (totalBytes > 0) {
+            percentage = Math.min((bytesReceived / totalBytes) * 100, 100);
+            if (speed > 0 && bytesReceived < totalBytes) { // Calculate ETA only if ongoing
+                const remainingBytes = totalBytes - bytesReceived;
+                eta = remainingBytes / speed; // seconds
+            } else if (bytesReceived >= totalBytes) {
+                 eta = 0; // Done
+            }
+        }
+
+        // Update DOM elements
+        progressBar.value = percentage;
+        mbReceivedSpan.textContent = `${(bytesReceived / (1024 * 1024)).toFixed(1)} MB`;
+        speedSpan.textContent = `${speedMBps.toFixed(1)} MB/s`;
+        etaSpan.textContent = formatTime(eta);
+    };
+    // === END: Step 2 - Define the UI Update function ===
+
+
+    try {
+        statusPara.textContent = 'Connecting...';
+        const response = await fetch(downloadUrl);
+
+        if (!response.ok) {
+            throw new Error(`Download failed: ${response.status} ${response.statusText}`);
+        }
+
+        const contentLength = response.headers.get('Content-Length');
+        if (!contentLength) {
+            console.warn("Content-Length header missing. Progress percentage might be inaccurate.");
+        }
+
+        totalBytes = parseInt(contentLength || '0', 10); // Assign to the shared variable
+        if (totalBytes > 0) {
+             mbTotalSpan.textContent = `${(totalBytes / (1024 * 1024)).toFixed(1)} MB`;
+        } else {
+             mbTotalSpan.textContent = 'N/A';
+        }
+
+        const reader = response.body.getReader();
+        statusPara.textContent = 'Downloading...';
+
+        // === START: Step 2 - Start the interval timer ===
+        progressInterval = setInterval(updateUI, 250); // Update UI every 250ms
+        // === END: Step 2 - Start the interval timer ===
+
+        // --- Read the stream ---
+        while (true) {
+            const { done, value } = await reader.read();
+
+            if (done) {
+                break;
+            }
+
+            chunks.push(value);
+            bytesReceived += value.length; // Update bytesReceived - interval func will read this
+
+            // Keep log for now to see if loop behaviour changes (it might not)
+             console.log(`Chunk received: Bytes=${bytesReceived}/${totalBytes}, Speed available in interval`);
+
+            // === START: Step 2 - REMOVE UI update from here ===
+            // requestAnimationFrame(() => { ... }); // REMOVED
+            // === END: Step 2 - REMOVE UI update from here ===
+
+        } // --- End of while loop ---
+
+        // === START: Step 2 - Stop the interval timer ===
+        clearInterval(progressInterval);
+        progressInterval = null; // Clear variable
+        // === END: Step 2 - Stop the interval timer ===
+
+        // === START: Step 2 - Final UI update after loop ===
+        // Ensure UI shows 100% and final values
+        bytesReceived = totalBytes; // Assume complete if loop finished cleanly and totalBytes known
+        updateUI(); // Call one last time to set final numbers
+        progressBar.value = 100; // Force 100%
+        etaSpan.textContent = '00:00'; // Force final ETA
+        // === END: Step 2 - Final UI update after loop ===
+
+        statusPara.textContent = 'Processing downloaded file...';
+        // progressBar.value = 100; // Moved to final update above
+        // etaSpan.textContent = '00:00'; // Moved to final update above
+
+         // --- Combine chunks and trigger save ---
+         // ...(blob creation and save logic remains the same)...
+         if (chunks.length === 0 && totalBytes > 0) {
+              throw new Error("Download incomplete: No data received.");
+         }
+         if (bytesReceived !== totalBytes && totalBytes > 0) {
+             console.warn(`Final byte count (${bytesReceived}) differs from Content-Length (${totalBytes}). File might be incomplete or header was wrong.`);
+         }
+
+         const blob = new Blob(chunks);
+         const objectUrl = URL.createObjectURL(blob);
+         filename = downloadButton.dataset.filename || staticFilenameSpan.textContent || 'downloaded_file';
+         const link = document.createElement('a');
+         link.href = objectUrl;
+         link.download = filename;
+         document.body.appendChild(link);
+         link.click();
+         document.body.removeChild(link);
+         URL.revokeObjectURL(objectUrl);
+
+         statusPara.textContent = `File "${filename}" downloaded successfully!`;
+         statusPara.style.color = 'green';
+         setTimeout(() => {
+             downloadButton.disabled = false;
+             // progressDetailsDiv.style.display = 'none';
+         }, 2000);
+
+    } catch (error) {
+        // === START: Step 2 - Stop interval on error ===
+        if (progressInterval) {
+            clearInterval(progressInterval);
+            progressInterval = null;
+        }
+        // === END: Step 2 - Stop interval on error ===
+
+        console.error('Download Error:', error);
+        statusPara.textContent = `Error: ${error.message}`;
+        statusPara.style.color = 'red';
+        progressDetailsDiv.style.display = 'none';
+        downloadButton.disabled = false;
+    }
+});
+// === END: Step 2 JavaScript ===
+        
+    </script>
+
 </body>
 </html>

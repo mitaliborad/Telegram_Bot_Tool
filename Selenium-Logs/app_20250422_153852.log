@@ -1,0 +1,718 @@
+2025-04-22 15:38:52,334 - INFO - [<module>] - Logging configured. Log file: Selenium-Logs\app_20250422_153852.log
+2025-04-22 15:38:52,336 - INFO - [<module>] - Flask application initialized.
+2025-04-22 15:38:52,340 - INFO - [<module>] - Starting Flask development server...
+2025-04-22 15:38:52,374 - WARNING - [_log] -  * Debugger is active!
+2025-04-22 15:38:52,380 - INFO - [_log] -  * Debugger PIN: 107-410-311
+2025-04-22 15:38:54,750 - INFO - [index] - Serving index page.
+2025-04-22 15:38:54,767 - INFO - [_log] - 127.0.0.1 - - [22/Apr/2025 15:38:54] "GET / HTTP/1.1" 200 -
+2025-04-22 15:38:54,787 - INFO - [_log] - 127.0.0.1 - - [22/Apr/2025 15:38:54] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-22 15:39:02,560 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-22 15:39:02,562 - INFO - [initiate_upload] - Saving temporary file for upload_id '6ba0d992-c789-4631-ab6d-119038e1b637' to 'uploads_temp\6ba0d992-c789-4631-ab6d-119038e1b637_download_page.html'
+2025-04-22 15:39:02,565 - INFO - [initiate_upload] - Temporary file saved successfully for 'download_page.html' (ID: 6ba0d992-c789-4631-ab6d-119038e1b637).
+2025-04-22 15:39:02,566 - INFO - [_log] - 127.0.0.1 - - [22/Apr/2025 15:39:02] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-22 15:39:02,577 - INFO - [stream_progress] - SSE connection request for upload_id: 6ba0d992-c789-4631-ab6d-119038e1b637
+2025-04-22 15:39:02,578 - INFO - [process_upload_and_generate_updates] - [6ba0d992-c789-4631-ab6d-119038e1b637] Starting processing...
+2025-04-22 15:39:02,579 - INFO - [process_upload_and_generate_updates] - [6ba0d992-c789-4631-ab6d-119038e1b637] Processing upload: User='testt', File='download_page.html', TempPath='uploads_temp\6ba0d992-c789-4631-ab6d-119038e1b637_download_page.html'
+2025-04-22 15:39:02,581 - INFO - [process_upload_and_generate_updates] - [6ba0d992-c789-4631-ab6d-119038e1b637] Original temp file size: 2237 bytes.
+2025-04-22 15:39:02,583 - INFO - [_log] - 127.0.0.1 - - [22/Apr/2025 15:39:02] "GET /stream-progress/6ba0d992-c789-4631-ab6d-119038e1b637 HTTP/1.1" 200 -
+2025-04-22 15:39:02,584 - INFO - [process_upload_and_generate_updates] - [6ba0d992-c789-4631-ab6d-119038e1b637] 'download_page.html' is small. Compressing and sending as single file.
+2025-04-22 15:39:02,588 - INFO - [process_upload_and_generate_updates] - [6ba0d992-c789-4631-ab6d-119038e1b637] Compressed 'download_page.html' to 1040 bytes.
+2025-04-22 15:39:02,589 - INFO - [send_file_to_telegram] - Sending file 'download_page.html.zip' to Telegram chat ID: -4603853425
+2025-04-22 15:39:03,610 - INFO - [send_file_to_telegram] - Telegram API success for 'download_page.html.zip'.
+2025-04-22 15:39:03,611 - INFO - [process_upload_and_generate_updates] - [6ba0d992-c789-4631-ab6d-119038e1b637] Single file 'download_page.html' sent successfully.
+2025-04-22 15:39:03,613 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-22 15:39:03,624 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-22 15:39:03,625 - INFO - [process_upload_and_generate_updates] - [6ba0d992-c789-4631-ab6d-119038e1b637] Generated landing page URL: http://127.0.0.1:5000/get/ecff20feaa
+2025-04-22 15:39:03,626 - INFO - [process_upload_and_generate_updates] - [6ba0d992-c789-4631-ab6d-119038e1b637] Entering final cleanup.
+2025-04-22 15:39:03,626 - INFO - [process_upload_and_generate_updates] - [6ba0d992-c789-4631-ab6d-119038e1b637] Successfully deleted original temporary file: uploads_temp\6ba0d992-c789-4631-ab6d-119038e1b637_download_page.html
+2025-04-22 15:39:03,627 - INFO - [process_upload_and_generate_updates] - [6ba0d992-c789-4631-ab6d-119038e1b637] Processing finished with status: completed_metadata_error
+2025-04-22 15:39:07,888 - INFO - [get_file_by_access_id] - Received request for access_id: ecff20feaa
+2025-04-22 15:39:07,911 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-22 15:39:07,912 - INFO - [get_file_by_access_id] - Found file 'download_page.html' for user 'testt' with access_id 'ecff20feaa'. Rendering download page.
+2025-04-22 15:39:07,993 - INFO - [_log] - 127.0.0.1 - - [22/Apr/2025 15:39:07] "GET /get/ecff20feaa HTTP/1.1" 200 -
+2025-04-22 15:39:09,701 - INFO - [direct_download_file] - [Direct DL:ecff20feaa] Received direct download request.
+2025-04-22 15:39:09,704 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-22 15:39:09,705 - INFO - [direct_download_file] - [Direct DL:ecff20feaa] Found file metadata for user 'testt'.
+2025-04-22 15:39:09,705 - INFO - [direct_download_file] - [Direct DL:ecff20feaa] Preparing to download 'download_page.html'.
+2025-04-22 15:39:09,706 - INFO - [direct_download_file] - [Direct DL:ecff20feaa] Starting file preparation for 'download_page.html'.
+2025-04-22 15:39:09,706 - INFO - [direct_download_file] - [Direct DL:ecff20feaa] Preparing non-split file.
+2025-04-22 15:39:09,706 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICZmgHar_ef28HnFsCfFvTfYIwZm0oAAIbFwACYy9AVMQCuCBKNKwINgQ
+2025-04-22 15:39:10,503 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_339.zip
+2025-04-22 15:39:10,504 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_339.zip
+2025-04-22 15:39:10,931 - INFO - [download_telegram_file_content] - Successfully downloaded 1040 bytes for file_id BQACAgUAAxkDAAICZmgHar_ef28HnFsCfFvTfYIwZm0oAAIbFwACYy9AVMQCuCBKNKwINgQ.
+2025-04-22 15:39:10,934 - INFO - [direct_download_file] - [Direct DL:ecff20feaa] Decompressing single downloaded file...
+2025-04-22 15:39:10,939 - INFO - [direct_download_file] - [Direct DL:ecff20feaa] Decompression finished in 0.01s. Final file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\directDL_decomp_ecff20feaa_pyx4qu2_.html
+2025-04-22 15:39:10,940 - INFO - [direct_download_file] - [Direct DL:ecff20feaa] File preparation successful. Final file: 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\directDL_decomp_ecff20feaa_pyx4qu2_.html', Size: 2237 bytes. Prep time: 1.23s.
+2025-04-22 15:39:10,943 - INFO - [direct_download_file] - [Direct DL:ecff20feaa] Starting file stream for 'download_page.html' from 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\directDL_decomp_ecff20feaa_pyx4qu2_.html'.
+2025-04-22 15:39:10,944 - INFO - [direct_download_file] - [Direct DL:ecff20feaa] Returning streaming response. Total request time (incl. prep): 1.24s.
+2025-04-22 15:39:10,948 - INFO - [_log] - 127.0.0.1 - - [22/Apr/2025 15:39:10] "GET /download/ecff20feaa HTTP/1.1" 200 -
+2025-04-22 15:39:10,950 - INFO - [generate_file_chunks] - [Direct DL:ecff20feaa] Finished streaming file content: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\directDL_decomp_ecff20feaa_pyx4qu2_.html
+2025-04-22 15:39:10,952 - INFO - [generate_file_chunks] - [Direct DL:ecff20feaa] Generator cleaning up final temp file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\directDL_decomp_ecff20feaa_pyx4qu2_.html
+2025-04-22 15:39:10,955 - INFO - [generate_file_chunks] - [Direct DL:ecff20feaa] Successfully deleted final temp file via generator: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\directDL_decomp_ecff20feaa_pyx4qu2_.html
+2025-04-22 15:39:27,765 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-22 15:39:27,779 - INFO - [initiate_upload] - Saving temporary file for upload_id '21b43678-28ef-4b51-8116-1662dec7ccf9' to 'uploads_temp\21b43678-28ef-4b51-8116-1662dec7ccf9_VLC Installer (2).exe'
+2025-04-22 15:39:27,782 - INFO - [initiate_upload] - Temporary file saved successfully for 'VLC Installer (2).exe' (ID: 21b43678-28ef-4b51-8116-1662dec7ccf9).
+2025-04-22 15:39:27,783 - INFO - [_log] - 127.0.0.1 - - [22/Apr/2025 15:39:27] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-22 15:39:27,792 - INFO - [stream_progress] - SSE connection request for upload_id: 21b43678-28ef-4b51-8116-1662dec7ccf9
+2025-04-22 15:39:27,793 - INFO - [process_upload_and_generate_updates] - [21b43678-28ef-4b51-8116-1662dec7ccf9] Starting processing...
+2025-04-22 15:39:27,793 - INFO - [process_upload_and_generate_updates] - [21b43678-28ef-4b51-8116-1662dec7ccf9] Processing upload: User='testt', File='VLC Installer (2).exe', TempPath='uploads_temp\21b43678-28ef-4b51-8116-1662dec7ccf9_VLC Installer (2).exe'
+2025-04-22 15:39:27,794 - INFO - [process_upload_and_generate_updates] - [21b43678-28ef-4b51-8116-1662dec7ccf9] Original temp file size: 1096224 bytes.
+2025-04-22 15:39:27,794 - INFO - [_log] - 127.0.0.1 - - [22/Apr/2025 15:39:27] "GET /stream-progress/21b43678-28ef-4b51-8116-1662dec7ccf9 HTTP/1.1" 200 -
+2025-04-22 15:39:27,795 - INFO - [process_upload_and_generate_updates] - [21b43678-28ef-4b51-8116-1662dec7ccf9] 'VLC Installer (2).exe' is small. Compressing and sending as single file.
+2025-04-22 15:39:28,247 - INFO - [process_upload_and_generate_updates] - [21b43678-28ef-4b51-8116-1662dec7ccf9] Compressed 'VLC Installer (2).exe' to 485277 bytes.
+2025-04-22 15:39:28,248 - INFO - [send_file_to_telegram] - Sending file 'VLC Installer (2).exe.zip' to Telegram chat ID: -4603853425
+2025-04-22 15:39:30,306 - INFO - [send_file_to_telegram] - Telegram API success for 'VLC Installer (2).exe.zip'.
+2025-04-22 15:39:30,306 - INFO - [process_upload_and_generate_updates] - [21b43678-28ef-4b51-8116-1662dec7ccf9] Single file 'VLC Installer (2).exe' sent successfully.
+2025-04-22 15:39:30,309 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-22 15:39:30,322 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-22 15:39:30,323 - INFO - [process_upload_and_generate_updates] - [21b43678-28ef-4b51-8116-1662dec7ccf9] Generated landing page URL: http://127.0.0.1:5000/get/555cb80dc3
+2025-04-22 15:39:30,323 - INFO - [process_upload_and_generate_updates] - [21b43678-28ef-4b51-8116-1662dec7ccf9] Entering final cleanup.
+2025-04-22 15:39:30,324 - INFO - [process_upload_and_generate_updates] - [21b43678-28ef-4b51-8116-1662dec7ccf9] Successfully deleted original temporary file: uploads_temp\21b43678-28ef-4b51-8116-1662dec7ccf9_VLC Installer (2).exe
+2025-04-22 15:39:30,325 - INFO - [process_upload_and_generate_updates] - [21b43678-28ef-4b51-8116-1662dec7ccf9] Processing finished with status: completed_metadata_error
+2025-04-22 15:39:39,096 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-22 15:39:46,978 - INFO - [initiate_upload] - Saving temporary file for upload_id 'd77b3147-ff33-441e-ac82-d5c582b93ee2' to 'uploads_temp\d77b3147-ff33-441e-ac82-d5c582b93ee2_ScreamingFrogSEOSpider-20.3 (1).exe'
+2025-04-22 15:39:51,134 - INFO - [initiate_upload] - Temporary file saved successfully for 'ScreamingFrogSEOSpider-20.3 (1).exe' (ID: d77b3147-ff33-441e-ac82-d5c582b93ee2).
+2025-04-22 15:39:51,192 - INFO - [_log] - 127.0.0.1 - - [22/Apr/2025 15:39:51] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-22 15:39:51,198 - INFO - [stream_progress] - SSE connection request for upload_id: d77b3147-ff33-441e-ac82-d5c582b93ee2
+2025-04-22 15:39:51,199 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Starting processing...
+2025-04-22 15:39:51,200 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Processing upload: User='testt', File='ScreamingFrogSEOSpider-20.3 (1).exe', TempPath='uploads_temp\d77b3147-ff33-441e-ac82-d5c582b93ee2_ScreamingFrogSEOSpider-20.3 (1).exe'
+2025-04-22 15:39:51,353 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Original temp file size: 695857376 bytes.
+2025-04-22 15:39:51,354 - INFO - [_log] - 127.0.0.1 - - [22/Apr/2025 15:39:51] "GET /stream-progress/d77b3147-ff33-441e-ac82-d5c582b93ee2 HTTP/1.1" 200 -
+2025-04-22 15:39:51,355 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] 'ScreamingFrogSEOSpider-20.3 (1).exe' is large. Compressing before splitting.
+2025-04-22 15:39:51,390 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Created temporary file for compression result: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\d77b3147-ff33-441e-ac82-d5c582b93ee2_comp_wrrilf8t.zip
+2025-04-22 15:40:14,622 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Finished compressing to 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\d77b3147-ff33-441e-ac82-d5c582b93ee2_comp_wrrilf8t.zip'. Size: 654609783 bytes. Time: 23.23s.
+2025-04-22 15:40:14,660 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Reading chunk 1 for COMPRESSED file starting at byte 0.
+2025-04-22 15:40:14,671 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Read chunk 1 (20971520 bytes). Total read: 20971520/654609783
+2025-04-22 15:40:14,672 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Attempting to send chunk: 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_001'
+2025-04-22 15:40:14,672 - INFO - [send_file_to_telegram] - Sending file 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_001' to Telegram chat ID: -4603853425
+2025-04-22 15:40:32,713 - INFO - [send_file_to_telegram] - Telegram API success for 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_001'.
+2025-04-22 15:40:32,716 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_001' sent successfully.
+2025-04-22 15:40:32,717 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Successfully processed chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_001' (MsgID=616) in 18.04s.
+2025-04-22 15:40:32,717 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Reading chunk 2 for COMPRESSED file starting at byte 20971520.
+2025-04-22 15:40:32,736 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Read chunk 2 (20971520 bytes). Total read: 41943040/654609783
+2025-04-22 15:40:32,737 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Attempting to send chunk: 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_002'
+2025-04-22 15:40:32,737 - INFO - [send_file_to_telegram] - Sending file 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_002' to Telegram chat ID: -4603853425
+2025-04-22 15:40:50,284 - INFO - [send_file_to_telegram] - Telegram API success for 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_002'.
+2025-04-22 15:40:50,288 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_002' sent successfully.
+2025-04-22 15:40:50,289 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Successfully processed chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_002' (MsgID=617) in 17.55s.
+2025-04-22 15:40:50,292 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Reading chunk 3 for COMPRESSED file starting at byte 41943040.
+2025-04-22 15:40:50,310 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Read chunk 3 (20971520 bytes). Total read: 62914560/654609783
+2025-04-22 15:40:50,310 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Attempting to send chunk: 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_003'
+2025-04-22 15:40:50,311 - INFO - [send_file_to_telegram] - Sending file 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_003' to Telegram chat ID: -4603853425
+2025-04-22 15:41:00,641 - INFO - [send_file_to_telegram] - Telegram API success for 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_003'.
+2025-04-22 15:41:00,643 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_003' sent successfully.
+2025-04-22 15:41:00,644 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Successfully processed chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_003' (MsgID=618) in 10.33s.
+2025-04-22 15:41:00,644 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Reading chunk 4 for COMPRESSED file starting at byte 62914560.
+2025-04-22 15:41:00,656 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Read chunk 4 (20971520 bytes). Total read: 83886080/654609783
+2025-04-22 15:41:00,657 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Attempting to send chunk: 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_004'
+2025-04-22 15:41:00,657 - INFO - [send_file_to_telegram] - Sending file 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_004' to Telegram chat ID: -4603853425
+2025-04-22 15:41:09,563 - INFO - [send_file_to_telegram] - Telegram API success for 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_004'.
+2025-04-22 15:41:09,565 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_004' sent successfully.
+2025-04-22 15:41:09,566 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Successfully processed chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_004' (MsgID=619) in 8.91s.
+2025-04-22 15:41:09,567 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Reading chunk 5 for COMPRESSED file starting at byte 83886080.
+2025-04-22 15:41:09,579 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Read chunk 5 (20971520 bytes). Total read: 104857600/654609783
+2025-04-22 15:41:09,579 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Attempting to send chunk: 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_005'
+2025-04-22 15:41:09,579 - INFO - [send_file_to_telegram] - Sending file 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_005' to Telegram chat ID: -4603853425
+2025-04-22 15:41:19,598 - INFO - [send_file_to_telegram] - Telegram API success for 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_005'.
+2025-04-22 15:41:19,604 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_005' sent successfully.
+2025-04-22 15:41:19,605 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Successfully processed chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_005' (MsgID=620) in 10.03s.
+2025-04-22 15:41:19,607 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Reading chunk 6 for COMPRESSED file starting at byte 104857600.
+2025-04-22 15:41:19,625 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Read chunk 6 (20971520 bytes). Total read: 125829120/654609783
+2025-04-22 15:41:19,626 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Attempting to send chunk: 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_006'
+2025-04-22 15:41:19,628 - INFO - [send_file_to_telegram] - Sending file 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_006' to Telegram chat ID: -4603853425
+2025-04-22 15:41:33,875 - INFO - [send_file_to_telegram] - Telegram API success for 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_006'.
+2025-04-22 15:41:33,880 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_006' sent successfully.
+2025-04-22 15:41:33,881 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Successfully processed chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_006' (MsgID=621) in 14.25s.
+2025-04-22 15:41:33,882 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Reading chunk 7 for COMPRESSED file starting at byte 125829120.
+2025-04-22 15:41:33,896 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Read chunk 7 (20971520 bytes). Total read: 146800640/654609783
+2025-04-22 15:41:33,896 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Attempting to send chunk: 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_007'
+2025-04-22 15:41:33,897 - INFO - [send_file_to_telegram] - Sending file 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_007' to Telegram chat ID: -4603853425
+2025-04-22 15:41:52,270 - INFO - [send_file_to_telegram] - Telegram API success for 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_007'.
+2025-04-22 15:41:52,274 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_007' sent successfully.
+2025-04-22 15:41:52,275 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Successfully processed chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_007' (MsgID=622) in 18.38s.
+2025-04-22 15:41:52,275 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Reading chunk 8 for COMPRESSED file starting at byte 146800640.
+2025-04-22 15:41:52,288 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Read chunk 8 (20971520 bytes). Total read: 167772160/654609783
+2025-04-22 15:41:52,289 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Attempting to send chunk: 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_008'
+2025-04-22 15:41:52,289 - INFO - [send_file_to_telegram] - Sending file 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_008' to Telegram chat ID: -4603853425
+2025-04-22 15:42:03,407 - INFO - [send_file_to_telegram] - Telegram API success for 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_008'.
+2025-04-22 15:42:03,412 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_008' sent successfully.
+2025-04-22 15:42:03,413 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Successfully processed chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_008' (MsgID=623) in 11.12s.
+2025-04-22 15:42:03,416 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Reading chunk 9 for COMPRESSED file starting at byte 167772160.
+2025-04-22 15:42:03,439 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Read chunk 9 (20971520 bytes). Total read: 188743680/654609783
+2025-04-22 15:42:03,441 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Attempting to send chunk: 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_009'
+2025-04-22 15:42:03,441 - INFO - [send_file_to_telegram] - Sending file 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_009' to Telegram chat ID: -4603853425
+2025-04-22 15:42:11,054 - INFO - [send_file_to_telegram] - Telegram API success for 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_009'.
+2025-04-22 15:42:11,060 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_009' sent successfully.
+2025-04-22 15:42:11,061 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Successfully processed chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_009' (MsgID=624) in 7.62s.
+2025-04-22 15:42:11,063 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Reading chunk 10 for COMPRESSED file starting at byte 188743680.
+2025-04-22 15:42:11,078 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Read chunk 10 (20971520 bytes). Total read: 209715200/654609783
+2025-04-22 15:42:11,079 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Attempting to send chunk: 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_010'
+2025-04-22 15:42:11,079 - INFO - [send_file_to_telegram] - Sending file 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_010' to Telegram chat ID: -4603853425
+2025-04-22 15:42:22,421 - INFO - [send_file_to_telegram] - Telegram API success for 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_010'.
+2025-04-22 15:42:22,424 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_010' sent successfully.
+2025-04-22 15:42:22,425 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Successfully processed chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_010' (MsgID=625) in 11.35s.
+2025-04-22 15:42:22,426 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Reading chunk 11 for COMPRESSED file starting at byte 209715200.
+2025-04-22 15:42:22,440 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Read chunk 11 (20971520 bytes). Total read: 230686720/654609783
+2025-04-22 15:42:22,440 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Attempting to send chunk: 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_011'
+2025-04-22 15:42:22,440 - INFO - [send_file_to_telegram] - Sending file 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_011' to Telegram chat ID: -4603853425
+2025-04-22 15:42:35,014 - INFO - [send_file_to_telegram] - Telegram API success for 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_011'.
+2025-04-22 15:42:35,017 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_011' sent successfully.
+2025-04-22 15:42:35,018 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Successfully processed chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_011' (MsgID=626) in 12.58s.
+2025-04-22 15:42:35,019 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Reading chunk 12 for COMPRESSED file starting at byte 230686720.
+2025-04-22 15:42:35,033 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Read chunk 12 (20971520 bytes). Total read: 251658240/654609783
+2025-04-22 15:42:35,034 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Attempting to send chunk: 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_012'
+2025-04-22 15:42:35,034 - INFO - [send_file_to_telegram] - Sending file 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_012' to Telegram chat ID: -4603853425
+2025-04-22 15:42:45,993 - INFO - [send_file_to_telegram] - Telegram API success for 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_012'.
+2025-04-22 15:42:45,997 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_012' sent successfully.
+2025-04-22 15:42:45,998 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Successfully processed chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_012' (MsgID=627) in 10.96s.
+2025-04-22 15:42:45,999 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Reading chunk 13 for COMPRESSED file starting at byte 251658240.
+2025-04-22 15:42:46,014 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Read chunk 13 (20971520 bytes). Total read: 272629760/654609783
+2025-04-22 15:42:46,014 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Attempting to send chunk: 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_013'
+2025-04-22 15:42:46,015 - INFO - [send_file_to_telegram] - Sending file 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_013' to Telegram chat ID: -4603853425
+2025-04-22 15:42:54,596 - INFO - [send_file_to_telegram] - Telegram API success for 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_013'.
+2025-04-22 15:42:54,603 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_013' sent successfully.
+2025-04-22 15:42:54,603 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Successfully processed chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_013' (MsgID=628) in 8.59s.
+2025-04-22 15:42:54,605 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Reading chunk 14 for COMPRESSED file starting at byte 272629760.
+2025-04-22 15:42:54,620 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Read chunk 14 (20971520 bytes). Total read: 293601280/654609783
+2025-04-22 15:42:54,620 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Attempting to send chunk: 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_014'
+2025-04-22 15:42:54,620 - INFO - [send_file_to_telegram] - Sending file 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_014' to Telegram chat ID: -4603853425
+2025-04-22 15:43:04,460 - INFO - [send_file_to_telegram] - Telegram API success for 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_014'.
+2025-04-22 15:43:04,463 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_014' sent successfully.
+2025-04-22 15:43:04,464 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Successfully processed chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_014' (MsgID=629) in 9.84s.
+2025-04-22 15:43:04,464 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Reading chunk 15 for COMPRESSED file starting at byte 293601280.
+2025-04-22 15:43:04,477 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Read chunk 15 (20971520 bytes). Total read: 314572800/654609783
+2025-04-22 15:43:04,477 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Attempting to send chunk: 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_015'
+2025-04-22 15:43:04,478 - INFO - [send_file_to_telegram] - Sending file 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_015' to Telegram chat ID: -4603853425
+2025-04-22 15:43:16,999 - INFO - [send_file_to_telegram] - Telegram API success for 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_015'.
+2025-04-22 15:43:17,005 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_015' sent successfully.
+2025-04-22 15:43:17,006 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Successfully processed chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_015' (MsgID=630) in 12.53s.
+2025-04-22 15:43:17,006 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Reading chunk 16 for COMPRESSED file starting at byte 314572800.
+2025-04-22 15:43:17,020 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Read chunk 16 (20971520 bytes). Total read: 335544320/654609783
+2025-04-22 15:43:17,020 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Attempting to send chunk: 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_016'
+2025-04-22 15:43:17,021 - INFO - [send_file_to_telegram] - Sending file 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_016' to Telegram chat ID: -4603853425
+2025-04-22 15:43:30,394 - INFO - [send_file_to_telegram] - Telegram API success for 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_016'.
+2025-04-22 15:43:30,399 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_016' sent successfully.
+2025-04-22 15:43:30,400 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Successfully processed chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_016' (MsgID=631) in 13.38s.
+2025-04-22 15:43:30,400 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Reading chunk 17 for COMPRESSED file starting at byte 335544320.
+2025-04-22 15:43:30,412 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Read chunk 17 (20971520 bytes). Total read: 356515840/654609783
+2025-04-22 15:43:30,413 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Attempting to send chunk: 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_017'
+2025-04-22 15:43:30,413 - INFO - [send_file_to_telegram] - Sending file 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_017' to Telegram chat ID: -4603853425
+2025-04-22 15:43:42,823 - INFO - [send_file_to_telegram] - Telegram API success for 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_017'.
+2025-04-22 15:43:42,828 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_017' sent successfully.
+2025-04-22 15:43:42,830 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Successfully processed chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_017' (MsgID=632) in 12.42s.
+2025-04-22 15:43:42,832 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Reading chunk 18 for COMPRESSED file starting at byte 356515840.
+2025-04-22 15:43:42,847 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Read chunk 18 (20971520 bytes). Total read: 377487360/654609783
+2025-04-22 15:43:42,848 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Attempting to send chunk: 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_018'
+2025-04-22 15:43:42,849 - INFO - [send_file_to_telegram] - Sending file 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_018' to Telegram chat ID: -4603853425
+2025-04-22 15:43:57,532 - INFO - [send_file_to_telegram] - Telegram API success for 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_018'.
+2025-04-22 15:43:57,535 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_018' sent successfully.
+2025-04-22 15:43:57,536 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Successfully processed chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_018' (MsgID=633) in 14.69s.
+2025-04-22 15:43:57,536 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Reading chunk 19 for COMPRESSED file starting at byte 377487360.
+2025-04-22 15:43:57,553 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Read chunk 19 (20971520 bytes). Total read: 398458880/654609783
+2025-04-22 15:43:57,553 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Attempting to send chunk: 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_019'
+2025-04-22 15:43:57,554 - INFO - [send_file_to_telegram] - Sending file 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_019' to Telegram chat ID: -4603853425
+2025-04-22 15:44:08,377 - INFO - [send_file_to_telegram] - Telegram API success for 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_019'.
+2025-04-22 15:44:08,382 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_019' sent successfully.
+2025-04-22 15:44:08,384 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Successfully processed chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_019' (MsgID=634) in 10.83s.
+2025-04-22 15:44:08,388 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Reading chunk 20 for COMPRESSED file starting at byte 398458880.
+2025-04-22 15:44:08,408 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Read chunk 20 (20971520 bytes). Total read: 419430400/654609783
+2025-04-22 15:44:08,408 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Attempting to send chunk: 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_020'
+2025-04-22 15:44:08,409 - INFO - [send_file_to_telegram] - Sending file 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_020' to Telegram chat ID: -4603853425
+2025-04-22 15:44:26,759 - INFO - [send_file_to_telegram] - Telegram API success for 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_020'.
+2025-04-22 15:44:26,761 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_020' sent successfully.
+2025-04-22 15:44:26,762 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Successfully processed chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_020' (MsgID=635) in 18.35s.
+2025-04-22 15:44:26,763 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Reading chunk 21 for COMPRESSED file starting at byte 419430400.
+2025-04-22 15:44:26,778 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Read chunk 21 (20971520 bytes). Total read: 440401920/654609783
+2025-04-22 15:44:26,778 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Attempting to send chunk: 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_021'
+2025-04-22 15:44:26,779 - INFO - [send_file_to_telegram] - Sending file 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_021' to Telegram chat ID: -4603853425
+2025-04-22 15:44:36,192 - INFO - [send_file_to_telegram] - Telegram API success for 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_021'.
+2025-04-22 15:44:36,198 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_021' sent successfully.
+2025-04-22 15:44:36,199 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Successfully processed chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_021' (MsgID=636) in 9.42s.
+2025-04-22 15:44:36,201 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Reading chunk 22 for COMPRESSED file starting at byte 440401920.
+2025-04-22 15:44:36,214 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Read chunk 22 (20971520 bytes). Total read: 461373440/654609783
+2025-04-22 15:44:36,214 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Attempting to send chunk: 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_022'
+2025-04-22 15:44:36,214 - INFO - [send_file_to_telegram] - Sending file 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_022' to Telegram chat ID: -4603853425
+2025-04-22 15:44:46,503 - INFO - [send_file_to_telegram] - Telegram API success for 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_022'.
+2025-04-22 15:44:46,509 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_022' sent successfully.
+2025-04-22 15:44:46,510 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Successfully processed chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_022' (MsgID=637) in 10.30s.
+2025-04-22 15:44:46,510 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Reading chunk 23 for COMPRESSED file starting at byte 461373440.
+2025-04-22 15:44:46,524 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Read chunk 23 (20971520 bytes). Total read: 482344960/654609783
+2025-04-22 15:44:46,524 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Attempting to send chunk: 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_023'
+2025-04-22 15:44:46,525 - INFO - [send_file_to_telegram] - Sending file 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_023' to Telegram chat ID: -4603853425
+2025-04-22 15:44:58,548 - INFO - [send_file_to_telegram] - Telegram API success for 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_023'.
+2025-04-22 15:44:58,553 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_023' sent successfully.
+2025-04-22 15:44:58,555 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Successfully processed chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_023' (MsgID=638) in 12.03s.
+2025-04-22 15:44:58,556 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Reading chunk 24 for COMPRESSED file starting at byte 482344960.
+2025-04-22 15:44:58,574 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Read chunk 24 (20971520 bytes). Total read: 503316480/654609783
+2025-04-22 15:44:58,574 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Attempting to send chunk: 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_024'
+2025-04-22 15:44:58,575 - INFO - [send_file_to_telegram] - Sending file 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_024' to Telegram chat ID: -4603853425
+2025-04-22 15:45:08,327 - INFO - [send_file_to_telegram] - Telegram API success for 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_024'.
+2025-04-22 15:45:08,331 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_024' sent successfully.
+2025-04-22 15:45:08,332 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Successfully processed chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_024' (MsgID=639) in 9.76s.
+2025-04-22 15:45:08,332 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Reading chunk 25 for COMPRESSED file starting at byte 503316480.
+2025-04-22 15:45:08,352 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Read chunk 25 (20971520 bytes). Total read: 524288000/654609783
+2025-04-22 15:45:08,352 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Attempting to send chunk: 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_025'
+2025-04-22 15:45:08,352 - INFO - [send_file_to_telegram] - Sending file 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_025' to Telegram chat ID: -4603853425
+2025-04-22 15:45:18,252 - INFO - [send_file_to_telegram] - Telegram API success for 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_025'.
+2025-04-22 15:45:18,255 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_025' sent successfully.
+2025-04-22 15:45:18,256 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Successfully processed chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_025' (MsgID=640) in 9.90s.
+2025-04-22 15:45:18,257 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Reading chunk 26 for COMPRESSED file starting at byte 524288000.
+2025-04-22 15:45:18,278 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Read chunk 26 (20971520 bytes). Total read: 545259520/654609783
+2025-04-22 15:45:18,279 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Attempting to send chunk: 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_026'
+2025-04-22 15:45:18,279 - INFO - [send_file_to_telegram] - Sending file 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_026' to Telegram chat ID: -4603853425
+2025-04-22 15:45:28,937 - INFO - [send_file_to_telegram] - Telegram API success for 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_026'.
+2025-04-22 15:45:28,942 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_026' sent successfully.
+2025-04-22 15:45:28,944 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Successfully processed chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_026' (MsgID=641) in 10.66s.
+2025-04-22 15:45:28,945 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Reading chunk 27 for COMPRESSED file starting at byte 545259520.
+2025-04-22 15:45:28,961 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Read chunk 27 (20971520 bytes). Total read: 566231040/654609783
+2025-04-22 15:45:28,961 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Attempting to send chunk: 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_027'
+2025-04-22 15:45:28,962 - INFO - [send_file_to_telegram] - Sending file 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_027' to Telegram chat ID: -4603853425
+2025-04-22 15:45:42,840 - INFO - [send_file_to_telegram] - Telegram API success for 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_027'.
+2025-04-22 15:45:42,845 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_027' sent successfully.
+2025-04-22 15:45:42,847 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Successfully processed chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_027' (MsgID=642) in 13.88s.
+2025-04-22 15:45:42,849 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Reading chunk 28 for COMPRESSED file starting at byte 566231040.
+2025-04-22 15:45:42,874 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Read chunk 28 (20971520 bytes). Total read: 587202560/654609783
+2025-04-22 15:45:42,875 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Attempting to send chunk: 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_028'
+2025-04-22 15:45:42,875 - INFO - [send_file_to_telegram] - Sending file 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_028' to Telegram chat ID: -4603853425
+2025-04-22 15:46:00,733 - INFO - [send_file_to_telegram] - Telegram API success for 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_028'.
+2025-04-22 15:46:00,738 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_028' sent successfully.
+2025-04-22 15:46:00,739 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Successfully processed chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_028' (MsgID=643) in 17.86s.
+2025-04-22 15:46:00,742 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Reading chunk 29 for COMPRESSED file starting at byte 587202560.
+2025-04-22 15:46:00,760 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Read chunk 29 (20971520 bytes). Total read: 608174080/654609783
+2025-04-22 15:46:00,760 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Attempting to send chunk: 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_029'
+2025-04-22 15:46:00,760 - INFO - [send_file_to_telegram] - Sending file 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_029' to Telegram chat ID: -4603853425
+2025-04-22 15:46:18,692 - INFO - [send_file_to_telegram] - Telegram API success for 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_029'.
+2025-04-22 15:46:18,697 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_029' sent successfully.
+2025-04-22 15:46:18,698 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Successfully processed chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_029' (MsgID=644) in 17.94s.
+2025-04-22 15:46:18,702 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Reading chunk 30 for COMPRESSED file starting at byte 608174080.
+2025-04-22 15:46:18,719 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Read chunk 30 (20971520 bytes). Total read: 629145600/654609783
+2025-04-22 15:46:18,719 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Attempting to send chunk: 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_030'
+2025-04-22 15:46:18,720 - INFO - [send_file_to_telegram] - Sending file 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_030' to Telegram chat ID: -4603853425
+2025-04-22 15:46:42,374 - INFO - [send_file_to_telegram] - Telegram API success for 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_030'.
+2025-04-22 15:46:42,380 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_030' sent successfully.
+2025-04-22 15:46:42,381 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Successfully processed chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_030' (MsgID=645) in 23.66s.
+2025-04-22 15:46:42,382 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Reading chunk 31 for COMPRESSED file starting at byte 629145600.
+2025-04-22 15:46:42,399 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Read chunk 31 (20971520 bytes). Total read: 650117120/654609783
+2025-04-22 15:46:42,399 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Attempting to send chunk: 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_031'
+2025-04-22 15:46:42,400 - INFO - [send_file_to_telegram] - Sending file 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_031' to Telegram chat ID: -4603853425
+2025-04-22 15:46:52,110 - INFO - [send_file_to_telegram] - Telegram API success for 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_031'.
+2025-04-22 15:46:52,113 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_031' sent successfully.
+2025-04-22 15:46:52,114 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Successfully processed chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_031' (MsgID=646) in 9.71s.
+2025-04-22 15:46:52,114 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Reading chunk 32 for COMPRESSED file starting at byte 650117120.
+2025-04-22 15:46:52,122 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Read chunk 32 (4492663 bytes). Total read: 654609783/654609783
+2025-04-22 15:46:52,122 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Attempting to send chunk: 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_032'
+2025-04-22 15:46:52,123 - INFO - [send_file_to_telegram] - Sending file 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_032' to Telegram chat ID: -4603853425
+2025-04-22 15:46:56,336 - INFO - [send_file_to_telegram] - Telegram API success for 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_032'.
+2025-04-22 15:46:56,339 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_032' sent successfully.
+2025-04-22 15:46:56,340 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Successfully processed chunk 'ScreamingFrogSEOSpider-20.3 (1).exe.zip.part_032' (MsgID=647) in 4.22s.
+2025-04-22 15:46:56,341 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Reading chunk 33 for COMPRESSED file starting at byte 654609783.
+2025-04-22 15:46:56,350 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Finished reading all chunks for compressed file.
+2025-04-22 15:46:56,351 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] All 32 chunks uploaded successfully. Saving metadata.
+2025-04-22 15:46:56,352 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Generated Access ID: 39cbdab826
+2025-04-22 15:46:56,392 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-22 15:46:56,403 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-22 15:46:56,403 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Generated landing page URL: http://127.0.0.1:5000/get/39cbdab826
+2025-04-22 15:46:56,404 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Entering final cleanup.
+2025-04-22 15:46:56,434 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Successfully deleted original temporary file: uploads_temp\d77b3147-ff33-441e-ac82-d5c582b93ee2_ScreamingFrogSEOSpider-20.3 (1).exe
+2025-04-22 15:46:56,496 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Successfully deleted temporary compressed file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\d77b3147-ff33-441e-ac82-d5c582b93ee2_comp_wrrilf8t.zip
+2025-04-22 15:46:56,497 - INFO - [process_upload_and_generate_updates] - [d77b3147-ff33-441e-ac82-d5c582b93ee2] Processing finished with status: completed
+2025-04-22 15:47:22,550 - INFO - [get_file_by_access_id] - Received request for access_id: 39cbdab826
+2025-04-22 15:47:22,571 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-22 15:47:22,572 - INFO - [get_file_by_access_id] - Found file 'ScreamingFrogSEOSpider-20.3 (1).exe' for user 'testt' with access_id '39cbdab826'. Rendering download page.
+2025-04-22 15:47:22,573 - INFO - [_log] - 127.0.0.1 - - [22/Apr/2025 15:47:22] "GET /get/39cbdab826 HTTP/1.1" 200 -
+2025-04-22 15:47:39,414 - INFO - [direct_download_file] - [Direct DL:39cbdab826] Received direct download request.
+2025-04-22 15:47:39,417 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-22 15:47:39,417 - INFO - [direct_download_file] - [Direct DL:39cbdab826] Found file metadata for user 'testt'.
+2025-04-22 15:47:39,417 - INFO - [direct_download_file] - [Direct DL:39cbdab826] Preparing to download 'ScreamingFrogSEOSpider-20.3 (1).exe'.
+2025-04-22 15:47:39,418 - INFO - [direct_download_file] - [Direct DL:39cbdab826] Starting file preparation for 'ScreamingFrogSEOSpider-20.3 (1).exe'.
+2025-04-22 15:47:39,418 - INFO - [direct_download_file] - [Direct DL:39cbdab826] Preparing split file.
+2025-04-22 15:47:39,418 - INFO - [direct_download_file] - [Direct DL:39cbdab826] Found 32 chunks to reassemble.
+2025-04-22 15:47:39,419 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICaGgHaxh2xhFqBtHx0Aox4j2WBB3RAAIeFwACYy9AVON_Rze2WwABXjYE
+2025-04-22 15:47:42,976 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_340.part_001
+2025-04-22 15:47:42,976 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_340.part_001
+2025-04-22 15:47:50,078 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICaGgHaxh2xhFqBtHx0Aox4j2WBB3RAAIeFwACYy9AVON_Rze2WwABXjYE.
+2025-04-22 15:47:50,117 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICaWgHayklxnGDPXYBRNu1laL4VwzbAAIfFwACYy9AVBoQS51K3SjuNgQ
+2025-04-22 15:47:52,956 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_341.part_002
+2025-04-22 15:47:52,957 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_341.part_002
+2025-04-22 15:47:57,327 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICaWgHayklxnGDPXYBRNu1laL4VwzbAAIfFwACYy9AVBoQS51K3SjuNgQ.
+2025-04-22 15:47:57,356 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICamgHazSOuJtcEIMP-fOLJgaNCv9YAAIgFwACYy9AVEJr9qVhU6-2NgQ
+2025-04-22 15:48:00,211 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_342.part_003
+2025-04-22 15:48:00,212 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_342.part_003
+2025-04-22 15:48:03,187 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICamgHazSOuJtcEIMP-fOLJgaNCv9YAAIgFwACYy9AVEJr9qVhU6-2NgQ.
+2025-04-22 15:48:03,216 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICa2gHaz36cxC67kHR8AsvWyRL4Gm2AAIhFwACYy9AVBRRxtNw9SuhNgQ
+2025-04-22 15:48:05,866 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_343.part_004
+2025-04-22 15:48:05,891 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_343.part_004
+2025-04-22 15:48:10,705 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICa2gHaz36cxC67kHR8AsvWyRL4Gm2AAIhFwACYy9AVBRRxtNw9SuhNgQ.
+2025-04-22 15:48:10,736 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICbGgHa0fNlZ7vWkUCjLpenO1LuiUhAAIiFwACYy9AVB_0OBlHCUqINgQ
+2025-04-22 15:48:13,324 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_344.part_005
+2025-04-22 15:48:13,325 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_344.part_005
+2025-04-22 15:48:17,833 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICbGgHa0fNlZ7vWkUCjLpenO1LuiUhAAIiFwACYy9AVB_0OBlHCUqINgQ.
+2025-04-22 15:48:17,862 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICbWgHa1VUqcTmvRGh1mSkIxNCs-n5AAIjFwACYy9AVNfBk8NUBfirNgQ
+2025-04-22 15:48:20,756 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_345.part_006
+2025-04-22 15:48:20,757 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_345.part_006
+2025-04-22 15:48:25,227 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICbWgHa1VUqcTmvRGh1mSkIxNCs-n5AAIjFwACYy9AVNfBk8NUBfirNgQ.
+2025-04-22 15:48:25,257 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICbmgHa2eLdz-EZluXH02uGk2ynqcpAAIkFwACYy9AVKhS0_oa3iQnNgQ
+2025-04-22 15:48:27,764 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_346.part_007
+2025-04-22 15:48:27,765 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_346.part_007
+2025-04-22 15:48:31,209 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICbmgHa2eLdz-EZluXH02uGk2ynqcpAAIkFwACYy9AVKhS0_oa3iQnNgQ.
+2025-04-22 15:48:31,238 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICb2gHa3KKMS1sqsGEvRciv7cLaoUIAAIlFwACYy9AVIWFfqWQ7FFhNgQ
+2025-04-22 15:48:33,997 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_347.part_008
+2025-04-22 15:48:33,998 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_347.part_008
+2025-04-22 15:48:37,344 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICb2gHa3KKMS1sqsGEvRciv7cLaoUIAAIlFwACYy9AVIWFfqWQ7FFhNgQ.
+2025-04-22 15:48:37,378 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICcGgHa3oL450mSExUNNLOx6C4-BDEAAImFwACYy9AVMXvEYLPV02ZNgQ
+2025-04-22 15:48:39,887 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_348.part_009
+2025-04-22 15:48:39,888 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_348.part_009
+2025-04-22 15:48:45,982 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICcGgHa3oL450mSExUNNLOx6C4-BDEAAImFwACYy9AVMXvEYLPV02ZNgQ.
+2025-04-22 15:48:46,010 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICcWgHa4XsasvNlTeDJXGdHDnTo5KhAAInFwACYy9AVEBX4jjUXgGqNgQ
+2025-04-22 15:48:48,769 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_349.part_010
+2025-04-22 15:48:48,770 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_349.part_010
+2025-04-22 15:48:56,590 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICcWgHa4XsasvNlTeDJXGdHDnTo5KhAAInFwACYy9AVEBX4jjUXgGqNgQ.
+2025-04-22 15:48:56,619 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICcmgHa5LCt5e9c98n90TqnI26EIwIAAIoFwACYy9AVLh21iCoCz7uNgQ
+2025-04-22 15:48:59,446 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_350.part_011
+2025-04-22 15:48:59,447 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_350.part_011
+2025-04-22 15:49:03,995 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICcmgHa5LCt5e9c98n90TqnI26EIwIAAIoFwACYy9AVLh21iCoCz7uNgQ.
+2025-04-22 15:49:04,026 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICc2gHa51RSjcnjjACIJ1Ht382Qoy8AAIpFwACYy9AVMcIy9jXcOQ6NgQ
+2025-04-22 15:49:06,566 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_351.part_012
+2025-04-22 15:49:06,567 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_351.part_012
+2025-04-22 15:49:10,976 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICc2gHa51RSjcnjjACIJ1Ht382Qoy8AAIpFwACYy9AVMcIy9jXcOQ6NgQ.
+2025-04-22 15:49:11,003 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICdGgHa6bFGWAlQH7CWeSpH43Lb_chAAIqFwACYy9AVBx8T0rBKQhuNgQ
+2025-04-22 15:49:13,581 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_352.part_013
+2025-04-22 15:49:13,582 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_352.part_013
+2025-04-22 15:49:18,395 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICdGgHa6bFGWAlQH7CWeSpH43Lb_chAAIqFwACYy9AVBx8T0rBKQhuNgQ.
+2025-04-22 15:49:18,425 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICdWgHa68yzIcqAAEhJMeA7ouUcmF44QACKxcAAmMvQFTYszK_Km0jDjYE
+2025-04-22 15:49:21,073 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_353.part_014
+2025-04-22 15:49:21,074 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_353.part_014
+2025-04-22 15:49:25,872 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICdWgHa68yzIcqAAEhJMeA7ouUcmF44QACKxcAAmMvQFTYszK_Km0jDjYE.
+2025-04-22 15:49:25,904 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICdmgHa7w9_2a4S0ePTHDHJ0-py0iHAAIsFwACYy9AVEV-p14PcOjBNgQ
+2025-04-22 15:49:28,817 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_354.part_015
+2025-04-22 15:49:28,818 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_354.part_015
+2025-04-22 15:49:35,224 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICdmgHa7w9_2a4S0ePTHDHJ0-py0iHAAIsFwACYy9AVEV-p14PcOjBNgQ.
+2025-04-22 15:49:35,250 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICd2gHa8lOXM_q3QTAjzR0d6CRgbNkAAItFwACYy9AVEvhiWeiX3PGNgQ
+2025-04-22 15:49:37,702 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_355.part_016
+2025-04-22 15:49:37,703 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_355.part_016
+2025-04-22 15:49:43,535 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICd2gHa8lOXM_q3QTAjzR0d6CRgbNkAAItFwACYy9AVEvhiWeiX3PGNgQ.
+2025-04-22 15:49:43,566 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICeGgHa9Yh43Th4TKNXMsfSNOG1u7cAAIuFwACYy9AVDE4a3VoInxPNgQ
+2025-04-22 15:49:46,152 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_356.part_017
+2025-04-22 15:49:46,153 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_356.part_017
+2025-04-22 15:49:52,934 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICeGgHa9Yh43Th4TKNXMsfSNOG1u7cAAIuFwACYy9AVDE4a3VoInxPNgQ.
+2025-04-22 15:49:52,962 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICeWgHa-UOgLMMOv160zOAjTVKJruiAAIvFwACYy9AVJ5x32l7yrEXNgQ
+2025-04-22 15:49:56,011 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_357.part_018
+2025-04-22 15:49:56,011 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_357.part_018
+2025-04-22 15:50:00,551 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICeWgHa-UOgLMMOv160zOAjTVKJruiAAIvFwACYy9AVJ5x32l7yrEXNgQ.
+2025-04-22 15:50:00,580 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICemgHa--xmYFPMXkwepLZ2lxr7U7QAAIwFwACYy9AVOZvS1K5RHIkNgQ
+2025-04-22 15:50:03,312 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_358.part_019
+2025-04-22 15:50:03,313 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_358.part_019
+2025-04-22 15:50:06,591 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICemgHa--xmYFPMXkwepLZ2lxr7U7QAAIwFwACYy9AVOZvS1K5RHIkNgQ.
+2025-04-22 15:50:06,649 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICe2gHbAJMS47jaMySOD_7eMCsFdhRAAIxFwACYy9AVK-XQntoVp8-NgQ
+2025-04-22 15:50:09,599 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_359.part_020
+2025-04-22 15:50:09,600 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_359.part_020
+2025-04-22 15:50:16,485 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICe2gHbAJMS47jaMySOD_7eMCsFdhRAAIxFwACYy9AVK-XQntoVp8-NgQ.
+2025-04-22 15:50:16,516 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICfGgHbAvvjMda95CDSP11j2omsdlHAAIyFwACYy9AVLyiV49Bh8UlNgQ
+2025-04-22 15:50:19,528 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_360.part_021
+2025-04-22 15:50:19,529 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_360.part_021
+2025-04-22 15:50:23,677 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICfGgHbAvvjMda95CDSP11j2omsdlHAAIyFwACYy9AVLyiV49Bh8UlNgQ.
+2025-04-22 15:50:23,706 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICfWgHbBaZ1y8MfE5mv3WrbxfcZhlYAAIzFwACYy9AVKBT29mItkWJNgQ
+2025-04-22 15:50:26,241 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_361.part_022
+2025-04-22 15:50:26,243 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_361.part_022
+2025-04-22 15:50:30,535 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICfWgHbBaZ1y8MfE5mv3WrbxfcZhlYAAIzFwACYy9AVKBT29mItkWJNgQ.
+2025-04-22 15:50:30,563 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICfmgHbCLwMo_D9qZMmsZSWw1aqx7KAAI0FwACYy9AVKTxEeSAciSHNgQ
+2025-04-22 15:50:33,310 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_362.part_023
+2025-04-22 15:50:33,310 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_362.part_023
+2025-04-22 15:50:38,705 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICfmgHbCLwMo_D9qZMmsZSWw1aqx7KAAI0FwACYy9AVKTxEeSAciSHNgQ.
+2025-04-22 15:50:38,734 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICf2gHbCvaU8enNoJg-8PYvr7txjSDAAI1FwACYy9AVM16MY_iGfO_NgQ
+2025-04-22 15:50:41,967 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_363.part_024
+2025-04-22 15:50:41,967 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_363.part_024
+2025-04-22 15:50:46,159 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICf2gHbCvaU8enNoJg-8PYvr7txjSDAAI1FwACYy9AVM16MY_iGfO_NgQ.
+2025-04-22 15:50:46,189 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICgGgHbDUfN-Hdqr7hoSTKm675ta7YAAI2FwACYy9AVGveigJeZ40TNgQ
+2025-04-22 15:50:48,885 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_364.part_025
+2025-04-22 15:50:48,886 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_364.part_025
+2025-04-22 15:50:52,143 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICgGgHbDUfN-Hdqr7hoSTKm675ta7YAAI2FwACYy9AVGveigJeZ40TNgQ.
+2025-04-22 15:50:52,171 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICgWgHbEAZnk4ZpLjXfmxw5FyP3j4mAAI3FwACYy9AVHtGmaJXaiACNgQ
+2025-04-22 15:50:54,675 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_365.part_026
+2025-04-22 15:50:54,675 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_365.part_026
+2025-04-22 15:50:57,587 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICgWgHbEAZnk4ZpLjXfmxw5FyP3j4mAAI3FwACYy9AVHtGmaJXaiACNgQ.
+2025-04-22 15:50:57,622 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICgmgHbE5LBub9g9gzFTm4nT4OPsJSAAI4FwACYy9AVJxIga32mlPZNgQ
+2025-04-22 15:51:00,152 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_366.part_027
+2025-04-22 15:51:00,152 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_366.part_027
+2025-04-22 15:51:04,909 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICgmgHbE5LBub9g9gzFTm4nT4OPsJSAAI4FwACYy9AVJxIga32mlPZNgQ.
+2025-04-22 15:51:04,940 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICg2gHbGAM507wUcFUOt64N4G6LG0CAAI5FwACYy9AVMkF23HCPJS2NgQ
+2025-04-22 15:51:07,563 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_367.part_028
+2025-04-22 15:51:07,564 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_367.part_028
+2025-04-22 15:51:12,620 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICg2gHbGAM507wUcFUOt64N4G6LG0CAAI5FwACYy9AVMkF23HCPJS2NgQ.
+2025-04-22 15:51:12,648 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIChGgHbHID6UjEGFGRiOU0MvkQMsX_AAI6FwACYy9AVD6slVS_ZMmGNgQ
+2025-04-22 15:51:15,184 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_368.part_029
+2025-04-22 15:51:15,184 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_368.part_029
+2025-04-22 15:51:19,587 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIChGgHbHID6UjEGFGRiOU0MvkQMsX_AAI6FwACYy9AVD6slVS_ZMmGNgQ.
+2025-04-22 15:51:19,618 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIChWgHbIkDrzLT1gzZDP7jtD7jUwXnAAI7FwACYy9AVEG0EJRm7swnNgQ
+2025-04-22 15:51:22,664 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_369.part_030
+2025-04-22 15:51:22,665 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_369.part_030
+2025-04-22 15:51:26,752 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIChWgHbIkDrzLT1gzZDP7jtD7jUwXnAAI7FwACYy9AVEG0EJRm7swnNgQ.
+2025-04-22 15:51:26,781 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIChmgHbJOMB7RY_sXOMqhO3zouKJ0KAAI8FwACYy9AVFdlnb1XbgABGjYE
+2025-04-22 15:51:29,764 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_370.part_031
+2025-04-22 15:51:29,764 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_370.part_031
+2025-04-22 15:51:34,014 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIChmgHbJOMB7RY_sXOMqhO3zouKJ0KAAI8FwACYy9AVFdlnb1XbgABGjYE.
+2025-04-22 15:51:34,042 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICh2gHbJe9FgM-9AuKcuVCattExjhmAAI9FwACYy9AVBN5z1pp098INgQ
+2025-04-22 15:51:35,190 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_371.part_032
+2025-04-22 15:51:35,190 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_371.part_032
+2025-04-22 15:51:36,962 - INFO - [download_telegram_file_content] - Successfully downloaded 4492663 bytes for file_id BQACAgUAAxkDAAICh2gHbJe9FgM-9AuKcuVCattExjhmAAI9FwACYy9AVBN5z1pp098INgQ.
+2025-04-22 15:51:36,966 - INFO - [direct_download_file] - [Direct DL:39cbdab826] Finished reassembling 32 chunks in 237.55s. Total bytes reassembled: 654609783.
+2025-04-22 15:51:36,966 - INFO - [direct_download_file] - [Direct DL:39cbdab826] Decompressing reassembled file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\directDL_reass_39cbdab826__qvo0zsz.zip.tmp
+2025-04-22 15:51:42,141 - INFO - [direct_download_file] - [Direct DL:39cbdab826] Decompression finished in 5.17s. Final file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\directDL_final_39cbdab826_2xpk11lb.exe
+2025-04-22 15:51:42,142 - INFO - [direct_download_file] - [Direct DL:39cbdab826] File preparation successful. Final file: 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\directDL_final_39cbdab826_2xpk11lb.exe', Size: 695857376 bytes. Prep time: 242.72s.
+2025-04-22 15:51:42,142 - INFO - [direct_download_file] - [Direct DL:39cbdab826] Starting file stream for 'ScreamingFrogSEOSpider-20.3 (1).exe' from 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\directDL_final_39cbdab826_2xpk11lb.exe'.
+2025-04-22 15:51:42,143 - INFO - [direct_download_file] - [Direct DL:39cbdab826] Returning streaming response. Total request time (incl. prep): 242.73s.
+2025-04-22 15:51:42,193 - INFO - [direct_download_file] - [Direct DL:39cbdab826] Cleaned up intermediate reassembled file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\directDL_reass_39cbdab826__qvo0zsz.zip.tmp
+2025-04-22 15:51:43,718 - INFO - [_log] - 127.0.0.1 - - [22/Apr/2025 15:51:43] "GET /download/39cbdab826 HTTP/1.1" 200 -
+2025-04-22 15:51:45,408 - INFO - [generate_file_chunks] - [Direct DL:39cbdab826] Finished streaming file content: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\directDL_final_39cbdab826_2xpk11lb.exe
+2025-04-22 15:51:45,409 - INFO - [generate_file_chunks] - [Direct DL:39cbdab826] Generator cleaning up final temp file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\directDL_final_39cbdab826_2xpk11lb.exe
+2025-04-22 15:51:45,480 - INFO - [generate_file_chunks] - [Direct DL:39cbdab826] Successfully deleted final temp file via generator: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\directDL_final_39cbdab826_2xpk11lb.exe
+2025-04-22 15:51:58,126 - INFO - [direct_download_file] - [Direct DL:39cbdab826] Received direct download request.
+2025-04-22 15:51:58,147 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-22 15:51:58,147 - INFO - [direct_download_file] - [Direct DL:39cbdab826] Found file metadata for user 'testt'.
+2025-04-22 15:51:58,147 - INFO - [direct_download_file] - [Direct DL:39cbdab826] Preparing to download 'ScreamingFrogSEOSpider-20.3 (1).exe'.
+2025-04-22 15:51:58,148 - INFO - [direct_download_file] - [Direct DL:39cbdab826] Starting file preparation for 'ScreamingFrogSEOSpider-20.3 (1).exe'.
+2025-04-22 15:51:58,148 - INFO - [direct_download_file] - [Direct DL:39cbdab826] Preparing split file.
+2025-04-22 15:51:58,148 - INFO - [direct_download_file] - [Direct DL:39cbdab826] Found 32 chunks to reassemble.
+2025-04-22 15:51:58,149 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICaGgHaxh2xhFqBtHx0Aox4j2WBB3RAAIeFwACYy9AVON_Rze2WwABXjYE
+2025-04-22 15:51:58,578 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_340.part_001
+2025-04-22 15:51:58,579 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_340.part_001
+2025-04-22 15:52:02,280 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICaGgHaxh2xhFqBtHx0Aox4j2WBB3RAAIeFwACYy9AVON_Rze2WwABXjYE.
+2025-04-22 15:52:02,361 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICaWgHayklxnGDPXYBRNu1laL4VwzbAAIfFwACYy9AVBoQS51K3SjuNgQ
+2025-04-22 15:52:02,814 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_341.part_002
+2025-04-22 15:52:02,815 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_341.part_002
+2025-04-22 15:52:07,668 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICaWgHayklxnGDPXYBRNu1laL4VwzbAAIfFwACYy9AVBoQS51K3SjuNgQ.
+2025-04-22 15:52:07,698 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICamgHazSOuJtcEIMP-fOLJgaNCv9YAAIgFwACYy9AVEJr9qVhU6-2NgQ
+2025-04-22 15:52:08,121 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_342.part_003
+2025-04-22 15:52:08,121 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_342.part_003
+2025-04-22 15:52:11,138 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICamgHazSOuJtcEIMP-fOLJgaNCv9YAAIgFwACYy9AVEJr9qVhU6-2NgQ.
+2025-04-22 15:52:11,167 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICa2gHaz36cxC67kHR8AsvWyRL4Gm2AAIhFwACYy9AVBRRxtNw9SuhNgQ
+2025-04-22 15:52:11,628 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_343.part_004
+2025-04-22 15:52:11,628 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_343.part_004
+2025-04-22 15:52:17,825 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICa2gHaz36cxC67kHR8AsvWyRL4Gm2AAIhFwACYy9AVBRRxtNw9SuhNgQ.
+2025-04-22 15:52:17,854 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICbGgHa0fNlZ7vWkUCjLpenO1LuiUhAAIiFwACYy9AVB_0OBlHCUqINgQ
+2025-04-22 15:52:18,366 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_344.part_005
+2025-04-22 15:52:18,366 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_344.part_005
+2025-04-22 15:52:25,934 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICbGgHa0fNlZ7vWkUCjLpenO1LuiUhAAIiFwACYy9AVB_0OBlHCUqINgQ.
+2025-04-22 15:52:25,963 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICbWgHa1VUqcTmvRGh1mSkIxNCs-n5AAIjFwACYy9AVNfBk8NUBfirNgQ
+2025-04-22 15:52:26,402 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_345.part_006
+2025-04-22 15:52:26,403 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_345.part_006
+2025-04-22 15:52:32,345 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICbWgHa1VUqcTmvRGh1mSkIxNCs-n5AAIjFwACYy9AVNfBk8NUBfirNgQ.
+2025-04-22 15:52:32,374 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICbmgHa2eLdz-EZluXH02uGk2ynqcpAAIkFwACYy9AVKhS0_oa3iQnNgQ
+2025-04-22 15:52:32,817 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_346.part_007
+2025-04-22 15:52:32,818 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_346.part_007
+2025-04-22 15:52:40,392 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICbmgHa2eLdz-EZluXH02uGk2ynqcpAAIkFwACYy9AVKhS0_oa3iQnNgQ.
+2025-04-22 15:52:40,423 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICb2gHa3KKMS1sqsGEvRciv7cLaoUIAAIlFwACYy9AVIWFfqWQ7FFhNgQ
+2025-04-22 15:52:40,896 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_347.part_008
+2025-04-22 15:52:40,896 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_347.part_008
+2025-04-22 15:52:46,797 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICb2gHa3KKMS1sqsGEvRciv7cLaoUIAAIlFwACYy9AVIWFfqWQ7FFhNgQ.
+2025-04-22 15:52:46,825 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICcGgHa3oL450mSExUNNLOx6C4-BDEAAImFwACYy9AVMXvEYLPV02ZNgQ
+2025-04-22 15:52:47,260 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_348.part_009
+2025-04-22 15:52:47,261 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_348.part_009
+2025-04-22 15:52:50,311 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICcGgHa3oL450mSExUNNLOx6C4-BDEAAImFwACYy9AVMXvEYLPV02ZNgQ.
+2025-04-22 15:52:50,339 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICcWgHa4XsasvNlTeDJXGdHDnTo5KhAAInFwACYy9AVEBX4jjUXgGqNgQ
+2025-04-22 15:52:50,766 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_349.part_010
+2025-04-22 15:52:50,767 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_349.part_010
+2025-04-22 15:52:56,438 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICcWgHa4XsasvNlTeDJXGdHDnTo5KhAAInFwACYy9AVEBX4jjUXgGqNgQ.
+2025-04-22 15:52:56,465 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICcmgHa5LCt5e9c98n90TqnI26EIwIAAIoFwACYy9AVLh21iCoCz7uNgQ
+2025-04-22 15:52:56,911 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_350.part_011
+2025-04-22 15:52:56,912 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_350.part_011
+2025-04-22 15:53:02,713 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICcmgHa5LCt5e9c98n90TqnI26EIwIAAIoFwACYy9AVLh21iCoCz7uNgQ.
+2025-04-22 15:53:02,778 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICc2gHa51RSjcnjjACIJ1Ht382Qoy8AAIpFwACYy9AVMcIy9jXcOQ6NgQ
+2025-04-22 15:53:03,260 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_351.part_012
+2025-04-22 15:53:03,261 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_351.part_012
+2025-04-22 15:53:07,840 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICc2gHa51RSjcnjjACIJ1Ht382Qoy8AAIpFwACYy9AVMcIy9jXcOQ6NgQ.
+2025-04-22 15:53:07,867 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICdGgHa6bFGWAlQH7CWeSpH43Lb_chAAIqFwACYy9AVBx8T0rBKQhuNgQ
+2025-04-22 15:53:08,290 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_352.part_013
+2025-04-22 15:53:08,290 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_352.part_013
+2025-04-22 15:53:12,684 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICdGgHa6bFGWAlQH7CWeSpH43Lb_chAAIqFwACYy9AVBx8T0rBKQhuNgQ.
+2025-04-22 15:53:12,713 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICdWgHa68yzIcqAAEhJMeA7ouUcmF44QACKxcAAmMvQFTYszK_Km0jDjYE
+2025-04-22 15:53:13,223 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_353.part_014
+2025-04-22 15:53:13,223 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_353.part_014
+2025-04-22 15:53:16,463 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICdWgHa68yzIcqAAEhJMeA7ouUcmF44QACKxcAAmMvQFTYszK_Km0jDjYE.
+2025-04-22 15:53:16,492 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICdmgHa7w9_2a4S0ePTHDHJ0-py0iHAAIsFwACYy9AVEV-p14PcOjBNgQ
+2025-04-22 15:53:16,966 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_354.part_015
+2025-04-22 15:53:16,966 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_354.part_015
+2025-04-22 15:53:21,580 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICdmgHa7w9_2a4S0ePTHDHJ0-py0iHAAIsFwACYy9AVEV-p14PcOjBNgQ.
+2025-04-22 15:53:21,613 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICd2gHa8lOXM_q3QTAjzR0d6CRgbNkAAItFwACYy9AVEvhiWeiX3PGNgQ
+2025-04-22 15:53:22,033 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_355.part_016
+2025-04-22 15:53:22,034 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_355.part_016
+2025-04-22 15:53:27,581 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICd2gHa8lOXM_q3QTAjzR0d6CRgbNkAAItFwACYy9AVEvhiWeiX3PGNgQ.
+2025-04-22 15:53:27,608 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICeGgHa9Yh43Th4TKNXMsfSNOG1u7cAAIuFwACYy9AVDE4a3VoInxPNgQ
+2025-04-22 15:53:28,024 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_356.part_017
+2025-04-22 15:53:28,025 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_356.part_017
+2025-04-22 15:53:32,851 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICeGgHa9Yh43Th4TKNXMsfSNOG1u7cAAIuFwACYy9AVDE4a3VoInxPNgQ.
+2025-04-22 15:53:32,880 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICeWgHa-UOgLMMOv160zOAjTVKJruiAAIvFwACYy9AVJ5x32l7yrEXNgQ
+2025-04-22 15:53:33,392 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_357.part_018
+2025-04-22 15:53:33,392 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_357.part_018
+2025-04-22 15:53:39,440 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICeWgHa-UOgLMMOv160zOAjTVKJruiAAIvFwACYy9AVJ5x32l7yrEXNgQ.
+2025-04-22 15:53:39,471 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICemgHa--xmYFPMXkwepLZ2lxr7U7QAAIwFwACYy9AVOZvS1K5RHIkNgQ
+2025-04-22 15:53:39,915 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_358.part_019
+2025-04-22 15:53:39,916 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_358.part_019
+2025-04-22 15:53:43,754 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICemgHa--xmYFPMXkwepLZ2lxr7U7QAAIwFwACYy9AVOZvS1K5RHIkNgQ.
+2025-04-22 15:53:43,783 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICe2gHbAJMS47jaMySOD_7eMCsFdhRAAIxFwACYy9AVK-XQntoVp8-NgQ
+2025-04-22 15:53:44,257 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_359.part_020
+2025-04-22 15:53:44,258 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_359.part_020
+2025-04-22 15:53:51,391 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICe2gHbAJMS47jaMySOD_7eMCsFdhRAAIxFwACYy9AVK-XQntoVp8-NgQ.
+2025-04-22 15:53:51,424 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICfGgHbAvvjMda95CDSP11j2omsdlHAAIyFwACYy9AVLyiV49Bh8UlNgQ
+2025-04-22 15:53:51,873 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_360.part_021
+2025-04-22 15:53:51,873 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_360.part_021
+2025-04-22 15:53:56,521 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICfGgHbAvvjMda95CDSP11j2omsdlHAAIyFwACYy9AVLyiV49Bh8UlNgQ.
+2025-04-22 15:53:56,550 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICfWgHbBaZ1y8MfE5mv3WrbxfcZhlYAAIzFwACYy9AVKBT29mItkWJNgQ
+2025-04-22 15:53:56,974 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_361.part_022
+2025-04-22 15:53:56,975 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_361.part_022
+2025-04-22 15:54:02,274 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICfWgHbBaZ1y8MfE5mv3WrbxfcZhlYAAIzFwACYy9AVKBT29mItkWJNgQ.
+2025-04-22 15:54:02,306 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICfmgHbCLwMo_D9qZMmsZSWw1aqx7KAAI0FwACYy9AVKTxEeSAciSHNgQ
+2025-04-22 15:54:02,721 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_362.part_023
+2025-04-22 15:54:02,722 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_362.part_023
+2025-04-22 15:54:08,340 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICfmgHbCLwMo_D9qZMmsZSWw1aqx7KAAI0FwACYy9AVKTxEeSAciSHNgQ.
+2025-04-22 15:54:08,367 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICf2gHbCvaU8enNoJg-8PYvr7txjSDAAI1FwACYy9AVM16MY_iGfO_NgQ
+2025-04-22 15:54:08,860 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_363.part_024
+2025-04-22 15:54:08,861 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_363.part_024
+2025-04-22 15:54:14,929 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICf2gHbCvaU8enNoJg-8PYvr7txjSDAAI1FwACYy9AVM16MY_iGfO_NgQ.
+2025-04-22 15:54:14,960 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICgGgHbDUfN-Hdqr7hoSTKm675ta7YAAI2FwACYy9AVGveigJeZ40TNgQ
+2025-04-22 15:54:15,417 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_364.part_025
+2025-04-22 15:54:15,418 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_364.part_025
+2025-04-22 15:54:19,067 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICgGgHbDUfN-Hdqr7hoSTKm675ta7YAAI2FwACYy9AVGveigJeZ40TNgQ.
+2025-04-22 15:54:19,108 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICgWgHbEAZnk4ZpLjXfmxw5FyP3j4mAAI3FwACYy9AVHtGmaJXaiACNgQ
+2025-04-22 15:54:19,553 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_365.part_026
+2025-04-22 15:54:19,553 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_365.part_026
+2025-04-22 15:54:22,601 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICgWgHbEAZnk4ZpLjXfmxw5FyP3j4mAAI3FwACYy9AVHtGmaJXaiACNgQ.
+2025-04-22 15:54:22,629 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICgmgHbE5LBub9g9gzFTm4nT4OPsJSAAI4FwACYy9AVJxIga32mlPZNgQ
+2025-04-22 15:54:23,065 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_366.part_027
+2025-04-22 15:54:23,066 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_366.part_027
+2025-04-22 15:54:26,763 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICgmgHbE5LBub9g9gzFTm4nT4OPsJSAAI4FwACYy9AVJxIga32mlPZNgQ.
+2025-04-22 15:54:26,791 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICg2gHbGAM507wUcFUOt64N4G6LG0CAAI5FwACYy9AVMkF23HCPJS2NgQ
+2025-04-22 15:54:27,263 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_367.part_028
+2025-04-22 15:54:27,264 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_367.part_028
+2025-04-22 15:54:30,433 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAICg2gHbGAM507wUcFUOt64N4G6LG0CAAI5FwACYy9AVMkF23HCPJS2NgQ.
+2025-04-22 15:54:30,474 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIChGgHbHID6UjEGFGRiOU0MvkQMsX_AAI6FwACYy9AVD6slVS_ZMmGNgQ
+2025-04-22 15:54:30,916 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_368.part_029
+2025-04-22 15:54:30,916 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_368.part_029
+2025-04-22 15:54:34,636 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIChGgHbHID6UjEGFGRiOU0MvkQMsX_AAI6FwACYy9AVD6slVS_ZMmGNgQ.
+2025-04-22 15:54:34,665 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIChWgHbIkDrzLT1gzZDP7jtD7jUwXnAAI7FwACYy9AVEG0EJRm7swnNgQ
+2025-04-22 15:54:35,094 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_369.part_030
+2025-04-22 15:54:35,094 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_369.part_030
+2025-04-22 15:54:39,892 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIChWgHbIkDrzLT1gzZDP7jtD7jUwXnAAI7FwACYy9AVEG0EJRm7swnNgQ.
+2025-04-22 15:54:39,921 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIChmgHbJOMB7RY_sXOMqhO3zouKJ0KAAI8FwACYy9AVFdlnb1XbgABGjYE
+2025-04-22 15:54:40,358 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_370.part_031
+2025-04-22 15:54:40,359 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_370.part_031
+2025-04-22 15:54:44,993 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIChmgHbJOMB7RY_sXOMqhO3zouKJ0KAAI8FwACYy9AVFdlnb1XbgABGjYE.
+2025-04-22 15:54:45,024 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAICh2gHbJe9FgM-9AuKcuVCattExjhmAAI9FwACYy9AVBN5z1pp098INgQ
+2025-04-22 15:54:45,464 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_371.part_032
+2025-04-22 15:54:45,465 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_371.part_032
+2025-04-22 15:54:47,036 - INFO - [download_telegram_file_content] - Successfully downloaded 4492663 bytes for file_id BQACAgUAAxkDAAICh2gHbJe9FgM-9AuKcuVCattExjhmAAI9FwACYy9AVBN5z1pp098INgQ.
+2025-04-22 15:54:47,039 - INFO - [direct_download_file] - [Direct DL:39cbdab826] Finished reassembling 32 chunks in 168.89s. Total bytes reassembled: 654609783.
+2025-04-22 15:54:47,040 - INFO - [direct_download_file] - [Direct DL:39cbdab826] Decompressing reassembled file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\directDL_reass_39cbdab826_yi5wb07o.zip.tmp
+2025-04-22 15:54:54,370 - INFO - [direct_download_file] - [Direct DL:39cbdab826] Decompression finished in 7.33s. Final file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\directDL_final_39cbdab826_wdhk8a16.exe
+2025-04-22 15:54:54,372 - INFO - [direct_download_file] - [Direct DL:39cbdab826] File preparation successful. Final file: 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\directDL_final_39cbdab826_wdhk8a16.exe', Size: 695857376 bytes. Prep time: 176.22s.
+2025-04-22 15:54:54,373 - INFO - [direct_download_file] - [Direct DL:39cbdab826] Starting file stream for 'ScreamingFrogSEOSpider-20.3 (1).exe' from 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\directDL_final_39cbdab826_wdhk8a16.exe'.
+2025-04-22 15:54:54,374 - INFO - [direct_download_file] - [Direct DL:39cbdab826] Returning streaming response. Total request time (incl. prep): 176.25s.
+2025-04-22 15:54:54,413 - INFO - [direct_download_file] - [Direct DL:39cbdab826] Cleaned up intermediate reassembled file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\directDL_reass_39cbdab826_yi5wb07o.zip.tmp
+2025-04-22 15:54:57,622 - INFO - [_log] - 127.0.0.1 - - [22/Apr/2025 15:54:57] "GET /download/39cbdab826 HTTP/1.1" 200 -
+2025-04-22 15:54:59,374 - INFO - [generate_file_chunks] - [Direct DL:39cbdab826] Finished streaming file content: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\directDL_final_39cbdab826_wdhk8a16.exe
+2025-04-22 15:54:59,376 - INFO - [generate_file_chunks] - [Direct DL:39cbdab826] Generator cleaning up final temp file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\directDL_final_39cbdab826_wdhk8a16.exe
+2025-04-22 15:54:59,442 - INFO - [generate_file_chunks] - [Direct DL:39cbdab826] Successfully deleted final temp file via generator: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\directDL_final_39cbdab826_wdhk8a16.exe
+2025-04-22 15:55:43,265 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-22 15:55:43,267 - INFO - [initiate_upload] - Saving temporary file for upload_id 'd458d8d9-7f6c-4285-9562-d309e61766fe' to 'uploads_temp\d458d8d9-7f6c-4285-9562-d309e61766fe_download_page.html'
+2025-04-22 15:55:43,268 - INFO - [initiate_upload] - Temporary file saved successfully for 'download_page.html' (ID: d458d8d9-7f6c-4285-9562-d309e61766fe).
+2025-04-22 15:55:43,269 - INFO - [_log] - 127.0.0.1 - - [22/Apr/2025 15:55:43] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-22 15:55:43,273 - INFO - [stream_progress] - SSE connection request for upload_id: d458d8d9-7f6c-4285-9562-d309e61766fe
+2025-04-22 15:55:43,273 - INFO - [process_upload_and_generate_updates] - [d458d8d9-7f6c-4285-9562-d309e61766fe] Starting processing...
+2025-04-22 15:55:43,274 - INFO - [process_upload_and_generate_updates] - [d458d8d9-7f6c-4285-9562-d309e61766fe] Processing upload: User='testt', File='download_page.html', TempPath='uploads_temp\d458d8d9-7f6c-4285-9562-d309e61766fe_download_page.html'
+2025-04-22 15:55:43,275 - INFO - [process_upload_and_generate_updates] - [d458d8d9-7f6c-4285-9562-d309e61766fe] Original temp file size: 2237 bytes.
+2025-04-22 15:55:43,275 - INFO - [_log] - 127.0.0.1 - - [22/Apr/2025 15:55:43] "GET /stream-progress/d458d8d9-7f6c-4285-9562-d309e61766fe HTTP/1.1" 200 -
+2025-04-22 15:55:43,281 - INFO - [process_upload_and_generate_updates] - [d458d8d9-7f6c-4285-9562-d309e61766fe] 'download_page.html' is small. Compressing and sending as single file.
+2025-04-22 15:55:43,284 - INFO - [process_upload_and_generate_updates] - [d458d8d9-7f6c-4285-9562-d309e61766fe] Compressed 'download_page.html' to 1040 bytes.
+2025-04-22 15:55:43,284 - INFO - [send_file_to_telegram] - Sending file 'download_page.html.zip' to Telegram chat ID: -4603853425
+2025-04-22 15:55:44,265 - INFO - [send_file_to_telegram] - Telegram API success for 'download_page.html.zip'.
+2025-04-22 15:55:44,265 - INFO - [process_upload_and_generate_updates] - [d458d8d9-7f6c-4285-9562-d309e61766fe] Single file 'download_page.html' sent successfully.
+2025-04-22 15:55:44,295 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-22 15:55:44,312 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-22 15:55:44,312 - INFO - [process_upload_and_generate_updates] - [d458d8d9-7f6c-4285-9562-d309e61766fe] Generated landing page URL: http://127.0.0.1:5000/get/53d7362275
+2025-04-22 15:55:44,318 - INFO - [process_upload_and_generate_updates] - [d458d8d9-7f6c-4285-9562-d309e61766fe] Entering final cleanup.
+2025-04-22 15:55:44,321 - INFO - [process_upload_and_generate_updates] - [d458d8d9-7f6c-4285-9562-d309e61766fe] Successfully deleted original temporary file: uploads_temp\d458d8d9-7f6c-4285-9562-d309e61766fe_download_page.html
+2025-04-22 15:55:44,323 - INFO - [process_upload_and_generate_updates] - [d458d8d9-7f6c-4285-9562-d309e61766fe] Processing finished with status: completed_metadata_error
+2025-04-22 15:55:54,310 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-22 15:55:54,312 - INFO - [initiate_upload] - Saving temporary file for upload_id 'df701409-bb13-4564-a3bd-6156282ad0ab' to 'uploads_temp\df701409-bb13-4564-a3bd-6156282ad0ab_download_page.html'
+2025-04-22 15:55:54,313 - INFO - [initiate_upload] - Temporary file saved successfully for 'download_page.html' (ID: df701409-bb13-4564-a3bd-6156282ad0ab).
+2025-04-22 15:55:54,314 - INFO - [_log] - 127.0.0.1 - - [22/Apr/2025 15:55:54] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-22 15:55:54,319 - INFO - [stream_progress] - SSE connection request for upload_id: df701409-bb13-4564-a3bd-6156282ad0ab
+2025-04-22 15:55:54,320 - INFO - [process_upload_and_generate_updates] - [df701409-bb13-4564-a3bd-6156282ad0ab] Starting processing...
+2025-04-22 15:55:54,320 - INFO - [process_upload_and_generate_updates] - [df701409-bb13-4564-a3bd-6156282ad0ab] Processing upload: User='testt', File='download_page.html', TempPath='uploads_temp\df701409-bb13-4564-a3bd-6156282ad0ab_download_page.html'
+2025-04-22 15:55:54,321 - INFO - [process_upload_and_generate_updates] - [df701409-bb13-4564-a3bd-6156282ad0ab] Original temp file size: 2237 bytes.
+2025-04-22 15:55:54,322 - INFO - [_log] - 127.0.0.1 - - [22/Apr/2025 15:55:54] "GET /stream-progress/df701409-bb13-4564-a3bd-6156282ad0ab HTTP/1.1" 200 -
+2025-04-22 15:55:54,323 - INFO - [process_upload_and_generate_updates] - [df701409-bb13-4564-a3bd-6156282ad0ab] 'download_page.html' is small. Compressing and sending as single file.
+2025-04-22 15:55:54,325 - INFO - [process_upload_and_generate_updates] - [df701409-bb13-4564-a3bd-6156282ad0ab] Compressed 'download_page.html' to 1040 bytes.
+2025-04-22 15:55:54,326 - INFO - [send_file_to_telegram] - Sending file 'download_page.html.zip' to Telegram chat ID: -4603853425
+2025-04-22 15:55:55,287 - INFO - [send_file_to_telegram] - Telegram API success for 'download_page.html.zip'.
+2025-04-22 15:55:55,287 - INFO - [process_upload_and_generate_updates] - [df701409-bb13-4564-a3bd-6156282ad0ab] Single file 'download_page.html' sent successfully.
+2025-04-22 15:55:55,312 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-22 15:55:55,326 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-22 15:55:55,326 - INFO - [process_upload_and_generate_updates] - [df701409-bb13-4564-a3bd-6156282ad0ab] Generated landing page URL: http://127.0.0.1:5000/get/8289effbea
+2025-04-22 15:55:55,327 - INFO - [process_upload_and_generate_updates] - [df701409-bb13-4564-a3bd-6156282ad0ab] Entering final cleanup.
+2025-04-22 15:55:55,328 - INFO - [process_upload_and_generate_updates] - [df701409-bb13-4564-a3bd-6156282ad0ab] Successfully deleted original temporary file: uploads_temp\df701409-bb13-4564-a3bd-6156282ad0ab_download_page.html
+2025-04-22 15:55:55,328 - INFO - [process_upload_and_generate_updates] - [df701409-bb13-4564-a3bd-6156282ad0ab] Processing finished with status: completed_metadata_error
+2025-04-22 15:56:07,003 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-22 15:56:07,015 - INFO - [initiate_upload] - Saving temporary file for upload_id '7eeb0b82-10d1-463d-936d-187bbf49f10a' to 'uploads_temp\7eeb0b82-10d1-463d-936d-187bbf49f10a_Website (boodmo)-20250421T040727Z-001 (1).zip'
+2025-04-22 15:56:07,017 - INFO - [initiate_upload] - Temporary file saved successfully for 'Website (boodmo)-20250421T040727Z-001 (1).zip' (ID: 7eeb0b82-10d1-463d-936d-187bbf49f10a).
+2025-04-22 15:56:07,019 - INFO - [_log] - 127.0.0.1 - - [22/Apr/2025 15:56:07] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-22 15:56:07,023 - INFO - [stream_progress] - SSE connection request for upload_id: 7eeb0b82-10d1-463d-936d-187bbf49f10a
+2025-04-22 15:56:07,023 - INFO - [process_upload_and_generate_updates] - [7eeb0b82-10d1-463d-936d-187bbf49f10a] Starting processing...
+2025-04-22 15:56:07,024 - INFO - [process_upload_and_generate_updates] - [7eeb0b82-10d1-463d-936d-187bbf49f10a] Processing upload: User='testt', File='Website (boodmo)-20250421T040727Z-001 (1).zip', TempPath='uploads_temp\7eeb0b82-10d1-463d-936d-187bbf49f10a_Website (boodmo)-20250421T040727Z-001 (1).zip'
+2025-04-22 15:56:07,024 - INFO - [process_upload_and_generate_updates] - [7eeb0b82-10d1-463d-936d-187bbf49f10a] Original temp file size: 543189 bytes.
+2025-04-22 15:56:07,025 - INFO - [_log] - 127.0.0.1 - - [22/Apr/2025 15:56:07] "GET /stream-progress/7eeb0b82-10d1-463d-936d-187bbf49f10a HTTP/1.1" 200 -
+2025-04-22 15:56:07,025 - INFO - [process_upload_and_generate_updates] - [7eeb0b82-10d1-463d-936d-187bbf49f10a] 'Website (boodmo)-20250421T040727Z-001 (1).zip' is small. Compressing and sending as single file.
+2025-04-22 15:56:07,077 - INFO - [process_upload_and_generate_updates] - [7eeb0b82-10d1-463d-936d-187bbf49f10a] Compressed 'Website (boodmo)-20250421T040727Z-001 (1).zip' to 531914 bytes.
+2025-04-22 15:56:07,080 - INFO - [send_file_to_telegram] - Sending file 'Website (boodmo)-20250421T040727Z-001 (1).zip.zip' to Telegram chat ID: -4603853425
+2025-04-22 15:56:09,138 - INFO - [send_file_to_telegram] - Telegram API success for 'Website (boodmo)-20250421T040727Z-001 (1).zip.zip'.
+2025-04-22 15:56:09,141 - INFO - [process_upload_and_generate_updates] - [7eeb0b82-10d1-463d-936d-187bbf49f10a] Single file 'Website (boodmo)-20250421T040727Z-001 (1).zip' sent successfully.
+2025-04-22 15:56:09,160 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-22 15:56:09,173 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-22 15:56:09,173 - INFO - [process_upload_and_generate_updates] - [7eeb0b82-10d1-463d-936d-187bbf49f10a] Generated landing page URL: http://127.0.0.1:5000/get/6c91a24bb0
+2025-04-22 15:56:09,174 - INFO - [process_upload_and_generate_updates] - [7eeb0b82-10d1-463d-936d-187bbf49f10a] Entering final cleanup.
+2025-04-22 15:56:09,175 - INFO - [process_upload_and_generate_updates] - [7eeb0b82-10d1-463d-936d-187bbf49f10a] Successfully deleted original temporary file: uploads_temp\7eeb0b82-10d1-463d-936d-187bbf49f10a_Website (boodmo)-20250421T040727Z-001 (1).zip
+2025-04-22 15:56:09,175 - INFO - [process_upload_and_generate_updates] - [7eeb0b82-10d1-463d-936d-187bbf49f10a] Processing finished with status: completed_metadata_error
+2025-04-22 15:56:23,047 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-22 15:56:23,583 - INFO - [initiate_upload] - Saving temporary file for upload_id '0be27bb5-6ba0-44ff-a0e2-fedd923d5b72' to 'uploads_temp\0be27bb5-6ba0-44ff-a0e2-fedd923d5b72_60mb (2).pdf'
+2025-04-22 15:56:23,662 - INFO - [initiate_upload] - Temporary file saved successfully for '60mb (2).pdf' (ID: 0be27bb5-6ba0-44ff-a0e2-fedd923d5b72).
+2025-04-22 15:56:23,668 - INFO - [_log] - 127.0.0.1 - - [22/Apr/2025 15:56:23] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-22 15:56:23,675 - INFO - [stream_progress] - SSE connection request for upload_id: 0be27bb5-6ba0-44ff-a0e2-fedd923d5b72
+2025-04-22 15:56:23,675 - INFO - [process_upload_and_generate_updates] - [0be27bb5-6ba0-44ff-a0e2-fedd923d5b72] Starting processing...
+2025-04-22 15:56:23,676 - INFO - [process_upload_and_generate_updates] - [0be27bb5-6ba0-44ff-a0e2-fedd923d5b72] Processing upload: User='testt', File='60mb (2).pdf', TempPath='uploads_temp\0be27bb5-6ba0-44ff-a0e2-fedd923d5b72_60mb (2).pdf'
+2025-04-22 15:56:23,676 - INFO - [process_upload_and_generate_updates] - [0be27bb5-6ba0-44ff-a0e2-fedd923d5b72] Original temp file size: 63862122 bytes.
+2025-04-22 15:56:23,676 - INFO - [_log] - 127.0.0.1 - - [22/Apr/2025 15:56:23] "GET /stream-progress/0be27bb5-6ba0-44ff-a0e2-fedd923d5b72 HTTP/1.1" 200 -
+2025-04-22 15:56:23,677 - INFO - [process_upload_and_generate_updates] - [0be27bb5-6ba0-44ff-a0e2-fedd923d5b72] '60mb (2).pdf' is large. Compressing before splitting.
+2025-04-22 15:56:23,678 - INFO - [process_upload_and_generate_updates] - [0be27bb5-6ba0-44ff-a0e2-fedd923d5b72] Created temporary file for compression result: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\0be27bb5-6ba0-44ff-a0e2-fedd923d5b72_comp_0m33sw1p.zip
+2025-04-22 15:56:25,894 - INFO - [process_upload_and_generate_updates] - [0be27bb5-6ba0-44ff-a0e2-fedd923d5b72] Finished compressing to 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\0be27bb5-6ba0-44ff-a0e2-fedd923d5b72_comp_0m33sw1p.zip'. Size: 62754359 bytes. Time: 2.22s.
+2025-04-22 15:56:25,907 - INFO - [process_upload_and_generate_updates] - [0be27bb5-6ba0-44ff-a0e2-fedd923d5b72] Reading chunk 1 for COMPRESSED file starting at byte 0.
+2025-04-22 15:56:25,919 - INFO - [process_upload_and_generate_updates] - [0be27bb5-6ba0-44ff-a0e2-fedd923d5b72] Read chunk 1 (20971520 bytes). Total read: 20971520/62754359
+2025-04-22 15:56:25,919 - INFO - [process_upload_and_generate_updates] - [0be27bb5-6ba0-44ff-a0e2-fedd923d5b72] Attempting to send chunk: '60mb (2).pdf.zip.part_001'
+2025-04-22 15:56:25,920 - INFO - [send_file_to_telegram] - Sending file '60mb (2).pdf.zip.part_001' to Telegram chat ID: -4603853425
+2025-04-22 15:56:37,166 - INFO - [send_file_to_telegram] - Telegram API success for '60mb (2).pdf.zip.part_001'.
+2025-04-22 15:56:37,171 - INFO - [process_upload_and_generate_updates] - [0be27bb5-6ba0-44ff-a0e2-fedd923d5b72] Chunk '60mb (2).pdf.zip.part_001' sent successfully.
+2025-04-22 15:56:37,173 - INFO - [process_upload_and_generate_updates] - [0be27bb5-6ba0-44ff-a0e2-fedd923d5b72] Successfully processed chunk '60mb (2).pdf.zip.part_001' (MsgID=651) in 11.25s.
+2025-04-22 15:56:37,175 - INFO - [process_upload_and_generate_updates] - [0be27bb5-6ba0-44ff-a0e2-fedd923d5b72] Reading chunk 2 for COMPRESSED file starting at byte 20971520.
+2025-04-22 15:56:37,191 - INFO - [process_upload_and_generate_updates] - [0be27bb5-6ba0-44ff-a0e2-fedd923d5b72] Read chunk 2 (20971520 bytes). Total read: 41943040/62754359
+2025-04-22 15:56:37,192 - INFO - [process_upload_and_generate_updates] - [0be27bb5-6ba0-44ff-a0e2-fedd923d5b72] Attempting to send chunk: '60mb (2).pdf.zip.part_002'
+2025-04-22 15:56:37,192 - INFO - [send_file_to_telegram] - Sending file '60mb (2).pdf.zip.part_002' to Telegram chat ID: -4603853425
+2025-04-22 15:56:48,466 - INFO - [send_file_to_telegram] - Telegram API success for '60mb (2).pdf.zip.part_002'.
+2025-04-22 15:56:48,468 - INFO - [process_upload_and_generate_updates] - [0be27bb5-6ba0-44ff-a0e2-fedd923d5b72] Chunk '60mb (2).pdf.zip.part_002' sent successfully.
+2025-04-22 15:56:48,469 - INFO - [process_upload_and_generate_updates] - [0be27bb5-6ba0-44ff-a0e2-fedd923d5b72] Successfully processed chunk '60mb (2).pdf.zip.part_002' (MsgID=652) in 11.28s.
+2025-04-22 15:56:48,469 - INFO - [process_upload_and_generate_updates] - [0be27bb5-6ba0-44ff-a0e2-fedd923d5b72] Reading chunk 3 for COMPRESSED file starting at byte 41943040.
+2025-04-22 15:56:48,486 - INFO - [process_upload_and_generate_updates] - [0be27bb5-6ba0-44ff-a0e2-fedd923d5b72] Read chunk 3 (20811319 bytes). Total read: 62754359/62754359
+2025-04-22 15:56:48,487 - INFO - [process_upload_and_generate_updates] - [0be27bb5-6ba0-44ff-a0e2-fedd923d5b72] Attempting to send chunk: '60mb (2).pdf.zip.part_003'
+2025-04-22 15:56:48,487 - INFO - [send_file_to_telegram] - Sending file '60mb (2).pdf.zip.part_003' to Telegram chat ID: -4603853425
+2025-04-22 15:57:07,685 - INFO - [send_file_to_telegram] - Telegram API success for '60mb (2).pdf.zip.part_003'.
+2025-04-22 15:57:07,687 - INFO - [process_upload_and_generate_updates] - [0be27bb5-6ba0-44ff-a0e2-fedd923d5b72] Chunk '60mb (2).pdf.zip.part_003' sent successfully.
+2025-04-22 15:57:07,688 - INFO - [process_upload_and_generate_updates] - [0be27bb5-6ba0-44ff-a0e2-fedd923d5b72] Successfully processed chunk '60mb (2).pdf.zip.part_003' (MsgID=653) in 19.20s.
+2025-04-22 15:57:07,689 - INFO - [process_upload_and_generate_updates] - [0be27bb5-6ba0-44ff-a0e2-fedd923d5b72] Reading chunk 4 for COMPRESSED file starting at byte 62754359.
+2025-04-22 15:57:07,700 - INFO - [process_upload_and_generate_updates] - [0be27bb5-6ba0-44ff-a0e2-fedd923d5b72] Finished reading all chunks for compressed file.
+2025-04-22 15:57:07,700 - INFO - [process_upload_and_generate_updates] - [0be27bb5-6ba0-44ff-a0e2-fedd923d5b72] All 3 chunks uploaded successfully. Saving metadata.
+2025-04-22 15:57:07,701 - INFO - [process_upload_and_generate_updates] - [0be27bb5-6ba0-44ff-a0e2-fedd923d5b72] Generated Access ID: b052fe3b98
+2025-04-22 15:57:07,717 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-22 15:57:07,731 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-22 15:57:07,731 - INFO - [process_upload_and_generate_updates] - [0be27bb5-6ba0-44ff-a0e2-fedd923d5b72] Generated landing page URL: http://127.0.0.1:5000/get/b052fe3b98
+2025-04-22 15:57:07,732 - INFO - [process_upload_and_generate_updates] - [0be27bb5-6ba0-44ff-a0e2-fedd923d5b72] Entering final cleanup.
+2025-04-22 15:57:07,738 - INFO - [process_upload_and_generate_updates] - [0be27bb5-6ba0-44ff-a0e2-fedd923d5b72] Successfully deleted original temporary file: uploads_temp\0be27bb5-6ba0-44ff-a0e2-fedd923d5b72_60mb (2).pdf
+2025-04-22 15:57:07,750 - INFO - [process_upload_and_generate_updates] - [0be27bb5-6ba0-44ff-a0e2-fedd923d5b72] Successfully deleted temporary compressed file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\0be27bb5-6ba0-44ff-a0e2-fedd923d5b72_comp_0m33sw1p.zip
+2025-04-22 15:57:07,750 - INFO - [process_upload_and_generate_updates] - [0be27bb5-6ba0-44ff-a0e2-fedd923d5b72] Processing finished with status: completed

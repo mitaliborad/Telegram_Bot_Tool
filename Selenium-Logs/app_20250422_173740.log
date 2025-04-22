@@ -1,0 +1,8 @@
+2025-04-22 17:37:40,107 - INFO - [<module>] - Logging configured. Log file: Selenium-Logs\app_20250422_173740.log
+2025-04-22 17:37:40,108 - INFO - [<module>] - Flask application initialized.
+2025-04-22 17:37:40,113 - INFO - [<module>] - Starting Flask development server...
+2025-04-22 17:37:40,146 - WARNING - [_log] -  * Debugger is active!
+2025-04-22 17:37:40,149 - INFO - [_log] -  * Debugger PIN: 107-410-311
+2025-04-22 17:37:43,833 - INFO - [index] - Serving index page.
+2025-04-22 17:37:43,856 - INFO - [_log] - 127.0.0.1 - - [22/Apr/2025 17:37:43] "GET / HTTP/1.1" 200 -
+2025-04-22 17:37:43,872 - INFO - [_log] - 127.0.0.1 - - [22/Apr/2025 17:37:43] "[33mGET /static/style.css HTTP/1.1[0m" 404 -

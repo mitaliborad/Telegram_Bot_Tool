@@ -4673,6 +4673,201 @@
             "username": "testt",
             "total_upload_duration_seconds": 41.72747087478638,
             "access_id": "b052fe3b98"
+        },
+        {
+            "original_filename": "Telegram_app.py",
+            "sent_filename": "Telegram_app.py.zip",
+            "is_split": false,
+            "is_compressed": true,
+            "original_size": 104466,
+            "compressed_size": 19155,
+            "telegram_message_id": 654,
+            "telegram_file_id": "BQACAgUAAxkDAAICjmgHcwwW6pa3n3CMH5Y6Z3KAwK5pAAJXFwACYy9AVL3gVIW8RUwwNgQ",
+            "telegram_file_unique_id": "AgADVxcAAmMvQFQ",
+            "upload_timestamp": "2025-04-22T10:44:28.733485+00:00",
+            "username": "testt",
+            "upload_duration_seconds": 1.346935510635376,
+            "access_id": "8eba4a6747"
+        },
+        {
+            "original_filename": "requirements.txt",
+            "sent_filename": "requirements.txt.zip",
+            "is_split": false,
+            "is_compressed": true,
+            "original_size": 207,
+            "compressed_size": 255,
+            "telegram_message_id": 655,
+            "telegram_file_id": "BQACAgUAAxkDAAICj2gHc8R5BTQHbLapy3czZjJFcWYvAAJZFwACYy9AVOdgsuPQbmD7NgQ",
+            "telegram_file_unique_id": "AgADWRcAAmMvQFQ",
+            "upload_timestamp": "2025-04-22T10:47:32.806270+00:00",
+            "username": "testt",
+            "upload_duration_seconds": 1.0151255130767822,
+            "access_id": "41f994beaa"
+        },
+        {
+            "original_filename": "metadata.json",
+            "sent_filename": "metadata.json.zip",
+            "is_split": false,
+            "is_compressed": true,
+            "original_size": 256163,
+            "compressed_size": 39436,
+            "telegram_message_id": 656,
+            "telegram_file_id": "BQACAgUAAxkDAAICkGgHdDaqstg_WHqNUDdjHhXAV3jXAAJbFwACYy9AVDcgujZNm1XaNgQ",
+            "telegram_file_unique_id": "AgADWxcAAmMvQFQ",
+            "upload_timestamp": "2025-04-22T10:49:26.900176+00:00",
+            "username": "testt",
+            "upload_duration_seconds": 1.5509824752807617,
+            "access_id": "405b2d8900"
+        },
+        {
+            "original_filename": "requirements.txt",
+            "sent_filename": "requirements.txt.zip",
+            "is_split": false,
+            "is_compressed": true,
+            "original_size": 207,
+            "compressed_size": 255,
+            "telegram_message_id": 657,
+            "telegram_file_id": "BQACAgUAAxkDAAICkWgHehFs4iRdJpOZI4v5AAG3iGOTRQACaxcAAmMvQFRow8u3ua0yujYE",
+            "telegram_file_unique_id": "AgADaxcAAmMvQFQ",
+            "upload_timestamp": "2025-04-22T11:14:26.209087+00:00",
+            "username": "testt",
+            "upload_duration_seconds": 1.0822679996490479,
+            "access_id": "850ade37cf"
+        },
+        {
+            "original_filename": "requirements.txt",
+            "sent_filename": "requirements.txt.zip",
+            "is_split": false,
+            "is_compressed": true,
+            "original_size": 207,
+            "compressed_size": 255,
+            "telegram_message_id": 658,
+            "telegram_file_id": "BQACAgUAAxkDAAICkmgHgOYlKtB-ClTUWWvqL4HoqG-PAAKCFwACYy9AVLKaYi6lrxPYNgQ",
+            "telegram_file_unique_id": "AgADghcAAmMvQFQ",
+            "upload_timestamp": "2025-04-22T11:43:35.338954+00:00",
+            "username": "testt",
+            "upload_duration_seconds": 1.0790159702301025,
+            "access_id": "0138e6bd50"
+        },
+        {
+            "original_filename": "60mb.php",
+            "sent_filename": "60mb.php.zip",
+            "is_split": true,
+            "is_compressed": true,
+            "original_size": 62995770,
+            "compressed_total_size": 183502,
+            "chunk_size": 20971520,
+            "num_chunks": 1,
+            "chunks": [
+                {
+                    "part_number": 1,
+                    "chunk_filename": "60mb.php.zip.part_001",
+                    "message_id": 659,
+                    "file_id": "BQACAgUAAxkDAAICk2gHgiiyPJ8m96NdK7mcEcBqm69iAAKFFwACYy9AVHheugqOVwsaNgQ",
+                    "file_unique_id": "AgADhRcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 1.501270055770874
+                }
+            ],
+            "upload_timestamp": "2025-04-22T11:48:56.715333+00:00",
+            "username": "testt",
+            "total_upload_duration_seconds": 1.501270055770874,
+            "access_id": "e66c08e4f6"
+        },
+        {
+            "original_filename": "60mb.txt",
+            "sent_filename": "60mb.txt.zip",
+            "is_split": true,
+            "is_compressed": true,
+            "original_size": 60985773,
+            "compressed_total_size": 148087,
+            "chunk_size": 20971520,
+            "num_chunks": 1,
+            "chunks": [
+                {
+                    "part_number": 1,
+                    "chunk_filename": "60mb.txt.zip.part_001",
+                    "message_id": 660,
+                    "file_id": "BQACAgUAAxkDAAIClGgHgkZ6ZcT5bpqghnz78eVXVCwOAAKGFwACYy9AVPiePoMZd3VkNgQ",
+                    "file_unique_id": "AgADhhcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 1.6486854553222656
+                }
+            ],
+            "upload_timestamp": "2025-04-22T11:49:27.028640+00:00",
+            "username": "testt",
+            "total_upload_duration_seconds": 1.6486854553222656,
+            "access_id": "a99a649f67"
+        },
+        {
+            "original_filename": "test download (1).mkv",
+            "sent_filename": "test download (1).mkv.zip",
+            "is_split": true,
+            "is_compressed": true,
+            "original_size": 132739902,
+            "compressed_total_size": 129562600,
+            "chunk_size": 20971520,
+            "num_chunks": 7,
+            "chunks": [
+                {
+                    "part_number": 1,
+                    "chunk_filename": "test download (1).mkv.zip.part_001",
+                    "message_id": 661,
+                    "file_id": "BQACAgUAAxkDAAIClWgHgncktjy2ppXayT6vRVSXTsrKAAKHFwACYy9AVB-iTjoNZN54NgQ",
+                    "file_unique_id": "AgADhxcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 12.715187311172485
+                },
+                {
+                    "part_number": 2,
+                    "chunk_filename": "test download (1).mkv.zip.part_002",
+                    "message_id": 662,
+                    "file_id": "BQACAgUAAxkDAAIClmgHgoFvIa4_GyJflGqLNGWBcnr1AAKIFwACYy9AVLRCWpqLqHwuNgQ",
+                    "file_unique_id": "AgADiBcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 10.452494382858276
+                },
+                {
+                    "part_number": 3,
+                    "chunk_filename": "test download (1).mkv.zip.part_003",
+                    "message_id": 663,
+                    "file_id": "BQACAgUAAxkDAAICl2gHgpKjutLlxCc1PdDO2PnkQ_mdAAKJFwACYy9AVN7DMCf5A_TGNgQ",
+                    "file_unique_id": "AgADiRcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 16.137741804122925
+                },
+                {
+                    "part_number": 4,
+                    "chunk_filename": "test download (1).mkv.zip.part_004",
+                    "message_id": 664,
+                    "file_id": "BQACAgUAAxkDAAICmGgHgp7yTRZAC-1sc9LT3e2-LXUxAAKKFwACYy9AVIiRzHX3QvaKNgQ",
+                    "file_unique_id": "AgADihcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 12.241838455200195
+                },
+                {
+                    "part_number": 5,
+                    "chunk_filename": "test download (1).mkv.zip.part_005",
+                    "message_id": 665,
+                    "file_id": "BQACAgUAAxkDAAICmWgHgrBmfEyCwzz6sWnEVt08rMaDAAKMFwACYy9AVD5mgtDaRlj4NgQ",
+                    "file_unique_id": "AgADjBcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 18.110912322998047
+                },
+                {
+                    "part_number": 6,
+                    "chunk_filename": "test download (1).mkv.zip.part_006",
+                    "message_id": 666,
+                    "file_id": "BQACAgUAAxkDAAICmmgHgr2TlnNNafjYRI9K8mFa3EfVAAKNFwACYy9AVNi0LadZceO2NgQ",
+                    "file_unique_id": "AgADjRcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 12.61728310585022
+                },
+                {
+                    "part_number": 7,
+                    "chunk_filename": "test download (1).mkv.zip.part_007",
+                    "message_id": 667,
+                    "file_id": "BQACAgUAAxkDAAICm2gHgsAWyihqR4Rtd7ajuHoVvqhyAAKOFwACYy9AVG72HqFa-5LINgQ",
+                    "file_unique_id": "AgADjhcAAmMvQFQ",
+                    "chunk_upload_duration_seconds": 3.7180545330047607
+                }
+            ],
+            "upload_timestamp": "2025-04-22T11:51:29.300969+00:00",
+            "username": "testt",
+            "total_upload_duration_seconds": 85.99351191520691,
+            "access_id": "1769555e39"
         }
     ],
     "Tomy": [

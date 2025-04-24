@@ -1516,6 +1516,428 @@
             "username": "Octopus",
             "total_upload_duration_seconds": 261.53597831726074,
             "access_id": "d852f3cd5c"
+        },
+        {
+            "original_filename": "Telegram_app.py",
+            "sent_filename": "Telegram_app.py.zip",
+            "is_split": false,
+            "is_compressed": true,
+            "original_size": 128395,
+            "compressed_size": 23297,
+            "send_locations": [
+                {
+                    "chat_id": "-4603853425",
+                    "success": true,
+                    "message_id": 791,
+                    "file_id": "BQACAgUAAxkDAAIDF2gKHCvpW7YQgoqMwjGYCTNJoPD9AAJGGwACxr9RVCYg3uzLdEAoNgQ",
+                    "file_unique_id": "AgADRhsAAsa_UVQ"
+                },
+                {
+                    "chat_id": "-1002614397019",
+                    "success": true,
+                    "message_id": 47,
+                    "file_id": "BQACAgUAAyEGAASb1IhbAAMvaAocLEoX50-L1DQlDrdiwVfCJlIAAqwVAAL9HVBUV3n32wIlu-I2BA",
+                    "file_unique_id": "AgADrBUAAv0dUFQ"
+                },
+                {
+                    "chat_id": "-4641852757",
+                    "success": true,
+                    "message_id": 792,
+                    "file_id": "BQACAgUAAxkDAAIDGGgKHC1OX2tRTl7DymoHqrG_rVJ8AAKTEwACL79QVAII4OQiTuJxNgQ",
+                    "file_unique_id": "AgADkxMAAi-_UFQ"
+                }
+            ],
+            "upload_timestamp": "2025-04-24T11:10:36.961601+00:00",
+            "username": "Octopus",
+            "upload_duration_seconds": 3.739722490310669,
+            "access_id": "e8fe40ab1a"
+        },
+        {
+            "original_filename": "Telegram_app.py",
+            "sent_filename": "Telegram_app.py.zip",
+            "is_split": false,
+            "is_compressed": true,
+            "original_size": 128395,
+            "compressed_size": 23297,
+            "send_locations": [
+                {
+                    "chat_id": "-4603853425",
+                    "success": true,
+                    "message_id": 793,
+                    "file_id": "BQACAgUAAxkDAAIDGWgKHNancBc51HAgpaPHJkHrk7HpAAJIGwACxr9RVHo3wwqPEB2BNgQ",
+                    "file_unique_id": "AgADSBsAAsa_UVQ"
+                },
+                {
+                    "chat_id": "-1002614397019",
+                    "success": true,
+                    "message_id": 48,
+                    "file_id": "BQACAgUAAyEGAASb1IhbAAMwaAoc2DGeGPs7TlVX6rOpZBWJv00AArYVAAL9HVBUqn9bZSLM_b82BA",
+                    "file_unique_id": "AgADthUAAv0dUFQ"
+                },
+                {
+                    "chat_id": "-4641852757",
+                    "success": true,
+                    "message_id": 794,
+                    "file_id": "BQACAgUAAxkDAAIDGmgKHNmNHlW-kCBlYFoCvdjol1qXAAKXEwACL79QVP1hOvhi45YkNgQ",
+                    "file_unique_id": "AgADlxMAAi-_UFQ"
+                }
+            ],
+            "upload_timestamp": "2025-04-24T11:13:28.728456+00:00",
+            "username": "Octopus",
+            "upload_duration_seconds": 3.955690860748291,
+            "access_id": "352fa72af9"
+        },
+        {
+            "original_filename": "requirements.txt",
+            "sent_filename": "requirements.txt.zip",
+            "is_split": false,
+            "is_compressed": true,
+            "original_size": 207,
+            "compressed_size": 255,
+            "send_locations": [
+                {
+                    "chat_id": "-4603853425",
+                    "success": true,
+                    "message_id": 795,
+                    "file_id": "BQACAgUAAxkDAAIDG2gKKvHr1RrtI-duFhmekVukz4bpAAJYGwACxr9RVF8olHfSqml1NgQ",
+                    "file_unique_id": "AgADWBsAAsa_UVQ"
+                },
+                {
+                    "chat_id": "-1002614397019",
+                    "success": true,
+                    "message_id": 49,
+                    "file_id": "BQACAgUAAyEGAASb1IhbAAMxaAoq8n6f1xOsTQABG_lilnQe76plAAISFgAC_R1QVKRbSg91Tm-iNgQ",
+                    "file_unique_id": "AgADEhYAAv0dUFQ"
+                },
+                {
+                    "chat_id": "-4641852757",
+                    "success": true,
+                    "message_id": 796,
+                    "file_id": "BQACAgUAAxkDAAIDHGgKKvNCU9-68zqyv3faZDPHCbgkAAKxEwACL79QVFAv510631TpNgQ",
+                    "file_unique_id": "AgADsRMAAi-_UFQ"
+                }
+            ],
+            "upload_timestamp": "2025-04-24T12:13:39.068171+00:00",
+            "username": "Octopus",
+            "upload_duration_seconds": 3.0430679321289062,
+            "access_id": "fa78ee750c"
+        },
+        {
+            "original_filename": "Sublime Text Build 3211 x64.zip",
+            "sent_filename": "Sublime Text Build 3211 x64.zip.zip",
+            "is_split": false,
+            "is_compressed": true,
+            "original_size": 14550016,
+            "compressed_size": 14478653,
+            "send_locations": [
+                {
+                    "chat_id": "-4603853425",
+                    "success": true,
+                    "message_id": 797,
+                    "file_id": "BQACAgUAAxkDAAIDHWgKK000Md2PpYalDU9ihK13LFDuAAJZGwACxr9RVO__-OnS5PN6NgQ",
+                    "file_unique_id": "AgADWRsAAsa_UVQ"
+                },
+                {
+                    "chat_id": "-1002614397019",
+                    "success": true,
+                    "message_id": 50,
+                    "file_id": "BQACAgUAAyEGAASb1IhbAAMyaAorU-0lE5uZBnQ4GQXUXFU-gf4AAhcWAAL9HVBUl9XAo-hUInM2BA",
+                    "file_unique_id": "AgADFxYAAv0dUFQ"
+                },
+                {
+                    "chat_id": "-4641852757",
+                    "success": true,
+                    "message_id": 798,
+                    "file_id": "BQACAgUAAxkDAAIDHmgKK2N65KjhuXW4q2UCRHLIDkfdAAKyEwACL79QVI_n0x7cNM5JNgQ",
+                    "file_unique_id": "AgADshMAAi-_UFQ"
+                }
+            ],
+            "upload_timestamp": "2025-04-24T12:15:30.893565+00:00",
+            "username": "Octopus",
+            "upload_duration_seconds": 37.55171251296997,
+            "access_id": "5239e86ac6"
+        },
+        {
+            "original_filename": "Sublime Text Build 3211 x64.zip",
+            "sent_filename": "Sublime Text Build 3211 x64.zip.zip",
+            "is_split": false,
+            "is_compressed": true,
+            "original_size": 14550016,
+            "compressed_size": 14478653,
+            "send_locations": [
+                {
+                    "chat_id": "-4603853425",
+                    "success": true,
+                    "message_id": 799,
+                    "file_id": "BQACAgUAAxkDAAIDH2gKK3S9gLhdlGKvD1wT51-58TTaAAJaGwACxr9RVHB8Mg5xLnA2NgQ",
+                    "file_unique_id": "AgADWhsAAsa_UVQ"
+                },
+                {
+                    "chat_id": "-1002614397019",
+                    "success": true,
+                    "message_id": 51,
+                    "file_id": "BQACAgUAAyEGAASb1IhbAAMzaAorg_MxQZVx6b6bMj05DpY8vdwAAhgWAAL9HVBU58RVWbye8U02BA",
+                    "file_unique_id": "AgADGBYAAv0dUFQ"
+                },
+                {
+                    "chat_id": "-4641852757",
+                    "success": true,
+                    "message_id": 800,
+                    "file_id": "BQACAgUAAxkDAAIDIGgKK4y06ChmpSNHlDpgQieM2Dz1AAKzEwACL79QVIbmZx61Y7RVNgQ",
+                    "file_unique_id": "AgADsxMAAi-_UFQ"
+                }
+            ],
+            "upload_timestamp": "2025-04-24T12:16:11.482535+00:00",
+            "username": "Octopus",
+            "upload_duration_seconds": 30.18187165260315,
+            "access_id": "acfd00fc49"
+        },
+        {
+            "original_filename": "Sublime Text Build 3211 x64.zip",
+            "sent_filename": "Sublime Text Build 3211 x64.zip.zip",
+            "is_split": false,
+            "is_compressed": true,
+            "original_size": 14550016,
+            "compressed_size": 14478653,
+            "send_locations": [
+                {
+                    "chat_id": "-4603853425",
+                    "success": true,
+                    "message_id": 801,
+                    "file_id": "BQACAgUAAxkDAAIDIWgKK92WdjXrodqu6JcaMJSSY7ibAAJbGwACxr9RVMhnHE9juJsUNgQ",
+                    "file_unique_id": "AgADWxsAAsa_UVQ"
+                },
+                {
+                    "chat_id": "-1002614397019",
+                    "success": true,
+                    "message_id": 52,
+                    "file_id": "BQACAgUAAyEGAASb1IhbAAM0aAor6h6YSngIGefMKO4DbQW_roIAAhkWAAL9HVBUzISEZhzFPmA2BA",
+                    "file_unique_id": "AgADGRYAAv0dUFQ"
+                },
+                {
+                    "chat_id": "-4641852757",
+                    "success": true,
+                    "message_id": 802,
+                    "file_id": "BQACAgUAAxkDAAIDImgKK_Xyn-gdZ6Jr03Btb5ygvTZ3AAK2EwACL79QVNhzCNhJ57hvNgQ",
+                    "file_unique_id": "AgADthMAAi-_UFQ"
+                }
+            ],
+            "upload_timestamp": "2025-04-24T12:17:56.480268+00:00",
+            "username": "Octopus",
+            "upload_duration_seconds": 32.795928955078125,
+            "access_id": "0b3fb77c11"
+        },
+        {
+            "original_filename": "test download (1) (5) (1).mkv",
+            "sent_filename": "test download (1) (5) (1).mkv.zip",
+            "is_split": true,
+            "is_compressed": true,
+            "original_size": 132739902,
+            "compressed_total_size": 129562616,
+            "chunk_size": 20971520,
+            "num_chunks": 7,
+            "chunks": [
+                {
+                    "part_number": 1,
+                    "chunk_filename": "test download (1) (5) (1).mkv.zip.part_001",
+                    "send_locations": [
+                        {
+                            "chat_id": "-4603853425",
+                            "success": true,
+                            "message_id": 803,
+                            "file_id": "BQACAgUAAxkDAAIDI2gKLCssR-d0ILrAkvuRMpForMRLAAJcGwACxr9RVLNeVivESXz8NgQ",
+                            "file_unique_id": "AgADXBsAAsa_UVQ"
+                        },
+                        {
+                            "chat_id": "-1002614397019",
+                            "success": true,
+                            "message_id": 53,
+                            "file_id": "BQACAgUAAyEGAASb1IhbAAM1aAosNqWjn28ZJ8v7u4IAATBAs3AfAAIcFgAC_R1QVNovWfjXz-GpNgQ",
+                            "file_unique_id": "AgADHBYAAv0dUFQ"
+                        },
+                        {
+                            "chat_id": "-4641852757",
+                            "success": true,
+                            "message_id": 804,
+                            "file_id": "BQACAgUAAxkDAAIDJGgKLEg8LzDx6I2Bh1s0_llLVh_CAAK4EwACL79QVEMwLjT-L4wNNgQ",
+                            "file_unique_id": "AgADuBMAAi-_UFQ"
+                        }
+                    ],
+                    "chunk_upload_duration_seconds": 46.97398638725281
+                },
+                {
+                    "part_number": 2,
+                    "chunk_filename": "test download (1) (5) (1).mkv.zip.part_002",
+                    "send_locations": [
+                        {
+                            "chat_id": "-4603853425",
+                            "success": true,
+                            "message_id": 805,
+                            "file_id": "BQACAgUAAxkDAAIDJWgKLF1sSrUdX6mBc1vKgX5l9yxoAAJdGwACxr9RVK_mguWE9pNRNgQ",
+                            "file_unique_id": "AgADXRsAAsa_UVQ"
+                        },
+                        {
+                            "chat_id": "-1002614397019",
+                            "success": true,
+                            "message_id": 54,
+                            "file_id": "BQACAgUAAyEGAASb1IhbAAM2aAosY9in-gjID0Rl03aRinpqpHsAAh0WAAL9HVBUrfJWDMT4UIw2BA",
+                            "file_unique_id": "AgADHRYAAv0dUFQ"
+                        },
+                        {
+                            "chat_id": "-4641852757",
+                            "success": true,
+                            "message_id": 806,
+                            "file_id": "BQACAgUAAxkDAAIDJmgKLHYJNZRG7aZV-QJLAtJ2nfWzAAK5EwACL79QVN5z_3bhP5fMNgQ",
+                            "file_unique_id": "AgADuRMAAi-_UFQ"
+                        }
+                    ],
+                    "chunk_upload_duration_seconds": 46.157044887542725
+                },
+                {
+                    "part_number": 3,
+                    "chunk_filename": "test download (1) (5) (1).mkv.zip.part_003",
+                    "send_locations": [
+                        {
+                            "chat_id": "-4603853425",
+                            "success": true,
+                            "message_id": 807,
+                            "file_id": "BQACAgUAAxkDAAIDJ2gKLIlVIUzbChhohtzdLwxG8NneAAJeGwACxr9RVCFd3C_sxsNVNgQ",
+                            "file_unique_id": "AgADXhsAAsa_UVQ"
+                        },
+                        {
+                            "chat_id": "-1002614397019",
+                            "success": true,
+                            "message_id": 55,
+                            "file_id": "BQACAgUAAyEGAASb1IhbAAM3aAoslHopPi5IyQ_Rck3Ko-2u7MIAAh8WAAL9HVBUbP32owQw5IM2BA",
+                            "file_unique_id": "AgADHxYAAv0dUFQ"
+                        },
+                        {
+                            "chat_id": "-4641852757",
+                            "success": true,
+                            "message_id": 808,
+                            "file_id": "BQACAgUAAxkDAAIDKGgKLKGjFhV-EHWLasRu_7JW_HZgAAK6EwACL79QVDeibVo5d6JFNgQ",
+                            "file_unique_id": "AgADuhMAAi-_UFQ"
+                        }
+                    ],
+                    "chunk_upload_duration_seconds": 43.16678714752197
+                },
+                {
+                    "part_number": 4,
+                    "chunk_filename": "test download (1) (5) (1).mkv.zip.part_004",
+                    "send_locations": [
+                        {
+                            "chat_id": "-4603853425",
+                            "success": true,
+                            "message_id": 809,
+                            "file_id": "BQACAgUAAxkDAAIDKWgKLLQYqdGaiIti6MRW0oNd91v3AAJfGwACxr9RVPYrrXPpgjmWNgQ",
+                            "file_unique_id": "AgADXxsAAsa_UVQ"
+                        },
+                        {
+                            "chat_id": "-1002614397019",
+                            "success": true,
+                            "message_id": 56,
+                            "file_id": "BQACAgUAAyEGAASb1IhbAAM4aAosvreambL0f_ro524_1V_7rNsAAiAWAAL9HVBUGyDI9VrLpsg2BA",
+                            "file_unique_id": "AgADIBYAAv0dUFQ"
+                        },
+                        {
+                            "chat_id": "-4641852757",
+                            "success": true,
+                            "message_id": 810,
+                            "file_id": "BQACAgUAAxkDAAIDKmgKLM1cd4qvRizJDYnzFfPMoZ1xAAK7EwACL79QVFroEz2_Bw4ENgQ",
+                            "file_unique_id": "AgADuxMAAi-_UFQ"
+                        }
+                    ],
+                    "chunk_upload_duration_seconds": 44.09046697616577
+                },
+                {
+                    "part_number": 5,
+                    "chunk_filename": "test download (1) (5) (1).mkv.zip.part_005",
+                    "send_locations": [
+                        {
+                            "chat_id": "-4603853425",
+                            "success": true,
+                            "message_id": 811,
+                            "file_id": "BQACAgUAAxkDAAIDK2gKLNlG3NvW7HpEZ3gr1vW6dvkRAAJgGwACxr9RVJ4Xou5o6g3oNgQ",
+                            "file_unique_id": "AgADYBsAAsa_UVQ"
+                        },
+                        {
+                            "chat_id": "-1002614397019",
+                            "success": true,
+                            "message_id": 57,
+                            "file_id": "BQACAgUAAyEGAASb1IhbAAM5aAos5ZjyF2ErQ3IMQB2xSISd5mcAAiEWAAL9HVBUPyLS2WcyuZY2BA",
+                            "file_unique_id": "AgADIRYAAv0dUFQ"
+                        },
+                        {
+                            "chat_id": "-4641852757",
+                            "success": true,
+                            "message_id": 812,
+                            "file_id": "BQACAgUAAxkDAAIDLGgKLPhzuq4htQazcwFLVB8Q-hcMAAK8EwACL79QVMxtiyJqCqmqNgQ",
+                            "file_unique_id": "AgADvBMAAi-_UFQ"
+                        }
+                    ],
+                    "chunk_upload_duration_seconds": 42.70056128501892
+                },
+                {
+                    "part_number": 6,
+                    "chunk_filename": "test download (1) (5) (1).mkv.zip.part_006",
+                    "send_locations": [
+                        {
+                            "chat_id": "-4603853425",
+                            "success": true,
+                            "message_id": 813,
+                            "file_id": "BQACAgUAAxkDAAIDLWgKLQHFlbUrTqO28GmQlNrJeICIAAJhGwACxr9RVKvhyI7aZMesNgQ",
+                            "file_unique_id": "AgADYRsAAsa_UVQ"
+                        },
+                        {
+                            "chat_id": "-1002614397019",
+                            "success": true,
+                            "message_id": 58,
+                            "file_id": "BQACAgUAAyEGAASb1IhbAAM6aAotDZ5o_qDgr6a9GCIUh4uSdj8AAiMWAAL9HVBUwXn-DmoLc7M2BA",
+                            "file_unique_id": "AgADIxYAAv0dUFQ"
+                        },
+                        {
+                            "chat_id": "-4641852757",
+                            "success": true,
+                            "message_id": 814,
+                            "file_id": "BQACAgUAAxkDAAIDLmgKLRYCamqJ2QTLi-_y4MHK_knPAAK9EwACL79QVK-NcWkxAY8nNgQ",
+                            "file_unique_id": "AgADvRMAAi-_UFQ"
+                        }
+                    ],
+                    "chunk_upload_duration_seconds": 30.51090979576111
+                },
+                {
+                    "part_number": 7,
+                    "chunk_filename": "test download (1) (5) (1).mkv.zip.part_007",
+                    "send_locations": [
+                        {
+                            "chat_id": "-4603853425",
+                            "success": true,
+                            "message_id": 815,
+                            "file_id": "BQACAgUAAxkDAAIDL2gKLRoWB89kWShk-Pp_nuacePdlAAJiGwACxr9RVLujtpNe7eazNgQ",
+                            "file_unique_id": "AgADYhsAAsa_UVQ"
+                        },
+                        {
+                            "chat_id": "-1002614397019",
+                            "success": true,
+                            "message_id": 59,
+                            "file_id": "BQACAgUAAyEGAASb1IhbAAM7aAotHlfchglW0vA2sIhg6n1IEiUAAiQWAAL9HVBUriNzlj9VsBc2BA",
+                            "file_unique_id": "AgADJBYAAv0dUFQ"
+                        },
+                        {
+                            "chat_id": "-4641852757",
+                            "success": true,
+                            "message_id": 816,
+                            "file_id": "BQACAgUAAxkDAAIDMGgKLSI4sD6Qu0rnHXRLPs556GDRAAK-EwACL79QVFbHh-l8YRupNgQ",
+                            "file_unique_id": "AgADvhMAAi-_UFQ"
+                        }
+                    ],
+                    "chunk_upload_duration_seconds": 12.01891541481018
+                }
+            ],
+            "upload_timestamp": "2025-04-24T12:22:58.135496+00:00",
+            "username": "Octopus",
+            "total_upload_duration_seconds": 265.6186718940735,
+            "access_id": "e57d8c5770"
         }
     ],
     "Klaus": [

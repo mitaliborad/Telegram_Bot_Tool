@@ -1,0 +1,156 @@
+2025-04-24 17:46:31,653 - INFO - [<module>] - Logging configured. Log file: Selenium-Logs\app_20250424_174631.log
+2025-04-24 17:46:31,653 - INFO - [<module>] - Flask application initialized.
+2025-04-24 17:46:31,653 - INFO - [<module>] - Starting Flask development server...
+2025-04-24 17:46:31,689 - WARNING - [_log] -  * Debugger is active!
+2025-04-24 17:46:31,691 - INFO - [_log] -  * Debugger PIN: 107-410-311
+2025-04-24 17:46:34,674 - INFO - [index] - Serving index page.
+2025-04-24 17:46:34,699 - INFO - [_log] - 127.0.0.1 - - [24/Apr/2025 17:46:34] "GET / HTTP/1.1" 200 -
+2025-04-24 17:46:34,714 - INFO - [_log] - 127.0.0.1 - - [24/Apr/2025 17:46:34] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-24 17:47:23,092 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-24 17:47:23,150 - INFO - [initiate_upload] - Saving temporary file for upload_id '4b659b69-9591-450d-b7c8-c4eaead126a4' to 'uploads_temp\4b659b69-9591-450d-b7c8-c4eaead126a4_Sublime Text Build 3211 x64.zip'
+2025-04-24 17:47:23,167 - INFO - [initiate_upload] - Temporary file saved successfully for 'Sublime Text Build 3211 x64.zip' (ID: 4b659b69-9591-450d-b7c8-c4eaead126a4).
+2025-04-24 17:47:23,185 - INFO - [_log] - 127.0.0.1 - - [24/Apr/2025 17:47:23] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-24 17:47:23,189 - INFO - [stream_progress] - SSE connection request for upload_id: 4b659b69-9591-450d-b7c8-c4eaead126a4
+2025-04-24 17:47:23,190 - INFO - [process_upload_and_generate_updates] - [4b659b69-9591-450d-b7c8-c4eaead126a4] Starting processing...
+2025-04-24 17:47:23,190 - INFO - [process_upload_and_generate_updates] - [4b659b69-9591-450d-b7c8-c4eaead126a4] Processing upload: User='Octopus', File='Sublime Text Build 3211 x64.zip', TempPath='uploads_temp\4b659b69-9591-450d-b7c8-c4eaead126a4_Sublime Text Build 3211 x64.zip'
+2025-04-24 17:47:23,192 - INFO - [process_upload_and_generate_updates] - [4b659b69-9591-450d-b7c8-c4eaead126a4] Original temp file size: 14550016 bytes.
+2025-04-24 17:47:23,192 - INFO - [_log] - 127.0.0.1 - - [24/Apr/2025 17:47:23] "GET /stream-progress/4b659b69-9591-450d-b7c8-c4eaead126a4 HTTP/1.1" 200 -
+2025-04-24 17:47:23,193 - INFO - [process_upload_and_generate_updates] - [4b659b69-9591-450d-b7c8-c4eaead126a4] Generated Access ID: 0b3fb77c11
+2025-04-24 17:47:23,193 - INFO - [process_upload_and_generate_updates] - [4b659b69-9591-450d-b7c8-c4eaead126a4] 'Sublime Text Build 3211 x64.zip' is small. Compressing and sending as single file.
+2025-04-24 17:47:23,650 - INFO - [process_upload_and_generate_updates] - [4b659b69-9591-450d-b7c8-c4eaead126a4] Compressed 'Sublime Text Build 3211 x64.zip' to 14478653 bytes.
+2025-04-24 17:47:23,650 - INFO - [process_upload_and_generate_updates] - [4b659b69-9591-450d-b7c8-c4eaead126a4] Attempting send 'Sublime Text Build 3211 x64.zip.zip' to chat ID: -4603853425
+2025-04-24 17:47:23,650 - INFO - [send_file_to_telegram] - Sending file 'Sublime Text Build 3211 x64.zip.zip' to Telegram chat ID: -4603853425
+2025-04-24 17:47:33,044 - INFO - [send_file_to_telegram] - Telegram API success for 'Sublime Text Build 3211 x64.zip.zip'.
+2025-04-24 17:47:33,045 - INFO - [process_upload_and_generate_updates] - [4b659b69-9591-450d-b7c8-c4eaead126a4] Attempting send 'Sublime Text Build 3211 x64.zip.zip' to chat ID: -1002614397019
+2025-04-24 17:47:33,046 - INFO - [send_file_to_telegram] - Sending file 'Sublime Text Build 3211 x64.zip.zip' to Telegram chat ID: -1002614397019
+2025-04-24 17:47:45,660 - INFO - [send_file_to_telegram] - Telegram API success for 'Sublime Text Build 3211 x64.zip.zip'.
+2025-04-24 17:47:45,662 - INFO - [process_upload_and_generate_updates] - [4b659b69-9591-450d-b7c8-c4eaead126a4] Attempting send 'Sublime Text Build 3211 x64.zip.zip' to chat ID: -4641852757
+2025-04-24 17:47:45,663 - INFO - [send_file_to_telegram] - Sending file 'Sublime Text Build 3211 x64.zip.zip' to Telegram chat ID: -4641852757
+2025-04-24 17:47:56,442 - INFO - [send_file_to_telegram] - Telegram API success for 'Sublime Text Build 3211 x64.zip.zip'.
+2025-04-24 17:47:56,449 - INFO - [process_upload_and_generate_updates] - [4b659b69-9591-450d-b7c8-c4eaead126a4] Single file 'Sublime Text Build 3211 x64.zip' sent successfully to PRIMARY chat ID -4603853425.
+2025-04-24 17:47:56,450 - INFO - [process_upload_and_generate_updates] - [4b659b69-9591-450d-b7c8-c4eaead126a4] Total successful sends (including backups): 3 / 3
+2025-04-24 17:47:56,451 - ERROR - [process_upload_and_generate_updates] - [4b659b69-9591-450d-b7c8-c4eaead126a4] Inconsistency: Primary send succeeded but failed to extract IDs from its response: {'ok': True, 'result': {'message_id': 801, 'from': {'id': 7812479394, 'is_bot': True, 'first_name': 'Harry Bot', 'username': 'hhhHarryBot'}, 'chat': {'id': -4603853425, 'title': 'AGroup', 'type': 'group', 'all_members_are_administrators': True, 'accepted_gift_types': {'unlimited_gifts': False, 'limited_gifts': False, 'unique_gifts': False, 'premium_subscription': False}}, 'date': 1745497053, 'document': {'file_name': 'Sublime Text Build 3211 x64.zip.zip', 'mime_type': 'application/zip', 'file_id': 'BQACAgUAAxkDAAIDIWgKK92WdjXrodqu6JcaMJSSY7ibAAJbGwACxr9RVMhnHE9juJsUNgQ', 'file_unique_id': 'AgADWxsAAsa_UVQ', 'file_size': 14478653}}}
+2025-04-24 17:47:56,480 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-24 17:47:56,494 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-24 17:47:56,495 - INFO - [process_upload_and_generate_updates] - [4b659b69-9591-450d-b7c8-c4eaead126a4] Generated landing page URL: http://127.0.0.1:5000/get/0b3fb77c11
+2025-04-24 17:47:56,495 - INFO - [process_upload_and_generate_updates] - [4b659b69-9591-450d-b7c8-c4eaead126a4] Entering final cleanup.
+2025-04-24 17:47:56,497 - INFO - [process_upload_and_generate_updates] - [4b659b69-9591-450d-b7c8-c4eaead126a4] Successfully deleted original temporary file: uploads_temp\4b659b69-9591-450d-b7c8-c4eaead126a4_Sublime Text Build 3211 x64.zip
+2025-04-24 17:47:56,498 - INFO - [process_upload_and_generate_updates] - [4b659b69-9591-450d-b7c8-c4eaead126a4] Processing finished with status: completed
+2025-04-24 17:48:18,797 - INFO - [index] - Serving index page.
+2025-04-24 17:48:18,799 - INFO - [_log] - 127.0.0.1 - - [24/Apr/2025 17:48:18] "GET / HTTP/1.1" 200 -
+2025-04-24 17:48:18,842 - INFO - [_log] - 127.0.0.1 - - [24/Apr/2025 17:48:18] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-24 17:48:19,061 - INFO - [_log] - 127.0.0.1 - - [24/Apr/2025 17:48:19] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-04-24 17:48:25,985 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-24 17:48:27,039 - INFO - [initiate_upload] - Saving temporary file for upload_id '2ec7da2a-8dac-4194-8c5e-850d50905c54' to 'uploads_temp\2ec7da2a-8dac-4194-8c5e-850d50905c54_test download (1) (5) (1).mkv'
+2025-04-24 17:48:27,344 - INFO - [initiate_upload] - Temporary file saved successfully for 'test download (1) (5) (1).mkv' (ID: 2ec7da2a-8dac-4194-8c5e-850d50905c54).
+2025-04-24 17:48:27,730 - INFO - [_log] - 127.0.0.1 - - [24/Apr/2025 17:48:27] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-24 17:48:27,748 - INFO - [stream_progress] - SSE connection request for upload_id: 2ec7da2a-8dac-4194-8c5e-850d50905c54
+2025-04-24 17:48:27,748 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Starting processing...
+2025-04-24 17:48:27,751 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Processing upload: User='Octopus', File='test download (1) (5) (1).mkv', TempPath='uploads_temp\2ec7da2a-8dac-4194-8c5e-850d50905c54_test download (1) (5) (1).mkv'
+2025-04-24 17:48:27,883 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Original temp file size: 132739902 bytes.
+2025-04-24 17:48:27,884 - INFO - [_log] - 127.0.0.1 - - [24/Apr/2025 17:48:27] "GET /stream-progress/2ec7da2a-8dac-4194-8c5e-850d50905c54 HTTP/1.1" 200 -
+2025-04-24 17:48:27,885 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Generated Access ID: e57d8c5770
+2025-04-24 17:48:27,885 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] 'test download (1) (5) (1).mkv' is large. Compressing before splitting.
+2025-04-24 17:48:27,887 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Created temporary file for compression result: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\2ec7da2a-8dac-4194-8c5e-850d50905c54_comp__omup3h_.zip
+2025-04-24 17:48:32,365 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Finished compressing to 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\2ec7da2a-8dac-4194-8c5e-850d50905c54_comp__omup3h_.zip'. Size: 129562616 bytes. Time: 4.48s.
+2025-04-24 17:48:32,398 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Reading chunk 1 for COMPRESSED file starting at byte 0.
+2025-04-24 17:48:32,408 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Read chunk 1 (20971520 bytes). Total read: 20971520/129562616
+2025-04-24 17:48:32,409 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Attempting send chunk 'test download (1) (5) (1).mkv.zip.part_001' to chat ID: -4603853425
+2025-04-24 17:48:32,410 - INFO - [send_file_to_telegram] - Sending file 'test download (1) (5) (1).mkv.zip.part_001' to Telegram chat ID: -4603853425
+2025-04-24 17:48:51,018 - INFO - [send_file_to_telegram] - Telegram API success for 'test download (1) (5) (1).mkv.zip.part_001'.
+2025-04-24 17:48:51,021 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Attempting send chunk 'test download (1) (5) (1).mkv.zip.part_001' to chat ID: -1002614397019
+2025-04-24 17:48:51,022 - INFO - [send_file_to_telegram] - Sending file 'test download (1) (5) (1).mkv.zip.part_001' to Telegram chat ID: -1002614397019
+2025-04-24 17:49:01,197 - INFO - [send_file_to_telegram] - Telegram API success for 'test download (1) (5) (1).mkv.zip.part_001'.
+2025-04-24 17:49:01,202 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Attempting send chunk 'test download (1) (5) (1).mkv.zip.part_001' to chat ID: -4641852757
+2025-04-24 17:49:01,203 - INFO - [send_file_to_telegram] - Sending file 'test download (1) (5) (1).mkv.zip.part_001' to Telegram chat ID: -4641852757
+2025-04-24 17:49:19,381 - INFO - [send_file_to_telegram] - Telegram API success for 'test download (1) (5) (1).mkv.zip.part_001'.
+2025-04-24 17:49:19,383 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Chunk 'test download (1) (5) (1).mkv.zip.part_001' sent successfully to PRIMARY chat.
+2025-04-24 17:49:19,384 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Successfully processed metadata for chunk 1 across all attempts.
+2025-04-24 17:49:19,384 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Reading chunk 2 for COMPRESSED file starting at byte 20971520.
+2025-04-24 17:49:19,398 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Read chunk 2 (20971520 bytes). Total read: 41943040/129562616
+2025-04-24 17:49:19,398 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Attempting send chunk 'test download (1) (5) (1).mkv.zip.part_002' to chat ID: -4603853425
+2025-04-24 17:49:19,399 - INFO - [send_file_to_telegram] - Sending file 'test download (1) (5) (1).mkv.zip.part_002' to Telegram chat ID: -4603853425
+2025-04-24 17:49:40,344 - INFO - [send_file_to_telegram] - Telegram API success for 'test download (1) (5) (1).mkv.zip.part_002'.
+2025-04-24 17:49:40,347 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Attempting send chunk 'test download (1) (5) (1).mkv.zip.part_002' to chat ID: -1002614397019
+2025-04-24 17:49:40,348 - INFO - [send_file_to_telegram] - Sending file 'test download (1) (5) (1).mkv.zip.part_002' to Telegram chat ID: -1002614397019
+2025-04-24 17:49:47,030 - INFO - [send_file_to_telegram] - Telegram API success for 'test download (1) (5) (1).mkv.zip.part_002'.
+2025-04-24 17:49:47,032 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Attempting send chunk 'test download (1) (5) (1).mkv.zip.part_002' to chat ID: -4641852757
+2025-04-24 17:49:47,032 - INFO - [send_file_to_telegram] - Sending file 'test download (1) (5) (1).mkv.zip.part_002' to Telegram chat ID: -4641852757
+2025-04-24 17:50:05,553 - INFO - [send_file_to_telegram] - Telegram API success for 'test download (1) (5) (1).mkv.zip.part_002'.
+2025-04-24 17:50:05,555 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Chunk 'test download (1) (5) (1).mkv.zip.part_002' sent successfully to PRIMARY chat.
+2025-04-24 17:50:05,556 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Successfully processed metadata for chunk 2 across all attempts.
+2025-04-24 17:50:05,557 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Reading chunk 3 for COMPRESSED file starting at byte 41943040.
+2025-04-24 17:50:05,571 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Read chunk 3 (20971520 bytes). Total read: 62914560/129562616
+2025-04-24 17:50:05,573 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Attempting send chunk 'test download (1) (5) (1).mkv.zip.part_003' to chat ID: -4603853425
+2025-04-24 17:50:05,574 - INFO - [send_file_to_telegram] - Sending file 'test download (1) (5) (1).mkv.zip.part_003' to Telegram chat ID: -4603853425
+2025-04-24 17:50:24,523 - INFO - [send_file_to_telegram] - Telegram API success for 'test download (1) (5) (1).mkv.zip.part_003'.
+2025-04-24 17:50:24,525 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Attempting send chunk 'test download (1) (5) (1).mkv.zip.part_003' to chat ID: -1002614397019
+2025-04-24 17:50:24,525 - INFO - [send_file_to_telegram] - Sending file 'test download (1) (5) (1).mkv.zip.part_003' to Telegram chat ID: -1002614397019
+2025-04-24 17:50:35,967 - INFO - [send_file_to_telegram] - Telegram API success for 'test download (1) (5) (1).mkv.zip.part_003'.
+2025-04-24 17:50:35,971 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Attempting send chunk 'test download (1) (5) (1).mkv.zip.part_003' to chat ID: -4641852757
+2025-04-24 17:50:35,972 - INFO - [send_file_to_telegram] - Sending file 'test download (1) (5) (1).mkv.zip.part_003' to Telegram chat ID: -4641852757
+2025-04-24 17:50:48,737 - INFO - [send_file_to_telegram] - Telegram API success for 'test download (1) (5) (1).mkv.zip.part_003'.
+2025-04-24 17:50:48,740 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Chunk 'test download (1) (5) (1).mkv.zip.part_003' sent successfully to PRIMARY chat.
+2025-04-24 17:50:48,741 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Successfully processed metadata for chunk 3 across all attempts.
+2025-04-24 17:50:48,741 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Reading chunk 4 for COMPRESSED file starting at byte 62914560.
+2025-04-24 17:50:48,755 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Read chunk 4 (20971520 bytes). Total read: 83886080/129562616
+2025-04-24 17:50:48,755 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Attempting send chunk 'test download (1) (5) (1).mkv.zip.part_004' to chat ID: -4603853425
+2025-04-24 17:50:48,756 - INFO - [send_file_to_telegram] - Sending file 'test download (1) (5) (1).mkv.zip.part_004' to Telegram chat ID: -4603853425
+2025-04-24 17:51:07,332 - INFO - [send_file_to_telegram] - Telegram API success for 'test download (1) (5) (1).mkv.zip.part_004'.
+2025-04-24 17:51:07,335 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Attempting send chunk 'test download (1) (5) (1).mkv.zip.part_004' to chat ID: -1002614397019
+2025-04-24 17:51:07,336 - INFO - [send_file_to_telegram] - Sending file 'test download (1) (5) (1).mkv.zip.part_004' to Telegram chat ID: -1002614397019
+2025-04-24 17:51:17,857 - INFO - [send_file_to_telegram] - Telegram API success for 'test download (1) (5) (1).mkv.zip.part_004'.
+2025-04-24 17:51:17,861 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Attempting send chunk 'test download (1) (5) (1).mkv.zip.part_004' to chat ID: -4641852757
+2025-04-24 17:51:17,862 - INFO - [send_file_to_telegram] - Sending file 'test download (1) (5) (1).mkv.zip.part_004' to Telegram chat ID: -4641852757
+2025-04-24 17:51:32,844 - INFO - [send_file_to_telegram] - Telegram API success for 'test download (1) (5) (1).mkv.zip.part_004'.
+2025-04-24 17:51:32,846 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Chunk 'test download (1) (5) (1).mkv.zip.part_004' sent successfully to PRIMARY chat.
+2025-04-24 17:51:32,847 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Successfully processed metadata for chunk 4 across all attempts.
+2025-04-24 17:51:32,847 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Reading chunk 5 for COMPRESSED file starting at byte 83886080.
+2025-04-24 17:51:32,860 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Read chunk 5 (20971520 bytes). Total read: 104857600/129562616
+2025-04-24 17:51:32,860 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Attempting send chunk 'test download (1) (5) (1).mkv.zip.part_005' to chat ID: -4603853425
+2025-04-24 17:51:32,861 - INFO - [send_file_to_telegram] - Sending file 'test download (1) (5) (1).mkv.zip.part_005' to Telegram chat ID: -4603853425
+2025-04-24 17:51:44,319 - INFO - [send_file_to_telegram] - Telegram API success for 'test download (1) (5) (1).mkv.zip.part_005'.
+2025-04-24 17:51:44,322 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Attempting send chunk 'test download (1) (5) (1).mkv.zip.part_005' to chat ID: -1002614397019
+2025-04-24 17:51:44,323 - INFO - [send_file_to_telegram] - Sending file 'test download (1) (5) (1).mkv.zip.part_005' to Telegram chat ID: -1002614397019
+2025-04-24 17:51:56,253 - INFO - [send_file_to_telegram] - Telegram API success for 'test download (1) (5) (1).mkv.zip.part_005'.
+2025-04-24 17:51:56,255 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Attempting send chunk 'test download (1) (5) (1).mkv.zip.part_005' to chat ID: -4641852757
+2025-04-24 17:51:56,256 - INFO - [send_file_to_telegram] - Sending file 'test download (1) (5) (1).mkv.zip.part_005' to Telegram chat ID: -4641852757
+2025-04-24 17:52:15,558 - INFO - [send_file_to_telegram] - Telegram API success for 'test download (1) (5) (1).mkv.zip.part_005'.
+2025-04-24 17:52:15,560 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Chunk 'test download (1) (5) (1).mkv.zip.part_005' sent successfully to PRIMARY chat.
+2025-04-24 17:52:15,561 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Successfully processed metadata for chunk 5 across all attempts.
+2025-04-24 17:52:15,561 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Reading chunk 6 for COMPRESSED file starting at byte 104857600.
+2025-04-24 17:52:15,574 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Read chunk 6 (20971520 bytes). Total read: 125829120/129562616
+2025-04-24 17:52:15,575 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Attempting send chunk 'test download (1) (5) (1).mkv.zip.part_006' to chat ID: -4603853425
+2025-04-24 17:52:15,576 - INFO - [send_file_to_telegram] - Sending file 'test download (1) (5) (1).mkv.zip.part_006' to Telegram chat ID: -4603853425
+2025-04-24 17:52:24,234 - INFO - [send_file_to_telegram] - Telegram API success for 'test download (1) (5) (1).mkv.zip.part_006'.
+2025-04-24 17:52:24,237 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Attempting send chunk 'test download (1) (5) (1).mkv.zip.part_006' to chat ID: -1002614397019
+2025-04-24 17:52:24,237 - INFO - [send_file_to_telegram] - Sending file 'test download (1) (5) (1).mkv.zip.part_006' to Telegram chat ID: -1002614397019
+2025-04-24 17:52:37,106 - INFO - [send_file_to_telegram] - Telegram API success for 'test download (1) (5) (1).mkv.zip.part_006'.
+2025-04-24 17:52:37,108 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Attempting send chunk 'test download (1) (5) (1).mkv.zip.part_006' to chat ID: -4641852757
+2025-04-24 17:52:37,109 - INFO - [send_file_to_telegram] - Sending file 'test download (1) (5) (1).mkv.zip.part_006' to Telegram chat ID: -4641852757
+2025-04-24 17:52:46,080 - INFO - [send_file_to_telegram] - Telegram API success for 'test download (1) (5) (1).mkv.zip.part_006'.
+2025-04-24 17:52:46,085 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Chunk 'test download (1) (5) (1).mkv.zip.part_006' sent successfully to PRIMARY chat.
+2025-04-24 17:52:46,086 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Successfully processed metadata for chunk 6 across all attempts.
+2025-04-24 17:52:46,087 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Reading chunk 7 for COMPRESSED file starting at byte 125829120.
+2025-04-24 17:52:46,094 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Read chunk 7 (3733496 bytes). Total read: 129562616/129562616
+2025-04-24 17:52:46,094 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Attempting send chunk 'test download (1) (5) (1).mkv.zip.part_007' to chat ID: -4603853425
+2025-04-24 17:52:46,095 - INFO - [send_file_to_telegram] - Sending file 'test download (1) (5) (1).mkv.zip.part_007' to Telegram chat ID: -4603853425
+2025-04-24 17:52:49,363 - INFO - [send_file_to_telegram] - Telegram API success for 'test download (1) (5) (1).mkv.zip.part_007'.
+2025-04-24 17:52:49,364 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Attempting send chunk 'test download (1) (5) (1).mkv.zip.part_007' to chat ID: -1002614397019
+2025-04-24 17:52:49,365 - INFO - [send_file_to_telegram] - Sending file 'test download (1) (5) (1).mkv.zip.part_007' to Telegram chat ID: -1002614397019
+2025-04-24 17:52:53,475 - INFO - [send_file_to_telegram] - Telegram API success for 'test download (1) (5) (1).mkv.zip.part_007'.
+2025-04-24 17:52:53,478 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Attempting send chunk 'test download (1) (5) (1).mkv.zip.part_007' to chat ID: -4641852757
+2025-04-24 17:52:53,479 - INFO - [send_file_to_telegram] - Sending file 'test download (1) (5) (1).mkv.zip.part_007' to Telegram chat ID: -4641852757
+2025-04-24 17:52:58,112 - INFO - [send_file_to_telegram] - Telegram API success for 'test download (1) (5) (1).mkv.zip.part_007'.
+2025-04-24 17:52:58,113 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Chunk 'test download (1) (5) (1).mkv.zip.part_007' sent successfully to PRIMARY chat.
+2025-04-24 17:52:58,113 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Successfully processed metadata for chunk 7 across all attempts.
+2025-04-24 17:52:58,114 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Reading chunk 8 for COMPRESSED file starting at byte 129562616.
+2025-04-24 17:52:58,118 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Finished reading all chunks for compressed file.
+2025-04-24 17:52:58,118 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] All 7 chunks sent successfully to primary. Saving metadata.
+2025-04-24 17:52:58,135 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-24 17:52:58,150 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-24 17:52:58,151 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Generated landing page URL: http://localhost:5000/get/e57d8c5770
+2025-04-24 17:52:58,151 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Entering final cleanup.
+2025-04-24 17:52:58,166 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Successfully deleted original temporary file: uploads_temp\2ec7da2a-8dac-4194-8c5e-850d50905c54_test download (1) (5) (1).mkv
+2025-04-24 17:52:58,180 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Successfully deleted temporary compressed file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\2ec7da2a-8dac-4194-8c5e-850d50905c54_comp__omup3h_.zip
+2025-04-24 17:52:58,180 - INFO - [process_upload_and_generate_updates] - [2ec7da2a-8dac-4194-8c5e-850d50905c54] Processing finished with status: completed

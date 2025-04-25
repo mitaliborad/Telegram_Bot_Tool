@@ -1,0 +1,181 @@
+2025-04-25 18:02:28,806 - INFO - [<module>] - Logging configured. Log file: Selenium-Logs\app_20250425_180228.log
+2025-04-25 18:02:28,809 - INFO - [<module>] - Flask application initialized.
+2025-04-25 18:02:28,814 - INFO - [<module>] - Starting Flask development server...
+2025-04-25 18:02:28,844 - WARNING - [_log] -  * Debugger is active!
+2025-04-25 18:02:28,851 - INFO - [_log] -  * Debugger PIN: 107-410-311
+2025-04-25 18:02:30,560 - INFO - [index] - Serving index page.
+2025-04-25 18:02:30,576 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 18:02:30] "GET / HTTP/1.1" 200 -
+2025-04-25 18:02:30,608 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 18:02:30] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-25 18:02:35,031 - INFO - [list_user_files] - Request received to list files for user: 'testt'
+2025-04-25 18:02:35,031 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-25 18:02:35,031 - INFO - [list_user_files] - Found 53 file records for user 'testt'.
+2025-04-25 18:02:35,040 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 18:02:35] "GET /files/testt HTTP/1.1" 200 -
+2025-04-25 18:02:40,617 - INFO - [delete_file_record] - Received DELETE request for user='testt', file='404_error.html'
+2025-04-25 18:02:40,620 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-25 18:02:40,620 - INFO - [delete_file_record] - Found and removed record for '404_error.html' for user 'testt'.
+2025-04-25 18:02:40,640 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-25 18:02:40,640 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting '404_error.html'.
+2025-04-25 18:02:40,640 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 18:02:40] "DELETE /delete-file/testt/404_error.html HTTP/1.1" 200 -
+2025-04-25 18:02:45,307 - INFO - [delete_file_record] - Received DELETE request for user='testt', file='metadata_handler.py'
+2025-04-25 18:02:45,326 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-25 18:02:45,326 - INFO - [delete_file_record] - Found and removed record for 'metadata_handler.py' for user 'testt'.
+2025-04-25 18:02:45,350 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-25 18:02:45,352 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting 'metadata_handler.py'.
+2025-04-25 18:02:45,353 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 18:02:45] "DELETE /delete-file/testt/metadata_handler.py HTTP/1.1" 200 -
+2025-04-25 18:02:47,804 - INFO - [delete_file_record] - Received DELETE request for user='testt', file='metadata.json'
+2025-04-25 18:02:47,826 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-25 18:02:47,826 - INFO - [delete_file_record] - Found and removed record for 'metadata.json' for user 'testt'.
+2025-04-25 18:02:47,846 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-25 18:02:47,846 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting 'metadata.json'.
+2025-04-25 18:02:47,847 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 18:02:47] "DELETE /delete-file/testt/metadata.json HTTP/1.1" 200 -
+2025-04-25 18:02:49,457 - INFO - [delete_file_record] - Received DELETE request for user='testt', file='404_error.html'
+2025-04-25 18:02:49,475 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-25 18:02:49,475 - WARNING - [delete_file_record] - Delete request failed: File '404_error.html' not found for user 'testt'.
+2025-04-25 18:02:49,475 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 18:02:49] "[33mDELETE /delete-file/testt/404_error.html HTTP/1.1[0m" 404 -
+2025-04-25 18:02:51,408 - INFO - [delete_file_record] - Received DELETE request for user='testt', file='404_error.html'
+2025-04-25 18:02:51,408 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-25 18:02:51,408 - WARNING - [delete_file_record] - Delete request failed: File '404_error.html' not found for user 'testt'.
+2025-04-25 18:02:51,408 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 18:02:51] "[33mDELETE /delete-file/testt/404_error.html HTTP/1.1[0m" 404 -
+2025-04-25 18:02:53,011 - INFO - [delete_file_record] - Received DELETE request for user='testt', file='404_error.html'
+2025-04-25 18:02:53,011 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-25 18:02:53,011 - WARNING - [delete_file_record] - Delete request failed: File '404_error.html' not found for user 'testt'.
+2025-04-25 18:02:53,011 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 18:02:53] "[33mDELETE /delete-file/testt/404_error.html HTTP/1.1[0m" 404 -
+2025-04-25 18:02:58,489 - INFO - [delete_file_record] - Received DELETE request for user='testt', file='download_page.html'
+2025-04-25 18:02:58,495 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-25 18:02:58,495 - INFO - [delete_file_record] - Found and removed record for 'download_page.html' for user 'testt'.
+2025-04-25 18:02:58,514 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-25 18:02:58,515 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting 'download_page.html'.
+2025-04-25 18:02:58,516 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 18:02:58] "DELETE /delete-file/testt/download_page.html HTTP/1.1" 200 -
+2025-04-25 18:03:00,191 - INFO - [delete_file_record] - Received DELETE request for user='testt', file='index.html'
+2025-04-25 18:03:00,209 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-25 18:03:00,209 - INFO - [delete_file_record] - Found and removed record for 'index.html' for user 'testt'.
+2025-04-25 18:03:00,227 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-25 18:03:00,227 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting 'index.html'.
+2025-04-25 18:03:00,227 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 18:03:00] "DELETE /delete-file/testt/index.html HTTP/1.1" 200 -
+2025-04-25 18:03:02,800 - INFO - [delete_file_record] - Received DELETE request for user='testt', file='test download (1).mkv'
+2025-04-25 18:03:02,829 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-25 18:03:02,830 - INFO - [delete_file_record] - Found and removed record for 'test download (1).mkv' for user 'testt'.
+2025-04-25 18:03:02,848 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-25 18:03:02,849 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting 'test download (1).mkv'.
+2025-04-25 18:03:02,849 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 18:03:02] "DELETE /delete-file/testt/test%20download%20(1).mkv HTTP/1.1" 200 -
+2025-04-25 18:03:04,355 - INFO - [delete_file_record] - Received DELETE request for user='testt', file='60mb.txt'
+2025-04-25 18:03:04,378 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-25 18:03:04,378 - INFO - [delete_file_record] - Found and removed record for '60mb.txt' for user 'testt'.
+2025-04-25 18:03:04,399 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-25 18:03:04,400 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting '60mb.txt'.
+2025-04-25 18:03:04,402 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 18:03:04] "DELETE /delete-file/testt/60mb.txt HTTP/1.1" 200 -
+2025-04-25 18:03:06,015 - INFO - [delete_file_record] - Received DELETE request for user='testt', file='60mb.php'
+2025-04-25 18:03:06,031 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-25 18:03:06,031 - INFO - [delete_file_record] - Found and removed record for '60mb.php' for user 'testt'.
+2025-04-25 18:03:06,049 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-25 18:03:06,049 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting '60mb.php'.
+2025-04-25 18:03:06,057 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 18:03:06] "DELETE /delete-file/testt/60mb.php HTTP/1.1" 200 -
+2025-04-25 18:03:08,013 - INFO - [delete_file_record] - Received DELETE request for user='testt', file='requirements.txt'
+2025-04-25 18:03:08,030 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-25 18:03:08,031 - INFO - [delete_file_record] - Found and removed record for 'requirements.txt' for user 'testt'.
+2025-04-25 18:03:08,048 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-25 18:03:08,049 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting 'requirements.txt'.
+2025-04-25 18:03:08,050 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 18:03:08] "DELETE /delete-file/testt/requirements.txt HTTP/1.1" 200 -
+2025-04-25 18:03:09,569 - INFO - [delete_file_record] - Received DELETE request for user='testt', file='requirements.txt'
+2025-04-25 18:03:09,586 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-25 18:03:09,587 - WARNING - [delete_file_record] - Delete request failed: File 'requirements.txt' not found for user 'testt'.
+2025-04-25 18:03:09,587 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 18:03:09] "[33mDELETE /delete-file/testt/requirements.txt HTTP/1.1[0m" 404 -
+2025-04-25 18:03:11,514 - INFO - [delete_file_record] - Received DELETE request for user='testt', file='requirements.txt'
+2025-04-25 18:03:11,514 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-25 18:03:11,514 - WARNING - [delete_file_record] - Delete request failed: File 'requirements.txt' not found for user 'testt'.
+2025-04-25 18:03:11,514 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 18:03:11] "[33mDELETE /delete-file/testt/requirements.txt HTTP/1.1[0m" 404 -
+2025-04-25 18:03:14,730 - INFO - [delete_file_record] - Received DELETE request for user='testt', file='requirements.txt'
+2025-04-25 18:03:14,734 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-25 18:03:14,734 - WARNING - [delete_file_record] - Delete request failed: File 'requirements.txt' not found for user 'testt'.
+2025-04-25 18:03:14,735 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 18:03:14] "[33mDELETE /delete-file/testt/requirements.txt HTTP/1.1[0m" 404 -
+2025-04-25 18:03:17,162 - INFO - [delete_file_record] - Received DELETE request for user='testt', file='metadata.json'
+2025-04-25 18:03:17,165 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-25 18:03:17,165 - WARNING - [delete_file_record] - Delete request failed: File 'metadata.json' not found for user 'testt'.
+2025-04-25 18:03:17,165 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 18:03:17] "[33mDELETE /delete-file/testt/metadata.json HTTP/1.1[0m" 404 -
+2025-04-25 18:03:18,990 - INFO - [delete_file_record] - Received DELETE request for user='testt', file='requirements.txt'
+2025-04-25 18:03:18,990 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-25 18:03:18,990 - WARNING - [delete_file_record] - Delete request failed: File 'requirements.txt' not found for user 'testt'.
+2025-04-25 18:03:18,990 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 18:03:18] "[33mDELETE /delete-file/testt/requirements.txt HTTP/1.1[0m" 404 -
+2025-04-25 18:03:25,102 - INFO - [delete_file_record] - Received DELETE request for user='testt', file='500MB-CZIPtestfile.org.zip'
+2025-04-25 18:03:25,105 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-25 18:03:25,105 - INFO - [delete_file_record] - Found and removed record for '500MB-CZIPtestfile.org.zip' for user 'testt'.
+2025-04-25 18:03:25,107 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-25 18:03:25,107 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting '500MB-CZIPtestfile.org.zip'.
+2025-04-25 18:03:25,121 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 18:03:25] "DELETE /delete-file/testt/500MB-CZIPtestfile.org.zip HTTP/1.1" 200 -
+2025-04-25 18:03:30,530 - INFO - [delete_file_record] - Received DELETE request for user='testt', file='file_9 (1).py'
+2025-04-25 18:03:30,550 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-25 18:03:30,550 - INFO - [delete_file_record] - Found and removed record for 'file_9 (1).py' for user 'testt'.
+2025-04-25 18:03:30,565 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-25 18:03:30,565 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting 'file_9 (1).py'.
+2025-04-25 18:03:30,570 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 18:03:30] "DELETE /delete-file/testt/file_9%20(1).py HTTP/1.1" 200 -
+2025-04-25 18:03:32,603 - INFO - [delete_file_record] - Received DELETE request for user='testt', file='blocked.txt'
+2025-04-25 18:03:32,620 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-25 18:03:32,620 - INFO - [delete_file_record] - Found and removed record for 'blocked.txt' for user 'testt'.
+2025-04-25 18:03:32,640 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-25 18:03:32,640 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting 'blocked.txt'.
+2025-04-25 18:03:32,643 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 18:03:32] "DELETE /delete-file/testt/blocked.txt HTTP/1.1" 200 -
+2025-04-25 18:03:34,474 - INFO - [delete_file_record] - Received DELETE request for user='testt', file='log.txt'
+2025-04-25 18:03:34,495 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-25 18:03:34,495 - INFO - [delete_file_record] - Found and removed record for 'log.txt' for user 'testt'.
+2025-04-25 18:03:34,512 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-25 18:03:34,512 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting 'log.txt'.
+2025-04-25 18:03:34,513 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 18:03:34] "DELETE /delete-file/testt/log.txt HTTP/1.1" 200 -
+2025-04-25 18:03:36,912 - INFO - [delete_file_record] - Received DELETE request for user='testt', file='requirements.txt'
+2025-04-25 18:03:36,934 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-25 18:03:36,934 - WARNING - [delete_file_record] - Delete request failed: File 'requirements.txt' not found for user 'testt'.
+2025-04-25 18:03:36,935 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 18:03:36] "[33mDELETE /delete-file/testt/requirements.txt HTTP/1.1[0m" 404 -
+2025-04-25 18:03:39,167 - INFO - [delete_file_record] - Received DELETE request for user='testt', file='requirements.txt'
+2025-04-25 18:03:39,170 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-25 18:03:39,170 - WARNING - [delete_file_record] - Delete request failed: File 'requirements.txt' not found for user 'testt'.
+2025-04-25 18:03:39,172 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 18:03:39] "[33mDELETE /delete-file/testt/requirements.txt HTTP/1.1[0m" 404 -
+2025-04-25 18:03:41,116 - INFO - [delete_file_record] - Received DELETE request for user='testt', file='appverifUI.dll'
+2025-04-25 18:03:41,116 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-25 18:03:41,116 - INFO - [delete_file_record] - Found and removed record for 'appverifUI.dll' for user 'testt'.
+2025-04-25 18:03:41,132 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-25 18:03:41,132 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting 'appverifUI.dll'.
+2025-04-25 18:03:41,132 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 18:03:41] "DELETE /delete-file/testt/appverifUI.dll HTTP/1.1" 200 -
+2025-04-25 18:03:43,224 - INFO - [delete_file_record] - Received DELETE request for user='testt', file='sample'
+2025-04-25 18:03:43,237 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-25 18:03:43,237 - INFO - [delete_file_record] - Found and removed record for 'sample' for user 'testt'.
+2025-04-25 18:03:43,259 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-25 18:03:43,259 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting 'sample'.
+2025-04-25 18:03:43,259 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 18:03:43] "DELETE /delete-file/testt/sample HTTP/1.1" 200 -
+2025-04-25 18:03:45,360 - INFO - [delete_file_record] - Received DELETE request for user='testt', file='requirements.txt'
+2025-04-25 18:03:45,380 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-25 18:03:45,380 - WARNING - [delete_file_record] - Delete request failed: File 'requirements.txt' not found for user 'testt'.
+2025-04-25 18:03:45,380 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 18:03:45] "[33mDELETE /delete-file/testt/requirements.txt HTTP/1.1[0m" 404 -
+2025-04-25 18:03:47,651 - INFO - [delete_file_record] - Received DELETE request for user='testt', file='metadata.json'
+2025-04-25 18:03:47,651 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-25 18:03:47,651 - WARNING - [delete_file_record] - Delete request failed: File 'metadata.json' not found for user 'testt'.
+2025-04-25 18:03:47,651 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 18:03:47] "[33mDELETE /delete-file/testt/metadata.json HTTP/1.1[0m" 404 -
+2025-04-25 18:03:49,934 - INFO - [delete_file_record] - Received DELETE request for user='testt', file='70mb (1).pdf'
+2025-04-25 18:03:49,939 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-25 18:03:49,939 - INFO - [delete_file_record] - Found and removed record for '70mb (1).pdf' for user 'testt'.
+2025-04-25 18:03:49,941 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-25 18:03:49,941 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting '70mb (1).pdf'.
+2025-04-25 18:03:49,941 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 18:03:49] "DELETE /delete-file/testt/70mb%20(1).pdf HTTP/1.1" 200 -
+2025-04-25 18:03:53,092 - INFO - [delete_file_record] - Received DELETE request for user='testt', file='requirements.txt'
+2025-04-25 18:03:53,114 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-25 18:03:53,114 - WARNING - [delete_file_record] - Delete request failed: File 'requirements.txt' not found for user 'testt'.
+2025-04-25 18:03:53,119 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 18:03:53] "[33mDELETE /delete-file/testt/requirements.txt HTTP/1.1[0m" 404 -
+2025-04-25 18:03:55,341 - INFO - [delete_file_record] - Received DELETE request for user='testt', file='Telegram_app.py'
+2025-04-25 18:03:55,344 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-25 18:03:55,345 - INFO - [delete_file_record] - Found and removed record for 'Telegram_app.py' for user 'testt'.
+2025-04-25 18:03:55,361 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-25 18:03:55,362 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting 'Telegram_app.py'.
+2025-04-25 18:03:55,363 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 18:03:55] "DELETE /delete-file/testt/Telegram_app.py HTTP/1.1" 200 -
+2025-04-25 18:03:57,580 - INFO - [delete_file_record] - Received DELETE request for user='testt', file='Telegram_app.py'
+2025-04-25 18:03:57,598 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-25 18:03:57,600 - WARNING - [delete_file_record] - Delete request failed: File 'Telegram_app.py' not found for user 'testt'.
+2025-04-25 18:03:57,602 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 18:03:57] "[33mDELETE /delete-file/testt/Telegram_app.py HTTP/1.1[0m" 404 -
+2025-04-25 18:04:09,702 - INFO - [list_user_files] - Request received to list files for user: 'raja'
+2025-04-25 18:04:09,706 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-25 18:04:09,707 - INFO - [list_user_files] - Found 1 file records for user 'raja'.
+2025-04-25 18:04:09,707 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 18:04:09] "GET /files/raja HTTP/1.1" 200 -
+2025-04-25 18:04:12,856 - INFO - [delete_file_record] - Received DELETE request for user='raja', file='requirements.txt'
+2025-04-25 18:04:12,856 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-25 18:04:12,856 - INFO - [delete_file_record] - Found and removed record for 'requirements.txt' for user 'raja'.
+2025-04-25 18:04:12,856 - INFO - [delete_file_record] - User 'raja' has no files left. Removing user entry from metadata.
+2025-04-25 18:04:12,875 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-25 18:04:12,875 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting 'requirements.txt'.
+2025-04-25 18:04:12,875 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 18:04:12] "DELETE /delete-file/raja/requirements.txt HTTP/1.1" 200 -

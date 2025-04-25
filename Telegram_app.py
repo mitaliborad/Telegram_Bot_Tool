@@ -2040,6 +2040,56 @@ def get_file_by_access_id(access_id):
                            access_id=access_id
                            )
 
+# --- NEW: Route to Delete File Record ---
+@app.route('/delete-file/<username>/<filename>', methods=['DELETE'])
+def delete_file_record(username, filename):
+    """Deletes a file record from the metadata for a specific user."""
+    logging.info(f"Received DELETE request for user='{username}', file='{filename}'")
+
+    metadata = load_metadata()
+
+    if username not in metadata:
+        logging.warning(f"Delete request failed: User '{username}' not found in metadata.")
+        return jsonify({"error": f"User '{username}' not found."}), 404
+
+    user_files = metadata[username]
+    initial_length = len(user_files)
+
+    # Find and remove the file record
+    # We create a new list excluding the item to delete to avoid modification during iteration issues
+    updated_user_files = [
+        file_record for file_record in user_files
+        if file_record.get('original_filename') != filename
+    ]
+
+    if len(updated_user_files) == initial_length:
+        # No file was removed, meaning it wasn't found
+        logging.warning(f"Delete request failed: File '{filename}' not found for user '{username}'.")
+        return jsonify({"error": f"File '{filename}' not found for user '{username}'."}), 404
+    else:
+        # File was found and removed (implicitly by not being included in the new list)
+        metadata[username] = updated_user_files
+        logging.info(f"Found and removed record for '{filename}' for user '{username}'.")
+
+        # Handle case where user might now have no files left
+        if not metadata[username]:
+            logging.info(f"User '{username}' has no files left. Removing user entry from metadata.")
+            del metadata[username] # Optional: clean up empty user lists
+
+        # Attempt to save the updated metadata
+        if save_metadata(metadata):
+            logging.info(f"Successfully saved updated metadata after deleting '{filename}'.")
+            return jsonify({"message": f"File record '{filename}' deleted successfully."}), 200
+        else:
+            # This is a critical error - the file is removed in memory but not saved!
+            # In a more robust system, you might want to try reloading the original metadata
+            # or implementing a locking mechanism. For now, we log and return an error.
+            logging.error(f"CRITICAL: Failed to save metadata after removing record for '{filename}'. State might be inconsistent.")
+            # Return 500 Internal Server Error
+            return jsonify({"error": "Failed to update metadata file on server after deletion."}), 500
+
+# --- End of NEW Delete Route ---
+
 # --- Application Runner ---
 if __name__ == '__main__':
     # Ensure Log Directory Exists

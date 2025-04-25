@@ -1,0 +1,13 @@
+2025-04-25 15:00:34,125 - INFO - [<module>] - Logging configured. Log file: Selenium-Logs\app_20250425_150034.log
+2025-04-25 15:00:34,127 - INFO - [<module>] - Flask application initialized.
+2025-04-25 15:00:34,130 - INFO - [<module>] - Starting Flask development server...
+2025-04-25 15:00:34,162 - WARNING - [_log] -  * Debugger is active!
+2025-04-25 15:00:34,170 - INFO - [_log] -  * Debugger PIN: 107-410-311
+2025-04-25 15:00:36,518 - INFO - [index] - Serving index page.
+2025-04-25 15:00:36,549 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 15:00:36] "GET / HTTP/1.1" 200 -
+2025-04-25 15:00:36,594 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 15:00:36] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-25 15:00:45,747 - INFO - [list_user_files] - Request received to list files for user: 'testt'
+2025-04-25 15:00:45,757 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-25 15:00:45,757 - INFO - [list_user_files] - Found 51 file records for user 'testt'.
+2025-04-25 15:00:45,762 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 15:00:45] "GET /files/testt HTTP/1.1" 200 -
+2025-04-25 15:09:20,146 - INFO - [_log] -  * Detected change in 'E:\\Telegram_tool\\Telegram_Bot_Tool\\routes.py', reloading

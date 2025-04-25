@@ -1,0 +1,23 @@
+2025-04-25 14:09:41,093 - WARNING - [_log] -  * Debugger is active!
+2025-04-25 14:09:41,104 - INFO - [_log] -  * Debugger PIN: 107-410-311
+2025-04-25 14:09:43,351 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 14:09:43] "GET / HTTP/1.1" 200 -
+2025-04-25 14:09:43,375 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 14:09:43] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-25 14:09:48,877 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 14:09:48] "[33mPOST /initiate-upload HTTP/1.1[0m" 404 -
+2025-04-25 14:09:51,421 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 14:09:51] "[33mPOST /initiate-upload HTTP/1.1[0m" 404 -
+2025-04-25 14:09:51,941 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 14:09:51] "[33mPOST /initiate-upload HTTP/1.1[0m" 404 -
+2025-04-25 14:09:52,121 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 14:09:52] "[33mPOST /initiate-upload HTTP/1.1[0m" 404 -
+2025-04-25 14:09:52,481 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 14:09:52] "[33mPOST /initiate-upload HTTP/1.1[0m" 404 -
+2025-04-25 14:09:52,681 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 14:09:52] "[33mPOST /initiate-upload HTTP/1.1[0m" 404 -
+2025-04-25 14:09:52,863 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 14:09:52] "[33mPOST /initiate-upload HTTP/1.1[0m" 404 -
+2025-04-25 14:09:53,443 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 14:09:53] "[33mPOST /initiate-upload HTTP/1.1[0m" 404 -
+2025-04-25 14:09:53,623 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 14:09:53] "[33mPOST /initiate-upload HTTP/1.1[0m" 404 -
+2025-04-25 14:09:53,801 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 14:09:53] "[33mPOST /initiate-upload HTTP/1.1[0m" 404 -
+2025-04-25 14:11:12,503 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 14:11:12] "GET /?vscodeBrowserReqId=1745570472476 HTTP/1.1" 200 -
+2025-04-25 14:11:12,593 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 14:11:12] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-25 14:11:25,830 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 14:11:25] "[33mPOST /initiate-upload HTTP/1.1[0m" 404 -
+2025-04-25 14:11:28,707 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 14:11:28] "[33mPOST /initiate-upload HTTP/1.1[0m" 404 -
+2025-04-25 14:11:29,264 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 14:11:29] "[33mPOST /initiate-upload HTTP/1.1[0m" 404 -
+2025-04-25 14:11:29,451 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 14:11:29] "[33mPOST /initiate-upload HTTP/1.1[0m" 404 -
+2025-04-25 14:11:29,656 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 14:11:29] "[33mPOST /initiate-upload HTTP/1.1[0m" 404 -
+2025-04-25 14:11:29,841 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 14:11:29] "[33mPOST /initiate-upload HTTP/1.1[0m" 404 -
+2025-04-25 14:11:30,030 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 14:11:30] "[33mPOST /initiate-upload HTTP/1.1[0m" 404 -

@@ -1,0 +1,3 @@
+2025-04-25 15:53:27,151 - INFO - [setup_logging] - Logging configured. Log file: Selenium-Logs\app_20250425_155327.log
+2025-04-25 15:53:27,192 - WARNING - [_log] -  * Debugger is active!
+2025-04-25 15:53:27,198 - INFO - [_log] -  * Debugger PIN: 107-410-311

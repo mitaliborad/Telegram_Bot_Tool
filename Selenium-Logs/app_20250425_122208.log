@@ -1,0 +1,78 @@
+2025-04-25 12:22:08,331 - INFO - [setup_logging] - Logging configured. Log file: Selenium-Logs\app_20250425_122208.log
+2025-04-25 12:22:08,336 - INFO - [<module>] - Registered routes blueprint.
+2025-04-25 12:22:08,336 - INFO - [<module>] - Starting Flask development server...
+2025-04-25 12:22:08,371 - WARNING - [_log] -  * Debugger is active!
+2025-04-25 12:22:08,377 - INFO - [_log] -  * Debugger PIN: 107-410-311
+2025-04-25 12:22:11,496 - INFO - [index] - Serving index page.
+2025-04-25 12:22:11,514 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 12:22:11] "GET / HTTP/1.1" 200 -
+2025-04-25 12:22:11,561 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 12:22:11] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-25 12:22:11,608 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 12:22:11] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-04-25 12:22:17,014 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-25 12:22:17,014 - INFO - [prepare_upload_session] - Saving temporary file for upload_id '8ce2483c-b134-4dd8-89a6-e77d07a9cc5d' to 'uploads_temp\8ce2483c-b134-4dd8-89a6-e77d07a9cc5d_file_processor.py'
+2025-04-25 12:22:17,014 - INFO - [prepare_upload_session] - Temporary file saved successfully for 'file_processor.py' (ID: 8ce2483c-b134-4dd8-89a6-e77d07a9cc5d).
+2025-04-25 12:22:17,014 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 12:22:17] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-25 12:22:17,024 - INFO - [stream_progress] - SSE connection request for upload_id: 8ce2483c-b134-4dd8-89a6-e77d07a9cc5d
+2025-04-25 12:22:17,025 - INFO - [process_upload_and_generate_updates] - [8ce2483c-b134-4dd8-89a6-e77d07a9cc5d] Starting processing...
+2025-04-25 12:22:17,046 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 12:22:17] "GET /stream-progress/8ce2483c-b134-4dd8-89a6-e77d07a9cc5d HTTP/1.1" 200 -
+2025-04-25 12:22:18,366 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-25 12:22:18,366 - INFO - [prepare_upload_session] - Saving temporary file for upload_id 'ec77a297-0b10-4e4c-97ef-f292242fd54e' to 'uploads_temp\ec77a297-0b10-4e4c-97ef-f292242fd54e_file_processor.py'
+2025-04-25 12:22:18,366 - INFO - [prepare_upload_session] - Temporary file saved successfully for 'file_processor.py' (ID: ec77a297-0b10-4e4c-97ef-f292242fd54e).
+2025-04-25 12:22:18,366 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 12:22:18] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-25 12:22:18,377 - INFO - [stream_progress] - SSE connection request for upload_id: ec77a297-0b10-4e4c-97ef-f292242fd54e
+2025-04-25 12:22:18,378 - INFO - [process_upload_and_generate_updates] - [ec77a297-0b10-4e4c-97ef-f292242fd54e] Starting processing...
+2025-04-25 12:22:18,382 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 12:22:18] "GET /stream-progress/ec77a297-0b10-4e4c-97ef-f292242fd54e HTTP/1.1" 200 -
+2025-04-25 12:22:18,863 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-25 12:22:18,863 - INFO - [prepare_upload_session] - Saving temporary file for upload_id 'c67ee621-fbf4-4301-b692-64deb3bc34fb' to 'uploads_temp\c67ee621-fbf4-4301-b692-64deb3bc34fb_file_processor.py'
+2025-04-25 12:22:18,863 - INFO - [prepare_upload_session] - Temporary file saved successfully for 'file_processor.py' (ID: c67ee621-fbf4-4301-b692-64deb3bc34fb).
+2025-04-25 12:22:18,863 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 12:22:18] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-25 12:22:18,876 - INFO - [stream_progress] - SSE connection request for upload_id: c67ee621-fbf4-4301-b692-64deb3bc34fb
+2025-04-25 12:22:18,877 - INFO - [process_upload_and_generate_updates] - [c67ee621-fbf4-4301-b692-64deb3bc34fb] Starting processing...
+2025-04-25 12:22:18,884 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 12:22:18] "GET /stream-progress/c67ee621-fbf4-4301-b692-64deb3bc34fb HTTP/1.1" 200 -
+2025-04-25 12:22:19,076 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-25 12:22:19,076 - INFO - [prepare_upload_session] - Saving temporary file for upload_id '1f09d47d-a99d-4c5a-806c-3e79e138460d' to 'uploads_temp\1f09d47d-a99d-4c5a-806c-3e79e138460d_file_processor.py'
+2025-04-25 12:22:19,082 - INFO - [prepare_upload_session] - Temporary file saved successfully for 'file_processor.py' (ID: 1f09d47d-a99d-4c5a-806c-3e79e138460d).
+2025-04-25 12:22:19,085 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 12:22:19] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-25 12:22:19,089 - INFO - [stream_progress] - SSE connection request for upload_id: 1f09d47d-a99d-4c5a-806c-3e79e138460d
+2025-04-25 12:22:19,091 - INFO - [process_upload_and_generate_updates] - [1f09d47d-a99d-4c5a-806c-3e79e138460d] Starting processing...
+2025-04-25 12:22:19,094 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 12:22:19] "GET /stream-progress/1f09d47d-a99d-4c5a-806c-3e79e138460d HTTP/1.1" 200 -
+2025-04-25 12:22:19,270 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-25 12:22:19,282 - INFO - [prepare_upload_session] - Saving temporary file for upload_id '8fbe0360-c94f-40bc-b29b-966cd34dc6da' to 'uploads_temp\8fbe0360-c94f-40bc-b29b-966cd34dc6da_file_processor.py'
+2025-04-25 12:22:19,283 - INFO - [prepare_upload_session] - Temporary file saved successfully for 'file_processor.py' (ID: 8fbe0360-c94f-40bc-b29b-966cd34dc6da).
+2025-04-25 12:22:19,287 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 12:22:19] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-25 12:22:19,324 - INFO - [stream_progress] - SSE connection request for upload_id: 8fbe0360-c94f-40bc-b29b-966cd34dc6da
+2025-04-25 12:22:19,327 - INFO - [process_upload_and_generate_updates] - [8fbe0360-c94f-40bc-b29b-966cd34dc6da] Starting processing...
+2025-04-25 12:22:19,354 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 12:22:19] "GET /stream-progress/8fbe0360-c94f-40bc-b29b-966cd34dc6da HTTP/1.1" 200 -
+2025-04-25 12:22:19,467 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-25 12:22:19,467 - INFO - [prepare_upload_session] - Saving temporary file for upload_id '16161356-324c-4d71-9136-ddc2d07b1156' to 'uploads_temp\16161356-324c-4d71-9136-ddc2d07b1156_file_processor.py'
+2025-04-25 12:22:19,467 - INFO - [prepare_upload_session] - Temporary file saved successfully for 'file_processor.py' (ID: 16161356-324c-4d71-9136-ddc2d07b1156).
+2025-04-25 12:22:19,467 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 12:22:19] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-25 12:22:19,486 - INFO - [stream_progress] - SSE connection request for upload_id: 16161356-324c-4d71-9136-ddc2d07b1156
+2025-04-25 12:22:19,487 - INFO - [process_upload_and_generate_updates] - [16161356-324c-4d71-9136-ddc2d07b1156] Starting processing...
+2025-04-25 12:22:19,490 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 12:22:19] "GET /stream-progress/16161356-324c-4d71-9136-ddc2d07b1156 HTTP/1.1" 200 -
+2025-04-25 12:22:21,096 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-25 12:22:21,096 - INFO - [prepare_upload_session] - Saving temporary file for upload_id '012ea5cc-c8ad-42df-b546-bd963e7f36b6' to 'uploads_temp\012ea5cc-c8ad-42df-b546-bd963e7f36b6_file_processor.py'
+2025-04-25 12:22:21,096 - INFO - [prepare_upload_session] - Temporary file saved successfully for 'file_processor.py' (ID: 012ea5cc-c8ad-42df-b546-bd963e7f36b6).
+2025-04-25 12:22:21,096 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 12:22:21] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-25 12:22:21,107 - INFO - [stream_progress] - SSE connection request for upload_id: 012ea5cc-c8ad-42df-b546-bd963e7f36b6
+2025-04-25 12:22:21,107 - INFO - [process_upload_and_generate_updates] - [012ea5cc-c8ad-42df-b546-bd963e7f36b6] Starting processing...
+2025-04-25 12:22:21,113 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 12:22:21] "GET /stream-progress/012ea5cc-c8ad-42df-b546-bd963e7f36b6 HTTP/1.1" 200 -
+2025-04-25 12:22:21,305 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-25 12:22:21,305 - INFO - [prepare_upload_session] - Saving temporary file for upload_id '41acbae9-0042-4d51-8fdb-b0ae02cfe5a7' to 'uploads_temp\41acbae9-0042-4d51-8fdb-b0ae02cfe5a7_file_processor.py'
+2025-04-25 12:22:21,305 - INFO - [prepare_upload_session] - Temporary file saved successfully for 'file_processor.py' (ID: 41acbae9-0042-4d51-8fdb-b0ae02cfe5a7).
+2025-04-25 12:22:21,305 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 12:22:21] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-25 12:22:21,305 - INFO - [stream_progress] - SSE connection request for upload_id: 41acbae9-0042-4d51-8fdb-b0ae02cfe5a7
+2025-04-25 12:22:21,305 - INFO - [process_upload_and_generate_updates] - [41acbae9-0042-4d51-8fdb-b0ae02cfe5a7] Starting processing...
+2025-04-25 12:22:21,317 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 12:22:21] "GET /stream-progress/41acbae9-0042-4d51-8fdb-b0ae02cfe5a7 HTTP/1.1" 200 -
+2025-04-25 12:22:21,494 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-25 12:22:21,494 - INFO - [prepare_upload_session] - Saving temporary file for upload_id '2f904881-a1a2-4454-a0fc-f815d5acc246' to 'uploads_temp\2f904881-a1a2-4454-a0fc-f815d5acc246_file_processor.py'
+2025-04-25 12:22:21,494 - INFO - [prepare_upload_session] - Temporary file saved successfully for 'file_processor.py' (ID: 2f904881-a1a2-4454-a0fc-f815d5acc246).
+2025-04-25 12:22:21,494 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 12:22:21] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-25 12:22:21,510 - INFO - [stream_progress] - SSE connection request for upload_id: 2f904881-a1a2-4454-a0fc-f815d5acc246
+2025-04-25 12:22:21,510 - INFO - [process_upload_and_generate_updates] - [2f904881-a1a2-4454-a0fc-f815d5acc246] Starting processing...
+2025-04-25 12:22:21,518 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 12:22:21] "GET /stream-progress/2f904881-a1a2-4454-a0fc-f815d5acc246 HTTP/1.1" 200 -
+2025-04-25 12:22:33,800 - INFO - [list_user_files] - Request received to list files for user: 'Octopus'
+2025-04-25 12:22:33,800 - INFO - [list_user_files] - Found 29 file records for user 'Octopus'.
+2025-04-25 12:22:33,800 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 12:22:33] "GET /files/Octopus HTTP/1.1" 200 -
+2025-04-25 12:22:36,398 - INFO - [prepare_download_stream] - [ac936213-77c7-48ae-9122-d0e1b0754e27] SSE connection request for download prep: User='Octopus', File='test download (1) (5) (1).mkv'
+2025-04-25 12:22:36,398 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 12:22:36] "GET /prepare-download/Octopus/test%20download%20(1)%20(5)%20(1).mkv HTTP/1.1" 200 -
+2025-04-25 12:24:32,293 - INFO - [_log] -  * Detected change in 'E:\\Telegram_tool\\Telegram_Bot_Tool\\routes.py', reloading

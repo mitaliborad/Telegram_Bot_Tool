@@ -1,0 +1,92 @@
+2025-04-25 14:41:06,975 - INFO - [<module>] - Logging configured. Log file: Selenium-Logs\app_20250425_144106.log
+2025-04-25 14:41:06,977 - INFO - [<module>] - Flask application initialized.
+2025-04-25 14:41:06,981 - INFO - [<module>] - Starting Flask development server...
+2025-04-25 14:41:07,011 - WARNING - [_log] -  * Debugger is active!
+2025-04-25 14:41:07,026 - INFO - [_log] -  * Debugger PIN: 107-410-311
+2025-04-25 14:41:12,327 - INFO - [index] - Serving index page.
+2025-04-25 14:41:12,359 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 14:41:12] "GET / HTTP/1.1" 200 -
+2025-04-25 14:41:12,410 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 14:41:12] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-25 14:41:18,273 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-25 14:41:18,283 - INFO - [initiate_upload] - Saving temporary file for upload_id '79e77966-c33b-40be-a9ab-548b98832137' to 'uploads_temp\79e77966-c33b-40be-a9ab-548b98832137_.gitattributes'
+2025-04-25 14:41:18,283 - INFO - [initiate_upload] - Temporary file saved successfully for '.gitattributes' (ID: 79e77966-c33b-40be-a9ab-548b98832137).
+2025-04-25 14:41:18,306 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 14:41:18] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-25 14:41:18,368 - INFO - [stream_progress] - SSE connection request for upload_id: 79e77966-c33b-40be-a9ab-548b98832137
+2025-04-25 14:41:18,378 - INFO - [process_upload_and_generate_updates] - [79e77966-c33b-40be-a9ab-548b98832137] Starting processing...
+2025-04-25 14:41:18,386 - INFO - [process_upload_and_generate_updates] - [79e77966-c33b-40be-a9ab-548b98832137] Processing upload: User='Octopus', File='.gitattributes', TempPath='uploads_temp\79e77966-c33b-40be-a9ab-548b98832137_.gitattributes'
+2025-04-25 14:41:18,394 - INFO - [process_upload_and_generate_updates] - [79e77966-c33b-40be-a9ab-548b98832137] Original temp file size: 66 bytes.
+2025-04-25 14:41:18,395 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 14:41:18] "GET /stream-progress/79e77966-c33b-40be-a9ab-548b98832137 HTTP/1.1" 200 -
+2025-04-25 14:41:18,399 - INFO - [process_upload_and_generate_updates] - [79e77966-c33b-40be-a9ab-548b98832137] Generated Access ID: 59321b1124
+2025-04-25 14:41:18,404 - INFO - [process_upload_and_generate_updates] - [79e77966-c33b-40be-a9ab-548b98832137] '.gitattributes' is small. Compressing and sending as single file.
+2025-04-25 14:41:18,437 - INFO - [process_upload_and_generate_updates] - [79e77966-c33b-40be-a9ab-548b98832137] Compressed '.gitattributes' to 188 bytes.
+2025-04-25 14:41:18,467 - INFO - [process_upload_and_generate_updates] - [79e77966-c33b-40be-a9ab-548b98832137] Attempting send '.gitattributes.zip' to chat ID: -4603853425
+2025-04-25 14:41:18,481 - INFO - [send_file_to_telegram] - Sending file '.gitattributes.zip' to Telegram chat ID: -4603853425
+2025-04-25 14:41:19,622 - INFO - [send_file_to_telegram] - Telegram API success for '.gitattributes.zip'.
+2025-04-25 14:41:19,623 - INFO - [process_upload_and_generate_updates] - [79e77966-c33b-40be-a9ab-548b98832137] Attempting send '.gitattributes.zip' to chat ID: -1002614397019
+2025-04-25 14:41:19,623 - INFO - [send_file_to_telegram] - Sending file '.gitattributes.zip' to Telegram chat ID: -1002614397019
+2025-04-25 14:41:20,586 - INFO - [send_file_to_telegram] - Telegram API success for '.gitattributes.zip'.
+2025-04-25 14:41:20,587 - INFO - [process_upload_and_generate_updates] - [79e77966-c33b-40be-a9ab-548b98832137] Attempting send '.gitattributes.zip' to chat ID: -4641852757
+2025-04-25 14:41:20,588 - INFO - [send_file_to_telegram] - Sending file '.gitattributes.zip' to Telegram chat ID: -4641852757
+2025-04-25 14:41:21,624 - INFO - [send_file_to_telegram] - Telegram API success for '.gitattributes.zip'.
+2025-04-25 14:41:21,624 - INFO - [process_upload_and_generate_updates] - [79e77966-c33b-40be-a9ab-548b98832137] Single file '.gitattributes' sent successfully to PRIMARY chat ID -4603853425.
+2025-04-25 14:41:21,626 - INFO - [process_upload_and_generate_updates] - [79e77966-c33b-40be-a9ab-548b98832137] Total successful sends (including backups): 3 / 3
+2025-04-25 14:41:21,626 - ERROR - [process_upload_and_generate_updates] - [79e77966-c33b-40be-a9ab-548b98832137] Inconsistency: Primary send succeeded but failed to extract IDs from its response: {'ok': True, 'result': {'message_id': 867, 'from': {'id': 7812479394, 'is_bot': True, 'first_name': 'Harry Bot', 'username': 'hhhHarryBot'}, 'chat': {'id': -4603853425, 'title': 'AGroup', 'type': 'group', 'all_members_are_administrators': True, 'accepted_gift_types': {'unlimited_gifts': False, 'limited_gifts': False, 'unique_gifts': False, 'premium_subscription': False}}, 'date': 1745572278, 'document': {'file_name': 'gitattributes.zip', 'mime_type': 'application/zip', 'file_id': 'BQACAgUAAxkDAAIDY2gLUbYpzb67Soqm_6ypZ7CF36LJAAK6FQACd1RhVHQXOwVQi1VtNgQ', 'file_unique_id': 'AgADuhUAAndUYVQ', 'file_size': 188}}}
+2025-04-25 14:41:21,630 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-25 14:41:21,653 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-25 14:41:21,654 - INFO - [process_upload_and_generate_updates] - [79e77966-c33b-40be-a9ab-548b98832137] Generated landing page URL: http://127.0.0.1:5000/get/59321b1124
+2025-04-25 14:41:21,657 - INFO - [process_upload_and_generate_updates] - [79e77966-c33b-40be-a9ab-548b98832137] Entering final cleanup.
+2025-04-25 14:41:21,658 - INFO - [process_upload_and_generate_updates] - [79e77966-c33b-40be-a9ab-548b98832137] Successfully deleted original temporary file: uploads_temp\79e77966-c33b-40be-a9ab-548b98832137_.gitattributes
+2025-04-25 14:41:21,658 - INFO - [process_upload_and_generate_updates] - [79e77966-c33b-40be-a9ab-548b98832137] Processing finished with status: completed
+2025-04-25 14:41:30,537 - INFO - [get_file_by_access_id] - Received request for access_id: 59321b1124
+2025-04-25 14:41:30,563 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-25 14:41:30,568 - INFO - [get_file_by_access_id] - Found file '.gitattributes'. Rendering download page.
+2025-04-25 14:41:30,606 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 14:41:30] "GET /get/59321b1124 HTTP/1.1" 200 -
+2025-04-25 14:41:32,421 - INFO - [stream_download_by_access_id] - [34253e87-a870-4ab6-b9a4-d8f7149f2b58] SSE connection request for download prep using access_id: 59321b1124
+2025-04-25 14:41:32,425 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-25 14:41:32,426 - INFO - [_prepare_and_stream_download_generator] - [34253e87-a870-4ab6-b9a4-d8f7149f2b58] Download preparation generator started.
+2025-04-25 14:41:32,426 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 14:41:32] "GET /stream-download/59321b1124 HTTP/1.1" 200 -
+2025-04-25 14:41:32,530 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-25 14:41:32,530 - INFO - [_prepare_and_stream_download_generator] - [34253e87-a870-4ab6-b9a4-d8f7149f2b58] Found metadata for '.gitattributes' (User: Octopus, Size: 66)
+2025-04-25 14:41:32,732 - INFO - [_prepare_and_stream_download_generator] - [34253e87-a870-4ab6-b9a4-d8f7149f2b58] Preparing non-split file '.gitattributes'.
+2025-04-25 14:41:32,732 - INFO - [_prepare_and_stream_download_generator] - [34253e87-a870-4ab6-b9a4-d8f7149f2b58] Using primary file_id: BQACAgUAAxkDAAIDY2gLUbYpzb67Soqm_6ypZ7CF36LJAAK6FQACd1RhVHQXOwVQi1VtNgQ from chat -4603853425
+2025-04-25 14:41:32,735 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIDY2gLUbYpzb67Soqm_6ypZ7CF36LJAAK6FQACd1RhVHQXOwVQi1VtNgQ
+2025-04-25 14:41:33,536 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_416.zip
+2025-04-25 14:41:33,536 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_416.zip
+2025-04-25 14:41:34,004 - INFO - [download_telegram_file_content] - Successfully downloaded 188 bytes for file_id BQACAgUAAxkDAAIDY2gLUbYpzb67Soqm_6ypZ7CF36LJAAK6FQACd1RhVHQXOwVQi1VtNgQ.
+2025-04-25 14:41:34,006 - INFO - [_prepare_and_stream_download_generator] - [34253e87-a870-4ab6-b9a4-d8f7149f2b58] Source download took 1.27s, Speed: 0.00 MB/s
+2025-04-25 14:41:34,007 - INFO - [_prepare_and_stream_download_generator] - [34253e87-a870-4ab6-b9a4-d8f7149f2b58] Decompressing single downloaded file...
+2025-04-25 14:41:34,015 - INFO - [_prepare_and_stream_download_generator] - [34253e87-a870-4ab6-b9a4-d8f7149f2b58] Decompression finished in 0.01s.
+2025-04-25 14:41:34,017 - INFO - [_prepare_and_stream_download_generator] - [34253e87-a870-4ab6-b9a4-d8f7149f2b58] Final prepared file: 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_final_34253e87-a870-4ab6-b9a4-d8f7149f2b58_hy68_9nh.tmp', Size: 66
+2025-04-25 14:41:34,119 - INFO - [_prepare_and_stream_download_generator] - [34253e87-a870-4ab6-b9a4-d8f7149f2b58] Preparation complete. Sent 'ready' event.
+2025-04-25 14:41:34,120 - INFO - [_prepare_and_stream_download_generator] - [34253e87-a870-4ab6-b9a4-d8f7149f2b58] Generator finished or errored. Cleaning up intermediate files.
+2025-04-25 14:41:34,120 - INFO - [_prepare_and_stream_download_generator] - [34253e87-a870-4ab6-b9a4-d8f7149f2b58] Generator task ended.
+2025-04-25 14:41:34,131 - INFO - [serve_temp_file] - Request to serve temporary download file for ID: 34253e87-a870-4ab6-b9a4-d8f7149f2b58, Filename: .gitattributes
+2025-04-25 14:41:34,136 - INFO - [serve_temp_file] - [34253e87-a870-4ab6-b9a4-d8f7149f2b58] Preparing streaming response for '.gitattributes' from 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_final_34253e87-a870-4ab6-b9a4-d8f7149f2b58_hy68_9nh.tmp'
+2025-04-25 14:41:34,138 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 14:41:34] "GET /serve-temp-file/34253e87-a870-4ab6-b9a4-d8f7149f2b58/.gitattributes HTTP/1.1" 200 -
+2025-04-25 14:41:34,139 - INFO - [generate_and_cleanup] - [34253e87-a870-4ab6-b9a4-d8f7149f2b58] Finished streaming file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_final_34253e87-a870-4ab6-b9a4-d8f7149f2b58_hy68_9nh.tmp
+2025-04-25 14:41:34,140 - INFO - [generate_and_cleanup] - [34253e87-a870-4ab6-b9a4-d8f7149f2b58] Cleaning up final temp file post-streaming: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_final_34253e87-a870-4ab6-b9a4-d8f7149f2b58_hy68_9nh.tmp
+2025-04-25 14:41:34,142 - INFO - [generate_and_cleanup] - [34253e87-a870-4ab6-b9a4-d8f7149f2b58] Successfully deleted final temp file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_final_34253e87-a870-4ab6-b9a4-d8f7149f2b58_hy68_9nh.tmp
+2025-04-25 14:41:42,648 - INFO - [list_user_files] - Request received to list files for user: 'Octopus'
+2025-04-25 14:41:42,651 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-25 14:41:42,651 - INFO - [list_user_files] - Found 30 file records for user 'Octopus'.
+2025-04-25 14:41:42,654 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 14:41:42] "GET /files/Octopus HTTP/1.1" 200 -
+2025-04-25 14:41:45,348 - INFO - [prepare_download_stream] - [1e37b0fe-6b70-44b9-96c0-e9fdd24b9cec] SSE connection request for download prep: User='Octopus', File='.gitattributes'
+2025-04-25 14:41:45,350 - INFO - [_prepare_download_and_generate_updates] - [1e37b0fe-6b70-44b9-96c0-e9fdd24b9cec] Starting download preparation generator for user 'Octopus', file '.gitattributes'...
+2025-04-25 14:41:45,351 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 14:41:45] "GET /prepare-download/Octopus/.gitattributes HTTP/1.1" 200 -
+2025-04-25 14:41:45,557 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-25 14:41:45,558 - INFO - [_prepare_download_and_generate_updates] - [1e37b0fe-6b70-44b9-96c0-e9fdd24b9cec] Prep non-split '.gitattributes'
+2025-04-25 14:41:45,558 - INFO - [_prepare_download_and_generate_updates] - [1e37b0fe-6b70-44b9-96c0-e9fdd24b9cec] Using primary file_id: BQACAgUAAxkDAAIDY2gLUbYpzb67Soqm_6ypZ7CF36LJAAK6FQACd1RhVHQXOwVQi1VtNgQ from chat -4603853425
+2025-04-25 14:41:45,559 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIDY2gLUbYpzb67Soqm_6ypZ7CF36LJAAK6FQACd1RhVHQXOwVQi1VtNgQ
+2025-04-25 14:41:46,037 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_416.zip
+2025-04-25 14:41:46,038 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_416.zip
+2025-04-25 14:41:46,487 - INFO - [download_telegram_file_content] - Successfully downloaded 188 bytes for file_id BQACAgUAAxkDAAIDY2gLUbYpzb67Soqm_6ypZ7CF36LJAAK6FQACd1RhVHQXOwVQi1VtNgQ.
+2025-04-25 14:41:46,489 - INFO - [_prepare_download_and_generate_updates] - [1e37b0fe-6b70-44b9-96c0-e9fdd24b9cec] Decompressing single file...
+2025-04-25 14:41:46,492 - INFO - [_prepare_download_and_generate_updates] - [1e37b0fe-6b70-44b9-96c0-e9fdd24b9cec] Final prepared file: 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_1e37b0fe-6b70-44b9-96c0-e9fdd24b9cec_zaaff31n', Size: 66
+2025-04-25 14:41:46,495 - INFO - [_prepare_download_and_generate_updates] - [1e37b0fe-6b70-44b9-96c0-e9fdd24b9cec] Preparation complete. Sent 'ready' event.
+2025-04-25 14:41:46,497 - INFO - [_prepare_download_and_generate_updates] - [1e37b0fe-6b70-44b9-96c0-e9fdd24b9cec] Generator finished or errored. Cleaning up intermediate files.
+2025-04-25 14:41:46,497 - INFO - [_prepare_download_and_generate_updates] - [1e37b0fe-6b70-44b9-96c0-e9fdd24b9cec] Generator task ended.
+2025-04-25 14:41:46,514 - INFO - [serve_temp_file] - Request to serve temporary download file for ID: 1e37b0fe-6b70-44b9-96c0-e9fdd24b9cec, Filename: .gitattributes
+2025-04-25 14:41:46,515 - INFO - [serve_temp_file] - [1e37b0fe-6b70-44b9-96c0-e9fdd24b9cec] Preparing streaming response for '.gitattributes' from 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_1e37b0fe-6b70-44b9-96c0-e9fdd24b9cec_zaaff31n'
+2025-04-25 14:41:46,518 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 14:41:46] "GET /serve-temp-file/1e37b0fe-6b70-44b9-96c0-e9fdd24b9cec/.gitattributes HTTP/1.1" 200 -
+2025-04-25 14:41:46,518 - INFO - [generate_and_cleanup] - [1e37b0fe-6b70-44b9-96c0-e9fdd24b9cec] Finished streaming file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_1e37b0fe-6b70-44b9-96c0-e9fdd24b9cec_zaaff31n
+2025-04-25 14:41:46,520 - INFO - [generate_and_cleanup] - [1e37b0fe-6b70-44b9-96c0-e9fdd24b9cec] Cleaning up final temp file post-streaming: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_1e37b0fe-6b70-44b9-96c0-e9fdd24b9cec_zaaff31n
+2025-04-25 14:41:46,528 - INFO - [generate_and_cleanup] - [1e37b0fe-6b70-44b9-96c0-e9fdd24b9cec] Successfully deleted final temp file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_1e37b0fe-6b70-44b9-96c0-e9fdd24b9cec_zaaff31n

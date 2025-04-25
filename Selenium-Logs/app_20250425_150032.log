@@ -1,0 +1,16 @@
+2025-04-25 15:00:32,985 - INFO - [<module>] - Logging configured. Log file: Selenium-Logs\app_20250425_150032.log
+2025-04-25 15:00:32,988 - INFO - [<module>] - Flask application initialized.
+2025-04-25 15:00:33,005 - INFO - [<module>] - Starting Flask development server...
+2025-04-25 15:00:33,193 - INFO - [_log] - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.13:5000
+2025-04-25 15:00:33,194 - INFO - [_log] - [33mPress CTRL+C to quit[0m
+2025-04-25 15:00:33,199 - INFO - [_log] -  * Restarting with stat
+2025-04-25 15:09:20,242 - INFO - [_log] -  * Restarting with stat
+2025-04-25 15:17:01,830 - INFO - [_log] -  * Restarting with stat
+2025-04-25 15:19:45,573 - INFO - [_log] -  * Restarting with stat
+2025-04-25 15:21:34,458 - INFO - [_log] -  * Restarting with stat
+2025-04-25 15:23:33,943 - INFO - [_log] -  * Restarting with stat
+2025-04-25 15:26:04,164 - INFO - [_log] -  * Restarting with stat
+2025-04-25 15:26:47,122 - INFO - [_log] -  * Restarting with stat

@@ -1,0 +1,10 @@
+2025-04-25 11:12:14,401 - INFO - [<module>] - Logging configured. Log file: Selenium-Logs\app_20250425_111214.log
+2025-04-25 11:12:14,401 - INFO - [<module>] - Using Telegram Chat IDs: []
+2025-04-25 11:12:14,401 - WARNING - [<module>] - No Primary Telegram Chat ID configured!
+2025-04-25 11:12:14,401 - WARNING - [<module>] - ============================================================
+2025-04-25 11:12:14,401 - WARNING - [<module>] - !!! WARNING: No Telegram Chat IDs configured. Uploads will fail. !!!
+2025-04-25 11:12:14,401 - WARNING - [<module>] - !!! Please set the TELEGRAM_CHAT_IDS environment variable (comma-separated). !!!
+2025-04-25 11:12:14,401 - WARNING - [<module>] - ============================================================
+2025-04-25 11:12:14,401 - WARNING - [<module>] - Using default Flask secret key. Set FLASK_SECRET_KEY environment variable for production.
+2025-04-25 11:12:14,401 - INFO - [<module>] - Flask application initialized.
+2025-04-25 11:12:14,419 - CRITICAL - [<module>] - Primary Telegram Chat ID is not configured. Exiting.

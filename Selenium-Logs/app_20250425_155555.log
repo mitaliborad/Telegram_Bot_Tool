@@ -1,0 +1,13 @@
+2025-04-25 15:55:55,297 - INFO - [setup_logging] - Logging configured. Log file: Selenium-Logs\app_20250425_155555.log
+2025-04-25 15:55:55,338 - WARNING - [_log] -  * Debugger is active!
+2025-04-25 15:55:55,344 - INFO - [_log] -  * Debugger PIN: 101-233-949
+2025-04-25 15:56:37,995 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 15:56:37] "[33mPOST /initiate-upload HTTP/1.1[0m" 404 -
+2025-04-25 15:57:07,952 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 15:57:07] "GET /?vscodeBrowserReqId=1745576827905 HTTP/1.1" 200 -
+2025-04-25 15:57:07,969 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 15:57:07] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-25 15:57:16,407 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 15:57:16] "[33mPOST /initiate-upload HTTP/1.1[0m" 404 -
+2025-04-25 15:57:43,978 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 15:57:43] "[33mPOST /initiate-upload HTTP/1.1[0m" 404 -
+2025-04-25 15:57:46,513 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 15:57:46] "[33mPOST /initiate-upload HTTP/1.1[0m" 404 -
+2025-04-25 15:57:47,112 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 15:57:47] "[33mPOST /initiate-upload HTTP/1.1[0m" 404 -
+2025-04-25 15:57:47,686 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 15:57:47] "[33mPOST /initiate-upload HTTP/1.1[0m" 404 -
+2025-04-25 15:57:48,286 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 15:57:48] "[33mPOST /initiate-upload HTTP/1.1[0m" 404 -
+2025-04-25 16:00:49,970 - INFO - [_log] -  * Detected change in 'E:\\Telegram_tool\\Telegram_Bot_Tool\\app.py', reloading

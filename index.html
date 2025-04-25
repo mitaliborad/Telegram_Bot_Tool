@@ -155,6 +155,90 @@
         .progress-button .button-text {
             margin-left: 5px; /* Space between icon and text */
         }
+        /* --- Add this style inside the <style> tag --- */
+
+/* --- Add this style inside the <style> tag --- */
+
+    .file-actions-buttons {
+    display: flex; /* Arrange buttons horizontally */
+    align-items: center;
+    gap: 5px; /* Space between the download and delete buttons */
+    margin-left: auto; /* Pushes the button group to the right */
+}
+
+/* --- End added style --- */
+
+/* --- Adjust li style (Remove justify-content) --- */
+#file-list li {
+    background-color: #f9f5f5;
+    padding: 10px;
+    margin-bottom: 8px;
+    border-radius: 4px;
+    display: flex;
+    /* justify-content: space-between; */ /* REMOVE OR COMMENT OUT THIS LINE */
+    align-items: center;
+    /* gap: 10px; */ /* REMOVE OR COMMENT OUT this gap if you only want space via margin-left:auto */
+}
+/* --- End adjusted li style --- */
+/* --- End adjusted li style --- */
+
+        /* --- Add these styles inside the <style> tag --- */
+
+/* --- Add/Adjust these styles inside the <style> tag --- */
+
+/* Reuse or adjust the existing download button style */
+.download-button { /* Keep or modify existing styles */
+    background-color: #337ab7;
+    color: white;
+    padding: 5px 10px;
+    font-size: 0.9em;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 10px; /* Add some space */
+    vertical-align: middle; /* Align with text */
+}
+.download-button:hover:not(:disabled) {
+    background-color: #286090;
+}
+ .download-button:disabled { /* Ensure disabled style is present */
+    background-color: #cccccc;
+    cursor: not-allowed;
+    opacity: 0.7;
+ }
+
+
+/* Add a specific style for the delete button */
+.delete-button {
+    background-color: #d9534f; /* Red color for delete */
+    color: white;
+    padding: 5px 10px;
+    font-size: 0.9em;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 5px; /* Space between download and delete */
+    vertical-align: middle; /* Align with text */
+}
+
+.delete-button:hover:not(:disabled) {
+    background-color: #c9302c;
+}
+ .delete-button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    opacity: 0.7;
+ }
+
+/* Optional: Ensure list items handle button alignment well */
+#file-list li {
+    /* display: flex; */ /* Already present */
+    /* justify-content: space-between; */ /* Already present */
+    /* align-items: center; */ /* Already present */
+    gap: 10px; /* Adds space between filename and buttons if needed */
+}
+
+/* --- End added/adjusted styles --- */
         /*--- End added styles ---*/
 
 
@@ -724,22 +808,48 @@
                     const fileNameSpan = document.createElement('span');
                     fileNameSpan.textContent = fileInfo.original_filename;
 
-                    const downloadButton = document.createElement('button');
-                    downloadButton.textContent = 'Download';
-                    downloadButton.classList.add('download-button'); // Ensure class is added
-                    // Add data attributes for username and filename
-                    downloadButton.dataset.username = username;
-                    downloadButton.dataset.filename = fileInfo.original_filename;
-                    downloadButton.onclick = (event) => {
-                        // Retrieve username/filename from the button clicked
-                        const user = event.target.dataset.username;
-                        const file = event.target.dataset.filename;
-                        downloadFile(user, file); // Call downloadFile with correct context
-                    };
+                    const actionsDiv = document.createElement('div');
+                actionsDiv.classList.add('file-actions');
 
-                    li.appendChild(fileNameSpan);
-                    li.appendChild(downloadButton);
-                    fileList.appendChild(li);
+                // --- NEW: Create Download Icon (using emoji for simplicity) ---
+                                // --- NEW: Create Download Button ---
+                                // --- Create Download Button ---
+                                const downloadButton = document.createElement('button');
+                downloadButton.textContent = 'Download';
+                downloadButton.classList.add('download-button');
+                downloadButton.dataset.username = username;
+                downloadButton.dataset.filename = fileInfo.original_filename;
+                downloadButton.onclick = (event) => {
+                    const user = event.target.dataset.username;
+                    const file = event.target.dataset.filename;
+                    downloadFile(user, file);
+                };
+
+                // --- Create Delete Button ---
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.classList.add('delete-button');
+                deleteButton.dataset.username = username;
+                deleteButton.dataset.filename = fileInfo.original_filename;
+                deleteButton.onclick = (event) => {
+                    const user = event.target.dataset.username;
+                    const file = event.target.dataset.filename;
+                    requestDeleteFile(user, file, event.target.closest('li'));
+                };
+
+                // --- NEW: Create container for the buttons ---
+                const actionsContainer = document.createElement('div');
+                actionsContainer.classList.add('file-actions-buttons');
+
+                // --- NEW: Append buttons to the container ---
+                actionsContainer.appendChild(downloadButton);
+                actionsContainer.appendChild(deleteButton);
+
+                // Append filename SPAN and button CONTAINER to the list item
+                li.appendChild(fileNameSpan);
+                li.appendChild(actionsContainer); // <-- Append the container instead of individual buttons
+
+                fileList.appendChild(li);
                 });
                 listStatus.textContent = ''; // Clear status on success
             } catch (error) {
@@ -937,6 +1047,78 @@
                 document.querySelectorAll('.download-button').forEach(btn => btn.disabled = false);
             }
         } // --- End of downloadFile function ---
+
+                // --- NEW: Function to handle Delete button click ---
+                async function requestDeleteFile(username, filename, listItemElement) {
+            console.log(`Requesting delete for user: ${username}, file: ${filename}`);
+
+            // Confirm with the user
+            if (!confirm(`Are you sure you want to delete the record for "${filename}"? This cannot be undone.`)) {
+                console.log("Delete cancelled by user.");
+                return; // Stop if user cancels
+            }
+
+            // Disable buttons on the specific row during request
+            const buttonsInItem = listItemElement.querySelectorAll('button');
+            buttonsInItem.forEach(btn => btn.disabled = true);
+            listStatus.textContent = `Deleting ${filename}...`; // Use listStatus for feedback
+            listStatus.style.color = 'orange';
+
+            try {
+                // Construct the URL for the DELETE request
+                const deleteUrl = `/delete-file/${encodeURIComponent(username)}/${encodeURIComponent(filename)}`;
+
+                // Send the DELETE request
+                const response = await fetch(deleteUrl, {
+                    method: 'DELETE',
+                    headers: {
+                        'Accept': 'application/json' // Expect JSON response
+                    }
+                });
+
+                // Check if the request was successful (status code 200-299)
+                if (response.ok) {
+                    const result = await response.json(); // Parse JSON response
+                    console.log("Delete successful:", result.message);
+
+                    // Remove the list item from the UI immediately
+                    listItemElement.remove(); // Remove the whole <li> element
+                    listStatus.textContent = result.message || `Successfully deleted ${filename}.`;
+                    listStatus.style.color = 'green';
+
+                    // Optional: Clear status after a few seconds
+                     setTimeout(() => {
+                         if (listStatus.textContent === (result.message || `Successfully deleted ${filename}.`)) {
+                              listStatus.textContent = '';
+                         }
+                     }, 4000);
+
+                } else {
+                    // Handle errors (e.g., file not found, server error)
+                    let errorMsg = `Failed to delete ${filename}. Status: ${response.status}`;
+                    try {
+                        const errorData = await response.json();
+                        errorMsg = errorData.error || errorMsg; // Use specific error from backend if available
+                    } catch (e) {
+                        // Backend might not have sent JSON on error
+                        console.warn("Could not parse error response as JSON.");
+                    }
+                    console.error('Delete failed:', errorMsg);
+                    listStatus.textContent = `Error deleting: ${errorMsg}`;
+                    listStatus.style.color = 'red';
+                    // Re-enable buttons on failure
+                    buttonsInItem.forEach(btn => btn.disabled = false);
+                }
+
+            } catch (error) {
+                // Handle network errors or other exceptions during fetch
+                console.error('Error during delete request:', error);
+                listStatus.textContent = `Network error deleting file: ${error.message}`;
+                listStatus.style.color = 'red';
+                // Re-enable buttons on failure
+                buttonsInItem.forEach(btn => btn.disabled = false);
+            }
+        } // --- End of requestDeleteFile ---
 
 
     </script>

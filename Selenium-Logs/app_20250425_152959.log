@@ -1,0 +1,4 @@
+2025-04-25 15:29:59,252 - INFO - [setup_logging] - Logging configured. Log file: Selenium-Logs\app_20250425_152959.log
+2025-04-25 15:29:59,283 - WARNING - [_log] -  * Debugger is active!
+2025-04-25 15:29:59,292 - INFO - [_log] -  * Debugger PIN: 107-410-311
+2025-04-25 15:34:22,535 - INFO - [_log] -  * Detected change in 'E:\\Telegram_tool\\Telegram_Bot_Tool\\config.py', reloading

@@ -1,0 +1,30 @@
+2025-04-25 16:00:52,026 - INFO - [setup_logging] - Logging configured. Log file: Selenium-Logs\app_20250425_160052.log
+2025-04-25 16:00:52,122 - INFO - [setup_logging] - Logging configured. Log file: Selenium-Logs\app_20250425_160052.log
+2025-04-25 16:00:52,365 - WARNING - [_log] -  * Debugger is active!
+2025-04-25 16:00:52,373 - INFO - [_log] -  * Debugger PIN: 101-233-949
+2025-04-25 16:00:52,424 - WARNING - [_log] -  * Debugger is active!
+2025-04-25 16:00:52,429 - INFO - [_log] -  * Debugger PIN: 101-233-949
+2025-04-25 16:01:13,235 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 16:01:13] "GET /?vscodeBrowserReqId=1745577073212 HTTP/1.1" 200 -
+2025-04-25 16:01:13,261 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 16:01:13] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-25 16:01:22,341 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-25 16:01:24,610 - INFO - [initiate_upload] - Saving temporary file for upload_id '9bcc1834-66ec-470b-adb1-1c3332c51182' to 'uploads_temp\9bcc1834-66ec-470b-adb1-1c3332c51182_WindsurfUserSetup-x64-1.7.0 (1).exe'
+2025-04-25 16:01:25,663 - INFO - [initiate_upload] - Temporary file saved successfully for 'WindsurfUserSetup-x64-1.7.0 (1).exe' (ID: 9bcc1834-66ec-470b-adb1-1c3332c51182).
+2025-04-25 16:01:25,670 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 16:01:25] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-25 16:01:25,696 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 16:01:25] "[33mGET /stream-progress/9bcc1834-66ec-470b-adb1-1c3332c51182 HTTP/1.1[0m" 404 -
+2025-04-25 16:02:02,051 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-25 16:02:02,053 - INFO - [initiate_upload] - Saving temporary file for upload_id 'ce9baaa9-c3d2-4e6c-aa93-2de8d8c26509' to 'uploads_temp\ce9baaa9-c3d2-4e6c-aa93-2de8d8c26509_404_error.html'
+2025-04-25 16:02:02,053 - INFO - [initiate_upload] - Temporary file saved successfully for '404_error.html' (ID: ce9baaa9-c3d2-4e6c-aa93-2de8d8c26509).
+2025-04-25 16:02:02,054 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 16:02:02] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-25 16:02:02,071 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 16:02:02] "[33mGET /stream-progress/ce9baaa9-c3d2-4e6c-aa93-2de8d8c26509 HTTP/1.1[0m" 404 -
+2025-04-25 16:02:03,584 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-25 16:02:03,586 - INFO - [initiate_upload] - Saving temporary file for upload_id '39d84280-3a13-42e7-afa4-d89ed2965237' to 'uploads_temp\39d84280-3a13-42e7-afa4-d89ed2965237_404_error.html'
+2025-04-25 16:02:03,587 - INFO - [initiate_upload] - Temporary file saved successfully for '404_error.html' (ID: 39d84280-3a13-42e7-afa4-d89ed2965237).
+2025-04-25 16:02:03,588 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 16:02:03] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-25 16:02:03,593 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 16:02:03] "[33mGET /stream-progress/39d84280-3a13-42e7-afa4-d89ed2965237 HTTP/1.1[0m" 404 -
+2025-04-25 16:02:26,587 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-25 16:02:28,440 - INFO - [initiate_upload] - Saving temporary file for upload_id '25b79ccd-325f-4593-8acd-9a88cc49892e' to 'uploads_temp\25b79ccd-325f-4593-8acd-9a88cc49892e_WindsurfUserSetup-x64-1.7.0 (1).exe'
+2025-04-25 16:02:29,231 - INFO - [initiate_upload] - Temporary file saved successfully for 'WindsurfUserSetup-x64-1.7.0 (1).exe' (ID: 25b79ccd-325f-4593-8acd-9a88cc49892e).
+2025-04-25 16:02:29,244 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 16:02:29] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-25 16:02:29,261 - INFO - [_log] - 127.0.0.1 - - [25/Apr/2025 16:02:29] "[33mGET /stream-progress/25b79ccd-325f-4593-8acd-9a88cc49892e HTTP/1.1[0m" 404 -
+2025-04-25 16:03:54,381 - INFO - [_log] -  * Detected change in 'E:\\Telegram_tool\\Telegram_Bot_Tool\\routes.py', reloading
+2025-04-25 16:03:54,384 - INFO - [_log] -  * Detected change in 'E:\\Telegram_tool\\Telegram_Bot_Tool\\routes.py', reloading

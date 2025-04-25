@@ -1,0 +1,13 @@
+2025-04-25 15:27:06,123 - INFO - [setup_logging] - Logging configured. Log file: Selenium-Logs\app_20250425_152706.log
+2025-04-25 15:27:06,170 - INFO - [_log] - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.13:5000
+2025-04-25 15:27:06,170 - INFO - [_log] - [33mPress CTRL+C to quit[0m
+2025-04-25 15:27:06,184 - INFO - [_log] -  * Restarting with stat
+2025-04-25 15:34:22,328 - INFO - [_log] -  * Restarting with stat
+2025-04-25 15:53:03,557 - INFO - [_log] -  * Restarting with stat
+2025-04-25 15:53:25,802 - INFO - [_log] -  * Restarting with stat
+2025-04-25 15:55:53,236 - INFO - [_log] -  * Restarting with stat
+2025-04-25 16:00:50,146 - INFO - [_log] -  * Restarting with stat
+2025-04-25 16:03:54,492 - INFO - [_log] -  * Restarting with stat

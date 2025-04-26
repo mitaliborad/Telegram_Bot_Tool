@@ -1,0 +1,11 @@
+2025-04-26 14:10:06,794 - INFO - [<module>] - Logging configured. Log file: Selenium-Logs\app_20250426_141006.log
+2025-04-26 14:10:06,795 - INFO - [<module>] - Configuration loaded.
+2025-04-26 14:10:06,795 - INFO - [<module>] - Utility functions defined.
+2025-04-26 14:10:06,797 - INFO - [<module>] - Flask application initialized.
+2025-04-26 14:10:06,797 - INFO - [<module>] - Global state variables initialized.
+2025-04-26 14:10:07,305 - INFO - [<module>] - Telegram API functions defined.
+2025-04-26 14:10:07,310 - INFO - [<module>] - Flask routes defined.
+2025-04-26 14:10:07,311 - INFO - [<module>] - Starting Flask development server...
+2025-04-26 14:10:07,343 - WARNING - [_log] -  * Debugger is active!
+2025-04-26 14:10:07,349 - INFO - [_log] -  * Debugger PIN: 107-410-311
+2025-04-26 14:10:21,737 - INFO - [_log] -  * Detected change in 'E:\\Telegram_tool\\Telegram_Bot_Tool\\config.py', reloading

@@ -1,0 +1,41 @@
+2025-04-26 12:31:45,054 - INFO - [<module>] - Logging configured. Log file: Selenium-Logs\app_20250426_123145.log
+2025-04-26 12:31:45,056 - INFO - [<module>] - Flask application initialized.
+2025-04-26 12:31:45,060 - INFO - [<module>] - Starting Flask development server...
+2025-04-26 12:31:45,111 - INFO - [_log] - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.13:5000
+2025-04-26 12:31:45,111 - INFO - [_log] - [33mPress CTRL+C to quit[0m
+2025-04-26 12:31:45,111 - INFO - [_log] -  * Restarting with stat
+2025-04-26 12:31:45,930 - INFO - [<module>] - Logging configured. Log file: Selenium-Logs\app_20250426_123145.log
+2025-04-26 12:31:45,931 - INFO - [<module>] - Flask application initialized.
+2025-04-26 12:31:45,934 - INFO - [<module>] - Starting Flask development server...
+2025-04-26 12:31:45,964 - WARNING - [_log] -  * Debugger is active!
+2025-04-26 12:31:45,970 - INFO - [_log] -  * Debugger PIN: 107-410-311
+2025-04-26 12:31:48,152 - INFO - [index] - Serving index page.
+2025-04-26 12:31:48,175 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 12:31:48] "GET / HTTP/1.1" 200 -
+2025-04-26 12:31:48,231 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 12:31:48] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-26 12:31:53,067 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-26 12:31:53,067 - INFO - [initiate_upload] - Saving temporary file for upload_id '7c54b68a-7b21-4b4d-b283-66f3e495ddf1' to 'uploads_temp\7c54b68a-7b21-4b4d-b283-66f3e495ddf1_metadata_handler (1).py'
+2025-04-26 12:31:53,067 - INFO - [initiate_upload] - Temporary file saved successfully for 'metadata_handler (1).py' (ID: 7c54b68a-7b21-4b4d-b283-66f3e495ddf1).
+2025-04-26 12:31:53,067 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 12:31:53] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-26 12:31:53,077 - INFO - [stream_progress] - SSE connection request for upload_id: 7c54b68a-7b21-4b4d-b283-66f3e495ddf1
+2025-04-26 12:31:53,078 - INFO - [process_upload_and_generate_updates] - [7c54b68a-7b21-4b4d-b283-66f3e495ddf1] Starting processing...
+2025-04-26 12:31:53,078 - INFO - [process_upload_and_generate_updates] - [7c54b68a-7b21-4b4d-b283-66f3e495ddf1] Processing upload: User='Octopus', File='metadata_handler (1).py', TempPath='uploads_temp\7c54b68a-7b21-4b4d-b283-66f3e495ddf1_metadata_handler (1).py'
+2025-04-26 12:31:53,079 - INFO - [process_upload_and_generate_updates] - [7c54b68a-7b21-4b4d-b283-66f3e495ddf1] Original temp file size: 1974 bytes.
+2025-04-26 12:31:53,080 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 12:31:53] "GET /stream-progress/7c54b68a-7b21-4b4d-b283-66f3e495ddf1 HTTP/1.1" 200 -
+2025-04-26 12:31:53,083 - INFO - [process_upload_and_generate_updates] - [7c54b68a-7b21-4b4d-b283-66f3e495ddf1] Generated Access ID: 62ece9ef87
+2025-04-26 12:31:53,083 - INFO - [process_upload_and_generate_updates] - [7c54b68a-7b21-4b4d-b283-66f3e495ddf1] 'metadata_handler (1).py' is small. Compressing and sending as single file.
+2025-04-26 12:31:53,104 - INFO - [process_upload_and_generate_updates] - [7c54b68a-7b21-4b4d-b283-66f3e495ddf1] Compressed 'metadata_handler (1).py' to 741 bytes.
+2025-04-26 12:31:53,106 - INFO - [process_upload_and_generate_updates] - [7c54b68a-7b21-4b4d-b283-66f3e495ddf1] Attempting send 'metadata_handler (1).py.zip' to chat ID: -4603853425
+2025-04-26 12:31:53,106 - INFO - [send_file_to_telegram] - Sending file 'metadata_handler (1).py.zip' to Telegram chat ID: -4603853425
+2025-04-26 12:31:54,058 - INFO - [send_file_to_telegram] - Telegram API success for 'metadata_handler (1).py.zip'.
+2025-04-26 12:31:54,058 - INFO - [process_upload_and_generate_updates] - [7c54b68a-7b21-4b4d-b283-66f3e495ddf1] Single file 'metadata_handler (1).py' sent successfully to PRIMARY chat ID -4603853425.
+2025-04-26 12:31:54,059 - INFO - [process_upload_and_generate_updates] - [7c54b68a-7b21-4b4d-b283-66f3e495ddf1] Total successful sends (including backups): 1 / 1
+2025-04-26 12:31:54,059 - ERROR - [process_upload_and_generate_updates] - [7c54b68a-7b21-4b4d-b283-66f3e495ddf1] Inconsistency: Primary send succeeded but failed to extract IDs from its response: {'ok': True, 'result': {'message_id': 987, 'from': {'id': 7812479394, 'is_bot': True, 'first_name': 'Harry Bot', 'username': 'hhhHarryBot'}, 'chat': {'id': -4603853425, 'title': 'AGroup', 'type': 'group', 'all_members_are_administrators': True, 'accepted_gift_types': {'unlimited_gifts': False, 'limited_gifts': False, 'unique_gifts': False, 'premium_subscription': False}}, 'date': 1745650913, 'document': {'file_name': 'metadata_handler (1).py.zip', 'mime_type': 'application/zip', 'file_id': 'BQACAgUAAxkDAAID22gMhOGq_8WTL5fGgf6v6hN-boqAAAIJFgACI41oVFUPML6pK6muNgQ', 'file_unique_id': 'AgADCRYAAiONaFQ', 'file_size': 741}}}
+2025-04-26 12:31:54,074 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 12:31:54,083 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-26 12:31:54,092 - INFO - [process_upload_and_generate_updates] - [7c54b68a-7b21-4b4d-b283-66f3e495ddf1] Generated landing page URL: http://127.0.0.1:5000/get/62ece9ef87
+2025-04-26 12:31:54,093 - INFO - [process_upload_and_generate_updates] - [7c54b68a-7b21-4b4d-b283-66f3e495ddf1] Entering final cleanup.
+2025-04-26 12:31:54,112 - INFO - [process_upload_and_generate_updates] - [7c54b68a-7b21-4b4d-b283-66f3e495ddf1] Successfully deleted original temporary file: uploads_temp\7c54b68a-7b21-4b4d-b283-66f3e495ddf1_metadata_handler (1).py
+2025-04-26 12:31:54,115 - INFO - [process_upload_and_generate_updates] - [7c54b68a-7b21-4b4d-b283-66f3e495ddf1] Processing finished with status: completed

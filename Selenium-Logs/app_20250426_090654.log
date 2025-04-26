@@ -1,0 +1,992 @@
+2025-04-26 09:06:54,369 - INFO - [<module>] - Logging configured. Log file: Selenium-Logs\app_20250426_090654.log
+2025-04-26 09:06:54,371 - INFO - [<module>] - Flask application initialized.
+2025-04-26 09:06:54,375 - INFO - [<module>] - Starting Flask development server...
+2025-04-26 09:06:54,409 - WARNING - [_log] -  * Debugger is active!
+2025-04-26 09:06:54,409 - INFO - [_log] -  * Debugger PIN: 107-410-311
+2025-04-26 09:06:56,536 - INFO - [index] - Serving index page.
+2025-04-26 09:06:56,632 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:06:56] "GET / HTTP/1.1" 200 -
+2025-04-26 09:06:56,651 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:06:56] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-26 09:06:56,695 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:06:56] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-04-26 09:07:52,732 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-26 09:08:03,739 - INFO - [initiate_upload] - Saving temporary file for upload_id '9757c860-1388-4152-befa-179745a4b0fa' to 'uploads_temp\9757c860-1388-4152-befa-179745a4b0fa_[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv'
+2025-04-26 09:08:05,387 - INFO - [initiate_upload] - Temporary file saved successfully for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv' (ID: 9757c860-1388-4152-befa-179745a4b0fa).
+2025-04-26 09:08:05,489 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:08:05] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-26 09:08:05,500 - INFO - [stream_progress] - SSE connection request for upload_id: 9757c860-1388-4152-befa-179745a4b0fa
+2025-04-26 09:08:05,500 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Starting processing...
+2025-04-26 09:08:05,508 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Processing upload: User='ELENA', File='[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv', TempPath='uploads_temp\9757c860-1388-4152-befa-179745a4b0fa_[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv'
+2025-04-26 09:08:05,828 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Original temp file size: 654119416 bytes.
+2025-04-26 09:08:05,828 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:08:05] "GET /stream-progress/9757c860-1388-4152-befa-179745a4b0fa HTTP/1.1" 200 -
+2025-04-26 09:08:05,828 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Generated Access ID: 85283f8117
+2025-04-26 09:08:05,828 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv' is large. Compressing before splitting.
+2025-04-26 09:08:05,835 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Created temporary file for compression result: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\9757c860-1388-4152-befa-179745a4b0fa_comp_g7emep7x.zip
+2025-04-26 09:08:29,555 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Finished compressing to 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\9757c860-1388-4152-befa-179745a4b0fa_comp_g7emep7x.zip'. Size: 651687155 bytes. Time: 23.72s.
+2025-04-26 09:08:29,573 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Reading chunk 1 for COMPRESSED file starting at byte 0.
+2025-04-26 09:08:29,585 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Read chunk 1 (20971520 bytes). Total read: 20971520/651687155
+2025-04-26 09:08:29,586 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_001' to chat ID: -4603853425
+2025-04-26 09:08:29,586 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_001' to Telegram chat ID: -4603853425
+2025-04-26 09:08:41,100 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_001'.
+2025-04-26 09:08:41,131 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_001' to chat ID: -1002614397019
+2025-04-26 09:08:41,131 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_001' to Telegram chat ID: -1002614397019
+2025-04-26 09:08:51,287 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_001'.
+2025-04-26 09:08:51,302 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_001' to chat ID: -4641852757
+2025-04-26 09:08:51,302 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_001' to Telegram chat ID: -4641852757
+2025-04-26 09:09:09,704 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_001'.
+2025-04-26 09:09:09,706 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_001' sent successfully to PRIMARY chat.
+2025-04-26 09:09:09,707 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Successfully processed metadata for chunk 1 across all attempts.
+2025-04-26 09:09:09,709 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Reading chunk 2 for COMPRESSED file starting at byte 20971520.
+2025-04-26 09:09:09,723 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Read chunk 2 (20971520 bytes). Total read: 41943040/651687155
+2025-04-26 09:09:09,723 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_002' to chat ID: -4603853425
+2025-04-26 09:09:09,724 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_002' to Telegram chat ID: -4603853425
+2025-04-26 09:09:20,163 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_002'.
+2025-04-26 09:09:20,168 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_002' to chat ID: -1002614397019
+2025-04-26 09:09:20,169 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_002' to Telegram chat ID: -1002614397019
+2025-04-26 09:09:29,951 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_002'.
+2025-04-26 09:09:29,966 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_002' to chat ID: -4641852757
+2025-04-26 09:09:29,966 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_002' to Telegram chat ID: -4641852757
+2025-04-26 09:09:39,470 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_002'.
+2025-04-26 09:09:39,470 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_002' sent successfully to PRIMARY chat.
+2025-04-26 09:09:39,470 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Successfully processed metadata for chunk 2 across all attempts.
+2025-04-26 09:09:39,487 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Reading chunk 3 for COMPRESSED file starting at byte 41943040.
+2025-04-26 09:09:39,503 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Read chunk 3 (20971520 bytes). Total read: 62914560/651687155
+2025-04-26 09:09:39,504 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_003' to chat ID: -4603853425
+2025-04-26 09:09:39,504 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_003' to Telegram chat ID: -4603853425
+2025-04-26 09:09:47,516 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_003'.
+2025-04-26 09:09:47,531 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_003' to chat ID: -1002614397019
+2025-04-26 09:09:47,531 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_003' to Telegram chat ID: -1002614397019
+2025-04-26 09:09:58,915 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_003'.
+2025-04-26 09:09:58,915 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_003' to chat ID: -4641852757
+2025-04-26 09:09:58,915 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_003' to Telegram chat ID: -4641852757
+2025-04-26 09:10:18,066 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_003'.
+2025-04-26 09:10:18,066 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_003' sent successfully to PRIMARY chat.
+2025-04-26 09:10:18,066 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Successfully processed metadata for chunk 3 across all attempts.
+2025-04-26 09:10:18,066 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Reading chunk 4 for COMPRESSED file starting at byte 62914560.
+2025-04-26 09:10:18,082 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Read chunk 4 (20971520 bytes). Total read: 83886080/651687155
+2025-04-26 09:10:18,083 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_004' to chat ID: -4603853425
+2025-04-26 09:10:18,083 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_004' to Telegram chat ID: -4603853425
+2025-04-26 09:10:28,849 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_004'.
+2025-04-26 09:10:28,849 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_004' to chat ID: -1002614397019
+2025-04-26 09:10:28,849 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_004' to Telegram chat ID: -1002614397019
+2025-04-26 09:10:46,758 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_004'.
+2025-04-26 09:10:46,758 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_004' to chat ID: -4641852757
+2025-04-26 09:10:46,758 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_004' to Telegram chat ID: -4641852757
+2025-04-26 09:10:57,823 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_004'.
+2025-04-26 09:10:57,839 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_004' sent successfully to PRIMARY chat.
+2025-04-26 09:10:57,839 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Successfully processed metadata for chunk 4 across all attempts.
+2025-04-26 09:10:57,842 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Reading chunk 5 for COMPRESSED file starting at byte 83886080.
+2025-04-26 09:10:57,858 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Read chunk 5 (20971520 bytes). Total read: 104857600/651687155
+2025-04-26 09:10:57,859 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_005' to chat ID: -4603853425
+2025-04-26 09:10:57,862 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_005' to Telegram chat ID: -4603853425
+2025-04-26 09:11:15,801 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_005'.
+2025-04-26 09:11:15,801 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_005' to chat ID: -1002614397019
+2025-04-26 09:11:15,801 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_005' to Telegram chat ID: -1002614397019
+2025-04-26 09:11:33,698 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_005'.
+2025-04-26 09:11:33,698 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_005' to chat ID: -4641852757
+2025-04-26 09:11:33,698 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_005' to Telegram chat ID: -4641852757
+2025-04-26 09:11:46,016 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_005'.
+2025-04-26 09:11:46,031 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_005' sent successfully to PRIMARY chat.
+2025-04-26 09:11:46,031 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Successfully processed metadata for chunk 5 across all attempts.
+2025-04-26 09:11:46,031 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Reading chunk 6 for COMPRESSED file starting at byte 104857600.
+2025-04-26 09:11:46,054 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Read chunk 6 (20971520 bytes). Total read: 125829120/651687155
+2025-04-26 09:11:46,054 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_006' to chat ID: -4603853425
+2025-04-26 09:11:46,054 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_006' to Telegram chat ID: -4603853425
+2025-04-26 09:11:57,663 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_006'.
+2025-04-26 09:11:57,663 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_006' to chat ID: -1002614397019
+2025-04-26 09:11:57,678 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_006' to Telegram chat ID: -1002614397019
+2025-04-26 09:12:16,443 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_006'.
+2025-04-26 09:12:16,445 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_006' to chat ID: -4641852757
+2025-04-26 09:12:16,445 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_006' to Telegram chat ID: -4641852757
+2025-04-26 09:12:26,519 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_006'.
+2025-04-26 09:12:26,523 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_006' sent successfully to PRIMARY chat.
+2025-04-26 09:12:26,524 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Successfully processed metadata for chunk 6 across all attempts.
+2025-04-26 09:12:26,525 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Reading chunk 7 for COMPRESSED file starting at byte 125829120.
+2025-04-26 09:12:26,545 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Read chunk 7 (20971520 bytes). Total read: 146800640/651687155
+2025-04-26 09:12:26,545 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_007' to chat ID: -4603853425
+2025-04-26 09:12:26,548 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_007' to Telegram chat ID: -4603853425
+2025-04-26 09:12:38,276 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_007'.
+2025-04-26 09:12:38,281 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_007' to chat ID: -1002614397019
+2025-04-26 09:12:38,282 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_007' to Telegram chat ID: -1002614397019
+2025-04-26 09:12:49,594 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_007'.
+2025-04-26 09:12:49,597 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_007' to chat ID: -4641852757
+2025-04-26 09:12:49,597 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_007' to Telegram chat ID: -4641852757
+2025-04-26 09:13:03,221 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_007'.
+2025-04-26 09:13:03,223 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_007' sent successfully to PRIMARY chat.
+2025-04-26 09:13:03,224 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Successfully processed metadata for chunk 7 across all attempts.
+2025-04-26 09:13:03,224 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Reading chunk 8 for COMPRESSED file starting at byte 146800640.
+2025-04-26 09:13:03,237 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Read chunk 8 (20971520 bytes). Total read: 167772160/651687155
+2025-04-26 09:13:03,237 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_008' to chat ID: -4603853425
+2025-04-26 09:13:03,238 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_008' to Telegram chat ID: -4603853425
+2025-04-26 09:13:15,037 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_008'.
+2025-04-26 09:13:15,040 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_008' to chat ID: -1002614397019
+2025-04-26 09:13:15,040 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_008' to Telegram chat ID: -1002614397019
+2025-04-26 09:13:33,198 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_008'.
+2025-04-26 09:13:33,200 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_008' to chat ID: -4641852757
+2025-04-26 09:13:33,201 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_008' to Telegram chat ID: -4641852757
+2025-04-26 09:13:51,296 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_008'.
+2025-04-26 09:13:51,302 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_008' sent successfully to PRIMARY chat.
+2025-04-26 09:13:51,303 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Successfully processed metadata for chunk 8 across all attempts.
+2025-04-26 09:13:51,304 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Reading chunk 9 for COMPRESSED file starting at byte 167772160.
+2025-04-26 09:13:51,317 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Read chunk 9 (20971520 bytes). Total read: 188743680/651687155
+2025-04-26 09:13:51,318 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_009' to chat ID: -4603853425
+2025-04-26 09:13:51,319 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_009' to Telegram chat ID: -4603853425
+2025-04-26 09:14:09,905 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_009'.
+2025-04-26 09:14:09,907 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_009' to chat ID: -1002614397019
+2025-04-26 09:14:09,908 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_009' to Telegram chat ID: -1002614397019
+2025-04-26 09:14:27,412 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_009'.
+2025-04-26 09:14:27,414 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_009' to chat ID: -4641852757
+2025-04-26 09:14:27,415 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_009' to Telegram chat ID: -4641852757
+2025-04-26 09:14:41,626 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_009'.
+2025-04-26 09:14:41,629 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_009' sent successfully to PRIMARY chat.
+2025-04-26 09:14:41,629 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Successfully processed metadata for chunk 9 across all attempts.
+2025-04-26 09:14:41,630 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Reading chunk 10 for COMPRESSED file starting at byte 188743680.
+2025-04-26 09:14:41,640 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Read chunk 10 (20971520 bytes). Total read: 209715200/651687155
+2025-04-26 09:14:41,641 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_010' to chat ID: -4603853425
+2025-04-26 09:14:41,641 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_010' to Telegram chat ID: -4603853425
+2025-04-26 09:14:53,430 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_010'.
+2025-04-26 09:14:53,432 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_010' to chat ID: -1002614397019
+2025-04-26 09:14:53,433 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_010' to Telegram chat ID: -1002614397019
+2025-04-26 09:15:04,661 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_010'.
+2025-04-26 09:15:04,663 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_010' to chat ID: -4641852757
+2025-04-26 09:15:04,664 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_010' to Telegram chat ID: -4641852757
+2025-04-26 09:15:17,991 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_010'.
+2025-04-26 09:15:18,026 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_010' sent successfully to PRIMARY chat.
+2025-04-26 09:15:18,045 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Successfully processed metadata for chunk 10 across all attempts.
+2025-04-26 09:15:18,060 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Reading chunk 11 for COMPRESSED file starting at byte 209715200.
+2025-04-26 09:15:18,141 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Read chunk 11 (20971520 bytes). Total read: 230686720/651687155
+2025-04-26 09:15:18,283 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_011' to chat ID: -4603853425
+2025-04-26 09:15:18,336 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_011' to Telegram chat ID: -4603853425
+2025-04-26 09:15:37,040 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_011'.
+2025-04-26 09:15:37,042 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_011' to chat ID: -1002614397019
+2025-04-26 09:15:37,043 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_011' to Telegram chat ID: -1002614397019
+2025-04-26 09:15:51,268 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_011'.
+2025-04-26 09:15:51,271 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_011' to chat ID: -4641852757
+2025-04-26 09:15:51,271 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_011' to Telegram chat ID: -4641852757
+2025-04-26 09:16:01,814 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_011'.
+2025-04-26 09:16:01,817 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_011' sent successfully to PRIMARY chat.
+2025-04-26 09:16:01,817 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Successfully processed metadata for chunk 11 across all attempts.
+2025-04-26 09:16:01,818 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Reading chunk 12 for COMPRESSED file starting at byte 230686720.
+2025-04-26 09:16:01,833 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Read chunk 12 (20971520 bytes). Total read: 251658240/651687155
+2025-04-26 09:16:01,836 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_012' to chat ID: -4603853425
+2025-04-26 09:16:01,837 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_012' to Telegram chat ID: -4603853425
+2025-04-26 09:16:20,259 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_012'.
+2025-04-26 09:16:20,298 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_012' to chat ID: -1002614397019
+2025-04-26 09:16:20,398 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_012' to Telegram chat ID: -1002614397019
+2025-04-26 09:16:31,274 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_012'.
+2025-04-26 09:16:31,277 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_012' to chat ID: -4641852757
+2025-04-26 09:16:31,277 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_012' to Telegram chat ID: -4641852757
+2025-04-26 09:16:43,893 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_012'.
+2025-04-26 09:16:43,897 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_012' sent successfully to PRIMARY chat.
+2025-04-26 09:16:43,898 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Successfully processed metadata for chunk 12 across all attempts.
+2025-04-26 09:16:43,900 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Reading chunk 13 for COMPRESSED file starting at byte 251658240.
+2025-04-26 09:16:43,918 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Read chunk 13 (20971520 bytes). Total read: 272629760/651687155
+2025-04-26 09:16:43,919 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_013' to chat ID: -4603853425
+2025-04-26 09:16:43,919 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_013' to Telegram chat ID: -4603853425
+2025-04-26 09:16:55,830 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_013'.
+2025-04-26 09:16:55,832 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_013' to chat ID: -1002614397019
+2025-04-26 09:16:55,833 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_013' to Telegram chat ID: -1002614397019
+2025-04-26 09:17:15,391 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_013'.
+2025-04-26 09:17:15,393 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_013' to chat ID: -4641852757
+2025-04-26 09:17:15,394 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_013' to Telegram chat ID: -4641852757
+2025-04-26 09:17:26,545 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_013'.
+2025-04-26 09:17:26,551 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_013' sent successfully to PRIMARY chat.
+2025-04-26 09:17:26,552 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Successfully processed metadata for chunk 13 across all attempts.
+2025-04-26 09:17:26,553 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Reading chunk 14 for COMPRESSED file starting at byte 272629760.
+2025-04-26 09:17:26,567 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Read chunk 14 (20971520 bytes). Total read: 293601280/651687155
+2025-04-26 09:17:26,568 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_014' to chat ID: -4603853425
+2025-04-26 09:17:26,569 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_014' to Telegram chat ID: -4603853425
+2025-04-26 09:17:39,916 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_014'.
+2025-04-26 09:17:39,921 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_014' to chat ID: -1002614397019
+2025-04-26 09:17:39,921 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_014' to Telegram chat ID: -1002614397019
+2025-04-26 09:17:59,024 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_014'.
+2025-04-26 09:17:59,027 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_014' to chat ID: -4641852757
+2025-04-26 09:17:59,027 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_014' to Telegram chat ID: -4641852757
+2025-04-26 09:18:12,011 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_014'.
+2025-04-26 09:18:12,013 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_014' sent successfully to PRIMARY chat.
+2025-04-26 09:18:12,013 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Successfully processed metadata for chunk 14 across all attempts.
+2025-04-26 09:18:12,014 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Reading chunk 15 for COMPRESSED file starting at byte 293601280.
+2025-04-26 09:18:12,026 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Read chunk 15 (20971520 bytes). Total read: 314572800/651687155
+2025-04-26 09:18:12,026 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_015' to chat ID: -4603853425
+2025-04-26 09:18:12,027 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_015' to Telegram chat ID: -4603853425
+2025-04-26 09:18:23,808 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_015'.
+2025-04-26 09:18:23,811 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_015' to chat ID: -1002614397019
+2025-04-26 09:18:23,811 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_015' to Telegram chat ID: -1002614397019
+2025-04-26 09:18:42,936 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_015'.
+2025-04-26 09:18:42,939 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_015' to chat ID: -4641852757
+2025-04-26 09:18:42,939 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_015' to Telegram chat ID: -4641852757
+2025-04-26 09:19:01,754 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_015'.
+2025-04-26 09:19:01,756 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_015' sent successfully to PRIMARY chat.
+2025-04-26 09:19:01,757 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Successfully processed metadata for chunk 15 across all attempts.
+2025-04-26 09:19:01,757 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Reading chunk 16 for COMPRESSED file starting at byte 314572800.
+2025-04-26 09:19:01,770 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Read chunk 16 (20971520 bytes). Total read: 335544320/651687155
+2025-04-26 09:19:01,771 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_016' to chat ID: -4603853425
+2025-04-26 09:19:01,771 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_016' to Telegram chat ID: -4603853425
+2025-04-26 09:19:14,559 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_016'.
+2025-04-26 09:19:14,561 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_016' to chat ID: -1002614397019
+2025-04-26 09:19:14,561 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_016' to Telegram chat ID: -1002614397019
+2025-04-26 09:19:24,784 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_016'.
+2025-04-26 09:19:24,786 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_016' to chat ID: -4641852757
+2025-04-26 09:19:24,787 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_016' to Telegram chat ID: -4641852757
+2025-04-26 09:19:37,438 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_016'.
+2025-04-26 09:19:37,443 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_016' sent successfully to PRIMARY chat.
+2025-04-26 09:19:37,444 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Successfully processed metadata for chunk 16 across all attempts.
+2025-04-26 09:19:37,445 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Reading chunk 17 for COMPRESSED file starting at byte 335544320.
+2025-04-26 09:19:37,459 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Read chunk 17 (20971520 bytes). Total read: 356515840/651687155
+2025-04-26 09:19:37,459 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_017' to chat ID: -4603853425
+2025-04-26 09:19:37,460 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_017' to Telegram chat ID: -4603853425
+2025-04-26 09:19:47,666 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_017'.
+2025-04-26 09:19:47,669 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_017' to chat ID: -1002614397019
+2025-04-26 09:19:47,669 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_017' to Telegram chat ID: -1002614397019
+2025-04-26 09:19:58,733 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_017'.
+2025-04-26 09:19:58,736 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_017' to chat ID: -4641852757
+2025-04-26 09:19:58,736 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_017' to Telegram chat ID: -4641852757
+2025-04-26 09:20:18,308 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_017'.
+2025-04-26 09:20:18,312 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_017' sent successfully to PRIMARY chat.
+2025-04-26 09:20:18,312 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Successfully processed metadata for chunk 17 across all attempts.
+2025-04-26 09:20:18,313 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Reading chunk 18 for COMPRESSED file starting at byte 356515840.
+2025-04-26 09:20:18,323 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Read chunk 18 (20971520 bytes). Total read: 377487360/651687155
+2025-04-26 09:20:18,324 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_018' to chat ID: -4603853425
+2025-04-26 09:20:18,324 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_018' to Telegram chat ID: -4603853425
+2025-04-26 09:20:29,683 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_018'.
+2025-04-26 09:20:29,687 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_018' to chat ID: -1002614397019
+2025-04-26 09:20:29,687 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_018' to Telegram chat ID: -1002614397019
+2025-04-26 09:20:56,203 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_018'.
+2025-04-26 09:20:56,205 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_018' to chat ID: -4641852757
+2025-04-26 09:20:56,206 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_018' to Telegram chat ID: -4641852757
+2025-04-26 09:21:06,127 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_018'.
+2025-04-26 09:21:06,130 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_018' sent successfully to PRIMARY chat.
+2025-04-26 09:21:06,130 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Successfully processed metadata for chunk 18 across all attempts.
+2025-04-26 09:21:06,131 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Reading chunk 19 for COMPRESSED file starting at byte 377487360.
+2025-04-26 09:21:06,142 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Read chunk 19 (20971520 bytes). Total read: 398458880/651687155
+2025-04-26 09:21:06,142 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_019' to chat ID: -4603853425
+2025-04-26 09:21:06,142 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_019' to Telegram chat ID: -4603853425
+2025-04-26 09:21:19,792 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_019'.
+2025-04-26 09:21:19,798 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_019' to chat ID: -1002614397019
+2025-04-26 09:21:19,798 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_019' to Telegram chat ID: -1002614397019
+2025-04-26 09:21:28,760 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_019'.
+2025-04-26 09:21:28,762 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_019' to chat ID: -4641852757
+2025-04-26 09:21:28,763 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_019' to Telegram chat ID: -4641852757
+2025-04-26 09:21:47,418 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_019'.
+2025-04-26 09:21:47,424 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_019' sent successfully to PRIMARY chat.
+2025-04-26 09:21:47,425 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Successfully processed metadata for chunk 19 across all attempts.
+2025-04-26 09:21:47,426 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Reading chunk 20 for COMPRESSED file starting at byte 398458880.
+2025-04-26 09:21:47,439 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Read chunk 20 (20971520 bytes). Total read: 419430400/651687155
+2025-04-26 09:21:47,440 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_020' to chat ID: -4603853425
+2025-04-26 09:21:47,441 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_020' to Telegram chat ID: -4603853425
+2025-04-26 09:21:57,029 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_020'.
+2025-04-26 09:21:57,032 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_020' to chat ID: -1002614397019
+2025-04-26 09:21:57,033 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_020' to Telegram chat ID: -1002614397019
+2025-04-26 09:22:08,423 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_020'.
+2025-04-26 09:22:08,428 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_020' to chat ID: -4641852757
+2025-04-26 09:22:08,429 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_020' to Telegram chat ID: -4641852757
+2025-04-26 09:22:19,120 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_020'.
+2025-04-26 09:22:19,122 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_020' sent successfully to PRIMARY chat.
+2025-04-26 09:22:19,123 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Successfully processed metadata for chunk 20 across all attempts.
+2025-04-26 09:22:19,123 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Reading chunk 21 for COMPRESSED file starting at byte 419430400.
+2025-04-26 09:22:19,138 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Read chunk 21 (20971520 bytes). Total read: 440401920/651687155
+2025-04-26 09:22:19,140 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_021' to chat ID: -4603853425
+2025-04-26 09:22:19,141 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_021' to Telegram chat ID: -4603853425
+2025-04-26 09:22:28,782 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_021'.
+2025-04-26 09:22:28,785 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_021' to chat ID: -1002614397019
+2025-04-26 09:22:28,785 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_021' to Telegram chat ID: -1002614397019
+2025-04-26 09:22:40,137 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_021'.
+2025-04-26 09:22:40,139 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_021' to chat ID: -4641852757
+2025-04-26 09:22:40,140 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_021' to Telegram chat ID: -4641852757
+2025-04-26 09:22:50,670 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_021'.
+2025-04-26 09:22:50,674 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_021' sent successfully to PRIMARY chat.
+2025-04-26 09:22:50,675 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Successfully processed metadata for chunk 21 across all attempts.
+2025-04-26 09:22:50,675 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Reading chunk 22 for COMPRESSED file starting at byte 440401920.
+2025-04-26 09:22:50,688 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Read chunk 22 (20971520 bytes). Total read: 461373440/651687155
+2025-04-26 09:22:50,689 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_022' to chat ID: -4603853425
+2025-04-26 09:22:50,689 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_022' to Telegram chat ID: -4603853425
+2025-04-26 09:23:09,537 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_022'.
+2025-04-26 09:23:09,540 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_022' to chat ID: -1002614397019
+2025-04-26 09:23:09,540 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_022' to Telegram chat ID: -1002614397019
+2025-04-26 09:23:18,455 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_022'.
+2025-04-26 09:23:18,457 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_022' to chat ID: -4641852757
+2025-04-26 09:23:18,458 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_022' to Telegram chat ID: -4641852757
+2025-04-26 09:23:37,181 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_022'.
+2025-04-26 09:23:37,185 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_022' sent successfully to PRIMARY chat.
+2025-04-26 09:23:37,186 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Successfully processed metadata for chunk 22 across all attempts.
+2025-04-26 09:23:37,187 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Reading chunk 23 for COMPRESSED file starting at byte 461373440.
+2025-04-26 09:23:37,337 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Read chunk 23 (20971520 bytes). Total read: 482344960/651687155
+2025-04-26 09:23:37,337 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_023' to chat ID: -4603853425
+2025-04-26 09:23:37,338 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_023' to Telegram chat ID: -4603853425
+2025-04-26 09:23:49,155 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_023'.
+2025-04-26 09:23:49,157 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_023' to chat ID: -1002614397019
+2025-04-26 09:23:49,158 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_023' to Telegram chat ID: -1002614397019
+2025-04-26 09:24:08,705 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_023'.
+2025-04-26 09:24:08,707 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_023' to chat ID: -4641852757
+2025-04-26 09:24:08,708 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_023' to Telegram chat ID: -4641852757
+2025-04-26 09:24:21,355 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_023'.
+2025-04-26 09:24:21,358 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_023' sent successfully to PRIMARY chat.
+2025-04-26 09:24:21,358 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Successfully processed metadata for chunk 23 across all attempts.
+2025-04-26 09:24:21,359 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Reading chunk 24 for COMPRESSED file starting at byte 482344960.
+2025-04-26 09:24:21,494 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Read chunk 24 (20971520 bytes). Total read: 503316480/651687155
+2025-04-26 09:24:21,495 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_024' to chat ID: -4603853425
+2025-04-26 09:24:21,495 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_024' to Telegram chat ID: -4603853425
+2025-04-26 09:24:33,572 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_024'.
+2025-04-26 09:24:33,574 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_024' to chat ID: -1002614397019
+2025-04-26 09:24:33,574 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_024' to Telegram chat ID: -1002614397019
+2025-04-26 09:24:42,872 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_024'.
+2025-04-26 09:24:42,874 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_024' to chat ID: -4641852757
+2025-04-26 09:24:42,874 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_024' to Telegram chat ID: -4641852757
+2025-04-26 09:25:01,626 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_024'.
+2025-04-26 09:25:01,628 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_024' sent successfully to PRIMARY chat.
+2025-04-26 09:25:01,629 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Successfully processed metadata for chunk 24 across all attempts.
+2025-04-26 09:25:01,629 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Reading chunk 25 for COMPRESSED file starting at byte 503316480.
+2025-04-26 09:25:01,767 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Read chunk 25 (20971520 bytes). Total read: 524288000/651687155
+2025-04-26 09:25:01,767 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_025' to chat ID: -4603853425
+2025-04-26 09:25:01,768 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_025' to Telegram chat ID: -4603853425
+2025-04-26 09:25:23,553 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_025'.
+2025-04-26 09:25:23,557 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_025' to chat ID: -1002614397019
+2025-04-26 09:25:23,557 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_025' to Telegram chat ID: -1002614397019
+2025-04-26 09:25:36,752 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_025'.
+2025-04-26 09:25:36,755 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_025' to chat ID: -4641852757
+2025-04-26 09:25:36,755 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_025' to Telegram chat ID: -4641852757
+2025-04-26 09:25:49,021 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_025'.
+2025-04-26 09:25:49,025 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_025' sent successfully to PRIMARY chat.
+2025-04-26 09:25:49,025 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Successfully processed metadata for chunk 25 across all attempts.
+2025-04-26 09:25:49,025 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Reading chunk 26 for COMPRESSED file starting at byte 524288000.
+2025-04-26 09:25:49,157 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Read chunk 26 (20971520 bytes). Total read: 545259520/651687155
+2025-04-26 09:25:49,158 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_026' to chat ID: -4603853425
+2025-04-26 09:25:49,159 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_026' to Telegram chat ID: -4603853425
+2025-04-26 09:25:58,034 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_026'.
+2025-04-26 09:25:58,040 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_026' to chat ID: -1002614397019
+2025-04-26 09:25:58,040 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_026' to Telegram chat ID: -1002614397019
+2025-04-26 09:26:15,396 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_026'.
+2025-04-26 09:26:15,398 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_026' to chat ID: -4641852757
+2025-04-26 09:26:15,399 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_026' to Telegram chat ID: -4641852757
+2025-04-26 09:26:34,737 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_026'.
+2025-04-26 09:26:34,740 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_026' sent successfully to PRIMARY chat.
+2025-04-26 09:26:34,741 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Successfully processed metadata for chunk 26 across all attempts.
+2025-04-26 09:26:34,743 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Reading chunk 27 for COMPRESSED file starting at byte 545259520.
+2025-04-26 09:26:34,873 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Read chunk 27 (20971520 bytes). Total read: 566231040/651687155
+2025-04-26 09:26:34,874 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_027' to chat ID: -4603853425
+2025-04-26 09:26:34,874 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_027' to Telegram chat ID: -4603853425
+2025-04-26 09:26:46,881 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_027'.
+2025-04-26 09:26:46,886 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_027' to chat ID: -1002614397019
+2025-04-26 09:26:46,887 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_027' to Telegram chat ID: -1002614397019
+2025-04-26 09:27:04,792 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_027'.
+2025-04-26 09:27:04,794 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_027' to chat ID: -4641852757
+2025-04-26 09:27:04,795 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_027' to Telegram chat ID: -4641852757
+2025-04-26 09:27:17,617 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_027'.
+2025-04-26 09:27:17,619 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_027' sent successfully to PRIMARY chat.
+2025-04-26 09:27:17,620 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Successfully processed metadata for chunk 27 across all attempts.
+2025-04-26 09:27:17,620 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Reading chunk 28 for COMPRESSED file starting at byte 566231040.
+2025-04-26 09:27:17,740 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Read chunk 28 (20971520 bytes). Total read: 587202560/651687155
+2025-04-26 09:27:17,740 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_028' to chat ID: -4603853425
+2025-04-26 09:27:17,741 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_028' to Telegram chat ID: -4603853425
+2025-04-26 09:27:29,269 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_028'.
+2025-04-26 09:27:29,275 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_028' to chat ID: -1002614397019
+2025-04-26 09:27:29,277 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_028' to Telegram chat ID: -1002614397019
+2025-04-26 09:27:39,143 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_028'.
+2025-04-26 09:27:39,146 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_028' to chat ID: -4641852757
+2025-04-26 09:27:39,146 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_028' to Telegram chat ID: -4641852757
+2025-04-26 09:27:51,531 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_028'.
+2025-04-26 09:27:51,537 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_028' sent successfully to PRIMARY chat.
+2025-04-26 09:27:51,539 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Successfully processed metadata for chunk 28 across all attempts.
+2025-04-26 09:27:51,540 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Reading chunk 29 for COMPRESSED file starting at byte 587202560.
+2025-04-26 09:27:51,688 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Read chunk 29 (20971520 bytes). Total read: 608174080/651687155
+2025-04-26 09:27:51,690 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_029' to chat ID: -4603853425
+2025-04-26 09:27:51,691 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_029' to Telegram chat ID: -4603853425
+2025-04-26 09:28:05,720 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_029'.
+2025-04-26 09:28:05,725 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_029' to chat ID: -1002614397019
+2025-04-26 09:28:05,727 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_029' to Telegram chat ID: -1002614397019
+2025-04-26 09:28:25,267 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_029'.
+2025-04-26 09:28:25,270 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_029' to chat ID: -4641852757
+2025-04-26 09:28:25,270 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_029' to Telegram chat ID: -4641852757
+2025-04-26 09:28:37,364 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_029'.
+2025-04-26 09:28:37,367 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_029' sent successfully to PRIMARY chat.
+2025-04-26 09:28:37,368 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Successfully processed metadata for chunk 29 across all attempts.
+2025-04-26 09:28:37,368 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Reading chunk 30 for COMPRESSED file starting at byte 608174080.
+2025-04-26 09:28:37,494 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Read chunk 30 (20971520 bytes). Total read: 629145600/651687155
+2025-04-26 09:28:37,495 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_030' to chat ID: -4603853425
+2025-04-26 09:28:37,495 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_030' to Telegram chat ID: -4603853425
+2025-04-26 09:28:49,032 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_030'.
+2025-04-26 09:28:49,034 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_030' to chat ID: -1002614397019
+2025-04-26 09:28:49,035 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_030' to Telegram chat ID: -1002614397019
+2025-04-26 09:29:02,657 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_030'.
+2025-04-26 09:29:02,659 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_030' to chat ID: -4641852757
+2025-04-26 09:29:02,659 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_030' to Telegram chat ID: -4641852757
+2025-04-26 09:29:13,505 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_030'.
+2025-04-26 09:29:13,509 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_030' sent successfully to PRIMARY chat.
+2025-04-26 09:29:13,510 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Successfully processed metadata for chunk 30 across all attempts.
+2025-04-26 09:29:13,511 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Reading chunk 31 for COMPRESSED file starting at byte 629145600.
+2025-04-26 09:29:13,641 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Read chunk 31 (20971520 bytes). Total read: 650117120/651687155
+2025-04-26 09:29:13,641 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_031' to chat ID: -4603853425
+2025-04-26 09:29:13,642 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_031' to Telegram chat ID: -4603853425
+2025-04-26 09:29:25,808 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_031'.
+2025-04-26 09:29:25,810 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_031' to chat ID: -1002614397019
+2025-04-26 09:29:25,811 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_031' to Telegram chat ID: -1002614397019
+2025-04-26 09:29:43,876 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_031'.
+2025-04-26 09:29:43,881 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_031' to chat ID: -4641852757
+2025-04-26 09:29:43,881 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_031' to Telegram chat ID: -4641852757
+2025-04-26 09:30:02,563 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_031'.
+2025-04-26 09:30:02,569 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_031' sent successfully to PRIMARY chat.
+2025-04-26 09:30:02,571 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Successfully processed metadata for chunk 31 across all attempts.
+2025-04-26 09:30:02,576 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Reading chunk 32 for COMPRESSED file starting at byte 650117120.
+2025-04-26 09:30:02,621 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Read chunk 32 (1570035 bytes). Total read: 651687155/651687155
+2025-04-26 09:30:02,622 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_032' to chat ID: -4603853425
+2025-04-26 09:30:02,622 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_032' to Telegram chat ID: -4603853425
+2025-04-26 09:30:05,570 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_032'.
+2025-04-26 09:30:05,572 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_032' to chat ID: -1002614397019
+2025-04-26 09:30:05,574 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_032' to Telegram chat ID: -1002614397019
+2025-04-26 09:30:07,567 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_032'.
+2025-04-26 09:30:07,569 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Attempting send chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_032' to chat ID: -4641852757
+2025-04-26 09:30:07,569 - INFO - [send_file_to_telegram] - Sending file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_032' to Telegram chat ID: -4641852757
+2025-04-26 09:30:10,999 - INFO - [send_file_to_telegram] - Telegram API success for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_032'.
+2025-04-26 09:30:11,000 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Chunk '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv.zip.part_032' sent successfully to PRIMARY chat.
+2025-04-26 09:30:11,001 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Successfully processed metadata for chunk 32 across all attempts.
+2025-04-26 09:30:11,001 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Reading chunk 33 for COMPRESSED file starting at byte 651687155.
+2025-04-26 09:30:11,007 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Finished reading all chunks for compressed file.
+2025-04-26 09:30:11,010 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] All 32 chunks sent successfully to primary. Saving metadata.
+2025-04-26 09:30:11,029 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 09:30:11,046 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-26 09:30:11,047 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Generated landing page URL: http://127.0.0.1:5000/get/85283f8117
+2025-04-26 09:30:11,048 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Entering final cleanup.
+2025-04-26 09:30:11,049 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Successfully deleted original temporary file: uploads_temp\9757c860-1388-4152-befa-179745a4b0fa_[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv
+2025-04-26 09:30:11,069 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Successfully deleted temporary compressed file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\9757c860-1388-4152-befa-179745a4b0fa_comp_g7emep7x.zip
+2025-04-26 09:30:11,070 - INFO - [process_upload_and_generate_updates] - [9757c860-1388-4152-befa-179745a4b0fa] Processing finished with status: completed
+2025-04-26 09:30:27,413 - INFO - [get_file_by_access_id] - Received request for access_id: 85283f8117
+2025-04-26 09:30:27,437 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 09:30:27,438 - INFO - [get_file_by_access_id] - Found file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv'. Rendering download page.
+2025-04-26 09:30:27,559 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:30:27] "GET /get/85283f8117 HTTP/1.1" 200 -
+2025-04-26 09:30:35,329 - INFO - [stream_download_by_access_id] - [72263227-4faa-4b24-a0bb-87ba223f0c9e] SSE connection request for download prep using access_id: 85283f8117
+2025-04-26 09:30:35,332 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 09:30:35,332 - INFO - [_prepare_and_stream_download_generator] - [72263227-4faa-4b24-a0bb-87ba223f0c9e] Download preparation generator started.
+2025-04-26 09:30:35,332 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:30:35] "GET /stream-download/85283f8117 HTTP/1.1" 200 -
+2025-04-26 09:30:35,436 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 09:30:35,436 - INFO - [_prepare_and_stream_download_generator] - [72263227-4faa-4b24-a0bb-87ba223f0c9e] Found metadata for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv' (User: ELENA, Size: 654119416)
+2025-04-26 09:30:35,638 - INFO - [_prepare_and_stream_download_generator] - [72263227-4faa-4b24-a0bb-87ba223f0c9e] Preparing split file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv'.
+2025-04-26 09:30:35,639 - INFO - [_prepare_and_stream_download_generator] - [72263227-4faa-4b24-a0bb-87ba223f0c9e] Expecting 32 chunks, compressed size ~621.5 MB.
+2025-04-26 09:30:35,640 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIDbWgMVT8C4hbUw46kH95IOmwoVrYjAAImFQACI41oVEtL-UBNiCPhNgQ
+2025-04-26 09:30:40,369 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_419
+2025-04-26 09:30:40,370 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_419
+2025-04-26 09:30:42,160 - INFO - [list_user_files] - Request received to list files for user: 'ELENA'
+2025-04-26 09:30:42,164 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 09:30:42,165 - INFO - [list_user_files] - Found 1 file records for user 'ELENA'.
+2025-04-26 09:30:42,174 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:30:42] "GET /files/ELENA HTTP/1.1" 200 -
+2025-04-26 09:30:44,054 - INFO - [prepare_download_stream] - [4a280fb0-d9c8-4c63-bbee-a4f376f8715c] SSE connection request for download prep: User='ELENA', File='[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv'
+2025-04-26 09:30:44,055 - INFO - [_prepare_download_and_generate_updates] - [4a280fb0-d9c8-4c63-bbee-a4f376f8715c] Starting download preparation generator for user 'ELENA', file '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv'...
+2025-04-26 09:30:44,055 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:30:44] "GET /prepare-download/ELENA/[@TeamSeries]~Daredevil_%20Born%20Again%20S01%20E01%20720p%20WebRip%20x264.mkv HTTP/1.1" 200 -
+2025-04-26 09:30:44,265 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 09:30:44,267 - INFO - [_prepare_download_and_generate_updates] - [4a280fb0-d9c8-4c63-bbee-a4f376f8715c] Prep SPLIT download for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv'
+2025-04-26 09:30:44,269 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIDbWgMVT8C4hbUw46kH95IOmwoVrYjAAImFQACI41oVEtL-UBNiCPhNgQ
+2025-04-26 09:30:44,740 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_419
+2025-04-26 09:30:44,741 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_419
+2025-04-26 09:30:45,577 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIDbWgMVT8C4hbUw46kH95IOmwoVrYjAAImFQACI41oVEtL-UBNiCPhNgQ.
+2025-04-26 09:30:45,609 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIDb2gMVWYtzSITqh4M11I4UnmDqhdpAAIpFQACI41oVEOU4d8HDQuhNgQ
+2025-04-26 09:30:48,432 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_420
+2025-04-26 09:30:48,433 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_420
+2025-04-26 09:30:49,179 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIDbWgMVT8C4hbUw46kH95IOmwoVrYjAAImFQACI41oVEtL-UBNiCPhNgQ.
+2025-04-26 09:30:49,222 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIDb2gMVWYtzSITqh4M11I4UnmDqhdpAAIpFQACI41oVEOU4d8HDQuhNgQ
+2025-04-26 09:30:49,662 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_420
+2025-04-26 09:30:49,663 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_420
+2025-04-26 09:30:53,080 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIDb2gMVWYtzSITqh4M11I4UnmDqhdpAAIpFQACI41oVEOU4d8HDQuhNgQ.
+2025-04-26 09:30:53,113 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIDcWgMVYIky_CTEj5vi9_nHjLz0W1yAAItFQACI41oVB4eAqSCbAnINgQ
+2025-04-26 09:30:57,776 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_421
+2025-04-26 09:30:57,777 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_421
+2025-04-26 09:31:05,016 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIDcWgMVYIky_CTEj5vi9_nHjLz0W1yAAItFQACI41oVB4eAqSCbAnINgQ.
+2025-04-26 09:31:05,046 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIDc2gMVauuH5ey6_THt81XDIw21qtjAAIvFQACI41oVD_7U0B1fuyZNgQ
+2025-04-26 09:31:08,139 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_422
+2025-04-26 09:31:08,140 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_422
+2025-04-26 09:31:14,813 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIDc2gMVauuH5ey6_THt81XDIw21qtjAAIvFQACI41oVD_7U0B1fuyZNgQ.
+2025-04-26 09:31:14,843 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIDdWgMVdrooFUyUrOtjAeyzDizspUnAAIwFQACI41oVALiUJOP-SpoNgQ
+2025-04-26 09:31:17,848 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_423
+2025-04-26 09:31:17,849 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_423
+2025-04-26 09:31:20,060 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIDb2gMVWYtzSITqh4M11I4UnmDqhdpAAIpFQACI41oVEOU4d8HDQuhNgQ.
+2025-04-26 09:31:20,088 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIDcWgMVYIky_CTEj5vi9_nHjLz0W1yAAItFQACI41oVB4eAqSCbAnINgQ
+2025-04-26 09:31:20,558 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_421
+2025-04-26 09:31:20,559 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_421
+2025-04-26 09:31:22,760 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIDdWgMVdrooFUyUrOtjAeyzDizspUnAAIwFQACI41oVALiUJOP-SpoNgQ.
+2025-04-26 09:31:22,830 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIDd2gMVgRSKlSOA17UU1eD6njLEUYwAAIxFQACI41oVAN2maPfipprNgQ
+2025-04-26 09:31:25,300 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIDcWgMVYIky_CTEj5vi9_nHjLz0W1yAAItFQACI41oVB4eAqSCbAnINgQ.
+2025-04-26 09:31:25,328 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIDc2gMVauuH5ey6_THt81XDIw21qtjAAIvFQACI41oVD_7U0B1fuyZNgQ
+2025-04-26 09:31:25,537 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_424
+2025-04-26 09:31:25,537 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_424
+2025-04-26 09:31:25,808 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_422
+2025-04-26 09:31:25,809 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_422
+2025-04-26 09:31:30,507 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIDd2gMVgRSKlSOA17UU1eD6njLEUYwAAIxFQACI41oVAN2maPfipprNgQ.
+2025-04-26 09:31:30,541 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIDeWgMVi0MN85uOqql34tPpk-iP473AAI0FQACI41oVEWSIdeqGPBKNgQ
+2025-04-26 09:31:32,309 - INFO - [delete_file_record] - Received DELETE request for user='ELENA', file='[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv'
+2025-04-26 09:31:32,315 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 09:31:32,315 - INFO - [delete_file_record] - Found and removed record for '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv' for user 'ELENA'.
+2025-04-26 09:31:32,316 - INFO - [delete_file_record] - User 'ELENA' has no files left. Removing user entry from metadata.
+2025-04-26 09:31:32,330 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-26 09:31:32,331 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting '[@TeamSeries]~Daredevil_ Born Again S01 E01 720p WebRip x264.mkv'.
+2025-04-26 09:31:32,334 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:31:32] "DELETE /delete-file/ELENA/[@TeamSeries]~Daredevil_%20Born%20Again%20S01%20E01%20720p%20WebRip%20x264.mkv HTTP/1.1" 200 -
+2025-04-26 09:31:33,122 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIDc2gMVauuH5ey6_THt81XDIw21qtjAAIvFQACI41oVD_7U0B1fuyZNgQ.
+2025-04-26 09:31:33,159 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIDdWgMVdrooFUyUrOtjAeyzDizspUnAAIwFQACI41oVALiUJOP-SpoNgQ
+2025-04-26 09:31:33,170 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_425
+2025-04-26 09:31:33,171 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_425
+2025-04-26 09:31:33,624 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_423
+2025-04-26 09:31:33,625 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_423
+2025-04-26 09:31:36,368 - INFO - [list_user_files] - Request received to list files for user: 'ELENA'
+2025-04-26 09:31:36,371 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 09:31:36,372 - INFO - [list_user_files] - No files found in metadata for user: 'ELENA'
+2025-04-26 09:31:36,374 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:31:36] "GET /files/ELENA HTTP/1.1" 200 -
+2025-04-26 09:31:37,259 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIDdWgMVdrooFUyUrOtjAeyzDizspUnAAIwFQACI41oVALiUJOP-SpoNgQ.
+2025-04-26 09:31:37,288 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIDd2gMVgRSKlSOA17UU1eD6njLEUYwAAIxFQACI41oVAN2maPfipprNgQ
+2025-04-26 09:31:37,560 - INFO - [list_user_files] - Request received to list files for user: 'ELENA'
+2025-04-26 09:31:37,564 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 09:31:37,565 - INFO - [list_user_files] - No files found in metadata for user: 'ELENA'
+2025-04-26 09:31:37,565 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:31:37] "GET /files/ELENA HTTP/1.1" 200 -
+2025-04-26 09:31:37,873 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_424
+2025-04-26 09:31:37,874 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_424
+2025-04-26 09:31:38,251 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIDeWgMVi0MN85uOqql34tPpk-iP473AAI0FQACI41oVEWSIdeqGPBKNgQ.
+2025-04-26 09:31:38,285 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIDe2gMVlHPVUR8-_PTSuv6ROQjvNinAAI3FQACI41oVB5Qsv372jaZNgQ
+2025-04-26 09:31:39,011 - INFO - [index] - Serving index page.
+2025-04-26 09:31:39,012 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:31:39] "GET / HTTP/1.1" 200 -
+2025-04-26 09:31:39,056 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:31:39] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-26 09:31:41,102 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIDd2gMVgRSKlSOA17UU1eD6njLEUYwAAIxFQACI41oVAN2maPfipprNgQ.
+2025-04-26 09:31:41,138 - INFO - [_prepare_download_and_generate_updates] - [4a280fb0-d9c8-4c63-bbee-a4f376f8715c] Generator finished or errored. Cleaning up intermediate files.
+2025-04-26 09:31:41,139 - INFO - [_prepare_download_and_generate_updates] - [4a280fb0-d9c8-4c63-bbee-a4f376f8715c] Cleaning up intermediate reassembled file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_reass_4a280fb0-d9c8-4c63-bbee-a4f376f8715c_ewuro5kn.zip.tmp
+2025-04-26 09:31:41,153 - INFO - [_prepare_download_and_generate_updates] - [4a280fb0-d9c8-4c63-bbee-a4f376f8715c] Generator task ended.
+2025-04-26 09:31:41,612 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_426
+2025-04-26 09:31:41,613 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_426
+2025-04-26 09:31:44,210 - INFO - [list_user_files] - Request received to list files for user: 'ELENA'
+2025-04-26 09:31:44,213 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 09:31:44,213 - INFO - [list_user_files] - No files found in metadata for user: 'ELENA'
+2025-04-26 09:31:44,214 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:31:44] "GET /files/ELENA HTTP/1.1" 200 -
+2025-04-26 09:32:01,989 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIDe2gMVlHPVUR8-_PTSuv6ROQjvNinAAI3FQACI41oVB5Qsv372jaZNgQ.
+2025-04-26 09:32:02,033 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIDfWgMVojNP3xtiWgyTSu8loJC4PbMAAI6FQACI41oVHhjzr1g3QvLNgQ
+2025-04-26 09:32:04,961 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_427
+2025-04-26 09:32:04,962 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_427
+2025-04-26 09:32:09,716 - INFO - [get_file_by_access_id] - Received request for access_id: 85283f8117
+2025-04-26 09:32:09,719 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 09:32:09,719 - WARNING - [get_file_by_access_id] - Access ID '85283f8117' not found in metadata.
+2025-04-26 09:32:09,723 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:32:09] "[33mGET /get/85283f8117 HTTP/1.1[0m" 404 -
+2025-04-26 09:32:09,796 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIDfWgMVojNP3xtiWgyTSu8loJC4PbMAAI6FQACI41oVHhjzr1g3QvLNgQ.
+2025-04-26 09:32:09,823 - INFO - [_prepare_and_stream_download_generator] - [72263227-4faa-4b24-a0bb-87ba223f0c9e] Generator finished or errored. Cleaning up intermediate files.
+2025-04-26 09:32:09,840 - INFO - [_prepare_and_stream_download_generator] - [72263227-4faa-4b24-a0bb-87ba223f0c9e] Cleaned up intermediate reassembled file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_reass_72263227-4faa-4b24-a0bb-87ba223f0c9e_hk133sg7.zip.tmp
+2025-04-26 09:32:09,844 - INFO - [_prepare_and_stream_download_generator] - [72263227-4faa-4b24-a0bb-87ba223f0c9e] Generator task ended.
+2025-04-26 09:32:13,479 - INFO - [index] - Serving index page.
+2025-04-26 09:32:13,479 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:32:13] "GET / HTTP/1.1" 200 -
+2025-04-26 09:32:13,495 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:32:13] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-26 09:32:21,090 - INFO - [list_user_files] - Request received to list files for user: 'ELENA'
+2025-04-26 09:32:21,092 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 09:32:21,093 - INFO - [list_user_files] - No files found in metadata for user: 'ELENA'
+2025-04-26 09:32:21,093 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:32:21] "GET /files/ELENA HTTP/1.1" 200 -
+2025-04-26 09:32:21,259 - INFO - [list_user_files] - Request received to list files for user: 'ELENA'
+2025-04-26 09:32:21,262 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 09:32:21,263 - INFO - [list_user_files] - No files found in metadata for user: 'ELENA'
+2025-04-26 09:32:21,263 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:32:21] "GET /files/ELENA HTTP/1.1" 200 -
+2025-04-26 09:32:21,503 - INFO - [list_user_files] - Request received to list files for user: 'ELENA'
+2025-04-26 09:32:21,506 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 09:32:21,506 - INFO - [list_user_files] - No files found in metadata for user: 'ELENA'
+2025-04-26 09:32:21,507 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:32:21] "GET /files/ELENA HTTP/1.1" 200 -
+2025-04-26 09:46:02,940 - INFO - [index] - Serving index page.
+2025-04-26 09:46:02,942 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:46:02] "GET /?vscodeBrowserReqId=1745640962920 HTTP/1.1" 200 -
+2025-04-26 09:46:03,035 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:46:03] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-26 09:46:11,107 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-26 09:46:11,107 - INFO - [initiate_upload] - Saving temporary file for upload_id '774eb578-c35c-4beb-8e55-66b0b5f33513' to 'uploads_temp\774eb578-c35c-4beb-8e55-66b0b5f33513_.gitattributes'
+2025-04-26 09:46:11,113 - INFO - [initiate_upload] - Temporary file saved successfully for '.gitattributes' (ID: 774eb578-c35c-4beb-8e55-66b0b5f33513).
+2025-04-26 09:46:11,113 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:46:11] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-26 09:46:11,121 - INFO - [stream_progress] - SSE connection request for upload_id: 774eb578-c35c-4beb-8e55-66b0b5f33513
+2025-04-26 09:46:11,121 - INFO - [process_upload_and_generate_updates] - [774eb578-c35c-4beb-8e55-66b0b5f33513] Starting processing...
+2025-04-26 09:46:11,122 - INFO - [process_upload_and_generate_updates] - [774eb578-c35c-4beb-8e55-66b0b5f33513] Processing upload: User='tt', File='.gitattributes', TempPath='uploads_temp\774eb578-c35c-4beb-8e55-66b0b5f33513_.gitattributes'
+2025-04-26 09:46:11,123 - INFO - [process_upload_and_generate_updates] - [774eb578-c35c-4beb-8e55-66b0b5f33513] Original temp file size: 66 bytes.
+2025-04-26 09:46:11,123 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:46:11] "GET /stream-progress/774eb578-c35c-4beb-8e55-66b0b5f33513 HTTP/1.1" 200 -
+2025-04-26 09:46:11,124 - INFO - [process_upload_and_generate_updates] - [774eb578-c35c-4beb-8e55-66b0b5f33513] Generated Access ID: fe43e6d515
+2025-04-26 09:46:11,124 - INFO - [process_upload_and_generate_updates] - [774eb578-c35c-4beb-8e55-66b0b5f33513] '.gitattributes' is small. Compressing and sending as single file.
+2025-04-26 09:46:11,127 - INFO - [process_upload_and_generate_updates] - [774eb578-c35c-4beb-8e55-66b0b5f33513] Compressed '.gitattributes' to 188 bytes.
+2025-04-26 09:46:11,129 - INFO - [process_upload_and_generate_updates] - [774eb578-c35c-4beb-8e55-66b0b5f33513] Attempting send '.gitattributes.zip' to chat ID: -4603853425
+2025-04-26 09:46:11,130 - INFO - [send_file_to_telegram] - Sending file '.gitattributes.zip' to Telegram chat ID: -4603853425
+2025-04-26 09:46:12,213 - INFO - [send_file_to_telegram] - Telegram API success for '.gitattributes.zip'.
+2025-04-26 09:46:12,215 - INFO - [process_upload_and_generate_updates] - [774eb578-c35c-4beb-8e55-66b0b5f33513] Attempting send '.gitattributes.zip' to chat ID: -1002614397019
+2025-04-26 09:46:12,216 - INFO - [send_file_to_telegram] - Sending file '.gitattributes.zip' to Telegram chat ID: -1002614397019
+2025-04-26 09:46:13,208 - INFO - [send_file_to_telegram] - Telegram API success for '.gitattributes.zip'.
+2025-04-26 09:46:13,208 - INFO - [process_upload_and_generate_updates] - [774eb578-c35c-4beb-8e55-66b0b5f33513] Attempting send '.gitattributes.zip' to chat ID: -4641852757
+2025-04-26 09:46:13,209 - INFO - [send_file_to_telegram] - Sending file '.gitattributes.zip' to Telegram chat ID: -4641852757
+2025-04-26 09:46:14,035 - INFO - [send_file_to_telegram] - Telegram API success for '.gitattributes.zip'.
+2025-04-26 09:46:14,035 - INFO - [process_upload_and_generate_updates] - [774eb578-c35c-4beb-8e55-66b0b5f33513] Single file '.gitattributes' sent successfully to PRIMARY chat ID -4603853425.
+2025-04-26 09:46:14,036 - INFO - [process_upload_and_generate_updates] - [774eb578-c35c-4beb-8e55-66b0b5f33513] Total successful sends (including backups): 3 / 3
+2025-04-26 09:46:14,037 - ERROR - [process_upload_and_generate_updates] - [774eb578-c35c-4beb-8e55-66b0b5f33513] Inconsistency: Primary send succeeded but failed to extract IDs from its response: {'ok': True, 'result': {'message_id': 941, 'from': {'id': 7812479394, 'is_bot': True, 'first_name': 'Harry Bot', 'username': 'hhhHarryBot'}, 'chat': {'id': -4603853425, 'title': 'AGroup', 'type': 'group', 'all_members_are_administrators': True, 'accepted_gift_types': {'unlimited_gifts': False, 'limited_gifts': False, 'unique_gifts': False, 'premium_subscription': False}}, 'date': 1745640971, 'document': {'file_name': 'gitattributes.zip', 'mime_type': 'application/zip', 'file_id': 'BQACAgUAAxkDAAIDrWgMXgsvwYwWVn9oAY1fBlSWtCILAAKEFQACI41oVAT7gv7XIBAXNgQ', 'file_unique_id': 'AgADhBUAAiONaFQ', 'file_size': 188}}}
+2025-04-26 09:46:14,046 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 09:46:14,060 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-26 09:46:14,061 - INFO - [process_upload_and_generate_updates] - [774eb578-c35c-4beb-8e55-66b0b5f33513] Generated landing page URL: http://127.0.0.1:5000/get/fe43e6d515
+2025-04-26 09:46:14,063 - INFO - [process_upload_and_generate_updates] - [774eb578-c35c-4beb-8e55-66b0b5f33513] Entering final cleanup.
+2025-04-26 09:46:14,063 - INFO - [process_upload_and_generate_updates] - [774eb578-c35c-4beb-8e55-66b0b5f33513] Successfully deleted original temporary file: uploads_temp\774eb578-c35c-4beb-8e55-66b0b5f33513_.gitattributes
+2025-04-26 09:46:14,064 - INFO - [process_upload_and_generate_updates] - [774eb578-c35c-4beb-8e55-66b0b5f33513] Processing finished with status: completed
+2025-04-26 09:46:23,717 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-26 09:46:23,717 - INFO - [initiate_upload] - Saving temporary file for upload_id '0730edfe-7297-4f90-bc41-96fb1386d328' to 'uploads_temp\0730edfe-7297-4f90-bc41-96fb1386d328_.gitattributes'
+2025-04-26 09:46:23,717 - INFO - [initiate_upload] - Temporary file saved successfully for '.gitattributes' (ID: 0730edfe-7297-4f90-bc41-96fb1386d328).
+2025-04-26 09:46:23,717 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:46:23] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-26 09:46:23,729 - INFO - [stream_progress] - SSE connection request for upload_id: 0730edfe-7297-4f90-bc41-96fb1386d328
+2025-04-26 09:46:23,730 - INFO - [process_upload_and_generate_updates] - [0730edfe-7297-4f90-bc41-96fb1386d328] Starting processing...
+2025-04-26 09:46:23,731 - INFO - [process_upload_and_generate_updates] - [0730edfe-7297-4f90-bc41-96fb1386d328] Processing upload: User='tt', File='.gitattributes', TempPath='uploads_temp\0730edfe-7297-4f90-bc41-96fb1386d328_.gitattributes'
+2025-04-26 09:46:23,732 - INFO - [process_upload_and_generate_updates] - [0730edfe-7297-4f90-bc41-96fb1386d328] Original temp file size: 66 bytes.
+2025-04-26 09:46:23,732 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:46:23] "GET /stream-progress/0730edfe-7297-4f90-bc41-96fb1386d328 HTTP/1.1" 200 -
+2025-04-26 09:46:23,733 - INFO - [process_upload_and_generate_updates] - [0730edfe-7297-4f90-bc41-96fb1386d328] Generated Access ID: 1611f0b027
+2025-04-26 09:46:23,733 - INFO - [process_upload_and_generate_updates] - [0730edfe-7297-4f90-bc41-96fb1386d328] '.gitattributes' is small. Compressing and sending as single file.
+2025-04-26 09:46:23,735 - INFO - [process_upload_and_generate_updates] - [0730edfe-7297-4f90-bc41-96fb1386d328] Compressed '.gitattributes' to 188 bytes.
+2025-04-26 09:46:23,736 - INFO - [process_upload_and_generate_updates] - [0730edfe-7297-4f90-bc41-96fb1386d328] Attempting send '.gitattributes.zip' to chat ID: -4603853425
+2025-04-26 09:46:23,737 - INFO - [send_file_to_telegram] - Sending file '.gitattributes.zip' to Telegram chat ID: -4603853425
+2025-04-26 09:46:24,549 - INFO - [send_file_to_telegram] - Telegram API success for '.gitattributes.zip'.
+2025-04-26 09:46:24,550 - INFO - [process_upload_and_generate_updates] - [0730edfe-7297-4f90-bc41-96fb1386d328] Attempting send '.gitattributes.zip' to chat ID: -1002614397019
+2025-04-26 09:46:24,551 - INFO - [send_file_to_telegram] - Sending file '.gitattributes.zip' to Telegram chat ID: -1002614397019
+2025-04-26 09:46:25,408 - INFO - [send_file_to_telegram] - Telegram API success for '.gitattributes.zip'.
+2025-04-26 09:46:25,409 - INFO - [process_upload_and_generate_updates] - [0730edfe-7297-4f90-bc41-96fb1386d328] Attempting send '.gitattributes.zip' to chat ID: -4641852757
+2025-04-26 09:46:25,409 - INFO - [send_file_to_telegram] - Sending file '.gitattributes.zip' to Telegram chat ID: -4641852757
+2025-04-26 09:46:26,279 - INFO - [send_file_to_telegram] - Telegram API success for '.gitattributes.zip'.
+2025-04-26 09:46:26,280 - INFO - [process_upload_and_generate_updates] - [0730edfe-7297-4f90-bc41-96fb1386d328] Single file '.gitattributes' sent successfully to PRIMARY chat ID -4603853425.
+2025-04-26 09:46:26,283 - INFO - [process_upload_and_generate_updates] - [0730edfe-7297-4f90-bc41-96fb1386d328] Total successful sends (including backups): 3 / 3
+2025-04-26 09:46:26,288 - ERROR - [process_upload_and_generate_updates] - [0730edfe-7297-4f90-bc41-96fb1386d328] Inconsistency: Primary send succeeded but failed to extract IDs from its response: {'ok': True, 'result': {'message_id': 943, 'from': {'id': 7812479394, 'is_bot': True, 'first_name': 'Harry Bot', 'username': 'hhhHarryBot'}, 'chat': {'id': -4603853425, 'title': 'AGroup', 'type': 'group', 'all_members_are_administrators': True, 'accepted_gift_types': {'unlimited_gifts': False, 'limited_gifts': False, 'unique_gifts': False, 'premium_subscription': False}}, 'date': 1745640983, 'document': {'file_name': 'gitattributes.zip', 'mime_type': 'application/zip', 'file_id': 'BQACAgUAAxkDAAIDr2gMXhd3ip8oLxLpSEiWokOVHMaoAAKFFQACI41oVDOZoMEwGZybNgQ', 'file_unique_id': 'AgADhRUAAiONaFQ', 'file_size': 188}}}
+2025-04-26 09:46:26,300 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 09:46:26,314 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-26 09:46:26,316 - INFO - [process_upload_and_generate_updates] - [0730edfe-7297-4f90-bc41-96fb1386d328] Generated landing page URL: http://127.0.0.1:5000/get/1611f0b027
+2025-04-26 09:46:26,317 - INFO - [process_upload_and_generate_updates] - [0730edfe-7297-4f90-bc41-96fb1386d328] Entering final cleanup.
+2025-04-26 09:46:26,319 - INFO - [process_upload_and_generate_updates] - [0730edfe-7297-4f90-bc41-96fb1386d328] Successfully deleted original temporary file: uploads_temp\0730edfe-7297-4f90-bc41-96fb1386d328_.gitattributes
+2025-04-26 09:46:26,320 - INFO - [process_upload_and_generate_updates] - [0730edfe-7297-4f90-bc41-96fb1386d328] Processing finished with status: completed
+2025-04-26 09:46:37,251 - INFO - [get_file_by_access_id] - Received request for access_id: 1611f0b027
+2025-04-26 09:46:37,255 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 09:46:37,258 - INFO - [get_file_by_access_id] - Found file '.gitattributes'. Rendering download page.
+2025-04-26 09:46:37,260 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:46:37] "GET /get/1611f0b027 HTTP/1.1" 200 -
+2025-04-26 09:46:37,304 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:46:37] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-04-26 09:46:38,609 - INFO - [stream_download_by_access_id] - [1bd99c2e-530d-4acd-a6a0-28593b6d4ecb] SSE connection request for download prep using access_id: 1611f0b027
+2025-04-26 09:46:38,612 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 09:46:38,612 - INFO - [_prepare_and_stream_download_generator] - [1bd99c2e-530d-4acd-a6a0-28593b6d4ecb] Download preparation generator started.
+2025-04-26 09:46:38,612 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:46:38] "GET /stream-download/1611f0b027 HTTP/1.1" 200 -
+2025-04-26 09:46:38,716 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 09:46:38,716 - INFO - [_prepare_and_stream_download_generator] - [1bd99c2e-530d-4acd-a6a0-28593b6d4ecb] Found metadata for '.gitattributes' (User: tt, Size: 66)
+2025-04-26 09:46:38,922 - INFO - [_prepare_and_stream_download_generator] - [1bd99c2e-530d-4acd-a6a0-28593b6d4ecb] Preparing non-split file '.gitattributes'.
+2025-04-26 09:46:38,922 - INFO - [_prepare_and_stream_download_generator] - [1bd99c2e-530d-4acd-a6a0-28593b6d4ecb] Using primary file_id: BQACAgUAAxkDAAIDr2gMXhd3ip8oLxLpSEiWokOVHMaoAAKFFQACI41oVDOZoMEwGZybNgQ from chat -4603853425
+2025-04-26 09:46:38,925 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIDr2gMXhd3ip8oLxLpSEiWokOVHMaoAAKFFQACI41oVDOZoMEwGZybNgQ
+2025-04-26 09:46:39,757 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_428.zip
+2025-04-26 09:46:39,757 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_428.zip
+2025-04-26 09:46:40,225 - INFO - [download_telegram_file_content] - Successfully downloaded 188 bytes for file_id BQACAgUAAxkDAAIDr2gMXhd3ip8oLxLpSEiWokOVHMaoAAKFFQACI41oVDOZoMEwGZybNgQ.
+2025-04-26 09:46:40,225 - INFO - [_prepare_and_stream_download_generator] - [1bd99c2e-530d-4acd-a6a0-28593b6d4ecb] Source download took 1.30s, Speed: 0.00 MB/s
+2025-04-26 09:46:40,225 - INFO - [_prepare_and_stream_download_generator] - [1bd99c2e-530d-4acd-a6a0-28593b6d4ecb] Decompressing single downloaded file...
+2025-04-26 09:46:40,248 - INFO - [_prepare_and_stream_download_generator] - [1bd99c2e-530d-4acd-a6a0-28593b6d4ecb] Decompression finished in 0.01s.
+2025-04-26 09:46:40,250 - INFO - [_prepare_and_stream_download_generator] - [1bd99c2e-530d-4acd-a6a0-28593b6d4ecb] Final prepared file: 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_final_1bd99c2e-530d-4acd-a6a0-28593b6d4ecb_exz50zjm.tmp', Size: 66
+2025-04-26 09:46:40,353 - INFO - [_prepare_and_stream_download_generator] - [1bd99c2e-530d-4acd-a6a0-28593b6d4ecb] Preparation complete. Sent 'ready' event.
+2025-04-26 09:46:40,355 - INFO - [_prepare_and_stream_download_generator] - [1bd99c2e-530d-4acd-a6a0-28593b6d4ecb] Generator finished or errored. Cleaning up intermediate files.
+2025-04-26 09:46:40,357 - INFO - [_prepare_and_stream_download_generator] - [1bd99c2e-530d-4acd-a6a0-28593b6d4ecb] Generator task ended.
+2025-04-26 09:46:40,367 - INFO - [serve_temp_file] - Request to serve temporary download file for ID: 1bd99c2e-530d-4acd-a6a0-28593b6d4ecb, Filename: .gitattributes
+2025-04-26 09:46:40,368 - INFO - [serve_temp_file] - [1bd99c2e-530d-4acd-a6a0-28593b6d4ecb] Preparing streaming response for '.gitattributes' from 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_final_1bd99c2e-530d-4acd-a6a0-28593b6d4ecb_exz50zjm.tmp'
+2025-04-26 09:46:40,372 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:46:40] "GET /serve-temp-file/1bd99c2e-530d-4acd-a6a0-28593b6d4ecb/.gitattributes HTTP/1.1" 200 -
+2025-04-26 09:46:40,372 - INFO - [generate_and_cleanup] - [1bd99c2e-530d-4acd-a6a0-28593b6d4ecb] Finished streaming file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_final_1bd99c2e-530d-4acd-a6a0-28593b6d4ecb_exz50zjm.tmp
+2025-04-26 09:46:40,375 - INFO - [generate_and_cleanup] - [1bd99c2e-530d-4acd-a6a0-28593b6d4ecb] Cleaning up final temp file post-streaming: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_final_1bd99c2e-530d-4acd-a6a0-28593b6d4ecb_exz50zjm.tmp
+2025-04-26 09:46:40,376 - INFO - [generate_and_cleanup] - [1bd99c2e-530d-4acd-a6a0-28593b6d4ecb] Successfully deleted final temp file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_final_1bd99c2e-530d-4acd-a6a0-28593b6d4ecb_exz50zjm.tmp
+2025-04-26 09:46:49,137 - INFO - [list_user_files] - Request received to list files for user: 'tt'
+2025-04-26 09:46:49,137 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 09:46:49,137 - INFO - [list_user_files] - Found 2 file records for user 'tt'.
+2025-04-26 09:46:49,137 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:46:49] "GET /files/tt HTTP/1.1" 200 -
+2025-04-26 09:47:02,640 - INFO - [prepare_download_stream] - [a0cc054b-def1-48be-8ef2-2830c6ac30e2] SSE connection request for download prep: User='tt', File='.gitattributes'
+2025-04-26 09:47:02,640 - INFO - [_prepare_download_and_generate_updates] - [a0cc054b-def1-48be-8ef2-2830c6ac30e2] Starting download preparation generator for user 'tt', file '.gitattributes'...
+2025-04-26 09:47:02,640 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:47:02] "GET /prepare-download/tt/.gitattributes HTTP/1.1" 200 -
+2025-04-26 09:47:02,851 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 09:47:02,852 - INFO - [_prepare_download_and_generate_updates] - [a0cc054b-def1-48be-8ef2-2830c6ac30e2] Prep non-split '.gitattributes'
+2025-04-26 09:47:02,854 - INFO - [_prepare_download_and_generate_updates] - [a0cc054b-def1-48be-8ef2-2830c6ac30e2] Using primary file_id: BQACAgUAAxkDAAIDrWgMXgsvwYwWVn9oAY1fBlSWtCILAAKEFQACI41oVAT7gv7XIBAXNgQ from chat -4603853425
+2025-04-26 09:47:02,854 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIDrWgMXgsvwYwWVn9oAY1fBlSWtCILAAKEFQACI41oVAT7gv7XIBAXNgQ
+2025-04-26 09:47:03,587 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_429.zip
+2025-04-26 09:47:03,589 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_429.zip
+2025-04-26 09:47:04,057 - INFO - [download_telegram_file_content] - Successfully downloaded 188 bytes for file_id BQACAgUAAxkDAAIDrWgMXgsvwYwWVn9oAY1fBlSWtCILAAKEFQACI41oVAT7gv7XIBAXNgQ.
+2025-04-26 09:47:04,058 - INFO - [_prepare_download_and_generate_updates] - [a0cc054b-def1-48be-8ef2-2830c6ac30e2] Decompressing single file...
+2025-04-26 09:47:04,059 - INFO - [_prepare_download_and_generate_updates] - [a0cc054b-def1-48be-8ef2-2830c6ac30e2] Final prepared file: 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_a0cc054b-def1-48be-8ef2-2830c6ac30e2_ayo748_4', Size: 66
+2025-04-26 09:47:04,060 - INFO - [_prepare_download_and_generate_updates] - [a0cc054b-def1-48be-8ef2-2830c6ac30e2] Preparation complete. Sent 'ready' event.
+2025-04-26 09:47:04,060 - INFO - [_prepare_download_and_generate_updates] - [a0cc054b-def1-48be-8ef2-2830c6ac30e2] Generator finished or errored. Cleaning up intermediate files.
+2025-04-26 09:47:04,061 - INFO - [_prepare_download_and_generate_updates] - [a0cc054b-def1-48be-8ef2-2830c6ac30e2] Generator task ended.
+2025-04-26 09:47:04,067 - INFO - [serve_temp_file] - Request to serve temporary download file for ID: a0cc054b-def1-48be-8ef2-2830c6ac30e2, Filename: .gitattributes
+2025-04-26 09:47:04,067 - INFO - [serve_temp_file] - [a0cc054b-def1-48be-8ef2-2830c6ac30e2] Preparing streaming response for '.gitattributes' from 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_a0cc054b-def1-48be-8ef2-2830c6ac30e2_ayo748_4'
+2025-04-26 09:47:04,071 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:47:04] "GET /serve-temp-file/a0cc054b-def1-48be-8ef2-2830c6ac30e2/.gitattributes HTTP/1.1" 200 -
+2025-04-26 09:47:04,072 - INFO - [generate_and_cleanup] - [a0cc054b-def1-48be-8ef2-2830c6ac30e2] Finished streaming file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_a0cc054b-def1-48be-8ef2-2830c6ac30e2_ayo748_4
+2025-04-26 09:47:04,072 - INFO - [generate_and_cleanup] - [a0cc054b-def1-48be-8ef2-2830c6ac30e2] Cleaning up final temp file post-streaming: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_a0cc054b-def1-48be-8ef2-2830c6ac30e2_ayo748_4
+2025-04-26 09:47:04,072 - INFO - [generate_and_cleanup] - [a0cc054b-def1-48be-8ef2-2830c6ac30e2] Successfully deleted final temp file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_a0cc054b-def1-48be-8ef2-2830c6ac30e2_ayo748_4
+2025-04-26 09:47:26,877 - INFO - [index] - Serving index page.
+2025-04-26 09:47:26,882 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:47:26] "GET / HTTP/1.1" 200 -
+2025-04-26 09:47:26,902 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:47:26] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-26 09:47:27,040 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:47:27] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-04-26 09:47:31,158 - INFO - [list_user_files] - Request received to list files for user: 'testt'
+2025-04-26 09:47:31,162 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 09:47:31,163 - INFO - [list_user_files] - Found 13 file records for user 'testt'.
+2025-04-26 09:47:31,166 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:47:31] "GET /files/testt HTTP/1.1" 200 -
+2025-04-26 09:47:35,029 - INFO - [delete_file_record] - Received DELETE request for user='testt', file='60mb (2).pdf'
+2025-04-26 09:47:35,030 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 09:47:35,030 - INFO - [delete_file_record] - Found and removed record for '60mb (2).pdf' for user 'testt'.
+2025-04-26 09:47:35,051 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-26 09:47:35,051 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting '60mb (2).pdf'.
+2025-04-26 09:47:35,052 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:47:35] "DELETE /delete-file/testt/60mb%20(2).pdf HTTP/1.1" 200 -
+2025-04-26 09:49:01,992 - INFO - [index] - Serving index page.
+2025-04-26 09:49:01,994 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:49:01] "GET / HTTP/1.1" 200 -
+2025-04-26 09:49:02,015 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:49:02] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-26 09:49:23,434 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-26 09:49:24,406 - INFO - [initiate_upload] - Saving temporary file for upload_id 'd599d673-08ad-4b01-90a6-4903a8ff27ce' to 'uploads_temp\d599d673-08ad-4b01-90a6-4903a8ff27ce_test download.mkv'
+2025-04-26 09:49:25,675 - INFO - [initiate_upload] - Temporary file saved successfully for 'test download.mkv' (ID: d599d673-08ad-4b01-90a6-4903a8ff27ce).
+2025-04-26 09:49:25,991 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:49:25] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-26 09:49:25,996 - INFO - [stream_progress] - SSE connection request for upload_id: d599d673-08ad-4b01-90a6-4903a8ff27ce
+2025-04-26 09:49:25,996 - INFO - [process_upload_and_generate_updates] - [d599d673-08ad-4b01-90a6-4903a8ff27ce] Starting processing...
+2025-04-26 09:49:26,001 - INFO - [process_upload_and_generate_updates] - [d599d673-08ad-4b01-90a6-4903a8ff27ce] Processing upload: User='ELENA', File='test download.mkv', TempPath='uploads_temp\d599d673-08ad-4b01-90a6-4903a8ff27ce_test download.mkv'
+2025-04-26 09:49:26,001 - INFO - [process_upload_and_generate_updates] - [d599d673-08ad-4b01-90a6-4903a8ff27ce] Original temp file size: 132739902 bytes.
+2025-04-26 09:49:26,001 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:49:26] "GET /stream-progress/d599d673-08ad-4b01-90a6-4903a8ff27ce HTTP/1.1" 200 -
+2025-04-26 09:49:26,002 - INFO - [process_upload_and_generate_updates] - [d599d673-08ad-4b01-90a6-4903a8ff27ce] Generated Access ID: 238cc16760
+2025-04-26 09:49:26,002 - INFO - [process_upload_and_generate_updates] - [d599d673-08ad-4b01-90a6-4903a8ff27ce] 'test download.mkv' is large. Compressing before splitting.
+2025-04-26 09:49:26,004 - INFO - [process_upload_and_generate_updates] - [d599d673-08ad-4b01-90a6-4903a8ff27ce] Created temporary file for compression result: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\d599d673-08ad-4b01-90a6-4903a8ff27ce_comp_hqmgehht.zip
+2025-04-26 09:49:30,479 - INFO - [process_upload_and_generate_updates] - [d599d673-08ad-4b01-90a6-4903a8ff27ce] Finished compressing to 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\d599d673-08ad-4b01-90a6-4903a8ff27ce_comp_hqmgehht.zip'. Size: 129562592 bytes. Time: 4.47s.
+2025-04-26 09:49:30,505 - INFO - [process_upload_and_generate_updates] - [d599d673-08ad-4b01-90a6-4903a8ff27ce] Reading chunk 1 for COMPRESSED file starting at byte 0.
+2025-04-26 09:49:30,519 - INFO - [process_upload_and_generate_updates] - [d599d673-08ad-4b01-90a6-4903a8ff27ce] Read chunk 1 (20971520 bytes). Total read: 20971520/129562592
+2025-04-26 09:49:30,520 - INFO - [process_upload_and_generate_updates] - [d599d673-08ad-4b01-90a6-4903a8ff27ce] Attempting send chunk 'test download.mkv.zip.part_001' to chat ID: -4603853425
+2025-04-26 09:49:30,520 - INFO - [send_file_to_telegram] - Sending file 'test download.mkv.zip.part_001' to Telegram chat ID: -4603853425
+2025-04-26 09:49:33,808 - INFO - [index] - Serving index page.
+2025-04-26 09:49:33,808 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:49:33] "GET / HTTP/1.1" 200 -
+2025-04-26 09:49:33,836 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:49:33] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-26 09:49:41,932 - INFO - [send_file_to_telegram] - Telegram API success for 'test download.mkv.zip.part_001'.
+2025-04-26 09:49:41,937 - INFO - [process_upload_and_generate_updates] - [d599d673-08ad-4b01-90a6-4903a8ff27ce] Attempting send chunk 'test download.mkv.zip.part_001' to chat ID: -1002614397019
+2025-04-26 09:49:41,937 - INFO - [send_file_to_telegram] - Sending file 'test download.mkv.zip.part_001' to Telegram chat ID: -1002614397019
+2025-04-26 09:49:51,791 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-26 09:49:53,193 - INFO - [initiate_upload] - Saving temporary file for upload_id '4640b598-85fa-4a98-a983-009ac2ae77c3' to 'uploads_temp\4640b598-85fa-4a98-a983-009ac2ae77c3_test download (1) (5) (1).mkv'
+2025-04-26 09:49:53,391 - INFO - [initiate_upload] - Temporary file saved successfully for 'test download (1) (5) (1).mkv' (ID: 4640b598-85fa-4a98-a983-009ac2ae77c3).
+2025-04-26 09:49:53,420 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:49:53] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-26 09:49:53,435 - INFO - [stream_progress] - SSE connection request for upload_id: 4640b598-85fa-4a98-a983-009ac2ae77c3
+2025-04-26 09:49:53,435 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Starting processing...
+2025-04-26 09:49:53,436 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Processing upload: User='ELENA', File='test download (1) (5) (1).mkv', TempPath='uploads_temp\4640b598-85fa-4a98-a983-009ac2ae77c3_test download (1) (5) (1).mkv'
+2025-04-26 09:49:53,437 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Original temp file size: 132739902 bytes.
+2025-04-26 09:49:53,437 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:49:53] "GET /stream-progress/4640b598-85fa-4a98-a983-009ac2ae77c3 HTTP/1.1" 200 -
+2025-04-26 09:49:53,438 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Generated Access ID: 7cff435023
+2025-04-26 09:49:53,438 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] 'test download (1) (5) (1).mkv' is large. Compressing before splitting.
+2025-04-26 09:49:53,440 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Created temporary file for compression result: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\4640b598-85fa-4a98-a983-009ac2ae77c3_comp_jg3rl9ld.zip
+2025-04-26 09:49:54,670 - INFO - [send_file_to_telegram] - Telegram API success for 'test download.mkv.zip.part_001'.
+2025-04-26 09:49:54,672 - INFO - [process_upload_and_generate_updates] - [d599d673-08ad-4b01-90a6-4903a8ff27ce] Attempting send chunk 'test download.mkv.zip.part_001' to chat ID: -4641852757
+2025-04-26 09:49:54,672 - INFO - [send_file_to_telegram] - Sending file 'test download.mkv.zip.part_001' to Telegram chat ID: -4641852757
+2025-04-26 09:49:58,315 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Finished compressing to 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\4640b598-85fa-4a98-a983-009ac2ae77c3_comp_jg3rl9ld.zip'. Size: 129562616 bytes. Time: 4.87s.
+2025-04-26 09:49:58,331 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Reading chunk 1 for COMPRESSED file starting at byte 0.
+2025-04-26 09:49:58,344 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Read chunk 1 (20971520 bytes). Total read: 20971520/129562616
+2025-04-26 09:49:58,344 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Attempting send chunk 'test download (1) (5) (1).mkv.zip.part_001' to chat ID: -4603853425
+2025-04-26 09:49:58,345 - INFO - [send_file_to_telegram] - Sending file 'test download (1) (5) (1).mkv.zip.part_001' to Telegram chat ID: -4603853425
+2025-04-26 09:50:07,590 - INFO - [send_file_to_telegram] - Telegram API success for 'test download.mkv.zip.part_001'.
+2025-04-26 09:50:07,593 - INFO - [process_upload_and_generate_updates] - [d599d673-08ad-4b01-90a6-4903a8ff27ce] Chunk 'test download.mkv.zip.part_001' sent successfully to PRIMARY chat.
+2025-04-26 09:50:07,593 - INFO - [process_upload_and_generate_updates] - [d599d673-08ad-4b01-90a6-4903a8ff27ce] Entering final cleanup.
+2025-04-26 09:50:07,606 - INFO - [process_upload_and_generate_updates] - [d599d673-08ad-4b01-90a6-4903a8ff27ce] Successfully deleted original temporary file: uploads_temp\d599d673-08ad-4b01-90a6-4903a8ff27ce_test download.mkv
+2025-04-26 09:50:07,621 - INFO - [process_upload_and_generate_updates] - [d599d673-08ad-4b01-90a6-4903a8ff27ce] Successfully deleted temporary compressed file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\d599d673-08ad-4b01-90a6-4903a8ff27ce_comp_hqmgehht.zip
+2025-04-26 09:50:07,621 - INFO - [process_upload_and_generate_updates] - [d599d673-08ad-4b01-90a6-4903a8ff27ce] Processing finished with status: processing
+2025-04-26 09:50:08,530 - INFO - [send_file_to_telegram] - Telegram API success for 'test download (1) (5) (1).mkv.zip.part_001'.
+2025-04-26 09:50:08,535 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Attempting send chunk 'test download (1) (5) (1).mkv.zip.part_001' to chat ID: -1002614397019
+2025-04-26 09:50:08,535 - INFO - [send_file_to_telegram] - Sending file 'test download (1) (5) (1).mkv.zip.part_001' to Telegram chat ID: -1002614397019
+2025-04-26 09:50:26,358 - INFO - [list_user_files] - Request received to list files for user: 'ELENA'
+2025-04-26 09:50:26,371 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 09:50:26,372 - INFO - [list_user_files] - No files found in metadata for user: 'ELENA'
+2025-04-26 09:50:26,372 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:50:26] "GET /files/ELENA HTTP/1.1" 200 -
+2025-04-26 09:50:26,539 - INFO - [send_file_to_telegram] - Telegram API success for 'test download (1) (5) (1).mkv.zip.part_001'.
+2025-04-26 09:50:26,544 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Attempting send chunk 'test download (1) (5) (1).mkv.zip.part_001' to chat ID: -4641852757
+2025-04-26 09:50:26,544 - INFO - [send_file_to_telegram] - Sending file 'test download (1) (5) (1).mkv.zip.part_001' to Telegram chat ID: -4641852757
+2025-04-26 09:50:39,557 - INFO - [send_file_to_telegram] - Telegram API success for 'test download (1) (5) (1).mkv.zip.part_001'.
+2025-04-26 09:50:39,562 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Chunk 'test download (1) (5) (1).mkv.zip.part_001' sent successfully to PRIMARY chat.
+2025-04-26 09:50:39,563 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Successfully processed metadata for chunk 1 across all attempts.
+2025-04-26 09:50:39,564 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Reading chunk 2 for COMPRESSED file starting at byte 20971520.
+2025-04-26 09:50:39,578 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Read chunk 2 (20971520 bytes). Total read: 41943040/129562616
+2025-04-26 09:50:39,580 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Attempting send chunk 'test download (1) (5) (1).mkv.zip.part_002' to chat ID: -4603853425
+2025-04-26 09:50:39,580 - INFO - [send_file_to_telegram] - Sending file 'test download (1) (5) (1).mkv.zip.part_002' to Telegram chat ID: -4603853425
+2025-04-26 09:50:51,150 - INFO - [send_file_to_telegram] - Telegram API success for 'test download (1) (5) (1).mkv.zip.part_002'.
+2025-04-26 09:50:51,152 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Attempting send chunk 'test download (1) (5) (1).mkv.zip.part_002' to chat ID: -1002614397019
+2025-04-26 09:50:51,152 - INFO - [send_file_to_telegram] - Sending file 'test download (1) (5) (1).mkv.zip.part_002' to Telegram chat ID: -1002614397019
+2025-04-26 09:51:05,345 - INFO - [send_file_to_telegram] - Telegram API success for 'test download (1) (5) (1).mkv.zip.part_002'.
+2025-04-26 09:51:05,348 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Attempting send chunk 'test download (1) (5) (1).mkv.zip.part_002' to chat ID: -4641852757
+2025-04-26 09:51:05,349 - INFO - [send_file_to_telegram] - Sending file 'test download (1) (5) (1).mkv.zip.part_002' to Telegram chat ID: -4641852757
+2025-04-26 09:51:18,475 - INFO - [send_file_to_telegram] - Telegram API success for 'test download (1) (5) (1).mkv.zip.part_002'.
+2025-04-26 09:51:18,479 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Chunk 'test download (1) (5) (1).mkv.zip.part_002' sent successfully to PRIMARY chat.
+2025-04-26 09:51:18,480 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Successfully processed metadata for chunk 2 across all attempts.
+2025-04-26 09:51:18,481 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Reading chunk 3 for COMPRESSED file starting at byte 41943040.
+2025-04-26 09:51:18,494 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Read chunk 3 (20971520 bytes). Total read: 62914560/129562616
+2025-04-26 09:51:18,495 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Attempting send chunk 'test download (1) (5) (1).mkv.zip.part_003' to chat ID: -4603853425
+2025-04-26 09:51:18,496 - INFO - [send_file_to_telegram] - Sending file 'test download (1) (5) (1).mkv.zip.part_003' to Telegram chat ID: -4603853425
+2025-04-26 09:51:29,449 - INFO - [send_file_to_telegram] - Telegram API success for 'test download (1) (5) (1).mkv.zip.part_003'.
+2025-04-26 09:51:29,452 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Attempting send chunk 'test download (1) (5) (1).mkv.zip.part_003' to chat ID: -1002614397019
+2025-04-26 09:51:29,453 - INFO - [send_file_to_telegram] - Sending file 'test download (1) (5) (1).mkv.zip.part_003' to Telegram chat ID: -1002614397019
+2025-04-26 09:51:44,040 - INFO - [send_file_to_telegram] - Telegram API success for 'test download (1) (5) (1).mkv.zip.part_003'.
+2025-04-26 09:51:44,042 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Attempting send chunk 'test download (1) (5) (1).mkv.zip.part_003' to chat ID: -4641852757
+2025-04-26 09:51:44,043 - INFO - [send_file_to_telegram] - Sending file 'test download (1) (5) (1).mkv.zip.part_003' to Telegram chat ID: -4641852757
+2025-04-26 09:51:54,711 - INFO - [send_file_to_telegram] - Telegram API success for 'test download (1) (5) (1).mkv.zip.part_003'.
+2025-04-26 09:51:54,714 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Chunk 'test download (1) (5) (1).mkv.zip.part_003' sent successfully to PRIMARY chat.
+2025-04-26 09:51:54,715 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Successfully processed metadata for chunk 3 across all attempts.
+2025-04-26 09:51:54,715 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Reading chunk 4 for COMPRESSED file starting at byte 62914560.
+2025-04-26 09:51:54,729 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Read chunk 4 (20971520 bytes). Total read: 83886080/129562616
+2025-04-26 09:51:54,730 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Attempting send chunk 'test download (1) (5) (1).mkv.zip.part_004' to chat ID: -4603853425
+2025-04-26 09:51:54,730 - INFO - [send_file_to_telegram] - Sending file 'test download (1) (5) (1).mkv.zip.part_004' to Telegram chat ID: -4603853425
+2025-04-26 09:52:13,117 - INFO - [send_file_to_telegram] - Telegram API success for 'test download (1) (5) (1).mkv.zip.part_004'.
+2025-04-26 09:52:13,120 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Attempting send chunk 'test download (1) (5) (1).mkv.zip.part_004' to chat ID: -1002614397019
+2025-04-26 09:52:13,120 - INFO - [send_file_to_telegram] - Sending file 'test download (1) (5) (1).mkv.zip.part_004' to Telegram chat ID: -1002614397019
+2025-04-26 09:52:23,817 - INFO - [send_file_to_telegram] - Telegram API success for 'test download (1) (5) (1).mkv.zip.part_004'.
+2025-04-26 09:52:23,821 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Attempting send chunk 'test download (1) (5) (1).mkv.zip.part_004' to chat ID: -4641852757
+2025-04-26 09:52:23,822 - INFO - [send_file_to_telegram] - Sending file 'test download (1) (5) (1).mkv.zip.part_004' to Telegram chat ID: -4641852757
+2025-04-26 09:52:41,703 - INFO - [send_file_to_telegram] - Telegram API success for 'test download (1) (5) (1).mkv.zip.part_004'.
+2025-04-26 09:52:41,708 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Chunk 'test download (1) (5) (1).mkv.zip.part_004' sent successfully to PRIMARY chat.
+2025-04-26 09:52:41,709 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Successfully processed metadata for chunk 4 across all attempts.
+2025-04-26 09:52:41,710 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Reading chunk 5 for COMPRESSED file starting at byte 83886080.
+2025-04-26 09:52:41,759 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Read chunk 5 (20971520 bytes). Total read: 104857600/129562616
+2025-04-26 09:52:41,768 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Attempting send chunk 'test download (1) (5) (1).mkv.zip.part_005' to chat ID: -4603853425
+2025-04-26 09:52:41,771 - INFO - [send_file_to_telegram] - Sending file 'test download (1) (5) (1).mkv.zip.part_005' to Telegram chat ID: -4603853425
+2025-04-26 09:53:01,700 - INFO - [send_file_to_telegram] - Telegram API success for 'test download (1) (5) (1).mkv.zip.part_005'.
+2025-04-26 09:53:01,703 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Attempting send chunk 'test download (1) (5) (1).mkv.zip.part_005' to chat ID: -1002614397019
+2025-04-26 09:53:01,704 - INFO - [send_file_to_telegram] - Sending file 'test download (1) (5) (1).mkv.zip.part_005' to Telegram chat ID: -1002614397019
+2025-04-26 09:53:14,799 - INFO - [send_file_to_telegram] - Telegram API success for 'test download (1) (5) (1).mkv.zip.part_005'.
+2025-04-26 09:53:14,804 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Attempting send chunk 'test download (1) (5) (1).mkv.zip.part_005' to chat ID: -4641852757
+2025-04-26 09:53:14,805 - INFO - [send_file_to_telegram] - Sending file 'test download (1) (5) (1).mkv.zip.part_005' to Telegram chat ID: -4641852757
+2025-04-26 09:53:25,248 - INFO - [send_file_to_telegram] - Telegram API success for 'test download (1) (5) (1).mkv.zip.part_005'.
+2025-04-26 09:53:25,251 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Chunk 'test download (1) (5) (1).mkv.zip.part_005' sent successfully to PRIMARY chat.
+2025-04-26 09:53:25,252 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Successfully processed metadata for chunk 5 across all attempts.
+2025-04-26 09:53:25,253 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Reading chunk 6 for COMPRESSED file starting at byte 104857600.
+2025-04-26 09:53:25,269 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Read chunk 6 (20971520 bytes). Total read: 125829120/129562616
+2025-04-26 09:53:25,269 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Attempting send chunk 'test download (1) (5) (1).mkv.zip.part_006' to chat ID: -4603853425
+2025-04-26 09:53:25,270 - INFO - [send_file_to_telegram] - Sending file 'test download (1) (5) (1).mkv.zip.part_006' to Telegram chat ID: -4603853425
+2025-04-26 09:53:34,750 - INFO - [send_file_to_telegram] - Telegram API success for 'test download (1) (5) (1).mkv.zip.part_006'.
+2025-04-26 09:53:34,753 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Attempting send chunk 'test download (1) (5) (1).mkv.zip.part_006' to chat ID: -1002614397019
+2025-04-26 09:53:34,753 - INFO - [send_file_to_telegram] - Sending file 'test download (1) (5) (1).mkv.zip.part_006' to Telegram chat ID: -1002614397019
+2025-04-26 09:53:42,974 - INFO - [send_file_to_telegram] - Telegram API success for 'test download (1) (5) (1).mkv.zip.part_006'.
+2025-04-26 09:53:42,978 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Attempting send chunk 'test download (1) (5) (1).mkv.zip.part_006' to chat ID: -4641852757
+2025-04-26 09:53:42,979 - INFO - [send_file_to_telegram] - Sending file 'test download (1) (5) (1).mkv.zip.part_006' to Telegram chat ID: -4641852757
+2025-04-26 09:53:58,150 - INFO - [send_file_to_telegram] - Telegram API success for 'test download (1) (5) (1).mkv.zip.part_006'.
+2025-04-26 09:53:58,152 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Chunk 'test download (1) (5) (1).mkv.zip.part_006' sent successfully to PRIMARY chat.
+2025-04-26 09:53:58,153 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Successfully processed metadata for chunk 6 across all attempts.
+2025-04-26 09:53:58,153 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Reading chunk 7 for COMPRESSED file starting at byte 125829120.
+2025-04-26 09:53:58,160 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Read chunk 7 (3733496 bytes). Total read: 129562616/129562616
+2025-04-26 09:53:58,161 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Attempting send chunk 'test download (1) (5) (1).mkv.zip.part_007' to chat ID: -4603853425
+2025-04-26 09:53:58,162 - INFO - [send_file_to_telegram] - Sending file 'test download (1) (5) (1).mkv.zip.part_007' to Telegram chat ID: -4603853425
+2025-04-26 09:54:00,939 - INFO - [send_file_to_telegram] - Telegram API success for 'test download (1) (5) (1).mkv.zip.part_007'.
+2025-04-26 09:54:00,940 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Attempting send chunk 'test download (1) (5) (1).mkv.zip.part_007' to chat ID: -1002614397019
+2025-04-26 09:54:00,941 - INFO - [send_file_to_telegram] - Sending file 'test download (1) (5) (1).mkv.zip.part_007' to Telegram chat ID: -1002614397019
+2025-04-26 09:54:11,469 - INFO - [send_file_to_telegram] - Telegram API success for 'test download (1) (5) (1).mkv.zip.part_007'.
+2025-04-26 09:54:11,471 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Attempting send chunk 'test download (1) (5) (1).mkv.zip.part_007' to chat ID: -4641852757
+2025-04-26 09:54:11,472 - INFO - [send_file_to_telegram] - Sending file 'test download (1) (5) (1).mkv.zip.part_007' to Telegram chat ID: -4641852757
+2025-04-26 09:54:13,966 - INFO - [send_file_to_telegram] - Telegram API success for 'test download (1) (5) (1).mkv.zip.part_007'.
+2025-04-26 09:54:13,967 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Chunk 'test download (1) (5) (1).mkv.zip.part_007' sent successfully to PRIMARY chat.
+2025-04-26 09:54:13,968 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Successfully processed metadata for chunk 7 across all attempts.
+2025-04-26 09:54:13,969 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Reading chunk 8 for COMPRESSED file starting at byte 129562616.
+2025-04-26 09:54:13,975 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Finished reading all chunks for compressed file.
+2025-04-26 09:54:13,975 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] All 7 chunks sent successfully to primary. Saving metadata.
+2025-04-26 09:54:13,979 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 09:54:13,992 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-26 09:54:13,992 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Generated landing page URL: http://127.0.0.1:5000/get/7cff435023
+2025-04-26 09:54:13,993 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Entering final cleanup.
+2025-04-26 09:54:14,005 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Successfully deleted original temporary file: uploads_temp\4640b598-85fa-4a98-a983-009ac2ae77c3_test download (1) (5) (1).mkv
+2025-04-26 09:54:14,017 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Successfully deleted temporary compressed file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\4640b598-85fa-4a98-a983-009ac2ae77c3_comp_jg3rl9ld.zip
+2025-04-26 09:54:14,018 - INFO - [process_upload_and_generate_updates] - [4640b598-85fa-4a98-a983-009ac2ae77c3] Processing finished with status: completed
+2025-04-26 09:54:23,201 - INFO - [get_file_by_access_id] - Received request for access_id: 7cff435023
+2025-04-26 09:54:23,205 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 09:54:23,205 - INFO - [get_file_by_access_id] - Found file 'test download (1) (5) (1).mkv'. Rendering download page.
+2025-04-26 09:54:23,210 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:54:23] "GET /get/7cff435023 HTTP/1.1" 200 -
+2025-04-26 09:54:27,962 - INFO - [stream_download_by_access_id] - [0808fd95-fe5c-43c7-b24a-e3df576b22e1] SSE connection request for download prep using access_id: 7cff435023
+2025-04-26 09:54:27,962 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 09:54:27,962 - INFO - [_prepare_and_stream_download_generator] - [0808fd95-fe5c-43c7-b24a-e3df576b22e1] Download preparation generator started.
+2025-04-26 09:54:27,962 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:54:27] "GET /stream-download/7cff435023 HTTP/1.1" 200 -
+2025-04-26 09:54:28,068 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 09:54:28,068 - INFO - [_prepare_and_stream_download_generator] - [0808fd95-fe5c-43c7-b24a-e3df576b22e1] Found metadata for 'test download (1) (5) (1).mkv' (User: ELENA, Size: 132739902)
+2025-04-26 09:54:28,272 - INFO - [_prepare_and_stream_download_generator] - [0808fd95-fe5c-43c7-b24a-e3df576b22e1] Preparing split file 'test download (1) (5) (1).mkv'.
+2025-04-26 09:54:28,272 - INFO - [_prepare_and_stream_download_generator] - [0808fd95-fe5c-43c7-b24a-e3df576b22e1] Expecting 7 chunks, compressed size ~123.56 MB.
+2025-04-26 09:54:28,274 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIDs2gMXvfIj6-FYQABNAE4Coii72Kd4gACjRUAAiONaFQCjNC4w15cYzYE
+2025-04-26 09:54:32,057 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_430.part_001
+2025-04-26 09:54:32,058 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_430.part_001
+2025-04-26 09:54:36,451 - INFO - [list_user_files] - Request received to list files for user: 'ELENA'
+2025-04-26 09:54:36,455 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 09:54:36,455 - INFO - [list_user_files] - Found 1 file records for user 'ELENA'.
+2025-04-26 09:54:36,456 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:54:36] "GET /files/ELENA HTTP/1.1" 200 -
+2025-04-26 09:54:39,961 - INFO - [prepare_download_stream] - [ddeca41f-62ed-4844-95c2-9791f1f290eb] SSE connection request for download prep: User='ELENA', File='test download (1) (5) (1).mkv'
+2025-04-26 09:54:39,961 - INFO - [_prepare_download_and_generate_updates] - [ddeca41f-62ed-4844-95c2-9791f1f290eb] Starting download preparation generator for user 'ELENA', file 'test download (1) (5) (1).mkv'...
+2025-04-26 09:54:39,962 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:54:39] "GET /prepare-download/ELENA/test%20download%20(1)%20(5)%20(1).mkv HTTP/1.1" 200 -
+2025-04-26 09:54:40,170 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 09:54:40,171 - INFO - [_prepare_download_and_generate_updates] - [ddeca41f-62ed-4844-95c2-9791f1f290eb] Prep SPLIT download for 'test download (1) (5) (1).mkv'
+2025-04-26 09:54:40,174 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIDs2gMXvfIj6-FYQABNAE4Coii72Kd4gACjRUAAiONaFQCjNC4w15cYzYE
+2025-04-26 09:54:40,645 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_430.part_001
+2025-04-26 09:54:40,645 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_430.part_001
+2025-04-26 09:54:41,275 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIDs2gMXvfIj6-FYQABNAE4Coii72Kd4gACjRUAAiONaFQCjNC4w15cYzYE.
+2025-04-26 09:54:41,312 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIDtWgMXyLKXlabs3HBmvkPywlbd7sYAAKRFQACI41oVBNbgcvLoCZTNgQ
+2025-04-26 09:54:44,341 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_431.part_002
+2025-04-26 09:54:44,341 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_431.part_002
+2025-04-26 09:54:47,220 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIDs2gMXvfIj6-FYQABNAE4Coii72Kd4gACjRUAAiONaFQCjNC4w15cYzYE.
+2025-04-26 09:54:47,248 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIDtWgMXyLKXlabs3HBmvkPywlbd7sYAAKRFQACI41oVBNbgcvLoCZTNgQ
+2025-04-26 09:54:47,770 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_431.part_002
+2025-04-26 09:54:47,772 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_431.part_002
+2025-04-26 09:54:51,741 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIDtWgMXyLKXlabs3HBmvkPywlbd7sYAAKRFQACI41oVBNbgcvLoCZTNgQ.
+2025-04-26 09:54:51,774 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIDt2gMX0gScMR3j84fCGN0xBMy3N5SAAKUFQACI41oVEpG7NH88M2aNgQ
+2025-04-26 09:54:53,492 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIDtWgMXyLKXlabs3HBmvkPywlbd7sYAAKRFQACI41oVBNbgcvLoCZTNgQ.
+2025-04-26 09:54:53,530 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIDt2gMX0gScMR3j84fCGN0xBMy3N5SAAKUFQACI41oVEpG7NH88M2aNgQ
+2025-04-26 09:54:54,891 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_432.part_003
+2025-04-26 09:54:54,891 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_432.part_003
+2025-04-26 09:54:54,891 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_432.part_003
+2025-04-26 09:54:54,891 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_432.part_003
+2025-04-26 09:55:00,149 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIDt2gMX0gScMR3j84fCGN0xBMy3N5SAAKUFQACI41oVEpG7NH88M2aNgQ.
+2025-04-26 09:55:00,179 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIDuWgMX3NTZf-XRXMQH6ZX6QpEAeZ7AAKVFQACI41oVJLpjlUY4C3uNgQ
+2025-04-26 09:55:00,422 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIDt2gMX0gScMR3j84fCGN0xBMy3N5SAAKUFQACI41oVEpG7NH88M2aNgQ.
+2025-04-26 09:55:00,453 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIDuWgMX3NTZf-XRXMQH6ZX6QpEAeZ7AAKVFQACI41oVJLpjlUY4C3uNgQ
+2025-04-26 09:55:02,975 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_433.part_004
+2025-04-26 09:55:02,975 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_433.part_004
+2025-04-26 09:55:02,975 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_433.part_004
+2025-04-26 09:55:02,975 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_433.part_004
+2025-04-26 09:55:07,141 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIDuWgMX3NTZf-XRXMQH6ZX6QpEAeZ7AAKVFQACI41oVJLpjlUY4C3uNgQ.
+2025-04-26 09:55:07,183 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIDu2gMX6RBfZN4iwL_cz0Hz1OOy3XTAAKWFQACI41oVPMPKNPUv0koNgQ
+2025-04-26 09:55:09,947 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_434.part_005
+2025-04-26 09:55:09,948 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_434.part_005
+2025-04-26 09:55:11,641 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIDuWgMX3NTZf-XRXMQH6ZX6QpEAeZ7AAKVFQACI41oVJLpjlUY4C3uNgQ.
+2025-04-26 09:55:11,676 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIDu2gMX6RBfZN4iwL_cz0Hz1OOy3XTAAKWFQACI41oVPMPKNPUv0koNgQ
+2025-04-26 09:55:12,175 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_434.part_005
+2025-04-26 09:55:12,175 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_434.part_005
+2025-04-26 09:55:13,942 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIDu2gMX6RBfZN4iwL_cz0Hz1OOy3XTAAKWFQACI41oVPMPKNPUv0koNgQ.
+2025-04-26 09:55:13,975 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIDvWgMX8XtPaod6DMZDL2BdnZOiUHiAAKXFQACI41oVC0s3ROczXPlNgQ
+2025-04-26 09:55:16,772 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_435.part_006
+2025-04-26 09:55:16,772 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_435.part_006
+2025-04-26 09:55:20,125 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIDu2gMX6RBfZN4iwL_cz0Hz1OOy3XTAAKWFQACI41oVPMPKNPUv0koNgQ.
+2025-04-26 09:55:20,174 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIDvWgMX8XtPaod6DMZDL2BdnZOiUHiAAKXFQACI41oVC0s3ROczXPlNgQ
+2025-04-26 09:55:20,692 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_435.part_006
+2025-04-26 09:55:20,692 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_435.part_006
+2025-04-26 09:55:25,976 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIDvWgMX8XtPaod6DMZDL2BdnZOiUHiAAKXFQACI41oVC0s3ROczXPlNgQ.
+2025-04-26 09:55:26,017 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIDv2gMX98XrPKK0d3nJQF9RsGGtq2YAAKYFQACI41oVAp-pMh5T0cBNgQ
+2025-04-26 09:55:27,232 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_436.part_007
+2025-04-26 09:55:27,232 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_436.part_007
+2025-04-26 09:55:29,025 - INFO - [download_telegram_file_content] - Successfully downloaded 3733496 bytes for file_id BQACAgUAAxkDAAIDv2gMX98XrPKK0d3nJQF9RsGGtq2YAAKYFQACI41oVAp-pMh5T0cBNgQ.
+2025-04-26 09:55:29,025 - INFO - [_prepare_and_stream_download_generator] - [0808fd95-fe5c-43c7-b24a-e3df576b22e1] Finished reassembling 7 chunks. Total bytes fetched: 129562616.
+2025-04-26 09:55:29,036 - INFO - [_prepare_and_stream_download_generator] - [0808fd95-fe5c-43c7-b24a-e3df576b22e1] Decompressing reassembled file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_reass_0808fd95-fe5c-43c7-b24a-e3df576b22e1_33v91gbb.zip.tmp
+2025-04-26 09:55:29,875 - INFO - [_prepare_and_stream_download_generator] - [0808fd95-fe5c-43c7-b24a-e3df576b22e1] Decompression finished in 0.83s.
+2025-04-26 09:55:29,875 - INFO - [_prepare_and_stream_download_generator] - [0808fd95-fe5c-43c7-b24a-e3df576b22e1] Final prepared file: 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_final_0808fd95-fe5c-43c7-b24a-e3df576b22e1_0883_bj5.mkv', Size: 132739902
+2025-04-26 09:55:29,980 - INFO - [_prepare_and_stream_download_generator] - [0808fd95-fe5c-43c7-b24a-e3df576b22e1] Preparation complete. Sent 'ready' event.
+2025-04-26 09:55:29,980 - INFO - [_prepare_and_stream_download_generator] - [0808fd95-fe5c-43c7-b24a-e3df576b22e1] Generator finished or errored. Cleaning up intermediate files.
+2025-04-26 09:55:29,986 - INFO - [serve_temp_file] - Request to serve temporary download file for ID: 0808fd95-fe5c-43c7-b24a-e3df576b22e1, Filename: test download (1) (5) (1).mkv
+2025-04-26 09:55:29,994 - INFO - [serve_temp_file] - [0808fd95-fe5c-43c7-b24a-e3df576b22e1] Preparing streaming response for 'test download (1) (5) (1).mkv' from 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_final_0808fd95-fe5c-43c7-b24a-e3df576b22e1_0883_bj5.mkv'
+2025-04-26 09:55:29,999 - INFO - [_prepare_and_stream_download_generator] - [0808fd95-fe5c-43c7-b24a-e3df576b22e1] Cleaned up intermediate reassembled file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_reass_0808fd95-fe5c-43c7-b24a-e3df576b22e1_33v91gbb.zip.tmp
+2025-04-26 09:55:30,000 - INFO - [_prepare_and_stream_download_generator] - [0808fd95-fe5c-43c7-b24a-e3df576b22e1] Generator task ended.
+2025-04-26 09:55:30,004 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:55:30] "GET /serve-temp-file/0808fd95-fe5c-43c7-b24a-e3df576b22e1/test%20download%20(1)%20(5)%20(1).mkv HTTP/1.1" 200 -
+2025-04-26 09:55:31,175 - INFO - [generate_and_cleanup] - [0808fd95-fe5c-43c7-b24a-e3df576b22e1] Finished streaming file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_final_0808fd95-fe5c-43c7-b24a-e3df576b22e1_0883_bj5.mkv
+2025-04-26 09:55:31,175 - INFO - [generate_and_cleanup] - [0808fd95-fe5c-43c7-b24a-e3df576b22e1] Cleaning up final temp file post-streaming: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_final_0808fd95-fe5c-43c7-b24a-e3df576b22e1_0883_bj5.mkv
+2025-04-26 09:55:31,194 - INFO - [generate_and_cleanup] - [0808fd95-fe5c-43c7-b24a-e3df576b22e1] Successfully deleted final temp file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_final_0808fd95-fe5c-43c7-b24a-e3df576b22e1_0883_bj5.mkv
+2025-04-26 09:55:32,500 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIDvWgMX8XtPaod6DMZDL2BdnZOiUHiAAKXFQACI41oVC0s3ROczXPlNgQ.
+2025-04-26 09:55:32,530 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIDv2gMX98XrPKK0d3nJQF9RsGGtq2YAAKYFQACI41oVAp-pMh5T0cBNgQ
+2025-04-26 09:55:32,978 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_436.part_007
+2025-04-26 09:55:32,978 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_436.part_007
+2025-04-26 09:55:34,725 - INFO - [download_telegram_file_content] - Successfully downloaded 3733496 bytes for file_id BQACAgUAAxkDAAIDv2gMX98XrPKK0d3nJQF9RsGGtq2YAAKYFQACI41oVAp-pMh5T0cBNgQ.
+2025-04-26 09:55:34,725 - INFO - [_prepare_download_and_generate_updates] - [ddeca41f-62ed-4844-95c2-9791f1f290eb] Finished reassembling 7 chunks. Total bytes fetched: 129562616.
+2025-04-26 09:55:34,734 - INFO - [_prepare_download_and_generate_updates] - [ddeca41f-62ed-4844-95c2-9791f1f290eb] Decompressing reassembled file...
+2025-04-26 09:55:35,450 - INFO - [_prepare_download_and_generate_updates] - [ddeca41f-62ed-4844-95c2-9791f1f290eb] Final prepared file: 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_final_ddeca41f-62ed-4844-95c2-9791f1f290eb_qwa7jnu5', Size: 132739902
+2025-04-26 09:55:35,451 - INFO - [_prepare_download_and_generate_updates] - [ddeca41f-62ed-4844-95c2-9791f1f290eb] Preparation complete. Sent 'ready' event.
+2025-04-26 09:55:35,451 - INFO - [_prepare_download_and_generate_updates] - [ddeca41f-62ed-4844-95c2-9791f1f290eb] Generator finished or errored. Cleaning up intermediate files.
+2025-04-26 09:55:35,452 - INFO - [_prepare_download_and_generate_updates] - [ddeca41f-62ed-4844-95c2-9791f1f290eb] Cleaning up intermediate reassembled file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_reass_ddeca41f-62ed-4844-95c2-9791f1f290eb_eyuzz86y.zip.tmp
+2025-04-26 09:55:35,465 - INFO - [serve_temp_file] - Request to serve temporary download file for ID: ddeca41f-62ed-4844-95c2-9791f1f290eb, Filename: test download (1) (5) (1).mkv
+2025-04-26 09:55:35,466 - INFO - [serve_temp_file] - [ddeca41f-62ed-4844-95c2-9791f1f290eb] Preparing streaming response for 'test download (1) (5) (1).mkv' from 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_final_ddeca41f-62ed-4844-95c2-9791f1f290eb_qwa7jnu5'
+2025-04-26 09:55:35,471 - INFO - [_prepare_download_and_generate_updates] - [ddeca41f-62ed-4844-95c2-9791f1f290eb] Generator task ended.
+2025-04-26 09:55:35,483 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:55:35] "GET /serve-temp-file/ddeca41f-62ed-4844-95c2-9791f1f290eb/test%20download%20(1)%20(5)%20(1).mkv HTTP/1.1" 200 -
+2025-04-26 09:55:36,230 - INFO - [generate_and_cleanup] - [ddeca41f-62ed-4844-95c2-9791f1f290eb] Finished streaming file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_final_ddeca41f-62ed-4844-95c2-9791f1f290eb_qwa7jnu5
+2025-04-26 09:55:36,230 - INFO - [generate_and_cleanup] - [ddeca41f-62ed-4844-95c2-9791f1f290eb] Cleaning up final temp file post-streaming: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_final_ddeca41f-62ed-4844-95c2-9791f1f290eb_qwa7jnu5
+2025-04-26 09:55:36,247 - INFO - [generate_and_cleanup] - [ddeca41f-62ed-4844-95c2-9791f1f290eb] Successfully deleted final temp file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_final_ddeca41f-62ed-4844-95c2-9791f1f290eb_qwa7jnu5
+2025-04-26 09:55:38,585 - INFO - [list_user_files] - Request received to list files for user: 'ELENA'
+2025-04-26 09:55:38,590 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 09:55:38,590 - INFO - [list_user_files] - Found 1 file records for user 'ELENA'.
+2025-04-26 09:55:38,592 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:55:38] "GET /files/ELENA HTTP/1.1" 200 -
+2025-04-26 09:55:42,646 - INFO - [delete_file_record] - Received DELETE request for user='ELENA', file='test download (1) (5) (1).mkv'
+2025-04-26 09:55:42,646 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 09:55:42,646 - INFO - [delete_file_record] - Found and removed record for 'test download (1) (5) (1).mkv' for user 'ELENA'.
+2025-04-26 09:55:42,646 - INFO - [delete_file_record] - User 'ELENA' has no files left. Removing user entry from metadata.
+2025-04-26 09:55:42,666 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-26 09:55:42,666 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting 'test download (1) (5) (1).mkv'.
+2025-04-26 09:55:42,669 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:55:42] "DELETE /delete-file/ELENA/test%20download%20(1)%20(5)%20(1).mkv HTTP/1.1" 200 -
+2025-04-26 09:55:44,953 - INFO - [list_user_files] - Request received to list files for user: 'ELENA'
+2025-04-26 09:55:44,953 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 09:55:44,953 - INFO - [list_user_files] - No files found in metadata for user: 'ELENA'
+2025-04-26 09:55:44,953 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:55:44] "GET /files/ELENA HTTP/1.1" 200 -
+2025-04-26 09:55:45,583 - INFO - [list_user_files] - Request received to list files for user: 'ELENA'
+2025-04-26 09:55:45,583 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 09:55:45,583 - INFO - [list_user_files] - No files found in metadata for user: 'ELENA'
+2025-04-26 09:55:45,583 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:55:45] "GET /files/ELENA HTTP/1.1" 200 -
+2025-04-26 09:55:45,752 - INFO - [list_user_files] - Request received to list files for user: 'ELENA'
+2025-04-26 09:55:45,752 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 09:55:45,752 - INFO - [list_user_files] - No files found in metadata for user: 'ELENA'
+2025-04-26 09:55:45,752 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:55:45] "GET /files/ELENA HTTP/1.1" 200 -
+2025-04-26 09:55:45,917 - INFO - [list_user_files] - Request received to list files for user: 'ELENA'
+2025-04-26 09:55:45,917 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 09:55:45,917 - INFO - [list_user_files] - No files found in metadata for user: 'ELENA'
+2025-04-26 09:55:45,917 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 09:55:45] "GET /files/ELENA HTTP/1.1" 200 -

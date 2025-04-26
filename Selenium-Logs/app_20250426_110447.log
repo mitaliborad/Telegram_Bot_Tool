@@ -1,0 +1,430 @@
+2025-04-26 11:04:47,411 - INFO - [<module>] - Logging configured. Log file: Selenium-Logs\app_20250426_110447.log
+2025-04-26 11:04:47,411 - INFO - [<module>] - Flask application initialized.
+2025-04-26 11:04:47,427 - INFO - [<module>] - Starting Flask development server...
+2025-04-26 11:04:47,463 - WARNING - [_log] -  * Debugger is active!
+2025-04-26 11:04:47,468 - INFO - [_log] -  * Debugger PIN: 107-410-311
+2025-04-26 11:06:57,612 - INFO - [index] - Serving index page.
+2025-04-26 11:06:57,631 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:06:57] "GET / HTTP/1.1" 200 -
+2025-04-26 11:06:57,647 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:06:57] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-26 11:06:57,697 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:06:57] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-04-26 11:09:45,309 - INFO - [list_user_files] - Request received to list files for user: 'Demon'
+2025-04-26 11:09:45,328 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:09:45,329 - INFO - [list_user_files] - Found 1 file records for user 'Demon'.
+2025-04-26 11:09:45,331 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:09:45] "GET /files/Demon HTTP/1.1" 200 -
+2025-04-26 11:09:49,093 - INFO - [delete_file_record] - Received DELETE request for user='Demon', file='archive (1).zip'
+2025-04-26 11:09:49,093 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:09:49,093 - INFO - [delete_file_record] - Found and removed record for 'archive (1).zip' for user 'Demon'.
+2025-04-26 11:09:49,093 - INFO - [delete_file_record] - User 'Demon' has no files left. Removing user entry from metadata.
+2025-04-26 11:09:49,112 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-26 11:09:49,112 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting 'archive (1).zip'.
+2025-04-26 11:09:49,112 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:09:49] "DELETE /delete-file/Demon/archive%20(1).zip HTTP/1.1" 200 -
+2025-04-26 11:09:58,740 - INFO - [list_user_files] - Request received to list files for user: 'Stefan'
+2025-04-26 11:09:58,756 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:09:58,757 - INFO - [list_user_files] - Found 1 file records for user 'Stefan'.
+2025-04-26 11:09:58,758 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:09:58] "GET /files/Stefan HTTP/1.1" 200 -
+2025-04-26 11:10:02,048 - INFO - [delete_file_record] - Received DELETE request for user='Stefan', file='Language.ini'
+2025-04-26 11:10:02,052 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:10:02,053 - INFO - [delete_file_record] - Found and removed record for 'Language.ini' for user 'Stefan'.
+2025-04-26 11:10:02,053 - INFO - [delete_file_record] - User 'Stefan' has no files left. Removing user entry from metadata.
+2025-04-26 11:10:02,073 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-26 11:10:02,073 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting 'Language.ini'.
+2025-04-26 11:10:02,074 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:10:02] "DELETE /delete-file/Stefan/Language.ini HTTP/1.1" 200 -
+2025-04-26 11:10:14,120 - INFO - [list_user_files] - Request received to list files for user: 'testt'
+2025-04-26 11:10:14,135 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:10:14,136 - INFO - [list_user_files] - Found 12 file records for user 'testt'.
+2025-04-26 11:10:14,140 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:10:14] "GET /files/testt HTTP/1.1" 200 -
+2025-04-26 11:10:17,362 - INFO - [delete_file_record] - Received DELETE request for user='testt', file='60mb.pdf'
+2025-04-26 11:10:17,362 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:10:17,362 - INFO - [delete_file_record] - Found and removed record for '60mb.pdf' for user 'testt'.
+2025-04-26 11:10:17,389 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-26 11:10:17,389 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting '60mb.pdf'.
+2025-04-26 11:10:17,390 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:10:17] "DELETE /delete-file/testt/60mb.pdf HTTP/1.1" 200 -
+2025-04-26 11:10:20,670 - INFO - [delete_file_record] - Received DELETE request for user='testt', file='03-Marketing Mastery.zip'
+2025-04-26 11:10:20,689 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:10:20,689 - INFO - [delete_file_record] - Found and removed record for '03-Marketing Mastery.zip' for user 'testt'.
+2025-04-26 11:10:20,710 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-26 11:10:20,710 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting '03-Marketing Mastery.zip'.
+2025-04-26 11:10:20,711 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:10:20] "DELETE /delete-file/testt/03-Marketing%20Mastery.zip HTTP/1.1" 200 -
+2025-04-26 11:10:25,018 - INFO - [delete_file_record] - Received DELETE request for user='testt', file='Hellbound S02 E01 WebRip 480p x265 10bit Hindi English MSubs.mkv'
+2025-04-26 11:10:25,036 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:10:25,036 - INFO - [delete_file_record] - Found and removed record for 'Hellbound S02 E01 WebRip 480p x265 10bit Hindi English MSubs.mkv' for user 'testt'.
+2025-04-26 11:10:25,057 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-26 11:10:25,064 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting 'Hellbound S02 E01 WebRip 480p x265 10bit Hindi English MSubs.mkv'.
+2025-04-26 11:10:25,067 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:10:25] "DELETE /delete-file/testt/Hellbound%20S02%20E01%20WebRip%20480p%20x265%2010bit%20Hindi%20English%20MSubs.mkv HTTP/1.1" 200 -
+2025-04-26 11:10:29,501 - INFO - [delete_file_record] - Received DELETE request for user='testt', file='Website (boodmo)-20250421T040727Z-001 (1).zip'
+2025-04-26 11:10:29,517 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:10:29,519 - INFO - [delete_file_record] - Found and removed record for 'Website (boodmo)-20250421T040727Z-001 (1).zip' for user 'testt'.
+2025-04-26 11:10:29,540 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-26 11:10:29,540 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting 'Website (boodmo)-20250421T040727Z-001 (1).zip'.
+2025-04-26 11:10:29,540 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:10:29] "DELETE /delete-file/testt/Website%20(boodmo)-20250421T040727Z-001%20(1).zip HTTP/1.1" 200 -
+2025-04-26 11:11:20,043 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-26 11:11:21,162 - INFO - [initiate_upload] - Saving temporary file for upload_id '775d3626-3d91-4508-ba54-14a4e47f0cd2' to 'uploads_temp\775d3626-3d91-4508-ba54-14a4e47f0cd2_WindsurfUserSetup-x64-1.7.0.exe'
+2025-04-26 11:11:21,362 - INFO - [initiate_upload] - Temporary file saved successfully for 'WindsurfUserSetup-x64-1.7.0.exe' (ID: 775d3626-3d91-4508-ba54-14a4e47f0cd2).
+2025-04-26 11:11:21,376 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:11:21] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-26 11:11:21,387 - INFO - [stream_progress] - SSE connection request for upload_id: 775d3626-3d91-4508-ba54-14a4e47f0cd2
+2025-04-26 11:11:21,388 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Starting processing...
+2025-04-26 11:11:21,388 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Processing upload: User='Octopus', File='WindsurfUserSetup-x64-1.7.0.exe', TempPath='uploads_temp\775d3626-3d91-4508-ba54-14a4e47f0cd2_WindsurfUserSetup-x64-1.7.0.exe'
+2025-04-26 11:11:21,388 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Original temp file size: 136991680 bytes.
+2025-04-26 11:11:21,389 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:11:21] "GET /stream-progress/775d3626-3d91-4508-ba54-14a4e47f0cd2 HTTP/1.1" 200 -
+2025-04-26 11:11:21,389 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Generated Access ID: 621e950ac3
+2025-04-26 11:11:21,390 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] 'WindsurfUserSetup-x64-1.7.0.exe' is large. Compressing before splitting.
+2025-04-26 11:11:21,391 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Created temporary file for compression result: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\775d3626-3d91-4508-ba54-14a4e47f0cd2_comp_39kj_kav.zip
+2025-04-26 11:11:26,872 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Finished compressing to 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\775d3626-3d91-4508-ba54-14a4e47f0cd2_comp_39kj_kav.zip'. Size: 136524084 bytes. Time: 5.48s.
+2025-04-26 11:11:26,905 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Reading chunk 1 for COMPRESSED file starting at byte 0.
+2025-04-26 11:11:26,918 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Read chunk 1 (20971520 bytes). Total read: 20971520/136524084
+2025-04-26 11:11:26,918 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Attempting send chunk 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_001' to chat ID: -4603853425
+2025-04-26 11:11:26,918 - INFO - [send_file_to_telegram] - Sending file 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_001' to Telegram chat ID: -4603853425
+2025-04-26 11:11:37,642 - INFO - [send_file_to_telegram] - Telegram API success for 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_001'.
+2025-04-26 11:11:37,645 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Attempting send chunk 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_001' to chat ID: -1002614397019
+2025-04-26 11:11:37,645 - INFO - [send_file_to_telegram] - Sending file 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_001' to Telegram chat ID: -1002614397019
+2025-04-26 11:11:53,769 - INFO - [send_file_to_telegram] - Telegram API success for 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_001'.
+2025-04-26 11:11:53,772 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Attempting send chunk 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_001' to chat ID: -4641852757
+2025-04-26 11:11:53,773 - INFO - [send_file_to_telegram] - Sending file 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_001' to Telegram chat ID: -4641852757
+2025-04-26 11:12:08,234 - INFO - [send_file_to_telegram] - Telegram API success for 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_001'.
+2025-04-26 11:12:08,238 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Chunk 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_001' sent successfully to PRIMARY chat.
+2025-04-26 11:12:08,239 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Successfully processed metadata for chunk 1 across all attempts.
+2025-04-26 11:12:08,240 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Reading chunk 2 for COMPRESSED file starting at byte 20971520.
+2025-04-26 11:12:08,257 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Read chunk 2 (20971520 bytes). Total read: 41943040/136524084
+2025-04-26 11:12:08,262 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Attempting send chunk 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_002' to chat ID: -4603853425
+2025-04-26 11:12:08,270 - INFO - [send_file_to_telegram] - Sending file 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_002' to Telegram chat ID: -4603853425
+2025-04-26 11:12:19,916 - INFO - [send_file_to_telegram] - Telegram API success for 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_002'.
+2025-04-26 11:12:19,918 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Attempting send chunk 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_002' to chat ID: -1002614397019
+2025-04-26 11:12:19,919 - INFO - [send_file_to_telegram] - Sending file 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_002' to Telegram chat ID: -1002614397019
+2025-04-26 11:12:30,554 - INFO - [send_file_to_telegram] - Telegram API success for 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_002'.
+2025-04-26 11:12:30,557 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Attempting send chunk 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_002' to chat ID: -4641852757
+2025-04-26 11:12:30,558 - INFO - [send_file_to_telegram] - Sending file 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_002' to Telegram chat ID: -4641852757
+2025-04-26 11:12:39,016 - INFO - [send_file_to_telegram] - Telegram API success for 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_002'.
+2025-04-26 11:12:39,019 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Chunk 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_002' sent successfully to PRIMARY chat.
+2025-04-26 11:12:39,020 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Successfully processed metadata for chunk 2 across all attempts.
+2025-04-26 11:12:39,020 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Reading chunk 3 for COMPRESSED file starting at byte 41943040.
+2025-04-26 11:12:39,036 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Read chunk 3 (20971520 bytes). Total read: 62914560/136524084
+2025-04-26 11:12:39,036 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Attempting send chunk 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_003' to chat ID: -4603853425
+2025-04-26 11:12:39,037 - INFO - [send_file_to_telegram] - Sending file 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_003' to Telegram chat ID: -4603853425
+2025-04-26 11:12:52,542 - INFO - [send_file_to_telegram] - Telegram API success for 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_003'.
+2025-04-26 11:12:52,545 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Attempting send chunk 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_003' to chat ID: -1002614397019
+2025-04-26 11:12:52,545 - INFO - [send_file_to_telegram] - Sending file 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_003' to Telegram chat ID: -1002614397019
+2025-04-26 11:13:10,477 - INFO - [send_file_to_telegram] - Telegram API success for 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_003'.
+2025-04-26 11:13:10,480 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Attempting send chunk 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_003' to chat ID: -4641852757
+2025-04-26 11:13:10,480 - INFO - [send_file_to_telegram] - Sending file 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_003' to Telegram chat ID: -4641852757
+2025-04-26 11:13:23,839 - INFO - [send_file_to_telegram] - Telegram API success for 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_003'.
+2025-04-26 11:13:23,844 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Chunk 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_003' sent successfully to PRIMARY chat.
+2025-04-26 11:13:23,847 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Successfully processed metadata for chunk 3 across all attempts.
+2025-04-26 11:13:23,879 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Reading chunk 4 for COMPRESSED file starting at byte 62914560.
+2025-04-26 11:13:23,909 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Read chunk 4 (20971520 bytes). Total read: 83886080/136524084
+2025-04-26 11:13:23,909 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Attempting send chunk 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_004' to chat ID: -4603853425
+2025-04-26 11:13:23,910 - INFO - [send_file_to_telegram] - Sending file 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_004' to Telegram chat ID: -4603853425
+2025-04-26 11:13:31,454 - INFO - [send_file_to_telegram] - Telegram API success for 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_004'.
+2025-04-26 11:13:31,460 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Attempting send chunk 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_004' to chat ID: -1002614397019
+2025-04-26 11:13:31,464 - INFO - [send_file_to_telegram] - Sending file 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_004' to Telegram chat ID: -1002614397019
+2025-04-26 11:13:44,304 - INFO - [send_file_to_telegram] - Telegram API success for 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_004'.
+2025-04-26 11:13:44,307 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Attempting send chunk 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_004' to chat ID: -4641852757
+2025-04-26 11:13:44,307 - INFO - [send_file_to_telegram] - Sending file 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_004' to Telegram chat ID: -4641852757
+2025-04-26 11:14:15,878 - INFO - [send_file_to_telegram] - Telegram API success for 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_004'.
+2025-04-26 11:14:15,881 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Chunk 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_004' sent successfully to PRIMARY chat.
+2025-04-26 11:14:15,883 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Successfully processed metadata for chunk 4 across all attempts.
+2025-04-26 11:14:15,885 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Reading chunk 5 for COMPRESSED file starting at byte 83886080.
+2025-04-26 11:14:15,902 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Read chunk 5 (20971520 bytes). Total read: 104857600/136524084
+2025-04-26 11:14:15,903 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Attempting send chunk 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_005' to chat ID: -4603853425
+2025-04-26 11:14:15,904 - INFO - [send_file_to_telegram] - Sending file 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_005' to Telegram chat ID: -4603853425
+2025-04-26 11:14:34,861 - INFO - [send_file_to_telegram] - Telegram API success for 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_005'.
+2025-04-26 11:14:34,865 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Attempting send chunk 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_005' to chat ID: -1002614397019
+2025-04-26 11:14:34,865 - INFO - [send_file_to_telegram] - Sending file 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_005' to Telegram chat ID: -1002614397019
+2025-04-26 11:14:53,888 - INFO - [send_file_to_telegram] - Telegram API success for 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_005'.
+2025-04-26 11:14:53,890 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Attempting send chunk 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_005' to chat ID: -4641852757
+2025-04-26 11:14:53,891 - INFO - [send_file_to_telegram] - Sending file 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_005' to Telegram chat ID: -4641852757
+2025-04-26 11:15:09,334 - INFO - [send_file_to_telegram] - Telegram API success for 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_005'.
+2025-04-26 11:15:09,336 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Chunk 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_005' sent successfully to PRIMARY chat.
+2025-04-26 11:15:09,337 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Successfully processed metadata for chunk 5 across all attempts.
+2025-04-26 11:15:09,338 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Reading chunk 6 for COMPRESSED file starting at byte 104857600.
+2025-04-26 11:15:09,353 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Read chunk 6 (20971520 bytes). Total read: 125829120/136524084
+2025-04-26 11:15:09,354 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Attempting send chunk 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_006' to chat ID: -4603853425
+2025-04-26 11:15:09,355 - INFO - [send_file_to_telegram] - Sending file 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_006' to Telegram chat ID: -4603853425
+2025-04-26 11:15:17,911 - INFO - [send_file_to_telegram] - Telegram API success for 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_006'.
+2025-04-26 11:15:17,915 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Attempting send chunk 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_006' to chat ID: -1002614397019
+2025-04-26 11:15:17,915 - INFO - [send_file_to_telegram] - Sending file 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_006' to Telegram chat ID: -1002614397019
+2025-04-26 11:15:35,873 - INFO - [send_file_to_telegram] - Telegram API success for 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_006'.
+2025-04-26 11:15:35,876 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Attempting send chunk 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_006' to chat ID: -4641852757
+2025-04-26 11:15:35,877 - INFO - [send_file_to_telegram] - Sending file 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_006' to Telegram chat ID: -4641852757
+2025-04-26 11:15:46,339 - INFO - [send_file_to_telegram] - Telegram API success for 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_006'.
+2025-04-26 11:15:46,345 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Chunk 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_006' sent successfully to PRIMARY chat.
+2025-04-26 11:15:46,346 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Successfully processed metadata for chunk 6 across all attempts.
+2025-04-26 11:15:46,368 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Reading chunk 7 for COMPRESSED file starting at byte 125829120.
+2025-04-26 11:15:46,382 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Read chunk 7 (10694964 bytes). Total read: 136524084/136524084
+2025-04-26 11:15:46,383 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Attempting send chunk 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_007' to chat ID: -4603853425
+2025-04-26 11:15:46,384 - INFO - [send_file_to_telegram] - Sending file 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_007' to Telegram chat ID: -4603853425
+2025-04-26 11:15:53,198 - INFO - [send_file_to_telegram] - Telegram API success for 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_007'.
+2025-04-26 11:15:53,201 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Attempting send chunk 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_007' to chat ID: -1002614397019
+2025-04-26 11:15:53,201 - INFO - [send_file_to_telegram] - Sending file 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_007' to Telegram chat ID: -1002614397019
+2025-04-26 11:16:00,752 - INFO - [send_file_to_telegram] - Telegram API success for 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_007'.
+2025-04-26 11:16:00,754 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Attempting send chunk 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_007' to chat ID: -4641852757
+2025-04-26 11:16:00,754 - INFO - [send_file_to_telegram] - Sending file 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_007' to Telegram chat ID: -4641852757
+2025-04-26 11:16:05,314 - INFO - [send_file_to_telegram] - Telegram API success for 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_007'.
+2025-04-26 11:16:05,316 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Chunk 'WindsurfUserSetup-x64-1.7.0.exe.zip.part_007' sent successfully to PRIMARY chat.
+2025-04-26 11:16:05,317 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Successfully processed metadata for chunk 7 across all attempts.
+2025-04-26 11:16:05,318 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Reading chunk 8 for COMPRESSED file starting at byte 136524084.
+2025-04-26 11:16:05,324 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Finished reading all chunks for compressed file.
+2025-04-26 11:16:05,328 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] All 7 chunks sent successfully to primary. Saving metadata.
+2025-04-26 11:16:05,347 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:16:05,362 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-26 11:16:05,363 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Generated landing page URL: http://127.0.0.1:5000/get/621e950ac3
+2025-04-26 11:16:05,363 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Entering final cleanup.
+2025-04-26 11:16:05,379 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Successfully deleted original temporary file: uploads_temp\775d3626-3d91-4508-ba54-14a4e47f0cd2_WindsurfUserSetup-x64-1.7.0.exe
+2025-04-26 11:16:05,396 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Successfully deleted temporary compressed file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\775d3626-3d91-4508-ba54-14a4e47f0cd2_comp_39kj_kav.zip
+2025-04-26 11:16:05,397 - INFO - [process_upload_and_generate_updates] - [775d3626-3d91-4508-ba54-14a4e47f0cd2] Processing finished with status: completed
+2025-04-26 11:16:55,688 - INFO - [get_file_by_access_id] - Received request for access_id: 621e950ac3
+2025-04-26 11:16:55,725 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:16:55,725 - INFO - [get_file_by_access_id] - Found file 'WindsurfUserSetup-x64-1.7.0.exe'. Rendering download page.
+2025-04-26 11:16:55,730 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:16:55] "GET /get/621e950ac3 HTTP/1.1" 200 -
+2025-04-26 11:17:17,722 - INFO - [stream_download_by_access_id] - [2123b92c-becf-404e-ba85-b8af2eb24023] SSE connection request for download prep using access_id: 621e950ac3
+2025-04-26 11:17:17,724 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:17:17,724 - INFO - [_prepare_and_stream_download_generator] - [2123b92c-becf-404e-ba85-b8af2eb24023] Download preparation generator started.
+2025-04-26 11:17:17,724 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:17:17] "GET /stream-download/621e950ac3 HTTP/1.1" 200 -
+2025-04-26 11:17:17,832 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:17:17,832 - INFO - [_prepare_and_stream_download_generator] - [2123b92c-becf-404e-ba85-b8af2eb24023] Found metadata for 'WindsurfUserSetup-x64-1.7.0.exe' (User: Octopus, Size: 136991680)
+2025-04-26 11:17:18,035 - INFO - [_prepare_and_stream_download_generator] - [2123b92c-becf-404e-ba85-b8af2eb24023] Preparing split file 'WindsurfUserSetup-x64-1.7.0.exe'.
+2025-04-26 11:17:18,035 - INFO - [_prepare_and_stream_download_generator] - [2123b92c-becf-404e-ba85-b8af2eb24023] Expecting 7 chunks, compressed size ~130.2 MB.
+2025-04-26 11:17:18,036 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIDxWgMchDCiyECmQ-AH2nq9N09PV-aAALmFQACI41oVCflROAuIsXPNgQ
+2025-04-26 11:17:21,942 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_438.part_001
+2025-04-26 11:17:21,942 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_438.part_001
+2025-04-26 11:17:30,402 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIDxWgMchDCiyECmQ-AH2nq9N09PV-aAALmFQACI41oVCflROAuIsXPNgQ.
+2025-04-26 11:17:30,439 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIDx2gMcjpfqti8kmsjqvj7XGdUGeI8AALnFQACI41oVON-u1c2Pg0-NgQ
+2025-04-26 11:17:33,202 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_439.part_002
+2025-04-26 11:17:33,202 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_439.part_002
+2025-04-26 11:17:37,092 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIDx2gMcjpfqti8kmsjqvj7XGdUGeI8AALnFQACI41oVON-u1c2Pg0-NgQ.
+2025-04-26 11:17:37,128 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIDyWgMclu8O4f7yIEFRg8Dtw-lWLCwAALoFQACI41oVHXtj-zR-1fWNgQ
+2025-04-26 11:17:39,742 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_440.part_003
+2025-04-26 11:17:39,742 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_440.part_003
+2025-04-26 11:17:44,562 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIDyWgMclu8O4f7yIEFRg8Dtw-lWLCwAALoFQACI41oVHXtj-zR-1fWNgQ.
+2025-04-26 11:17:44,593 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIDy2gMcoLc-jLGYB7P6ZYXMphrkh_4AALpFQACI41oVLxLQownS6iHNgQ
+2025-04-26 11:17:47,332 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_441.part_004
+2025-04-26 11:17:47,332 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_441.part_004
+2025-04-26 11:17:54,352 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIDy2gMcoLc-jLGYB7P6ZYXMphrkh_4AALpFQACI41oVLxLQownS6iHNgQ.
+2025-04-26 11:17:54,382 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIDzWgMcsExlM5W7b7u5XH1g6bKzd-9AALqFQACI41oVGfe8Ug1jtDeNgQ
+2025-04-26 11:17:57,600 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_442.part_005
+2025-04-26 11:17:57,601 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_442.part_005
+2025-04-26 11:18:02,464 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIDzWgMcsExlM5W7b7u5XH1g6bKzd-9AALqFQACI41oVGfe8Ug1jtDeNgQ.
+2025-04-26 11:18:02,496 - INFO - [_prepare_and_stream_download_generator] - [2123b92c-becf-404e-ba85-b8af2eb24023] Generator finished or errored. Cleaning up intermediate files.
+2025-04-26 11:18:02,507 - INFO - [_prepare_and_stream_download_generator] - [2123b92c-becf-404e-ba85-b8af2eb24023] Cleaned up intermediate reassembled file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_reass_2123b92c-becf-404e-ba85-b8af2eb24023_ckett61i.zip.tmp
+2025-04-26 11:18:02,507 - INFO - [_prepare_and_stream_download_generator] - [2123b92c-becf-404e-ba85-b8af2eb24023] Generator task ended.
+2025-04-26 11:18:07,797 - INFO - [list_user_files] - Request received to list files for user: 'Octopus'
+2025-04-26 11:18:07,804 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:18:07,805 - INFO - [list_user_files] - Found 31 file records for user 'Octopus'.
+2025-04-26 11:18:07,810 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:18:07] "GET /files/Octopus HTTP/1.1" 200 -
+2025-04-26 11:18:13,195 - INFO - [prepare_download_stream] - [5fbf15ed-7eaf-4860-b3c3-e1e711844e7d] SSE connection request for download prep: User='Octopus', File='WindsurfUserSetup-x64-1.7.0.exe'
+2025-04-26 11:18:13,195 - INFO - [_prepare_download_and_generate_updates] - [5fbf15ed-7eaf-4860-b3c3-e1e711844e7d] Starting download preparation generator for user 'Octopus', file 'WindsurfUserSetup-x64-1.7.0.exe'...
+2025-04-26 11:18:13,202 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:18:13] "GET /prepare-download/Octopus/WindsurfUserSetup-x64-1.7.0.exe HTTP/1.1" 200 -
+2025-04-26 11:18:13,407 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:18:13,407 - INFO - [_prepare_download_and_generate_updates] - [5fbf15ed-7eaf-4860-b3c3-e1e711844e7d] Prep SPLIT download for 'WindsurfUserSetup-x64-1.7.0.exe'
+2025-04-26 11:18:13,408 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIDxWgMchDCiyECmQ-AH2nq9N09PV-aAALmFQACI41oVCflROAuIsXPNgQ
+2025-04-26 11:18:13,966 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_438.part_001
+2025-04-26 11:18:13,966 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_438.part_001
+2025-04-26 11:18:19,962 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIDxWgMchDCiyECmQ-AH2nq9N09PV-aAALmFQACI41oVCflROAuIsXPNgQ.
+2025-04-26 11:18:19,995 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIDx2gMcjpfqti8kmsjqvj7XGdUGeI8AALnFQACI41oVON-u1c2Pg0-NgQ
+2025-04-26 11:18:20,442 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_439.part_002
+2025-04-26 11:18:20,442 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_439.part_002
+2025-04-26 11:18:27,460 - INFO - [index] - Serving index page.
+2025-04-26 11:18:27,462 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:18:27] "GET / HTTP/1.1" 200 -
+2025-04-26 11:18:27,497 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:18:27] "[33mGET /static/style.css HTTP/1.1[0m" 404 -
+2025-04-26 11:18:28,402 - INFO - [download_telegram_file_content] - Successfully downloaded 20971520 bytes for file_id BQACAgUAAxkDAAIDx2gMcjpfqti8kmsjqvj7XGdUGeI8AALnFQACI41oVON-u1c2Pg0-NgQ.
+2025-04-26 11:18:28,434 - INFO - [_prepare_download_and_generate_updates] - [5fbf15ed-7eaf-4860-b3c3-e1e711844e7d] Generator finished or errored. Cleaning up intermediate files.
+2025-04-26 11:18:28,435 - INFO - [_prepare_download_and_generate_updates] - [5fbf15ed-7eaf-4860-b3c3-e1e711844e7d] Cleaning up intermediate reassembled file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_reass_5fbf15ed-7eaf-4860-b3c3-e1e711844e7d_qrba26ah.zip.tmp
+2025-04-26 11:18:28,438 - INFO - [_prepare_download_and_generate_updates] - [5fbf15ed-7eaf-4860-b3c3-e1e711844e7d] Generator task ended.
+2025-04-26 11:18:31,047 - INFO - [list_user_files] - Request received to list files for user: 'Octopus'
+2025-04-26 11:18:31,050 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:18:31,051 - INFO - [list_user_files] - Found 31 file records for user 'Octopus'.
+2025-04-26 11:18:31,052 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:18:31] "GET /files/Octopus HTTP/1.1" 200 -
+2025-04-26 11:18:36,558 - INFO - [delete_file_record] - Received DELETE request for user='Octopus', file='WindsurfUserSetup-x64-1.7.0.exe'
+2025-04-26 11:18:36,562 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:18:36,562 - INFO - [delete_file_record] - Found and removed record for 'WindsurfUserSetup-x64-1.7.0.exe' for user 'Octopus'.
+2025-04-26 11:18:36,577 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-26 11:18:36,579 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting 'WindsurfUserSetup-x64-1.7.0.exe'.
+2025-04-26 11:18:36,579 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:18:36] "DELETE /delete-file/Octopus/WindsurfUserSetup-x64-1.7.0.exe HTTP/1.1" 200 -
+2025-04-26 11:19:17,787 - INFO - [delete_file_record] - Received DELETE request for user='Octopus', file='.gitattributes'
+2025-04-26 11:19:17,806 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:19:17,806 - INFO - [delete_file_record] - Found and removed record for '.gitattributes' for user 'Octopus'.
+2025-04-26 11:19:17,826 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-26 11:19:17,826 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting '.gitattributes'.
+2025-04-26 11:19:17,826 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:19:17] "DELETE /delete-file/Octopus/.gitattributes HTTP/1.1" 200 -
+2025-04-26 11:19:19,559 - INFO - [delete_file_record] - Received DELETE request for user='Octopus', file='test download (1) (5) (1).mkv'
+2025-04-26 11:19:19,579 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:19:19,579 - INFO - [delete_file_record] - Found and removed record for 'test download (1) (5) (1).mkv' for user 'Octopus'.
+2025-04-26 11:19:19,593 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-26 11:19:19,593 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting 'test download (1) (5) (1).mkv'.
+2025-04-26 11:19:19,596 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:19:19] "DELETE /delete-file/Octopus/test%20download%20(1)%20(5)%20(1).mkv HTTP/1.1" 200 -
+2025-04-26 11:19:22,509 - INFO - [delete_file_record] - Received DELETE request for user='Octopus', file='Sublime Text Build 3211 x64.zip'
+2025-04-26 11:19:22,526 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:19:22,526 - INFO - [delete_file_record] - Found and removed record for 'Sublime Text Build 3211 x64.zip' for user 'Octopus'.
+2025-04-26 11:19:22,542 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-26 11:19:22,543 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting 'Sublime Text Build 3211 x64.zip'.
+2025-04-26 11:19:22,544 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:19:22] "DELETE /delete-file/Octopus/Sublime%20Text%20Build%203211%20x64.zip HTTP/1.1" 200 -
+2025-04-26 11:19:24,847 - INFO - [delete_file_record] - Received DELETE request for user='Octopus', file='Sublime Text Build 3211 x64.zip'
+2025-04-26 11:19:24,865 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:19:24,865 - WARNING - [delete_file_record] - Delete request failed: File 'Sublime Text Build 3211 x64.zip' not found for user 'Octopus'.
+2025-04-26 11:19:24,865 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:19:24] "[33mDELETE /delete-file/Octopus/Sublime%20Text%20Build%203211%20x64.zip HTTP/1.1[0m" 404 -
+2025-04-26 11:19:27,887 - INFO - [delete_file_record] - Received DELETE request for user='Octopus', file='Sublime Text Build 3211 x64.zip'
+2025-04-26 11:19:27,890 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:19:27,890 - WARNING - [delete_file_record] - Delete request failed: File 'Sublime Text Build 3211 x64.zip' not found for user 'Octopus'.
+2025-04-26 11:19:27,890 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:19:27] "[33mDELETE /delete-file/Octopus/Sublime%20Text%20Build%203211%20x64.zip HTTP/1.1[0m" 404 -
+2025-04-26 11:19:30,053 - INFO - [delete_file_record] - Received DELETE request for user='Octopus', file='requirements.txt'
+2025-04-26 11:19:30,053 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:19:30,053 - INFO - [delete_file_record] - Found and removed record for 'requirements.txt' for user 'Octopus'.
+2025-04-26 11:19:30,069 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-26 11:19:30,069 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting 'requirements.txt'.
+2025-04-26 11:19:30,069 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:19:30] "DELETE /delete-file/Octopus/requirements.txt HTTP/1.1" 200 -
+2025-04-26 11:19:32,019 - INFO - [delete_file_record] - Received DELETE request for user='Octopus', file='Telegram_app.py'
+2025-04-26 11:19:32,035 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:19:32,037 - INFO - [delete_file_record] - Found and removed record for 'Telegram_app.py' for user 'Octopus'.
+2025-04-26 11:19:32,041 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-26 11:19:32,041 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting 'Telegram_app.py'.
+2025-04-26 11:19:32,052 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:19:32] "DELETE /delete-file/Octopus/Telegram_app.py HTTP/1.1" 200 -
+2025-04-26 11:19:34,275 - INFO - [delete_file_record] - Received DELETE request for user='Octopus', file='Telegram_app.py'
+2025-04-26 11:19:34,279 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:19:34,279 - WARNING - [delete_file_record] - Delete request failed: File 'Telegram_app.py' not found for user 'Octopus'.
+2025-04-26 11:19:34,291 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:19:34] "[33mDELETE /delete-file/Octopus/Telegram_app.py HTTP/1.1[0m" 404 -
+2025-04-26 11:19:36,707 - INFO - [delete_file_record] - Received DELETE request for user='Octopus', file='Telegram_app.py'
+2025-04-26 11:19:36,707 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:19:36,707 - WARNING - [delete_file_record] - Delete request failed: File 'Telegram_app.py' not found for user 'Octopus'.
+2025-04-26 11:19:36,707 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:19:36] "[33mDELETE /delete-file/Octopus/Telegram_app.py HTTP/1.1[0m" 404 -
+2025-04-26 11:19:38,459 - INFO - [delete_file_record] - Received DELETE request for user='Octopus', file='test download (1) (5).mkv'
+2025-04-26 11:19:38,459 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:19:38,459 - INFO - [delete_file_record] - Found and removed record for 'test download (1) (5).mkv' for user 'Octopus'.
+2025-04-26 11:19:38,474 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-26 11:19:38,475 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting 'test download (1) (5).mkv'.
+2025-04-26 11:19:38,477 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:19:38] "DELETE /delete-file/Octopus/test%20download%20(1)%20(5).mkv HTTP/1.1" 200 -
+2025-04-26 11:19:40,207 - INFO - [delete_file_record] - Received DELETE request for user='Octopus', file='log (3).txt'
+2025-04-26 11:19:40,214 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:19:40,214 - INFO - [delete_file_record] - Found and removed record for 'log (3).txt' for user 'Octopus'.
+2025-04-26 11:19:40,238 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-26 11:19:40,238 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting 'log (3).txt'.
+2025-04-26 11:19:40,238 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:19:40] "DELETE /delete-file/Octopus/log%20(3).txt HTTP/1.1" 200 -
+2025-04-26 11:19:42,557 - INFO - [delete_file_record] - Received DELETE request for user='Octopus', file='bot (1).py'
+2025-04-26 11:19:42,573 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:19:42,574 - INFO - [delete_file_record] - Found and removed record for 'bot (1).py' for user 'Octopus'.
+2025-04-26 11:19:42,592 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-26 11:19:42,592 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting 'bot (1).py'.
+2025-04-26 11:19:42,593 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:19:42] "DELETE /delete-file/Octopus/bot%20(1).py HTTP/1.1" 200 -
+2025-04-26 11:19:44,112 - INFO - [delete_file_record] - Received DELETE request for user='Octopus', file='memtest.exe.mui'
+2025-04-26 11:19:44,125 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:19:44,127 - INFO - [delete_file_record] - Found and removed record for 'memtest.exe.mui' for user 'Octopus'.
+2025-04-26 11:19:44,133 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-26 11:19:44,133 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting 'memtest.exe.mui'.
+2025-04-26 11:19:44,133 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:19:44] "DELETE /delete-file/Octopus/memtest.exe.mui HTTP/1.1" 200 -
+2025-04-26 11:19:45,925 - INFO - [delete_file_record] - Received DELETE request for user='Octopus', file='tsetup-x64.5.12.3.exe'
+2025-04-26 11:19:45,939 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:19:45,939 - INFO - [delete_file_record] - Found and removed record for 'tsetup-x64.5.12.3.exe' for user 'Octopus'.
+2025-04-26 11:19:45,958 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-26 11:19:45,958 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting 'tsetup-x64.5.12.3.exe'.
+2025-04-26 11:19:45,959 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:19:45] "DELETE /delete-file/Octopus/tsetup-x64.5.12.3.exe HTTP/1.1" 200 -
+2025-04-26 11:19:47,548 - INFO - [delete_file_record] - Received DELETE request for user='Octopus', file='appverifUI.dll'
+2025-04-26 11:19:47,563 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:19:47,563 - INFO - [delete_file_record] - Found and removed record for 'appverifUI.dll' for user 'Octopus'.
+2025-04-26 11:19:47,581 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-26 11:19:47,581 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting 'appverifUI.dll'.
+2025-04-26 11:19:47,581 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:19:47] "DELETE /delete-file/Octopus/appverifUI.dll HTTP/1.1" 200 -
+2025-04-26 11:19:49,319 - INFO - [delete_file_record] - Received DELETE request for user='Octopus', file='Re.txt'
+2025-04-26 11:19:49,333 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:19:49,333 - INFO - [delete_file_record] - Found and removed record for 'Re.txt' for user 'Octopus'.
+2025-04-26 11:19:49,352 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-26 11:19:49,352 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting 'Re.txt'.
+2025-04-26 11:19:49,353 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:19:49] "DELETE /delete-file/Octopus/Re.txt HTTP/1.1" 200 -
+2025-04-26 11:19:50,875 - INFO - [delete_file_record] - Received DELETE request for user='Octopus', file='file_9 (1) (1).py'
+2025-04-26 11:19:50,891 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:19:50,891 - INFO - [delete_file_record] - Found and removed record for 'file_9 (1) (1).py' for user 'Octopus'.
+2025-04-26 11:19:50,908 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-26 11:19:50,908 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting 'file_9 (1) (1).py'.
+2025-04-26 11:19:50,910 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:19:50] "DELETE /delete-file/Octopus/file_9%20(1)%20(1).py HTTP/1.1" 200 -
+2025-04-26 11:19:52,886 - INFO - [delete_file_record] - Received DELETE request for user='Octopus', file='log.txt'
+2025-04-26 11:19:52,892 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:19:52,892 - INFO - [delete_file_record] - Found and removed record for 'log.txt' for user 'Octopus'.
+2025-04-26 11:19:52,916 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-26 11:19:52,916 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting 'log.txt'.
+2025-04-26 11:19:52,916 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:19:52] "DELETE /delete-file/Octopus/log.txt HTTP/1.1" 200 -
+2025-04-26 11:19:54,863 - INFO - [delete_file_record] - Received DELETE request for user='Octopus', file='Telegram.exe'
+2025-04-26 11:19:54,867 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:19:54,867 - INFO - [delete_file_record] - Found and removed record for 'Telegram.exe' for user 'Octopus'.
+2025-04-26 11:19:54,890 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-26 11:19:54,890 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting 'Telegram.exe'.
+2025-04-26 11:19:54,891 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:19:54] "DELETE /delete-file/Octopus/Telegram.exe HTTP/1.1" 200 -
+2025-04-26 11:19:56,487 - INFO - [delete_file_record] - Received DELETE request for user='Octopus', file='image (2).png'
+2025-04-26 11:19:56,490 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:19:56,490 - INFO - [delete_file_record] - Found and removed record for 'image (2).png' for user 'Octopus'.
+2025-04-26 11:19:56,506 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-26 11:19:56,506 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting 'image (2).png'.
+2025-04-26 11:19:56,506 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:19:56] "DELETE /delete-file/Octopus/image%20(2).png HTTP/1.1" 200 -
+2025-04-26 11:19:58,371 - INFO - [delete_file_record] - Received DELETE request for user='Octopus', file='BootDebuggerFiles.ini'
+2025-04-26 11:19:58,386 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:19:58,386 - INFO - [delete_file_record] - Found and removed record for 'BootDebuggerFiles.ini' for user 'Octopus'.
+2025-04-26 11:19:58,402 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-26 11:19:58,403 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting 'BootDebuggerFiles.ini'.
+2025-04-26 11:19:58,404 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:19:58] "DELETE /delete-file/Octopus/BootDebuggerFiles.ini HTTP/1.1" 200 -
+2025-04-26 11:20:00,611 - INFO - [delete_file_record] - Received DELETE request for user='Octopus', file='file_9 (1) (1).py'
+2025-04-26 11:20:00,626 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:20:00,635 - WARNING - [delete_file_record] - Delete request failed: File 'file_9 (1) (1).py' not found for user 'Octopus'.
+2025-04-26 11:20:00,635 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:20:00] "[33mDELETE /delete-file/Octopus/file_9%20(1)%20(1).py HTTP/1.1[0m" 404 -
+2025-04-26 11:20:04,567 - INFO - [delete_file_record] - Received DELETE request for user='Octopus', file='60mb (1) (1).pdf'
+2025-04-26 11:20:04,567 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:20:04,567 - INFO - [delete_file_record] - Found and removed record for '60mb (1) (1).pdf' for user 'Octopus'.
+2025-04-26 11:20:04,582 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-26 11:20:04,584 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting '60mb (1) (1).pdf'.
+2025-04-26 11:20:04,584 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:20:04] "DELETE /delete-file/Octopus/60mb%20(1)%20(1).pdf HTTP/1.1" 200 -
+2025-04-26 11:20:06,266 - INFO - [delete_file_record] - Received DELETE request for user='Octopus', file='3dicons-png-dynamic-1.0.0.zip'
+2025-04-26 11:20:06,272 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:20:06,272 - INFO - [delete_file_record] - Found and removed record for '3dicons-png-dynamic-1.0.0.zip' for user 'Octopus'.
+2025-04-26 11:20:06,296 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-26 11:20:06,296 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting '3dicons-png-dynamic-1.0.0.zip'.
+2025-04-26 11:20:06,296 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:20:06] "DELETE /delete-file/Octopus/3dicons-png-dynamic-1.0.0.zip HTTP/1.1" 200 -
+2025-04-26 11:20:07,926 - INFO - [delete_file_record] - Received DELETE request for user='Octopus', file='3dicons-png-dynamic-1.0.0.zip'
+2025-04-26 11:20:07,926 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:20:07,926 - WARNING - [delete_file_record] - Delete request failed: File '3dicons-png-dynamic-1.0.0.zip' not found for user 'Octopus'.
+2025-04-26 11:20:07,942 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:20:07] "[33mDELETE /delete-file/Octopus/3dicons-png-dynamic-1.0.0.zip HTTP/1.1[0m" 404 -
+2025-04-26 11:20:09,501 - INFO - [delete_file_record] - Received DELETE request for user='Octopus', file='3dicons-png-dynamic-1.0.0.zip'
+2025-04-26 11:20:09,501 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:20:09,501 - WARNING - [delete_file_record] - Delete request failed: File '3dicons-png-dynamic-1.0.0.zip' not found for user 'Octopus'.
+2025-04-26 11:20:09,501 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:20:09] "[33mDELETE /delete-file/Octopus/3dicons-png-dynamic-1.0.0.zip HTTP/1.1[0m" 404 -
+2025-04-26 11:20:12,291 - INFO - [delete_file_record] - Received DELETE request for user='Octopus', file='3dicons-png-dynamic-1.0.0.zip'
+2025-04-26 11:20:12,294 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:20:12,295 - WARNING - [delete_file_record] - Delete request failed: File '3dicons-png-dynamic-1.0.0.zip' not found for user 'Octopus'.
+2025-04-26 11:20:12,296 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:20:12] "[33mDELETE /delete-file/Octopus/3dicons-png-dynamic-1.0.0.zip HTTP/1.1[0m" 404 -
+2025-04-26 11:20:14,785 - INFO - [delete_file_record] - Received DELETE request for user='Octopus', file='multiloginx-amd64 (1).exe'
+2025-04-26 11:20:14,785 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:20:14,785 - INFO - [delete_file_record] - Found and removed record for 'multiloginx-amd64 (1).exe' for user 'Octopus'.
+2025-04-26 11:20:14,785 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-26 11:20:14,785 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting 'multiloginx-amd64 (1).exe'.
+2025-04-26 11:20:14,803 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:20:14] "DELETE /delete-file/Octopus/multiloginx-amd64%20(1).exe HTTP/1.1" 200 -
+2025-04-26 11:20:18,489 - INFO - [delete_file_record] - Received DELETE request for user='Octopus', file='bot.py'
+2025-04-26 11:20:18,496 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:20:18,496 - INFO - [delete_file_record] - Found and removed record for 'bot.py' for user 'Octopus'.
+2025-04-26 11:20:18,520 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-26 11:20:18,520 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting 'bot.py'.
+2025-04-26 11:20:18,521 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:20:18] "DELETE /delete-file/Octopus/bot.py HTTP/1.1" 200 -
+2025-04-26 11:20:21,463 - INFO - [delete_file_record] - Received DELETE request for user='Octopus', file='70mb.pdf'
+2025-04-26 11:20:21,481 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:20:21,481 - INFO - [delete_file_record] - Found and removed record for '70mb.pdf' for user 'Octopus'.
+2025-04-26 11:20:21,497 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-26 11:20:21,498 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting '70mb.pdf'.
+2025-04-26 11:20:21,498 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:20:21] "DELETE /delete-file/Octopus/70mb.pdf HTTP/1.1" 200 -
+2025-04-26 11:20:23,542 - INFO - [delete_file_record] - Received DELETE request for user='Octopus', file='agent.exe'
+2025-04-26 11:20:23,550 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:20:23,550 - INFO - [delete_file_record] - Found and removed record for 'agent.exe' for user 'Octopus'.
+2025-04-26 11:20:23,572 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-26 11:20:23,572 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting 'agent.exe'.
+2025-04-26 11:20:23,573 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:20:23] "DELETE /delete-file/Octopus/agent.exe HTTP/1.1" 200 -
+2025-04-26 11:20:25,402 - INFO - [delete_file_record] - Received DELETE request for user='Octopus', file='file_9.py'
+2025-04-26 11:20:25,407 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:20:25,407 - INFO - [delete_file_record] - Found and removed record for 'file_9.py' for user 'Octopus'.
+2025-04-26 11:20:25,407 - INFO - [delete_file_record] - User 'Octopus' has no files left. Removing user entry from metadata.
+2025-04-26 11:20:25,429 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-26 11:20:25,429 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting 'file_9.py'.
+2025-04-26 11:20:25,430 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:20:25] "DELETE /delete-file/Octopus/file_9.py HTTP/1.1" 200 -
+2025-04-26 11:20:27,271 - INFO - [delete_file_record] - Received DELETE request for user='Octopus', file='3dicons-png-dynamic-1.0.0.zip'
+2025-04-26 11:20:27,286 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:20:27,286 - WARNING - [delete_file_record] - Delete request failed: User 'Octopus' not found in metadata.
+2025-04-26 11:20:27,286 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:20:27] "[33mDELETE /delete-file/Octopus/3dicons-png-dynamic-1.0.0.zip HTTP/1.1[0m" 404 -
+2025-04-26 11:20:29,498 - INFO - [delete_file_record] - Received DELETE request for user='Octopus', file='file_9 (1) (1).py'
+2025-04-26 11:20:29,501 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:20:29,502 - WARNING - [delete_file_record] - Delete request failed: User 'Octopus' not found in metadata.
+2025-04-26 11:20:29,502 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:20:29] "[33mDELETE /delete-file/Octopus/file_9%20(1)%20(1).py HTTP/1.1[0m" 404 -
+2025-04-26 11:34:51,603 - INFO - [delete_file_record] - Received DELETE request for user='Octopus', file='3dicons-png-dynamic-1.0.0.zip'
+2025-04-26 11:34:51,610 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-26 11:34:51,611 - WARNING - [delete_file_record] - Delete request failed: User 'Octopus' not found in metadata.
+2025-04-26 11:34:51,611 - INFO - [_log] - 127.0.0.1 - - [26/Apr/2025 11:34:51] "[33mDELETE /delete-file/Octopus/3dicons-png-dynamic-1.0.0.zip HTTP/1.1[0m" 404 -

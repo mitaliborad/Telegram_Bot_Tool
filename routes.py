@@ -346,44 +346,43 @@ def process_upload_and_generate_updates(upload_id):
             # ==============================================================
             # === Large File Upload Workflow (Multi-Chat Modifications) ====
             # ==============================================================
-            logging.info(f"[{upload_id}] '{original_filename}' is large. Compressing before splitting.")
-            compressed_filename = f"{original_filename}.zip"
+            logging.info(f"[{upload_id}] '{original_filename}' is large ({total_size} bytes). Uploading raw chunks.")
+            # compressed_filename = f"{original_filename}.zip"
 
-            yield f"event: status\ndata: {json.dumps({'message': 'Compressing large file...'})}\n\n"
+            # yield f"event: status\ndata: {json.dumps({'message': 'Compressing large file...'})}\n\n"
 
-            # 1. Create a *new* temporary file for the compressed data
-            with tempfile.NamedTemporaryFile(prefix=f"{upload_id}_comp_", suffix=".zip", delete=False, dir=UPLOADS_TEMP_DIR) as temp_zip_handle:
-                temp_compressed_zip_filepath = temp_zip_handle.name
-                logging.info(f"[{upload_id}] Created temporary file for compression result: {temp_compressed_zip_filepath}")
+            # # 1. Create a *new* temporary file for the compressed data
+            # with tempfile.NamedTemporaryFile(prefix=f"{upload_id}_comp_", suffix=".zip", delete=False, dir=UPLOADS_TEMP_DIR) as temp_zip_handle:
+            #     temp_compressed_zip_filepath = temp_zip_handle.name
+            #     logging.info(f"[{upload_id}] Created temporary file for compression result: {temp_compressed_zip_filepath}")
 
-            # 2. Compress the *original* temporary file into the *new* compressed temp file
-            compression_start_time = time.time()
-            buffer_size = 4 * 1024 * 1024
-            with open(temp_file_path, 'rb') as f_in, \
-                 zipfile.ZipFile(temp_compressed_zip_filepath, 'w', zipfile.ZIP_DEFLATED) as zip_out:
-                 with zip_out.open(original_filename, 'w') as zip_entry:
-                      while True:
-                            chunk_read = f_in.read(buffer_size) # Renamed to avoid conflict
-                            if not chunk_read: break
-                            zip_entry.write(chunk_read)
-            compression_time = time.time() - compression_start_time
-            compressed_total_size = os.path.getsize(temp_compressed_zip_filepath)
-            logging.info(f"[{upload_id}] Finished compressing to '{temp_compressed_zip_filepath}'. Size: {compressed_total_size} bytes. Time: {compression_time:.2f}s.")
+            # # 2. Compress the *original* temporary file into the *new* compressed temp file
+            # compression_start_time = time.time()
+            # buffer_size = 4 * 1024 * 1024
+            # with open(temp_file_path, 'rb') as f_in, \
+            #      zipfile.ZipFile(temp_compressed_zip_filepath, 'w', zipfile.ZIP_DEFLATED) as zip_out:
+            #      with zip_out.open(original_filename, 'w') as zip_entry:
+            #           while True:
+            #                 chunk_read = f_in.read(buffer_size) # Renamed to avoid conflict
+            #                 if not chunk_read: break
+            #                 zip_entry.write(chunk_read)
+            # compression_time = time.time() - compression_start_time
+            # compressed_total_size = os.path.getsize(temp_compressed_zip_filepath)
+            # logging.info(f"[{upload_id}] Finished compressing to '{temp_compressed_zip_filepath}'. Size: {compressed_total_size} bytes. Time: {compression_time:.2f}s.")
 
             yield f"event: status\ndata: {json.dumps({'message': f'Starting chunked upload to {len(TELEGRAM_CHAT_IDS)} locations...'})}\n\n"
-            # Update total size for progress calculation to the compressed size
-            yield f"event: start\ndata: {json.dumps({'filename': compressed_filename, 'totalSize': compressed_total_size})}\n\n"
+            yield f"event: start\ndata: {json.dumps({'filename': original_filename, 'totalSize': total_size})}\n\n" 
 
             # --- Now Split the *Compressed* Temporary File ---
             chunk_number = 0
             uploaded_chunks_metadata = []
-            bytes_read_from_compressed = 0
+            bytes_read_from_original = 0
             total_tg_send_duration_split = 0
             start_time_split_upload = None # ETA specific start time
             bytes_successfully_sent = 0  # ETA specific counter (for primary success)
 
             # 3. Open the COMPRESSED temporary file for reading chunks
-            with open(temp_compressed_zip_filepath, 'rb') as temp_file_to_read:
+            with open(temp_file_path, 'rb') as temp_file_to_read:
                 while True: # <<< START OF OUTER WHILE LOOP (Reading Chunks)
                     chunk_number += 1
                     logging.info(f"[{upload_id}] Reading chunk {chunk_number} for COMPRESSED file starting at byte {bytes_read_from_compressed}.")

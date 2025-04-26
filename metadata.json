@@ -2519,6 +2519,218 @@
             "username": "testt",
             "total_upload_duration_seconds": 120.6174864768982,
             "access_id": "43fbe48b74"
+        },
+        {
+            "original_filename": "WindsurfUserSetup-x64-1.7.1.exe",
+            "sent_filename": "WindsurfUserSetup-x64-1.7.1.exe.zip",
+            "is_split": true,
+            "is_compressed": true,
+            "original_size": 136960592,
+            "compressed_total_size": 136492932,
+            "chunk_size": 20971520,
+            "num_chunks": 7,
+            "chunks": [
+                {
+                    "part_number": 1,
+                    "chunk_filename": "WindsurfUserSetup-x64-1.7.1.exe.zip.part_001",
+                    "send_locations": [
+                        {
+                            "chat_id": "-4603853425",
+                            "success": true,
+                            "message_id": 1007,
+                            "file_id": "BQACAgUAAxkDAAID72gMxPoEeyt9fcjmF5q-6_oi4_VzAAJoFwACI41oVEwLW91zWNYiNgQ",
+                            "file_unique_id": "AgADaBcAAiONaFQ"
+                        },
+                        {
+                            "chat_id": "-1002614397019",
+                            "success": true,
+                            "message_id": 136,
+                            "file_id": "BQACAgUAAyEGAASb1IhbAAOIaAzFC3fgQygEYdHMe1bBM8wffAYAAt0VAAIzYWlU9nyC6FSXUj82BA",
+                            "file_unique_id": "AgAD3RUAAjNhaVQ"
+                        },
+                        {
+                            "chat_id": "-4641852757",
+                            "success": true,
+                            "message_id": 1008,
+                            "file_id": "BQACAgUAAxkDAAID8GgMxRchgetQl0cgFDW5Ah_YJTCSAAIeFQACDi9pVLV01JmaoZNdNgQ",
+                            "file_unique_id": "AgADHhUAAg4vaVQ"
+                        }
+                    ],
+                    "chunk_upload_duration_seconds": 47.88488531112671
+                },
+                {
+                    "part_number": 2,
+                    "chunk_filename": "WindsurfUserSetup-x64-1.7.1.exe.zip.part_002",
+                    "send_locations": [
+                        {
+                            "chat_id": "-4603853425",
+                            "success": true,
+                            "message_id": 1009,
+                            "file_id": "BQACAgUAAxkDAAID8WgMxSG-E3SrZ3tENC-T6omu8oiGAAJpFwACI41oVFITWgABfTD_MTYE",
+                            "file_unique_id": "AgADaRcAAiONaFQ"
+                        },
+                        {
+                            "chat_id": "-1002614397019",
+                            "success": true,
+                            "message_id": 137,
+                            "file_id": "BQACAgUAAyEGAASb1IhbAAOJaAzFNZpMnH0wnSXStUFcK7AI2hcAAt4VAAIzYWlUAAHtTvd4qh1tNgQ",
+                            "file_unique_id": "AgAD3hUAAjNhaVQ"
+                        },
+                        {
+                            "chat_id": "-4641852757",
+                            "success": true,
+                            "message_id": 1010,
+                            "file_id": "BQACAgUAAxkDAAID8mgMxUiznJFRkAi7PN1ZWp9RD5Y3AAIhFQACDi9pVPMtxX8K0ExhNgQ",
+                            "file_unique_id": "AgADIRUAAg4vaVQ"
+                        }
+                    ],
+                    "chunk_upload_duration_seconds": 49.21196389198303
+                },
+                {
+                    "part_number": 3,
+                    "chunk_filename": "WindsurfUserSetup-x64-1.7.1.exe.zip.part_003",
+                    "send_locations": [
+                        {
+                            "chat_id": "-4603853425",
+                            "success": true,
+                            "message_id": 1011,
+                            "file_id": "BQACAgUAAxkDAAID82gMxVNnOxSQwUTnG7QNsV-xTzL9AAJqFwACI41oVNfYBCsJUWyHNgQ",
+                            "file_unique_id": "AgADahcAAiONaFQ"
+                        },
+                        {
+                            "chat_id": "-1002614397019",
+                            "success": true,
+                            "message_id": 138,
+                            "file_id": "BQACAgUAAyEGAASb1IhbAAOKaAzFZYxs9iW8dDVDlPdrcdR7fLIAAt8VAAIzYWlUdKF7hbf9xHI2BA",
+                            "file_unique_id": "AgAD3xUAAjNhaVQ"
+                        },
+                        {
+                            "chat_id": "-4641852757",
+                            "success": true,
+                            "message_id": 1012,
+                            "file_id": "BQACAgUAAxkDAAID9GgMxXLQAm2EWmjeWK_n5HFAH6zqAAIiFQACDi9pVEDf07coXVEDNgQ",
+                            "file_unique_id": "AgADIhUAAg4vaVQ"
+                        }
+                    ],
+                    "chunk_upload_duration_seconds": 41.74692225456238
+                },
+                {
+                    "part_number": 4,
+                    "chunk_filename": "WindsurfUserSetup-x64-1.7.1.exe.zip.part_004",
+                    "send_locations": [
+                        {
+                            "chat_id": "-4603853425",
+                            "success": true,
+                            "message_id": 1013,
+                            "file_id": "BQACAgUAAxkDAAID9WgMxXsNWxSav64WLb3kFtKrWvOnAAJrFwACI41oVHe90b3SZ-FVNgQ",
+                            "file_unique_id": "AgADaxcAAiONaFQ"
+                        },
+                        {
+                            "chat_id": "-1002614397019",
+                            "success": true,
+                            "message_id": 139,
+                            "file_id": "BQACAgUAAyEGAASb1IhbAAOLaAzFjQhU6ixvVPYq7EfIVmolSD0AAuAVAAIzYWlU-qFXkBnPNG02BA",
+                            "file_unique_id": "AgAD4BUAAjNhaVQ"
+                        },
+                        {
+                            "chat_id": "-4641852757",
+                            "success": true,
+                            "message_id": 1014,
+                            "file_id": "BQACAgUAAxkDAAID9mgMxZhGcZPwsLFcupNsil9IAn1CAAIjFQACDi9pVMrOnvZ0gPZwNgQ",
+                            "file_unique_id": "AgADIxUAAg4vaVQ"
+                        }
+                    ],
+                    "chunk_upload_duration_seconds": 38.485533237457275
+                },
+                {
+                    "part_number": 5,
+                    "chunk_filename": "WindsurfUserSetup-x64-1.7.1.exe.zip.part_005",
+                    "send_locations": [
+                        {
+                            "chat_id": "-4603853425",
+                            "success": true,
+                            "message_id": 1015,
+                            "file_id": "BQACAgUAAxkDAAID92gMxaFul4-B0nPKPM06GVEfRgVAAAJsFwACI41oVLkH96ZcfqI7NgQ",
+                            "file_unique_id": "AgADbBcAAiONaFQ"
+                        },
+                        {
+                            "chat_id": "-1002614397019",
+                            "success": true,
+                            "message_id": 140,
+                            "file_id": "BQACAgUAAyEGAASb1IhbAAOMaAzFsyXFKmJQTj9-4LyzznlwAuAAAuEVAAIzYWlU6HySns0AAbkhNgQ",
+                            "file_unique_id": "AgAD4RUAAjNhaVQ"
+                        },
+                        {
+                            "chat_id": "-4641852757",
+                            "success": true,
+                            "message_id": 1016,
+                            "file_id": "BQACAgUAAxkDAAID-GgMxb5iZR_I8n2Snh56d-bx5P4FAAIkFQACDi9pVPDw5exE7aU9NgQ",
+                            "file_unique_id": "AgADJBUAAg4vaVQ"
+                        }
+                    ],
+                    "chunk_upload_duration_seconds": 37.88519525527954
+                },
+                {
+                    "part_number": 6,
+                    "chunk_filename": "WindsurfUserSetup-x64-1.7.1.exe.zip.part_006",
+                    "send_locations": [
+                        {
+                            "chat_id": "-4603853425",
+                            "success": true,
+                            "message_id": 1017,
+                            "file_id": "BQACAgUAAxkDAAID-WgMxcbsxavvKknqs9PoGF6csWAcAAJtFwACI41oVFUVVpIm5QABQjYE",
+                            "file_unique_id": "AgADbRcAAiONaFQ"
+                        },
+                        {
+                            "chat_id": "-1002614397019",
+                            "success": true,
+                            "message_id": 141,
+                            "file_id": "BQACAgUAAyEGAASb1IhbAAONaAzF1_JcFFf7IFTa9bVTh5L6bZ0AAuUVAAIzYWlUGLFqf1_TpSo2BA",
+                            "file_unique_id": "AgAD5RUAAjNhaVQ"
+                        },
+                        {
+                            "chat_id": "-4641852757",
+                            "success": true,
+                            "message_id": 1018,
+                            "file_id": "BQACAgUAAxkDAAID-mgMxeMAAWdcDqV-OzTCz0AsTYM8xwACJhUAAg4vaVQSY0uurHM33DYE",
+                            "file_unique_id": "AgADJhUAAg4vaVQ"
+                        }
+                    ],
+                    "chunk_upload_duration_seconds": 37.46109938621521
+                },
+                {
+                    "part_number": 7,
+                    "chunk_filename": "WindsurfUserSetup-x64-1.7.1.exe.zip.part_007",
+                    "send_locations": [
+                        {
+                            "chat_id": "-4603853425",
+                            "success": true,
+                            "message_id": 1019,
+                            "file_id": "BQACAgUAAxkDAAID-2gMxep5N4rnYNRdCTyKWFnttcvlAAJuFwACI41oVJFO5ExuhxdMNgQ",
+                            "file_unique_id": "AgADbhcAAiONaFQ"
+                        },
+                        {
+                            "chat_id": "-1002614397019",
+                            "success": true,
+                            "message_id": 142,
+                            "file_id": "BQACAgUAAyEGAASb1IhbAAOOaAzF8qFHBBv0W-FLeEikZU0bzgcAAucVAAIzYWlUUxsIuiHWOO82BA",
+                            "file_unique_id": "AgAD5xUAAjNhaVQ"
+                        },
+                        {
+                            "chat_id": "-4641852757",
+                            "success": true,
+                            "message_id": 1020,
+                            "file_id": "BQACAgUAAxkDAAID_GgMxfvxJJZZiJiaXpG0IP2vB5j7AAInFQACDi9pVJ2E4mL6kd3zNgQ",
+                            "file_unique_id": "AgADJxUAAg4vaVQ"
+                        }
+                    ],
+                    "chunk_upload_duration_seconds": 23.669851779937744
+                }
+            ],
+            "upload_timestamp": "2025-04-26T11:39:40.586388+00:00",
+            "username": "testt",
+            "total_upload_duration_seconds": 276.3454511165619,
+            "access_id": "8125ea1cdc"
         }
     ],
     "Tomy": [

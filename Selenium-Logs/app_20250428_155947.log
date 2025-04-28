@@ -1,0 +1,237 @@
+2025-04-28 15:59:47,180 - INFO - [<module>] - Logging configured. Log file: Selenium-Logs\app_20250428_155947.log
+2025-04-28 15:59:47,180 - INFO - [<module>] - Configuration loaded.
+2025-04-28 15:59:47,180 - INFO - [<module>] - Utility functions defined.
+2025-04-28 15:59:47,184 - INFO - [<module>] - Flask-CORS initialized. Allowing origins: http://localhost:4200
+2025-04-28 15:59:47,185 - INFO - [<module>] - Flask application initialized.
+2025-04-28 15:59:47,185 - INFO - [<module>] - Global state variables initialized.
+2025-04-28 15:59:47,688 - INFO - [<module>] - Telegram API functions defined.
+2025-04-28 15:59:47,693 - INFO - [<module>] - Flask routes defined.
+2025-04-28 15:59:47,693 - INFO - [<module>] - Starting Flask development server...
+2025-04-28 15:59:47,723 - WARNING - [_log] -  * Debugger is active!
+2025-04-28 15:59:47,727 - INFO - [_log] -  * Debugger PIN: 107-410-311
+2025-04-28 16:03:54,400 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-28 16:03:54,418 - INFO - [initiate_upload] - Saving temporary file for upload_id '4d84c517-eb53-46e6-8e4b-f428eb5cd2e2' to 'uploads_temp\4d84c517-eb53-46e6-8e4b-f428eb5cd2e2_login3.png'
+2025-04-28 16:03:54,421 - INFO - [initiate_upload] - Temporary file saved successfully for 'login3.png' (ID: 4d84c517-eb53-46e6-8e4b-f428eb5cd2e2).
+2025-04-28 16:03:54,423 - INFO - [_log] - 192.168.1.25 - - [28/Apr/2025 16:03:54] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-28 16:03:54,469 - INFO - [stream_progress] - SSE connection request for upload_id: 4d84c517-eb53-46e6-8e4b-f428eb5cd2e2
+2025-04-28 16:03:54,469 - INFO - [process_upload_and_generate_updates] - [4d84c517-eb53-46e6-8e4b-f428eb5cd2e2] Starting processing...
+2025-04-28 16:03:54,469 - INFO - [process_upload_and_generate_updates] - [4d84c517-eb53-46e6-8e4b-f428eb5cd2e2] Processing upload: User='TandraSage', File='login3.png', TempPath='uploads_temp\4d84c517-eb53-46e6-8e4b-f428eb5cd2e2_login3.png'
+2025-04-28 16:03:54,469 - INFO - [process_upload_and_generate_updates] - [4d84c517-eb53-46e6-8e4b-f428eb5cd2e2] Original temp file size: 247957 bytes.
+2025-04-28 16:03:54,469 - INFO - [_log] - 192.168.1.25 - - [28/Apr/2025 16:03:54] "GET /stream-progress/4d84c517-eb53-46e6-8e4b-f428eb5cd2e2 HTTP/1.1" 200 -
+2025-04-28 16:03:54,469 - INFO - [process_upload_and_generate_updates] - [4d84c517-eb53-46e6-8e4b-f428eb5cd2e2] Generated Access ID: 687313df02
+2025-04-28 16:03:54,469 - INFO - [process_upload_and_generate_updates] - [4d84c517-eb53-46e6-8e4b-f428eb5cd2e2] 'login3.png' is small. Compressing and sending as single file.
+2025-04-28 16:03:54,504 - INFO - [process_upload_and_generate_updates] - [4d84c517-eb53-46e6-8e4b-f428eb5cd2e2] Compressed 'login3.png' to 245275 bytes.
+2025-04-28 16:03:54,504 - INFO - [process_upload_and_generate_updates] - [4d84c517-eb53-46e6-8e4b-f428eb5cd2e2] Attempting send 'login3.png.zip' to chat ID: -4603853425
+2025-04-28 16:03:54,504 - INFO - [send_file_to_telegram] - Sending file 'login3.png.zip' to Telegram chat ID: -4603853425
+2025-04-28 16:03:56,429 - INFO - [send_file_to_telegram] - Telegram API success for 'login3.png.zip'.
+2025-04-28 16:03:56,431 - INFO - [process_upload_and_generate_updates] - [4d84c517-eb53-46e6-8e4b-f428eb5cd2e2] Single file 'login3.png' sent successfully to PRIMARY chat ID -4603853425.
+2025-04-28 16:03:56,432 - INFO - [process_upload_and_generate_updates] - [4d84c517-eb53-46e6-8e4b-f428eb5cd2e2] Total successful sends (including backups): 1 / 1
+2025-04-28 16:03:56,433 - ERROR - [process_upload_and_generate_updates] - [4d84c517-eb53-46e6-8e4b-f428eb5cd2e2] Inconsistency: Primary send succeeded but failed to extract IDs from its response: {'ok': True, 'result': {'message_id': 1058, 'from': {'id': 7812479394, 'is_bot': True, 'first_name': 'Harry Bot', 'username': 'hhhHarryBot'}, 'chat': {'id': -4603853425, 'title': 'AGroup', 'type': 'group', 'all_members_are_administrators': True, 'accepted_gift_types': {'unlimited_gifts': False, 'limited_gifts': False, 'unique_gifts': False, 'premium_subscription': False}}, 'date': 1745836437, 'document': {'file_name': 'login3.png.zip', 'mime_type': 'application/zip', 'file_id': 'BQACAgUAAxkDAAIEImgPWZXxMFjmsAowMfzYDK-43bOrAAKtFwACCmZ4VOoE1maK4N0bNgQ', 'file_unique_id': 'AgADrRcAAgpmeFQ', 'file_size': 245275}}}
+2025-04-28 16:03:56,439 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-28 16:03:56,450 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-28 16:03:56,451 - INFO - [process_upload_and_generate_updates] - [4d84c517-eb53-46e6-8e4b-f428eb5cd2e2] Generated landing page URL: http://192.168.1.13:5000/get/687313df02
+2025-04-28 16:03:56,451 - INFO - [process_upload_and_generate_updates] - [4d84c517-eb53-46e6-8e4b-f428eb5cd2e2] Entering final cleanup.
+2025-04-28 16:03:56,452 - INFO - [process_upload_and_generate_updates] - [4d84c517-eb53-46e6-8e4b-f428eb5cd2e2] Successfully deleted original temporary file: uploads_temp\4d84c517-eb53-46e6-8e4b-f428eb5cd2e2_login3.png
+2025-04-28 16:03:56,453 - INFO - [process_upload_and_generate_updates] - [4d84c517-eb53-46e6-8e4b-f428eb5cd2e2] Processing finished with status: completed
+2025-04-28 16:05:19,559 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-28 16:05:19,574 - INFO - [initiate_upload] - Saving temporary file for upload_id '6d6220f9-8bc7-4d8f-bc95-ebe2ca4dc0ca' to 'uploads_temp\6d6220f9-8bc7-4d8f-bc95-ebe2ca4dc0ca_login3.png'
+2025-04-28 16:05:19,574 - INFO - [initiate_upload] - Temporary file saved successfully for 'login3.png' (ID: 6d6220f9-8bc7-4d8f-bc95-ebe2ca4dc0ca).
+2025-04-28 16:05:19,574 - INFO - [_log] - 192.168.1.25 - - [28/Apr/2025 16:05:19] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-28 16:05:19,600 - INFO - [stream_progress] - SSE connection request for upload_id: 6d6220f9-8bc7-4d8f-bc95-ebe2ca4dc0ca
+2025-04-28 16:05:19,601 - INFO - [process_upload_and_generate_updates] - [6d6220f9-8bc7-4d8f-bc95-ebe2ca4dc0ca] Starting processing...
+2025-04-28 16:05:19,602 - INFO - [process_upload_and_generate_updates] - [6d6220f9-8bc7-4d8f-bc95-ebe2ca4dc0ca] Processing upload: User='TandraSage', File='login3.png', TempPath='uploads_temp\6d6220f9-8bc7-4d8f-bc95-ebe2ca4dc0ca_login3.png'
+2025-04-28 16:05:19,603 - INFO - [process_upload_and_generate_updates] - [6d6220f9-8bc7-4d8f-bc95-ebe2ca4dc0ca] Original temp file size: 247957 bytes.
+2025-04-28 16:05:19,603 - INFO - [_log] - 192.168.1.25 - - [28/Apr/2025 16:05:19] "GET /stream-progress/6d6220f9-8bc7-4d8f-bc95-ebe2ca4dc0ca HTTP/1.1" 200 -
+2025-04-28 16:05:19,603 - INFO - [process_upload_and_generate_updates] - [6d6220f9-8bc7-4d8f-bc95-ebe2ca4dc0ca] Generated Access ID: 94f094b59a
+2025-04-28 16:05:19,603 - INFO - [process_upload_and_generate_updates] - [6d6220f9-8bc7-4d8f-bc95-ebe2ca4dc0ca] 'login3.png' is small. Compressing and sending as single file.
+2025-04-28 16:05:19,623 - INFO - [process_upload_and_generate_updates] - [6d6220f9-8bc7-4d8f-bc95-ebe2ca4dc0ca] Compressed 'login3.png' to 245275 bytes.
+2025-04-28 16:05:19,624 - INFO - [process_upload_and_generate_updates] - [6d6220f9-8bc7-4d8f-bc95-ebe2ca4dc0ca] Attempting send 'login3.png.zip' to chat ID: -4603853425
+2025-04-28 16:05:19,624 - INFO - [send_file_to_telegram] - Sending file 'login3.png.zip' to Telegram chat ID: -4603853425
+2025-04-28 16:05:21,677 - INFO - [send_file_to_telegram] - Telegram API success for 'login3.png.zip'.
+2025-04-28 16:05:21,678 - INFO - [process_upload_and_generate_updates] - [6d6220f9-8bc7-4d8f-bc95-ebe2ca4dc0ca] Single file 'login3.png' sent successfully to PRIMARY chat ID -4603853425.
+2025-04-28 16:05:21,678 - INFO - [process_upload_and_generate_updates] - [6d6220f9-8bc7-4d8f-bc95-ebe2ca4dc0ca] Total successful sends (including backups): 1 / 1
+2025-04-28 16:05:21,679 - ERROR - [process_upload_and_generate_updates] - [6d6220f9-8bc7-4d8f-bc95-ebe2ca4dc0ca] Inconsistency: Primary send succeeded but failed to extract IDs from its response: {'ok': True, 'result': {'message_id': 1059, 'from': {'id': 7812479394, 'is_bot': True, 'first_name': 'Harry Bot', 'username': 'hhhHarryBot'}, 'chat': {'id': -4603853425, 'title': 'AGroup', 'type': 'group', 'all_members_are_administrators': True, 'accepted_gift_types': {'unlimited_gifts': False, 'limited_gifts': False, 'unique_gifts': False, 'premium_subscription': False}}, 'date': 1745836522, 'document': {'file_name': 'login3.png.zip', 'mime_type': 'application/zip', 'file_id': 'BQACAgUAAxkDAAIEI2gPWerEhImwR32RoMOtijmRiTobAAKuFwACCmZ4VFnQW6yFeGGENgQ', 'file_unique_id': 'AgADrhcAAgpmeFQ', 'file_size': 245275}}}
+2025-04-28 16:05:21,690 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-28 16:05:21,700 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-28 16:05:21,701 - INFO - [process_upload_and_generate_updates] - [6d6220f9-8bc7-4d8f-bc95-ebe2ca4dc0ca] Generated landing page URL: http://192.168.1.13:5000/get/94f094b59a
+2025-04-28 16:05:21,701 - INFO - [process_upload_and_generate_updates] - [6d6220f9-8bc7-4d8f-bc95-ebe2ca4dc0ca] Entering final cleanup.
+2025-04-28 16:05:21,702 - INFO - [process_upload_and_generate_updates] - [6d6220f9-8bc7-4d8f-bc95-ebe2ca4dc0ca] Successfully deleted original temporary file: uploads_temp\6d6220f9-8bc7-4d8f-bc95-ebe2ca4dc0ca_login3.png
+2025-04-28 16:05:21,703 - INFO - [process_upload_and_generate_updates] - [6d6220f9-8bc7-4d8f-bc95-ebe2ca4dc0ca] Processing finished with status: completed
+2025-04-28 16:05:32,190 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-28 16:05:32,205 - INFO - [initiate_upload] - Saving temporary file for upload_id '821443cc-c615-4a6d-adec-6fa1c1bac0b1' to 'uploads_temp\821443cc-c615-4a6d-adec-6fa1c1bac0b1_login3.png'
+2025-04-28 16:05:32,205 - INFO - [initiate_upload] - Temporary file saved successfully for 'login3.png' (ID: 821443cc-c615-4a6d-adec-6fa1c1bac0b1).
+2025-04-28 16:05:32,214 - INFO - [_log] - 192.168.1.25 - - [28/Apr/2025 16:05:32] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-28 16:05:32,237 - INFO - [stream_progress] - SSE connection request for upload_id: 821443cc-c615-4a6d-adec-6fa1c1bac0b1
+2025-04-28 16:05:32,238 - INFO - [process_upload_and_generate_updates] - [821443cc-c615-4a6d-adec-6fa1c1bac0b1] Starting processing...
+2025-04-28 16:05:32,238 - INFO - [process_upload_and_generate_updates] - [821443cc-c615-4a6d-adec-6fa1c1bac0b1] Processing upload: User='TandraSage', File='login3.png', TempPath='uploads_temp\821443cc-c615-4a6d-adec-6fa1c1bac0b1_login3.png'
+2025-04-28 16:05:32,238 - INFO - [process_upload_and_generate_updates] - [821443cc-c615-4a6d-adec-6fa1c1bac0b1] Original temp file size: 247957 bytes.
+2025-04-28 16:05:32,239 - INFO - [_log] - 192.168.1.25 - - [28/Apr/2025 16:05:32] "GET /stream-progress/821443cc-c615-4a6d-adec-6fa1c1bac0b1 HTTP/1.1" 200 -
+2025-04-28 16:05:32,239 - INFO - [process_upload_and_generate_updates] - [821443cc-c615-4a6d-adec-6fa1c1bac0b1] Generated Access ID: 06d06510d1
+2025-04-28 16:05:32,239 - INFO - [process_upload_and_generate_updates] - [821443cc-c615-4a6d-adec-6fa1c1bac0b1] 'login3.png' is small. Compressing and sending as single file.
+2025-04-28 16:05:32,256 - INFO - [process_upload_and_generate_updates] - [821443cc-c615-4a6d-adec-6fa1c1bac0b1] Compressed 'login3.png' to 245275 bytes.
+2025-04-28 16:05:32,256 - INFO - [process_upload_and_generate_updates] - [821443cc-c615-4a6d-adec-6fa1c1bac0b1] Attempting send 'login3.png.zip' to chat ID: -4603853425
+2025-04-28 16:05:32,258 - INFO - [send_file_to_telegram] - Sending file 'login3.png.zip' to Telegram chat ID: -4603853425
+2025-04-28 16:05:34,178 - INFO - [send_file_to_telegram] - Telegram API success for 'login3.png.zip'.
+2025-04-28 16:05:34,180 - INFO - [process_upload_and_generate_updates] - [821443cc-c615-4a6d-adec-6fa1c1bac0b1] Single file 'login3.png' sent successfully to PRIMARY chat ID -4603853425.
+2025-04-28 16:05:34,181 - INFO - [process_upload_and_generate_updates] - [821443cc-c615-4a6d-adec-6fa1c1bac0b1] Total successful sends (including backups): 1 / 1
+2025-04-28 16:05:34,182 - ERROR - [process_upload_and_generate_updates] - [821443cc-c615-4a6d-adec-6fa1c1bac0b1] Inconsistency: Primary send succeeded but failed to extract IDs from its response: {'ok': True, 'result': {'message_id': 1060, 'from': {'id': 7812479394, 'is_bot': True, 'first_name': 'Harry Bot', 'username': 'hhhHarryBot'}, 'chat': {'id': -4603853425, 'title': 'AGroup', 'type': 'group', 'all_members_are_administrators': True, 'accepted_gift_types': {'unlimited_gifts': False, 'limited_gifts': False, 'unique_gifts': False, 'premium_subscription': False}}, 'date': 1745836534, 'document': {'file_name': 'login3.png.zip', 'mime_type': 'application/zip', 'file_id': 'BQACAgUAAxkDAAIEJGgPWfaSaFMKLcXkpy605pkRQ_QKAAKaFwACalCAVLwDzfv9eCkINgQ', 'file_unique_id': 'AgADmhcAAmpQgFQ', 'file_size': 245275}}}
+2025-04-28 16:05:34,201 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-28 16:05:34,211 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-28 16:05:34,211 - INFO - [process_upload_and_generate_updates] - [821443cc-c615-4a6d-adec-6fa1c1bac0b1] Generated landing page URL: http://192.168.1.13:5000/get/06d06510d1
+2025-04-28 16:05:34,212 - INFO - [process_upload_and_generate_updates] - [821443cc-c615-4a6d-adec-6fa1c1bac0b1] Entering final cleanup.
+2025-04-28 16:05:34,212 - INFO - [process_upload_and_generate_updates] - [821443cc-c615-4a6d-adec-6fa1c1bac0b1] Successfully deleted original temporary file: uploads_temp\821443cc-c615-4a6d-adec-6fa1c1bac0b1_login3.png
+2025-04-28 16:05:34,213 - INFO - [process_upload_and_generate_updates] - [821443cc-c615-4a6d-adec-6fa1c1bac0b1] Processing finished with status: completed
+2025-04-28 16:05:43,589 - INFO - [get_file_by_access_id] - Received request for access_id: 06d06510d1
+2025-04-28 16:05:43,606 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-28 16:05:43,607 - INFO - [get_file_by_access_id] - Found file 'login3.png'. Rendering download page.
+2025-04-28 16:05:43,607 - INFO - [_log] - 192.168.1.25 - - [28/Apr/2025 16:05:43] "GET /get/06d06510d1 HTTP/1.1" 200 -
+2025-04-28 16:05:43,690 - INFO - [_log] - 192.168.1.25 - - [28/Apr/2025 16:05:43] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-04-28 16:05:51,112 - INFO - [stream_download_by_access_id] - [f53fcc08-2af1-486b-b521-d6a3bdfec8d9] SSE connection request for download prep using access_id: 06d06510d1
+2025-04-28 16:05:51,112 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-28 16:05:51,112 - INFO - [_prepare_and_stream_download_generator] - [f53fcc08-2af1-486b-b521-d6a3bdfec8d9] Download preparation generator started.
+2025-04-28 16:05:51,127 - INFO - [_log] - 192.168.1.25 - - [28/Apr/2025 16:05:51] "GET /stream-download/06d06510d1 HTTP/1.1" 200 -
+2025-04-28 16:05:51,262 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-28 16:05:51,262 - INFO - [_prepare_and_stream_download_generator] - [f53fcc08-2af1-486b-b521-d6a3bdfec8d9] Found metadata for 'login3.png' (User: TandraSage, Size: 247957)
+2025-04-28 16:05:51,467 - INFO - [_prepare_and_stream_download_generator] - [f53fcc08-2af1-486b-b521-d6a3bdfec8d9] Preparing non-split file 'login3.png'.
+2025-04-28 16:05:51,467 - INFO - [_prepare_and_stream_download_generator] - [f53fcc08-2af1-486b-b521-d6a3bdfec8d9] Using primary file_id: BQACAgUAAxkDAAIEJGgPWfaSaFMKLcXkpy605pkRQ_QKAAKaFwACalCAVLwDzfv9eCkINgQ from chat -4603853425
+2025-04-28 16:05:51,467 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIEJGgPWfaSaFMKLcXkpy605pkRQ_QKAAKaFwACalCAVLwDzfv9eCkINgQ
+2025-04-28 16:05:52,872 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_456.zip
+2025-04-28 16:05:52,873 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_456.zip
+2025-04-28 16:05:53,837 - INFO - [download_telegram_file_content] - Successfully downloaded 245275 bytes for file_id BQACAgUAAxkDAAIEJGgPWfaSaFMKLcXkpy605pkRQ_QKAAKaFwACalCAVLwDzfv9eCkINgQ.
+2025-04-28 16:05:53,837 - INFO - [_prepare_and_stream_download_generator] - [f53fcc08-2af1-486b-b521-d6a3bdfec8d9] Source download took 2.37s, Speed: 0.10 MB/s
+2025-04-28 16:05:53,837 - INFO - [_prepare_and_stream_download_generator] - [f53fcc08-2af1-486b-b521-d6a3bdfec8d9] Decompressing single downloaded file...
+2025-04-28 16:05:53,853 - INFO - [_prepare_and_stream_download_generator] - [f53fcc08-2af1-486b-b521-d6a3bdfec8d9] Decompression finished in 0.02s.
+2025-04-28 16:05:53,853 - INFO - [_prepare_and_stream_download_generator] - [f53fcc08-2af1-486b-b521-d6a3bdfec8d9] Final prepared file: 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_final_f53fcc08-2af1-486b-b521-d6a3bdfec8d9_j7z_8n3g.png', Size: 247957
+2025-04-28 16:05:53,960 - INFO - [_prepare_and_stream_download_generator] - [f53fcc08-2af1-486b-b521-d6a3bdfec8d9] Preparation complete. Sent 'ready' event.
+2025-04-28 16:05:53,960 - INFO - [_prepare_and_stream_download_generator] - [f53fcc08-2af1-486b-b521-d6a3bdfec8d9] Generator finished or errored. Cleaning up intermediate files.
+2025-04-28 16:05:53,961 - INFO - [_prepare_and_stream_download_generator] - [f53fcc08-2af1-486b-b521-d6a3bdfec8d9] Generator task ended.
+2025-04-28 16:05:53,991 - INFO - [serve_temp_file] - Request to serve temporary download file for ID: f53fcc08-2af1-486b-b521-d6a3bdfec8d9, Filename: login3.png
+2025-04-28 16:05:54,003 - INFO - [serve_temp_file] - [f53fcc08-2af1-486b-b521-d6a3bdfec8d9] Preparing streaming response for 'login3.png' from 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_final_f53fcc08-2af1-486b-b521-d6a3bdfec8d9_j7z_8n3g.png'
+2025-04-28 16:05:54,014 - INFO - [_log] - 192.168.1.25 - - [28/Apr/2025 16:05:54] "GET /serve-temp-file/f53fcc08-2af1-486b-b521-d6a3bdfec8d9/login3.png HTTP/1.1" 200 -
+2025-04-28 16:05:54,020 - INFO - [generate_and_cleanup] - [f53fcc08-2af1-486b-b521-d6a3bdfec8d9] Finished streaming file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_final_f53fcc08-2af1-486b-b521-d6a3bdfec8d9_j7z_8n3g.png
+2025-04-28 16:05:54,021 - INFO - [generate_and_cleanup] - [f53fcc08-2af1-486b-b521-d6a3bdfec8d9] Cleaning up final temp file post-streaming: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_final_f53fcc08-2af1-486b-b521-d6a3bdfec8d9_j7z_8n3g.png
+2025-04-28 16:05:54,022 - INFO - [generate_and_cleanup] - [f53fcc08-2af1-486b-b521-d6a3bdfec8d9] Successfully deleted final temp file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_final_f53fcc08-2af1-486b-b521-d6a3bdfec8d9_j7z_8n3g.png
+2025-04-28 16:06:15,527 - INFO - [list_user_files] - Request received to list files for user: 'TandraSage'
+2025-04-28 16:06:15,542 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-28 16:06:15,542 - INFO - [list_user_files] - Found 3 file records for user 'TandraSage'.
+2025-04-28 16:06:15,542 - INFO - [_log] - 192.168.1.25 - - [28/Apr/2025 16:06:15] "GET /files/TandraSage HTTP/1.1" 200 -
+2025-04-28 16:06:21,471 - INFO - [prepare_download_stream] - [49c2b58b-ed9d-43b9-a39c-f374790d6c59] SSE connection request for download prep: User='TandraSage', File='login3.png'
+2025-04-28 16:06:21,471 - INFO - [_prepare_download_and_generate_updates] - [49c2b58b-ed9d-43b9-a39c-f374790d6c59] Starting download preparation generator for user 'TandraSage', file 'login3.png'...
+2025-04-28 16:06:21,471 - INFO - [_log] - 192.168.1.25 - - [28/Apr/2025 16:06:21] "GET /prepare-download/TandraSage/login3.png HTTP/1.1" 200 -
+2025-04-28 16:06:21,674 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-28 16:06:21,674 - INFO - [_prepare_download_and_generate_updates] - [49c2b58b-ed9d-43b9-a39c-f374790d6c59] Prep non-split 'login3.png'
+2025-04-28 16:06:21,674 - INFO - [_prepare_download_and_generate_updates] - [49c2b58b-ed9d-43b9-a39c-f374790d6c59] Using primary file_id: BQACAgUAAxkDAAIEImgPWZXxMFjmsAowMfzYDK-43bOrAAKtFwACCmZ4VOoE1maK4N0bNgQ from chat -4603853425
+2025-04-28 16:06:21,678 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIEImgPWZXxMFjmsAowMfzYDK-43bOrAAKtFwACCmZ4VOoE1maK4N0bNgQ
+2025-04-28 16:06:22,458 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_457.zip
+2025-04-28 16:06:22,458 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_457.zip
+2025-04-28 16:06:23,461 - INFO - [download_telegram_file_content] - Successfully downloaded 245275 bytes for file_id BQACAgUAAxkDAAIEImgPWZXxMFjmsAowMfzYDK-43bOrAAKtFwACCmZ4VOoE1maK4N0bNgQ.
+2025-04-28 16:06:23,461 - INFO - [_prepare_download_and_generate_updates] - [49c2b58b-ed9d-43b9-a39c-f374790d6c59] Decompressing single file...
+2025-04-28 16:06:23,461 - INFO - [_prepare_download_and_generate_updates] - [49c2b58b-ed9d-43b9-a39c-f374790d6c59] Final prepared file: 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_49c2b58b-ed9d-43b9-a39c-f374790d6c59_otpsezyf', Size: 247957
+2025-04-28 16:06:23,461 - INFO - [_prepare_download_and_generate_updates] - [49c2b58b-ed9d-43b9-a39c-f374790d6c59] Preparation complete. Sent 'ready' event.
+2025-04-28 16:06:23,461 - INFO - [_prepare_download_and_generate_updates] - [49c2b58b-ed9d-43b9-a39c-f374790d6c59] Generator finished or errored. Cleaning up intermediate files.
+2025-04-28 16:06:23,461 - INFO - [_prepare_download_and_generate_updates] - [49c2b58b-ed9d-43b9-a39c-f374790d6c59] Generator task ended.
+2025-04-28 16:06:23,509 - INFO - [serve_temp_file] - Request to serve temporary download file for ID: 49c2b58b-ed9d-43b9-a39c-f374790d6c59, Filename: login3.png
+2025-04-28 16:06:23,509 - INFO - [serve_temp_file] - [49c2b58b-ed9d-43b9-a39c-f374790d6c59] Preparing streaming response for 'login3.png' from 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_49c2b58b-ed9d-43b9-a39c-f374790d6c59_otpsezyf'
+2025-04-28 16:06:23,509 - INFO - [_log] - 192.168.1.25 - - [28/Apr/2025 16:06:23] "GET /serve-temp-file/49c2b58b-ed9d-43b9-a39c-f374790d6c59/login3.png HTTP/1.1" 200 -
+2025-04-28 16:06:23,525 - INFO - [generate_and_cleanup] - [49c2b58b-ed9d-43b9-a39c-f374790d6c59] Finished streaming file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_49c2b58b-ed9d-43b9-a39c-f374790d6c59_otpsezyf
+2025-04-28 16:06:23,525 - INFO - [generate_and_cleanup] - [49c2b58b-ed9d-43b9-a39c-f374790d6c59] Cleaning up final temp file post-streaming: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_49c2b58b-ed9d-43b9-a39c-f374790d6c59_otpsezyf
+2025-04-28 16:06:23,526 - INFO - [generate_and_cleanup] - [49c2b58b-ed9d-43b9-a39c-f374790d6c59] Successfully deleted final temp file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_decomp_49c2b58b-ed9d-43b9-a39c-f374790d6c59_otpsezyf
+2025-04-28 16:06:25,867 - INFO - [prepare_download_stream] - [61128c4d-783d-49dc-8b02-9449bf4a83c6] SSE connection request for download prep: User='TandraSage', File='login3.png'
+2025-04-28 16:06:25,867 - INFO - [_prepare_download_and_generate_updates] - [61128c4d-783d-49dc-8b02-9449bf4a83c6] Starting download preparation generator for user 'TandraSage', file 'login3.png'...
+2025-04-28 16:06:25,867 - INFO - [_log] - 192.168.1.25 - - [28/Apr/2025 16:06:25] "GET /prepare-download/TandraSage/login3.png HTTP/1.1" 200 -
+2025-04-28 16:06:26,081 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-28 16:06:26,081 - INFO - [_prepare_download_and_generate_updates] - [61128c4d-783d-49dc-8b02-9449bf4a83c6] Prep non-split 'login3.png'
+2025-04-28 16:06:26,081 - INFO - [_prepare_download_and_generate_updates] - [61128c4d-783d-49dc-8b02-9449bf4a83c6] Using primary file_id: BQACAgUAAxkDAAIEImgPWZXxMFjmsAowMfzYDK-43bOrAAKtFwACCmZ4VOoE1maK4N0bNgQ from chat -4603853425
+2025-04-28 16:06:26,081 - INFO - [download_telegram_file_content] - Attempting to get download URL for file_id: BQACAgUAAxkDAAIEImgPWZXxMFjmsAowMfzYDK-43bOrAAKtFwACCmZ4VOoE1maK4N0bNgQ
+2025-04-28 16:06:26,590 - INFO - [download_telegram_file_content] - Obtained temporary download URL: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_457.zip
+2025-04-28 16:06:26,590 - INFO - [download_telegram_file_content] - Attempting to download content from: https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_457.zip
+2025-04-28 16:06:27,755 - INFO - [download_telegram_file_content] - Successfully downloaded 245275 bytes for file_id BQACAgUAAxkDAAIEImgPWZXxMFjmsAowMfzYDK-43bOrAAKtFwACCmZ4VOoE1maK4N0bNgQ.
+2025-04-28 16:06:27,755 - INFO - [_prepare_download_and_generate_updates] - [61128c4d-783d-49dc-8b02-9449bf4a83c6] Decompressing single file...
+2025-04-28 16:06:27,771 - INFO - [_prepare_download_and_generate_updates] - [61128c4d-783d-49dc-8b02-9449bf4a83c6] Generator finished or errored. Cleaning up intermediate files.
+2025-04-28 16:06:27,771 - INFO - [_prepare_download_and_generate_updates] - [61128c4d-783d-49dc-8b02-9449bf4a83c6] Generator task ended.
+2025-04-28 16:06:35,372 - INFO - [_log] - 192.168.1.25 - - [28/Apr/2025 16:06:35] "OPTIONS /delete-file/TandraSage/login3.png HTTP/1.1" 200 -
+2025-04-28 16:06:35,387 - INFO - [delete_file_record] - Received DELETE request for user='TandraSage', file='login3.png'
+2025-04-28 16:06:35,402 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-28 16:06:35,403 - INFO - [delete_file_record] - Found and removed record for 'login3.png' for user 'TandraSage'.
+2025-04-28 16:06:35,404 - INFO - [delete_file_record] - User 'TandraSage' has no files left. Removing user entry from metadata.
+2025-04-28 16:06:35,410 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-28 16:06:35,410 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting 'login3.png'.
+2025-04-28 16:06:35,415 - INFO - [_log] - 192.168.1.25 - - [28/Apr/2025 16:06:35] "DELETE /delete-file/TandraSage/login3.png HTTP/1.1" 200 -
+2025-04-28 16:06:35,442 - INFO - [list_user_files] - Request received to list files for user: 'TandraSage'
+2025-04-28 16:06:35,456 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-28 16:06:35,457 - INFO - [list_user_files] - No files found in metadata for user: 'TandraSage'
+2025-04-28 16:06:35,457 - INFO - [_log] - 192.168.1.25 - - [28/Apr/2025 16:06:35] "GET /files/TandraSage HTTP/1.1" 200 -
+2025-04-28 16:06:54,832 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-28 16:07:02,718 - INFO - [initiate_upload] - Saving temporary file for upload_id '5081ad5c-182d-44b0-a638-368aa12f3806' to 'uploads_temp\5081ad5c-182d-44b0-a638-368aa12f3806_425 mB sample pdf file  .pdf'
+2025-04-28 16:07:04,976 - INFO - [initiate_upload] - Temporary file saved successfully for '425 mB sample pdf file  .pdf' (ID: 5081ad5c-182d-44b0-a638-368aa12f3806).
+2025-04-28 16:07:05,139 - INFO - [_log] - 192.168.1.25 - - [28/Apr/2025 16:07:05] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-28 16:07:05,176 - INFO - [stream_progress] - SSE connection request for upload_id: 5081ad5c-182d-44b0-a638-368aa12f3806
+2025-04-28 16:07:05,176 - INFO - [process_upload_and_generate_updates] - [5081ad5c-182d-44b0-a638-368aa12f3806] Starting processing...
+2025-04-28 16:07:05,176 - INFO - [process_upload_and_generate_updates] - [5081ad5c-182d-44b0-a638-368aa12f3806] Processing upload: User='TandraSage', File='425 mB sample pdf file  .pdf', TempPath='uploads_temp\5081ad5c-182d-44b0-a638-368aa12f3806_425 mB sample pdf file  .pdf'
+2025-04-28 16:07:05,176 - INFO - [process_upload_and_generate_updates] - [5081ad5c-182d-44b0-a638-368aa12f3806] Original temp file size: 435195904 bytes.
+2025-04-28 16:07:05,187 - INFO - [_log] - 192.168.1.25 - - [28/Apr/2025 16:07:05] "GET /stream-progress/5081ad5c-182d-44b0-a638-368aa12f3806 HTTP/1.1" 200 -
+2025-04-28 16:07:05,188 - INFO - [process_upload_and_generate_updates] - [5081ad5c-182d-44b0-a638-368aa12f3806] Generated Access ID: 41058e6eb5
+2025-04-28 16:07:05,189 - INFO - [process_upload_and_generate_updates] - [5081ad5c-182d-44b0-a638-368aa12f3806] '425 mB sample pdf file  .pdf' is large. Compressing before splitting.
+2025-04-28 16:07:05,191 - INFO - [process_upload_and_generate_updates] - [5081ad5c-182d-44b0-a638-368aa12f3806] Created temporary file for compression result: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\5081ad5c-182d-44b0-a638-368aa12f3806_comp_kexjae08.zip
+2025-04-28 16:07:07,619 - INFO - [process_upload_and_generate_updates] - [5081ad5c-182d-44b0-a638-368aa12f3806] Finished compressing to 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\5081ad5c-182d-44b0-a638-368aa12f3806_comp_kexjae08.zip'. Size: 2971550 bytes. Time: 2.43s.
+2025-04-28 16:07:07,647 - INFO - [process_upload_and_generate_updates] - [5081ad5c-182d-44b0-a638-368aa12f3806] Reading chunk 1 for COMPRESSED file starting at byte 0.
+2025-04-28 16:07:07,647 - INFO - [process_upload_and_generate_updates] - [5081ad5c-182d-44b0-a638-368aa12f3806] Read chunk 1 (2971550 bytes). Total read: 2971550/2971550
+2025-04-28 16:07:07,647 - INFO - [process_upload_and_generate_updates] - [5081ad5c-182d-44b0-a638-368aa12f3806] Attempting send chunk '425 mB sample pdf file  .pdf.zip.part_001' to chat ID: -4603853425
+2025-04-28 16:07:07,647 - INFO - [send_file_to_telegram] - Sending file '425 mB sample pdf file  .pdf.zip.part_001' to Telegram chat ID: -4603853425
+2025-04-28 16:07:17,979 - INFO - [send_file_to_telegram] - Telegram API success for '425 mB sample pdf file  .pdf.zip.part_001'.
+2025-04-28 16:07:17,981 - INFO - [process_upload_and_generate_updates] - [5081ad5c-182d-44b0-a638-368aa12f3806] Chunk '425 mB sample pdf file  .pdf.zip.part_001' sent successfully to PRIMARY chat.
+2025-04-28 16:07:17,983 - INFO - [process_upload_and_generate_updates] - [5081ad5c-182d-44b0-a638-368aa12f3806] Successfully processed metadata for chunk 1 across all attempts.
+2025-04-28 16:07:17,983 - INFO - [process_upload_and_generate_updates] - [5081ad5c-182d-44b0-a638-368aa12f3806] Reading chunk 2 for COMPRESSED file starting at byte 2971550.
+2025-04-28 16:07:17,992 - INFO - [process_upload_and_generate_updates] - [5081ad5c-182d-44b0-a638-368aa12f3806] Finished reading all chunks for compressed file.
+2025-04-28 16:07:17,992 - INFO - [process_upload_and_generate_updates] - [5081ad5c-182d-44b0-a638-368aa12f3806] All 1 chunks sent successfully to primary. Saving metadata.
+2025-04-28 16:07:17,995 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-28 16:07:18,005 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-28 16:07:18,006 - INFO - [process_upload_and_generate_updates] - [5081ad5c-182d-44b0-a638-368aa12f3806] Generated landing page URL: http://192.168.1.13:5000/get/41058e6eb5
+2025-04-28 16:07:18,006 - INFO - [process_upload_and_generate_updates] - [5081ad5c-182d-44b0-a638-368aa12f3806] Entering final cleanup.
+2025-04-28 16:07:18,042 - INFO - [process_upload_and_generate_updates] - [5081ad5c-182d-44b0-a638-368aa12f3806] Successfully deleted original temporary file: uploads_temp\5081ad5c-182d-44b0-a638-368aa12f3806_425 mB sample pdf file  .pdf
+2025-04-28 16:07:18,044 - INFO - [list_user_files] - Request received to list files for user: 'TandraSage'
+2025-04-28 16:07:18,044 - INFO - [process_upload_and_generate_updates] - [5081ad5c-182d-44b0-a638-368aa12f3806] Successfully deleted temporary compressed file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\5081ad5c-182d-44b0-a638-368aa12f3806_comp_kexjae08.zip
+2025-04-28 16:07:18,045 - INFO - [process_upload_and_generate_updates] - [5081ad5c-182d-44b0-a638-368aa12f3806] Processing finished with status: completed
+2025-04-28 16:07:18,061 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-28 16:07:18,061 - INFO - [list_user_files] - Found 1 file records for user 'TandraSage'.
+2025-04-28 16:07:18,062 - INFO - [_log] - 192.168.1.25 - - [28/Apr/2025 16:07:18] "GET /files/TandraSage HTTP/1.1" 200 -
+2025-04-28 16:07:35,407 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-28 16:07:35,407 - INFO - [initiate_upload] - Saving temporary file for upload_id '8a00243b-30f6-473f-811f-a51b8495bf29' to 'uploads_temp\8a00243b-30f6-473f-811f-a51b8495bf29_service1.jpg'
+2025-04-28 16:07:35,407 - INFO - [initiate_upload] - Temporary file saved successfully for 'service1.jpg' (ID: 8a00243b-30f6-473f-811f-a51b8495bf29).
+2025-04-28 16:07:35,407 - INFO - [_log] - 192.168.1.25 - - [28/Apr/2025 16:07:35] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-28 16:07:35,432 - INFO - [stream_progress] - SSE connection request for upload_id: 8a00243b-30f6-473f-811f-a51b8495bf29
+2025-04-28 16:07:35,433 - INFO - [process_upload_and_generate_updates] - [8a00243b-30f6-473f-811f-a51b8495bf29] Starting processing...
+2025-04-28 16:07:35,433 - INFO - [process_upload_and_generate_updates] - [8a00243b-30f6-473f-811f-a51b8495bf29] Processing upload: User='TandraSage', File='service1.jpg', TempPath='uploads_temp\8a00243b-30f6-473f-811f-a51b8495bf29_service1.jpg'
+2025-04-28 16:07:35,433 - INFO - [process_upload_and_generate_updates] - [8a00243b-30f6-473f-811f-a51b8495bf29] Original temp file size: 42033 bytes.
+2025-04-28 16:07:35,433 - INFO - [_log] - 192.168.1.25 - - [28/Apr/2025 16:07:35] "GET /stream-progress/8a00243b-30f6-473f-811f-a51b8495bf29 HTTP/1.1" 200 -
+2025-04-28 16:07:35,433 - INFO - [process_upload_and_generate_updates] - [8a00243b-30f6-473f-811f-a51b8495bf29] Generated Access ID: b4bbe98922
+2025-04-28 16:07:35,435 - INFO - [process_upload_and_generate_updates] - [8a00243b-30f6-473f-811f-a51b8495bf29] 'service1.jpg' is small. Compressing and sending as single file.
+2025-04-28 16:07:35,445 - INFO - [process_upload_and_generate_updates] - [8a00243b-30f6-473f-811f-a51b8495bf29] Compressed 'service1.jpg' to 39257 bytes.
+2025-04-28 16:07:35,445 - INFO - [process_upload_and_generate_updates] - [8a00243b-30f6-473f-811f-a51b8495bf29] Attempting send 'service1.jpg.zip' to chat ID: -4603853425
+2025-04-28 16:07:35,445 - INFO - [send_file_to_telegram] - Sending file 'service1.jpg.zip' to Telegram chat ID: -4603853425
+2025-04-28 16:07:36,458 - INFO - [send_file_to_telegram] - Telegram API success for 'service1.jpg.zip'.
+2025-04-28 16:07:36,458 - INFO - [process_upload_and_generate_updates] - [8a00243b-30f6-473f-811f-a51b8495bf29] Single file 'service1.jpg' sent successfully to PRIMARY chat ID -4603853425.
+2025-04-28 16:07:36,458 - INFO - [process_upload_and_generate_updates] - [8a00243b-30f6-473f-811f-a51b8495bf29] Total successful sends (including backups): 1 / 1
+2025-04-28 16:07:36,459 - ERROR - [process_upload_and_generate_updates] - [8a00243b-30f6-473f-811f-a51b8495bf29] Inconsistency: Primary send succeeded but failed to extract IDs from its response: {'ok': True, 'result': {'message_id': 1062, 'from': {'id': 7812479394, 'is_bot': True, 'first_name': 'Harry Bot', 'username': 'hhhHarryBot'}, 'chat': {'id': -4603853425, 'title': 'AGroup', 'type': 'group', 'all_members_are_administrators': True, 'accepted_gift_types': {'unlimited_gifts': False, 'limited_gifts': False, 'unique_gifts': False, 'premium_subscription': False}}, 'date': 1745836657, 'document': {'file_name': 'service1.jpg.zip', 'mime_type': 'application/zip', 'file_id': 'BQACAgUAAxkDAAIEJmgPWnG4vUPXo4yunpvTEFshyy0yAAKwFwACCmZ4VB7ACfrvdV0zNgQ', 'file_unique_id': 'AgADsBcAAgpmeFQ', 'file_size': 39257}}}
+2025-04-28 16:07:36,461 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-28 16:07:36,469 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-28 16:07:36,470 - INFO - [process_upload_and_generate_updates] - [8a00243b-30f6-473f-811f-a51b8495bf29] Generated landing page URL: http://192.168.1.13:5000/get/b4bbe98922
+2025-04-28 16:07:36,470 - INFO - [process_upload_and_generate_updates] - [8a00243b-30f6-473f-811f-a51b8495bf29] Entering final cleanup.
+2025-04-28 16:07:36,471 - INFO - [process_upload_and_generate_updates] - [8a00243b-30f6-473f-811f-a51b8495bf29] Successfully deleted original temporary file: uploads_temp\8a00243b-30f6-473f-811f-a51b8495bf29_service1.jpg
+2025-04-28 16:07:36,472 - INFO - [process_upload_and_generate_updates] - [8a00243b-30f6-473f-811f-a51b8495bf29] Processing finished with status: completed
+2025-04-28 16:07:36,500 - INFO - [list_user_files] - Request received to list files for user: 'TandraSage'
+2025-04-28 16:07:36,511 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-28 16:07:36,512 - INFO - [list_user_files] - Found 2 file records for user 'TandraSage'.
+2025-04-28 16:07:36,513 - INFO - [_log] - 192.168.1.25 - - [28/Apr/2025 16:07:36] "GET /files/TandraSage HTTP/1.1" 200 -
+2025-04-28 16:07:42,085 - INFO - [_log] - 192.168.1.25 - - [28/Apr/2025 16:07:42] "OPTIONS /delete-file/TandraSage/425%20mB%20sample%20pdf%20file%20%20.pdf HTTP/1.1" 200 -
+2025-04-28 16:07:42,101 - INFO - [delete_file_record] - Received DELETE request for user='TandraSage', file='425 mB sample pdf file  .pdf'
+2025-04-28 16:07:42,116 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-28 16:07:42,116 - INFO - [delete_file_record] - Found and removed record for '425 mB sample pdf file  .pdf' for user 'TandraSage'.
+2025-04-28 16:07:42,122 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-28 16:07:42,122 - INFO - [delete_file_record] - Successfully saved updated metadata after deleting '425 mB sample pdf file  .pdf'.
+2025-04-28 16:07:42,122 - INFO - [_log] - 192.168.1.25 - - [28/Apr/2025 16:07:42] "DELETE /delete-file/TandraSage/425%20mB%20sample%20pdf%20file%20%20.pdf HTTP/1.1" 200 -
+2025-04-28 16:07:42,145 - INFO - [list_user_files] - Request received to list files for user: 'TandraSage'
+2025-04-28 16:07:42,154 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-28 16:07:42,154 - INFO - [list_user_files] - Found 1 file records for user 'TandraSage'.
+2025-04-28 16:07:42,154 - INFO - [_log] - 192.168.1.25 - - [28/Apr/2025 16:07:42] "GET /files/TandraSage HTTP/1.1" 200 -
+2025-04-28 16:32:55,125 - INFO - [_log] -  * Detected change in 'E:\\Telegram_tool\\Telegram_Bot_Tool\\routes.py', reloading

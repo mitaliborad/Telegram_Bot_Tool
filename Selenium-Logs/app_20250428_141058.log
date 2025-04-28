@@ -1,0 +1,49 @@
+2025-04-28 14:10:58,142 - INFO - [<module>] - Logging configured. Log file: Selenium-Logs\app_20250428_141058.log
+2025-04-28 14:10:58,142 - INFO - [<module>] - Configuration loaded.
+2025-04-28 14:10:58,143 - INFO - [<module>] - Utility functions defined.
+2025-04-28 14:10:58,145 - INFO - [<module>] - Quart application initialized.
+2025-04-28 14:10:58,145 - INFO - [<module>] - Global state variables initialized.
+2025-04-28 14:10:58,188 - INFO - [<module>] - Async Telegram API functions defined.
+2025-04-28 14:10:58,712 - INFO - [<module>] - Quart async routes defined.
+2025-04-28 14:10:58,713 - INFO - [<module>] - Quart app instance created and routes imported in main.py
+2025-04-28 14:10:58,714 - INFO - [info] - Running on http://0.0.0.0:5000 (CTRL + C to quit)
+2025-04-28 14:11:19,788 - INFO - [index] - Serving index page (Quart).
+2025-04-28 14:11:25,516 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-28 14:11:25,518 - INFO - [initiate_upload] - [ab0f2c7f-d224-4eca-af0e-b9ae30e9d81d] Saving temporary file for '404_error.html' to 'uploads_temp\ab0f2c7f-d224-4eca-af0e-b9ae30e9d81d_upload.tmp'
+2025-04-28 14:11:25,519 - INFO - [initiate_upload] - [ab0f2c7f-d224-4eca-af0e-b9ae30e9d81d] Temporary file saved successfully for '404_error.html'.
+2025-04-28 14:11:25,525 - INFO - [stream_progress] - SSE connection request for upload_id: ab0f2c7f-d224-4eca-af0e-b9ae30e9d81d (Quart)
+2025-04-28 14:11:25,526 - INFO - [process_upload_and_generate_updates] - [ab0f2c7f-d224-4eca-af0e-b9ae30e9d81d] Starting async processing...
+2025-04-28 14:11:25,526 - INFO - [process_upload_and_generate_updates] - [ab0f2c7f-d224-4eca-af0e-b9ae30e9d81d] Processing upload: User='Octopus', File='404_error.html', TempPath='uploads_temp\ab0f2c7f-d224-4eca-af0e-b9ae30e9d81d_upload.tmp'
+2025-04-28 14:11:25,527 - INFO - [process_upload_and_generate_updates] - [ab0f2c7f-d224-4eca-af0e-b9ae30e9d81d] Generated Access ID: 28695fe7bc
+2025-04-28 14:11:25,527 - ERROR - [process_upload_and_generate_updates] - [ab0f2c7f-d224-4eca-af0e-b9ae30e9d81d] Upload failed: module 'aiofiles' has no attribute 'os'
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 193, in process_upload_and_generate_updates
+    if not await aiofiles.os.path.exists(temp_file_path):
+                 ^^^^^^^^^^^
+AttributeError: module 'aiofiles' has no attribute 'os'
+2025-04-28 14:11:25,530 - INFO - [process_upload_and_generate_updates] - [ab0f2c7f-d224-4eca-af0e-b9ae30e9d81d] Entering final async cleanup.
+2025-04-28 14:11:25,538 - ERROR - [exception] - Error in ASGI Framework
+Traceback (most recent call last):
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\hypercorn\asyncio\task_group.py", line 27, in _handle
+    await app(scope, receive, send, sync_spawn, call_soon)
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\hypercorn\app_wrappers.py", line 34, in __call__
+    await self.app(scope, receive, send)
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\quart\app.py", line 1735, in __call__
+    await self.asgi_app(scope, receive, send)
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\quart\app.py", line 1761, in asgi_app
+    await asgi_handler(receive, send)
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\quart\asgi.py", line 60, in __call__
+    raise_task_exceptions(done)
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\quart\utils.py", line 186, in raise_task_exceptions
+    raise task.exception()
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\quart\asgi.py", line 117, in handle_request
+    await asyncio.wait_for(self._send_response(send, response), timeout=timeout)
+  File "C:\Users\DELL\AppData\Local\Programs\Python\Python311\Lib\asyncio\tasks.py", line 489, in wait_for
+    return fut.result()
+           ^^^^^^^^^^^^
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\quart\asgi.py", line 146, in _send_response
+    async for data in response_body:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 502, in process_upload_and_generate_updates
+    if temp_file_path and await aiofiles.os.path.exists(temp_file_path):
+                                ^^^^^^^^^^^
+AttributeError: module 'aiofiles' has no attribute 'os'

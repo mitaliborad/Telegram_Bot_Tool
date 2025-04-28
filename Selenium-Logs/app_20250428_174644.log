@@ -1,0 +1,198 @@
+2025-04-28 17:46:44,088 - INFO - [MainThread] [<module>] - ============================================================
+2025-04-28 17:46:44,088 - INFO - [MainThread] [<module>] - Logging configured. Level: INFO. Log file: Selenium-Logs\app_20250428_174644.log
+2025-04-28 17:46:44,089 - INFO - [MainThread] [<module>] - Primary Chat ID: -4603853425
+2025-04-28 17:46:44,089 - INFO - [MainThread] [<module>] - All Target Chat IDs: ['-4603853425', '-1002614397019', '-4641852757']
+2025-04-28 17:46:44,089 - INFO - [MainThread] [<module>] - Chunk Size: 20971520 bytes
+2025-04-28 17:46:44,090 - INFO - [MainThread] [<module>] - API Timeouts (Connect/Read): 10s / 60s
+2025-04-28 17:46:44,090 - INFO - [MainThread] [<module>] - API Retries: 3 attempts, 2s delay
+2025-04-28 17:46:44,091 - INFO - [MainThread] [<module>] - Max Upload Workers: 5
+2025-04-28 17:46:44,092 - INFO - [MainThread] [<module>] - Max Download Workers: 12
+2025-04-28 17:46:44,092 - INFO - [MainThread] [<module>] - ============================================================
+2025-04-28 17:46:44,092 - INFO - [MainThread] [<module>] - Configuration loaded successfully.
+2025-04-28 17:46:44,092 - INFO - [MainThread] [<module>] - Utility functions defined.
+2025-04-28 17:46:44,095 - INFO - [MainThread] [<module>] - Flask-CORS initialized. Allowing origins: http://localhost:4200
+2025-04-28 17:46:44,096 - INFO - [MainThread] [<module>] - Flask application initialized.
+2025-04-28 17:46:44,096 - INFO - [MainThread] [<module>] - Global state variables initialized.
+2025-04-28 17:46:44,518 - INFO - [MainThread] [<module>] - Initialized requests.Session for Telegram API calls.
+2025-04-28 17:46:44,518 - INFO - [MainThread] [<module>] - Telegram API functions defined with Session and Retries.
+2025-04-28 17:46:44,518 - INFO - [MainThread] [<module>] - Flask routes defined using configurable workers and linter fixes.
+2025-04-28 17:46:44,518 - INFO - [MainThread] [<module>] - Starting Flask development server...
+2025-04-28 17:46:44,566 - WARNING - [MainThread] [_log] -  * Debugger is active!
+2025-04-28 17:46:44,566 - INFO - [MainThread] [_log] -  * Debugger PIN: 107-410-311
+2025-04-28 17:46:49,181 - INFO - [Thread-3 (process_request_thread)] [index] - Serving index page.
+2025-04-28 17:46:49,221 - INFO - [Thread-3 (process_request_thread)] [_log] - 127.0.0.1 - - [28/Apr/2025 17:46:49] "GET / HTTP/1.1" 200 -
+2025-04-28 17:46:53,955 - INFO - [Thread-2 (process_request_thread)] [initiate_upload] - Request initiate upload.
+2025-04-28 17:46:53,955 - INFO - [Thread-2 (process_request_thread)] [initiate_upload] - [35b71492-3b81-4bc3-bbdc-05f94e873006] Temp storage: uploads_temp\35b71492-3b81-4bc3-bbdc-05f94e873006_download_page.html
+2025-04-28 17:46:53,955 - INFO - [Thread-2 (process_request_thread)] [initiate_upload] - [35b71492-3b81-4bc3-bbdc-05f94e873006] Temp saved: 'download_page.html'.
+2025-04-28 17:46:53,955 - INFO - [Thread-2 (process_request_thread)] [_log] - 127.0.0.1 - - [28/Apr/2025 17:46:53] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-28 17:46:53,967 - INFO - [Thread-4 (process_request_thread)] [stream_progress] - SSE connect request for upload_id: 35b71492-3b81-4bc3-bbdc-05f94e873006
+2025-04-28 17:46:53,969 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [35b71492-3b81-4bc3-bbdc-05f94e873006] Starting processing generator...
+2025-04-28 17:46:53,969 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [35b71492-3b81-4bc3-bbdc-05f94e873006] Processing: User='ELENA', File='download_page.html'
+2025-04-28 17:46:53,969 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [35b71492-3b81-4bc3-bbdc-05f94e873006] Initialized Upload Executor (max=5)
+2025-04-28 17:46:53,970 - INFO - [Thread-4 (process_request_thread)] [_log] - 127.0.0.1 - - [28/Apr/2025 17:46:53] "GET /stream-progress/35b71492-3b81-4bc3-bbdc-05f94e873006 HTTP/1.1" 200 -
+2025-04-28 17:46:53,971 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [35b71492-3b81-4bc3-bbdc-05f94e873006] Access ID: 691d2750cd
+2025-04-28 17:46:53,972 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [35b71492-3b81-4bc3-bbdc-05f94e873006] Single file workflow.
+2025-04-28 17:46:54,065 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [35b71492-3b81-4bc3-bbdc-05f94e873006] Compressed size: 4401
+2025-04-28 17:46:54,065 - INFO - [Upload_35b7_0] [_send_single_file_task] - [35b71492-3b81-4bc3-bbdc-05f94e873006] T> Sending 'download_page.zip' to -4603853425
+2025-04-28 17:46:54,065 - INFO - [Upload_35b7_1] [_send_single_file_task] - [35b71492-3b81-4bc3-bbdc-05f94e873006] T> Sending 'download_page.zip' to -1002614397019
+2025-04-28 17:46:54,065 - INFO - [Upload_35b7_0] [send_file_to_telegram] - [ChatID -4603853425, File 'download_page.zip'] Attempting send.
+2025-04-28 17:46:54,065 - INFO - [Upload_35b7_2] [_send_single_file_task] - [35b71492-3b81-4bc3-bbdc-05f94e873006] T> Sending 'download_page.zip' to -4641852757
+2025-04-28 17:46:54,065 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [35b71492-3b81-4bc3-bbdc-05f94e873006] Submitted 3 single-file tasks.
+2025-04-28 17:46:54,065 - INFO - [Upload_35b7_1] [send_file_to_telegram] - [ChatID -1002614397019, File 'download_page.zip'] Attempting send.
+2025-04-28 17:46:54,082 - INFO - [Upload_35b7_2] [send_file_to_telegram] - [ChatID -4641852757, File 'download_page.zip'] Attempting send.
+2025-04-28 17:46:54,084 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [35b71492-3b81-4bc3-bbdc-05f94e873006] Wait primary (-4603853425)...
+2025-04-28 17:46:54,511 - ERROR - [Upload_35b7_0] [send_file_to_telegram] - [ChatID -4603853425, File 'download_page.zip'] Network/Request Error (Attempt 1): 400 Client Error: Bad Request for url: https://api.telegram.org/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/sendDocument | Status: 400 | Response: {"ok":false,"error_code":400,"description":"Bad Request: file must be non-empty"}
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\telegram_api.py", line 66, in send_file_to_telegram
+    response.raise_for_status() # Check for HTTP 4xx/5xx errors
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\requests\models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://api.telegram.org/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/sendDocument
+2025-04-28 17:46:54,518 - INFO - [Upload_35b7_0] [_send_single_file_task] - [35b71492-3b81-4bc3-bbdc-05f94e873006] T> Sent 'download_page.zip' to -4603853425. Success: False
+2025-04-28 17:46:54,519 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [35b71492-3b81-4bc3-bbdc-05f94e873006] Primary done. OK:False
+2025-04-28 17:46:54,521 - ERROR - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [35b71492-3b81-4bc3-bbdc-05f94e873006] Upload failed: Primary send fail: Network/Request Error: 400 Client Error: Bad Request for url: https://api.telegram.org/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/sendDocument | Status: 400 | Response: {"ok":false,"error_code":400,"description":"Bad Request: file must be non-empty"}
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 264, in process_upload_and_generate_updates
+    if not res[0]: raise IOError(f"Primary send fail: {res[1]}")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+OSError: Primary send fail: Network/Request Error: 400 Client Error: Bad Request for url: https://api.telegram.org/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/sendDocument | Status: 400 | Response: {"ok":false,"error_code":400,"description":"Bad Request: file must be non-empty"}
+2025-04-28 17:46:54,526 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [35b71492-3b81-4bc3-bbdc-05f94e873006] Upload generator cleanup.
+2025-04-28 17:46:54,528 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [35b71492-3b81-4bc3-bbdc-05f94e873006] Upload executor shutdown.
+2025-04-28 17:46:54,530 - INFO - [Thread-4 (process_request_thread)] [_safe_remove_file] - [35b71492-3b81-4bc3-bbdc-05f94e873006] Cleaned up original temp: uploads_temp\35b71492-3b81-4bc3-bbdc-05f94e873006_download_page.html
+2025-04-28 17:46:54,532 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [35b71492-3b81-4bc3-bbdc-05f94e873006] Upload generator finished. Status: error
+2025-04-28 17:46:54,554 - ERROR - [Upload_35b7_1] [send_file_to_telegram] - [ChatID -1002614397019, File 'download_page.zip'] Network/Request Error (Attempt 1): 400 Client Error: Bad Request for url: https://api.telegram.org/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/sendDocument | Status: 400 | Response: {"ok":false,"error_code":400,"description":"Bad Request: file must be non-empty"}
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\telegram_api.py", line 66, in send_file_to_telegram
+    response.raise_for_status() # Check for HTTP 4xx/5xx errors
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\requests\models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://api.telegram.org/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/sendDocument
+2025-04-28 17:46:54,560 - INFO - [Upload_35b7_1] [_send_single_file_task] - [35b71492-3b81-4bc3-bbdc-05f94e873006] T> Sent 'download_page.zip' to -1002614397019. Success: False
+2025-04-28 17:46:55,672 - INFO - [Upload_35b7_2] [send_file_to_telegram] - [ChatID -4641852757, File 'download_page.zip'] API success (Attempt 1).
+2025-04-28 17:46:55,673 - INFO - [Upload_35b7_2] [_send_single_file_task] - [35b71492-3b81-4bc3-bbdc-05f94e873006] T> Sent 'download_page.zip' to -4641852757. Success: True
+2025-04-28 17:47:12,792 - INFO - [Thread-5 (process_request_thread)] [initiate_upload] - Request initiate upload.
+2025-04-28 17:47:12,796 - INFO - [Thread-5 (process_request_thread)] [initiate_upload] - [0f50482b-ba43-4775-a5c9-2fa4a57d3c5f] Temp storage: uploads_temp\0f50482b-ba43-4775-a5c9-2fa4a57d3c5f_routes.py
+2025-04-28 17:47:12,798 - INFO - [Thread-5 (process_request_thread)] [initiate_upload] - [0f50482b-ba43-4775-a5c9-2fa4a57d3c5f] Temp saved: 'routes.py'.
+2025-04-28 17:47:12,800 - INFO - [Thread-5 (process_request_thread)] [_log] - 127.0.0.1 - - [28/Apr/2025 17:47:12] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-28 17:47:12,805 - INFO - [Thread-6 (process_request_thread)] [stream_progress] - SSE connect request for upload_id: 0f50482b-ba43-4775-a5c9-2fa4a57d3c5f
+2025-04-28 17:47:12,806 - INFO - [Thread-6 (process_request_thread)] [process_upload_and_generate_updates] - [0f50482b-ba43-4775-a5c9-2fa4a57d3c5f] Starting processing generator...
+2025-04-28 17:47:12,806 - INFO - [Thread-6 (process_request_thread)] [process_upload_and_generate_updates] - [0f50482b-ba43-4775-a5c9-2fa4a57d3c5f] Processing: User='ELENA', File='routes.py'
+2025-04-28 17:47:12,807 - INFO - [Thread-6 (process_request_thread)] [process_upload_and_generate_updates] - [0f50482b-ba43-4775-a5c9-2fa4a57d3c5f] Initialized Upload Executor (max=5)
+2025-04-28 17:47:12,807 - INFO - [Thread-6 (process_request_thread)] [_log] - 127.0.0.1 - - [28/Apr/2025 17:47:12] "GET /stream-progress/0f50482b-ba43-4775-a5c9-2fa4a57d3c5f HTTP/1.1" 200 -
+2025-04-28 17:47:12,808 - INFO - [Thread-6 (process_request_thread)] [process_upload_and_generate_updates] - [0f50482b-ba43-4775-a5c9-2fa4a57d3c5f] Access ID: 51ffef2464
+2025-04-28 17:47:12,808 - INFO - [Thread-6 (process_request_thread)] [process_upload_and_generate_updates] - [0f50482b-ba43-4775-a5c9-2fa4a57d3c5f] Single file workflow.
+2025-04-28 17:47:12,834 - INFO - [Thread-6 (process_request_thread)] [process_upload_and_generate_updates] - [0f50482b-ba43-4775-a5c9-2fa4a57d3c5f] Compressed size: 11508
+2025-04-28 17:47:12,834 - INFO - [Upload_0f50_0] [_send_single_file_task] - [0f50482b-ba43-4775-a5c9-2fa4a57d3c5f] T> Sending 'routes.zip' to -4603853425
+2025-04-28 17:47:12,834 - INFO - [Upload_0f50_0] [send_file_to_telegram] - [ChatID -4603853425, File 'routes.zip'] Attempting send.
+2025-04-28 17:47:12,834 - INFO - [Upload_0f50_1] [_send_single_file_task] - [0f50482b-ba43-4775-a5c9-2fa4a57d3c5f] T> Sending 'routes.zip' to -1002614397019
+2025-04-28 17:47:12,834 - INFO - [Upload_0f50_2] [_send_single_file_task] - [0f50482b-ba43-4775-a5c9-2fa4a57d3c5f] T> Sending 'routes.zip' to -4641852757
+2025-04-28 17:47:12,834 - INFO - [Thread-6 (process_request_thread)] [process_upload_and_generate_updates] - [0f50482b-ba43-4775-a5c9-2fa4a57d3c5f] Submitted 3 single-file tasks.
+2025-04-28 17:47:12,834 - INFO - [Upload_0f50_1] [send_file_to_telegram] - [ChatID -1002614397019, File 'routes.zip'] Attempting send.
+2025-04-28 17:47:12,834 - INFO - [Upload_0f50_2] [send_file_to_telegram] - [ChatID -4641852757, File 'routes.zip'] Attempting send.
+2025-04-28 17:47:12,834 - INFO - [Thread-6 (process_request_thread)] [process_upload_and_generate_updates] - [0f50482b-ba43-4775-a5c9-2fa4a57d3c5f] Wait primary (-4603853425)...
+2025-04-28 17:47:12,982 - ERROR - [Upload_0f50_2] [send_file_to_telegram] - [ChatID -4641852757, File 'routes.zip'] Network/Request Error (Attempt 1): 400 Client Error: Bad Request for url: https://api.telegram.org/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/sendDocument | Status: 400 | Response: {"ok":false,"error_code":400,"description":"Bad Request: file must be non-empty"}
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\telegram_api.py", line 66, in send_file_to_telegram
+    response.raise_for_status() # Check for HTTP 4xx/5xx errors
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\requests\models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://api.telegram.org/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/sendDocument
+2025-04-28 17:47:12,982 - INFO - [Upload_0f50_2] [_send_single_file_task] - [0f50482b-ba43-4775-a5c9-2fa4a57d3c5f] T> Sent 'routes.zip' to -4641852757. Success: False
+2025-04-28 17:47:12,982 - ERROR - [Upload_0f50_1] [send_file_to_telegram] - [ChatID -1002614397019, File 'routes.zip'] Network/Request Error (Attempt 1): 400 Client Error: Bad Request for url: https://api.telegram.org/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/sendDocument | Status: 400 | Response: {"ok":false,"error_code":400,"description":"Bad Request: file must be non-empty"}
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\telegram_api.py", line 66, in send_file_to_telegram
+    response.raise_for_status() # Check for HTTP 4xx/5xx errors
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\requests\models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://api.telegram.org/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/sendDocument
+2025-04-28 17:47:13,000 - INFO - [Upload_0f50_1] [_send_single_file_task] - [0f50482b-ba43-4775-a5c9-2fa4a57d3c5f] T> Sent 'routes.zip' to -1002614397019. Success: False
+2025-04-28 17:47:13,527 - INFO - [Upload_0f50_0] [send_file_to_telegram] - [ChatID -4603853425, File 'routes.zip'] API success (Attempt 1).
+2025-04-28 17:47:13,529 - INFO - [Upload_0f50_0] [_send_single_file_task] - [0f50482b-ba43-4775-a5c9-2fa4a57d3c5f] T> Sent 'routes.zip' to -4603853425. Success: True
+2025-04-28 17:47:13,532 - INFO - [Thread-6 (process_request_thread)] [process_upload_and_generate_updates] - [0f50482b-ba43-4775-a5c9-2fa4a57d3c5f] Primary done. OK:True
+2025-04-28 17:47:13,533 - INFO - [Thread-6 (process_request_thread)] [process_upload_and_generate_updates] - [0f50482b-ba43-4775-a5c9-2fa4a57d3c5f] Wait backups...
+2025-04-28 17:47:13,534 - INFO - [Thread-6 (process_request_thread)] [process_upload_and_generate_updates] - [0f50482b-ba43-4775-a5c9-2fa4a57d3c5f] Single sends done in 0.70s.
+2025-04-28 17:47:13,535 - INFO - [Thread-6 (process_request_thread)] [process_upload_and_generate_updates] - [0f50482b-ba43-4775-a5c9-2fa4a57d3c5f] Success: 1/3
+2025-04-28 17:47:13,539 - INFO - [Thread-6 (process_request_thread)] [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-28 17:47:13,555 - INFO - [Thread-6 (process_request_thread)] [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-28 17:47:13,568 - INFO - [Thread-6 (process_request_thread)] [process_upload_and_generate_updates] - [0f50482b-ba43-4775-a5c9-2fa4a57d3c5f] Upload generator cleanup.
+2025-04-28 17:47:13,569 - INFO - [Thread-6 (process_request_thread)] [process_upload_and_generate_updates] - [0f50482b-ba43-4775-a5c9-2fa4a57d3c5f] Upload executor shutdown.
+2025-04-28 17:47:13,570 - INFO - [Thread-6 (process_request_thread)] [_safe_remove_file] - [0f50482b-ba43-4775-a5c9-2fa4a57d3c5f] Cleaned up original temp: uploads_temp\0f50482b-ba43-4775-a5c9-2fa4a57d3c5f_routes.py
+2025-04-28 17:47:13,571 - INFO - [Thread-6 (process_request_thread)] [process_upload_and_generate_updates] - [0f50482b-ba43-4775-a5c9-2fa4a57d3c5f] Upload generator finished. Status: completed
+2025-04-28 17:47:25,308 - INFO - [Thread-7 (process_request_thread)] [list_user_files] - List files request for: 'ELENA'
+2025-04-28 17:47:25,320 - INFO - [Thread-7 (process_request_thread)] [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-28 17:47:25,321 - INFO - [Thread-7 (process_request_thread)] [list_user_files] - Found 1 records for 'ELENA'.
+2025-04-28 17:47:25,322 - INFO - [Thread-7 (process_request_thread)] [_log] - 127.0.0.1 - - [28/Apr/2025 17:47:25] "GET /files/ELENA HTTP/1.1" 200 -
+2025-04-28 17:47:27,007 - INFO - [Thread-8 (process_request_thread)] [_log] - 127.0.0.1 - - [28/Apr/2025 17:47:27] "[33mGET /prepare-download/ELENA/routes.py HTTP/1.1[0m" 404 -
+2025-04-28 17:47:28,836 - INFO - [Thread-9 (process_request_thread)] [_log] - 127.0.0.1 - - [28/Apr/2025 17:47:28] "[33mGET /prepare-download/ELENA/routes.py HTTP/1.1[0m" 404 -
+2025-04-28 17:47:29,291 - INFO - [Thread-10 (process_request_thread)] [_log] - 127.0.0.1 - - [28/Apr/2025 17:47:29] "[33mGET /prepare-download/ELENA/routes.py HTTP/1.1[0m" 404 -
+2025-04-28 17:47:29,471 - INFO - [Thread-11 (process_request_thread)] [_log] - 127.0.0.1 - - [28/Apr/2025 17:47:29] "[33mGET /prepare-download/ELENA/routes.py HTTP/1.1[0m" 404 -
+2025-04-28 17:47:29,657 - INFO - [Thread-12 (process_request_thread)] [_log] - 127.0.0.1 - - [28/Apr/2025 17:47:29] "[33mGET /prepare-download/ELENA/routes.py HTTP/1.1[0m" 404 -
+2025-04-28 17:47:29,845 - INFO - [Thread-13 (process_request_thread)] [_log] - 127.0.0.1 - - [28/Apr/2025 17:47:29] "[33mGET /prepare-download/ELENA/routes.py HTTP/1.1[0m" 404 -
+2025-04-28 17:47:30,049 - INFO - [Thread-14 (process_request_thread)] [_log] - 127.0.0.1 - - [28/Apr/2025 17:47:30] "[33mGET /prepare-download/ELENA/routes.py HTTP/1.1[0m" 404 -
+2025-04-28 17:47:30,243 - INFO - [Thread-15 (process_request_thread)] [_log] - 127.0.0.1 - - [28/Apr/2025 17:47:30] "[33mGET /prepare-download/ELENA/routes.py HTTP/1.1[0m" 404 -
+2025-04-28 17:47:30,424 - INFO - [Thread-16 (process_request_thread)] [_log] - 127.0.0.1 - - [28/Apr/2025 17:47:30] "[33mGET /prepare-download/ELENA/routes.py HTTP/1.1[0m" 404 -
+2025-04-28 17:47:30,613 - INFO - [Thread-17 (process_request_thread)] [_log] - 127.0.0.1 - - [28/Apr/2025 17:47:30] "[33mGET /prepare-download/ELENA/routes.py HTTP/1.1[0m" 404 -
+2025-04-28 17:47:30,828 - INFO - [Thread-18 (process_request_thread)] [_log] - 127.0.0.1 - - [28/Apr/2025 17:47:30] "[33mGET /prepare-download/ELENA/routes.py HTTP/1.1[0m" 404 -
+2025-04-28 17:47:31,533 - INFO - [Thread-19 (process_request_thread)] [_log] - 127.0.0.1 - - [28/Apr/2025 17:47:31] "[33mGET /prepare-download/ELENA/routes.py HTTP/1.1[0m" 404 -
+2025-04-28 17:47:31,715 - INFO - [Thread-20 (process_request_thread)] [_log] - 127.0.0.1 - - [28/Apr/2025 17:47:31] "[33mGET /prepare-download/ELENA/routes.py HTTP/1.1[0m" 404 -
+2025-04-28 17:47:33,755 - INFO - [Thread-21 (process_request_thread)] [delete_file_record] - DELETE request user='ELENA', file='routes.py'
+2025-04-28 17:47:33,758 - INFO - [Thread-21 (process_request_thread)] [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-28 17:47:33,758 - INFO - [Thread-21 (process_request_thread)] [delete_file_record] - Removed 1 record(s) for 'routes.py' user 'ELENA'.
+2025-04-28 17:47:33,758 - INFO - [Thread-21 (process_request_thread)] [delete_file_record] - Removing empty user entry 'ELENA'.
+2025-04-28 17:47:33,774 - INFO - [Thread-21 (process_request_thread)] [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-28 17:47:33,775 - INFO - [Thread-21 (process_request_thread)] [delete_file_record] - Saved metadata after delete.
+2025-04-28 17:47:33,776 - INFO - [Thread-21 (process_request_thread)] [_log] - 127.0.0.1 - - [28/Apr/2025 17:47:33] "DELETE /delete-file/ELENA/routes.py HTTP/1.1" 200 -
+2025-04-28 17:47:38,308 - INFO - [Thread-22 (process_request_thread)] [initiate_upload] - Request initiate upload.
+2025-04-28 17:47:38,308 - INFO - [Thread-22 (process_request_thread)] [initiate_upload] - [21ea9a39-fb37-4ffe-8fe1-9e4040412bbb] Temp storage: uploads_temp\21ea9a39-fb37-4ffe-8fe1-9e4040412bbb_download_page.html
+2025-04-28 17:47:38,308 - INFO - [Thread-22 (process_request_thread)] [initiate_upload] - [21ea9a39-fb37-4ffe-8fe1-9e4040412bbb] Temp saved: 'download_page.html'.
+2025-04-28 17:47:38,308 - INFO - [Thread-22 (process_request_thread)] [_log] - 127.0.0.1 - - [28/Apr/2025 17:47:38] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-28 17:47:38,319 - INFO - [Thread-23 (process_request_thread)] [stream_progress] - SSE connect request for upload_id: 21ea9a39-fb37-4ffe-8fe1-9e4040412bbb
+2025-04-28 17:47:38,320 - INFO - [Thread-23 (process_request_thread)] [process_upload_and_generate_updates] - [21ea9a39-fb37-4ffe-8fe1-9e4040412bbb] Starting processing generator...
+2025-04-28 17:47:38,322 - INFO - [Thread-23 (process_request_thread)] [process_upload_and_generate_updates] - [21ea9a39-fb37-4ffe-8fe1-9e4040412bbb] Processing: User='ELENA', File='download_page.html'
+2025-04-28 17:47:38,323 - INFO - [Thread-23 (process_request_thread)] [process_upload_and_generate_updates] - [21ea9a39-fb37-4ffe-8fe1-9e4040412bbb] Initialized Upload Executor (max=5)
+2025-04-28 17:47:38,323 - INFO - [Thread-23 (process_request_thread)] [_log] - 127.0.0.1 - - [28/Apr/2025 17:47:38] "GET /stream-progress/21ea9a39-fb37-4ffe-8fe1-9e4040412bbb HTTP/1.1" 200 -
+2025-04-28 17:47:38,324 - INFO - [Thread-23 (process_request_thread)] [process_upload_and_generate_updates] - [21ea9a39-fb37-4ffe-8fe1-9e4040412bbb] Access ID: d92e453cf8
+2025-04-28 17:47:38,324 - INFO - [Thread-23 (process_request_thread)] [process_upload_and_generate_updates] - [21ea9a39-fb37-4ffe-8fe1-9e4040412bbb] Single file workflow.
+2025-04-28 17:47:38,362 - INFO - [Thread-23 (process_request_thread)] [process_upload_and_generate_updates] - [21ea9a39-fb37-4ffe-8fe1-9e4040412bbb] Compressed size: 4401
+2025-04-28 17:47:38,362 - INFO - [Upload_21ea_0] [_send_single_file_task] - [21ea9a39-fb37-4ffe-8fe1-9e4040412bbb] T> Sending 'download_page.zip' to -4603853425
+2025-04-28 17:47:38,362 - INFO - [Upload_21ea_0] [send_file_to_telegram] - [ChatID -4603853425, File 'download_page.zip'] Attempting send.
+2025-04-28 17:47:38,362 - INFO - [Upload_21ea_1] [_send_single_file_task] - [21ea9a39-fb37-4ffe-8fe1-9e4040412bbb] T> Sending 'download_page.zip' to -1002614397019
+2025-04-28 17:47:38,362 - INFO - [Upload_21ea_2] [_send_single_file_task] - [21ea9a39-fb37-4ffe-8fe1-9e4040412bbb] T> Sending 'download_page.zip' to -4641852757
+2025-04-28 17:47:38,370 - INFO - [Upload_21ea_1] [send_file_to_telegram] - [ChatID -1002614397019, File 'download_page.zip'] Attempting send.
+2025-04-28 17:47:38,372 - INFO - [Thread-23 (process_request_thread)] [process_upload_and_generate_updates] - [21ea9a39-fb37-4ffe-8fe1-9e4040412bbb] Submitted 3 single-file tasks.
+2025-04-28 17:47:38,372 - INFO - [Upload_21ea_2] [send_file_to_telegram] - [ChatID -4641852757, File 'download_page.zip'] Attempting send.
+2025-04-28 17:47:38,375 - INFO - [Thread-23 (process_request_thread)] [process_upload_and_generate_updates] - [21ea9a39-fb37-4ffe-8fe1-9e4040412bbb] Wait primary (-4603853425)...
+2025-04-28 17:47:38,504 - ERROR - [Upload_21ea_2] [send_file_to_telegram] - [ChatID -4641852757, File 'download_page.zip'] Network/Request Error (Attempt 1): 400 Client Error: Bad Request for url: https://api.telegram.org/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/sendDocument | Status: 400 | Response: {"ok":false,"error_code":400,"description":"Bad Request: file must be non-empty"}
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\telegram_api.py", line 66, in send_file_to_telegram
+    response.raise_for_status() # Check for HTTP 4xx/5xx errors
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\requests\models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://api.telegram.org/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/sendDocument
+2025-04-28 17:47:38,504 - INFO - [Upload_21ea_2] [_send_single_file_task] - [21ea9a39-fb37-4ffe-8fe1-9e4040412bbb] T> Sent 'download_page.zip' to -4641852757. Success: False
+2025-04-28 17:47:38,528 - ERROR - [Upload_21ea_1] [send_file_to_telegram] - [ChatID -1002614397019, File 'download_page.zip'] Network/Request Error (Attempt 1): 400 Client Error: Bad Request for url: https://api.telegram.org/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/sendDocument | Status: 400 | Response: {"ok":false,"error_code":400,"description":"Bad Request: file must be non-empty"}
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\telegram_api.py", line 66, in send_file_to_telegram
+    response.raise_for_status() # Check for HTTP 4xx/5xx errors
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\requests\models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://api.telegram.org/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/sendDocument
+2025-04-28 17:47:38,532 - INFO - [Upload_21ea_1] [_send_single_file_task] - [21ea9a39-fb37-4ffe-8fe1-9e4040412bbb] T> Sent 'download_page.zip' to -1002614397019. Success: False
+2025-04-28 17:47:39,093 - INFO - [Upload_21ea_0] [send_file_to_telegram] - [ChatID -4603853425, File 'download_page.zip'] API success (Attempt 1).
+2025-04-28 17:47:39,093 - INFO - [Upload_21ea_0] [_send_single_file_task] - [21ea9a39-fb37-4ffe-8fe1-9e4040412bbb] T> Sent 'download_page.zip' to -4603853425. Success: True
+2025-04-28 17:47:39,094 - INFO - [Thread-23 (process_request_thread)] [process_upload_and_generate_updates] - [21ea9a39-fb37-4ffe-8fe1-9e4040412bbb] Primary done. OK:True
+2025-04-28 17:47:39,094 - INFO - [Thread-23 (process_request_thread)] [process_upload_and_generate_updates] - [21ea9a39-fb37-4ffe-8fe1-9e4040412bbb] Wait backups...
+2025-04-28 17:47:39,094 - INFO - [Thread-23 (process_request_thread)] [process_upload_and_generate_updates] - [21ea9a39-fb37-4ffe-8fe1-9e4040412bbb] Single sends done in 0.73s.
+2025-04-28 17:47:39,095 - INFO - [Thread-23 (process_request_thread)] [process_upload_and_generate_updates] - [21ea9a39-fb37-4ffe-8fe1-9e4040412bbb] Success: 1/3
+2025-04-28 17:47:39,110 - INFO - [Thread-23 (process_request_thread)] [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-28 17:47:39,119 - INFO - [Thread-23 (process_request_thread)] [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-28 17:47:39,120 - INFO - [Thread-23 (process_request_thread)] [process_upload_and_generate_updates] - [21ea9a39-fb37-4ffe-8fe1-9e4040412bbb] Upload generator cleanup.
+2025-04-28 17:47:39,121 - INFO - [Thread-23 (process_request_thread)] [process_upload_and_generate_updates] - [21ea9a39-fb37-4ffe-8fe1-9e4040412bbb] Upload executor shutdown.
+2025-04-28 17:47:39,123 - INFO - [Thread-23 (process_request_thread)] [_safe_remove_file] - [21ea9a39-fb37-4ffe-8fe1-9e4040412bbb] Cleaned up original temp: uploads_temp\21ea9a39-fb37-4ffe-8fe1-9e4040412bbb_download_page.html
+2025-04-28 17:47:39,124 - INFO - [Thread-23 (process_request_thread)] [process_upload_and_generate_updates] - [21ea9a39-fb37-4ffe-8fe1-9e4040412bbb] Upload generator finished. Status: completed

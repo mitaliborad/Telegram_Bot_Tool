@@ -1,0 +1,171 @@
+2025-04-28 12:51:47,188 - INFO - [<module>] - Logging configured. Log file: Selenium-Logs\app_20250428_125147.log
+2025-04-28 12:51:47,189 - INFO - [<module>] - Configuration loaded.
+2025-04-28 12:51:47,190 - INFO - [<module>] - Utility functions defined.
+2025-04-28 12:51:47,191 - INFO - [<module>] - Flask application initialized.
+2025-04-28 12:51:47,191 - INFO - [<module>] - Global state variables initialized.
+2025-04-28 12:51:47,279 - INFO - [<module>] - Async Telegram API functions defined.
+2025-04-28 12:51:47,812 - INFO - [<module>] - Flask async routes defined.
+2025-04-28 12:51:47,816 - INFO - [info] - Running on http://0.0.0.0:5000 (CTRL + C to quit)
+2025-04-28 12:51:53,140 - INFO - [index] - Serving index page.
+2025-04-28 12:51:58,353 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-28 12:51:58,354 - INFO - [initiate_upload] - [47f18b6d-36d1-406a-987f-2f2fdea122d4] Saving temporary file for 'index.html' to 'uploads_temp\47f18b6d-36d1-406a-987f-2f2fdea122d4_upload.tmp'
+2025-04-28 12:51:58,356 - INFO - [initiate_upload] - [47f18b6d-36d1-406a-987f-2f2fdea122d4] Temporary file saved successfully for 'index.html'.
+2025-04-28 12:51:58,362 - INFO - [stream_progress] - SSE connection request for upload_id: 47f18b6d-36d1-406a-987f-2f2fdea122d4
+2025-04-28 12:51:58,363 - ERROR - [exception] - Error in ASGI Framework
+Traceback (most recent call last):
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\hypercorn\asyncio\task_group.py", line 27, in _handle
+    await app(scope, receive, send, sync_spawn, call_soon)
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\hypercorn\app_wrappers.py", line 51, in __call__
+    await self.handle_http(scope, receive, send, sync_spawn, call_soon)
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\hypercorn\app_wrappers.py", line 83, in handle_http
+    await sync_spawn(self.run_app, environ, partial(call_soon, send))
+  File "C:\Users\DELL\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\hypercorn\app_wrappers.py", line 113, in run_app
+    for output in response_body:
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\werkzeug\wsgi.py", line 256, in __next__
+    return self._next()
+           ^^^^^^^^^^^^
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\werkzeug\wrappers\response.py", line 32, in _iter_encoded
+    for item in iterable:
+TypeError: 'async_generator' object is not iterable
+2025-04-28 12:51:59,612 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-28 12:51:59,616 - INFO - [initiate_upload] - [99a00e2f-202c-4773-b742-4a757ce5177a] Saving temporary file for 'index.html' to 'uploads_temp\99a00e2f-202c-4773-b742-4a757ce5177a_upload.tmp'
+2025-04-28 12:51:59,622 - INFO - [initiate_upload] - [99a00e2f-202c-4773-b742-4a757ce5177a] Temporary file saved successfully for 'index.html'.
+2025-04-28 12:51:59,633 - INFO - [stream_progress] - SSE connection request for upload_id: 99a00e2f-202c-4773-b742-4a757ce5177a
+2025-04-28 12:51:59,636 - ERROR - [exception] - Error in ASGI Framework
+Traceback (most recent call last):
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\hypercorn\asyncio\task_group.py", line 27, in _handle
+    await app(scope, receive, send, sync_spawn, call_soon)
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\hypercorn\app_wrappers.py", line 51, in __call__
+    await self.handle_http(scope, receive, send, sync_spawn, call_soon)
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\hypercorn\app_wrappers.py", line 83, in handle_http
+    await sync_spawn(self.run_app, environ, partial(call_soon, send))
+  File "C:\Users\DELL\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\hypercorn\app_wrappers.py", line 113, in run_app
+    for output in response_body:
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\werkzeug\wsgi.py", line 256, in __next__
+    return self._next()
+           ^^^^^^^^^^^^
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\werkzeug\wrappers\response.py", line 32, in _iter_encoded
+    for item in iterable:
+TypeError: 'async_generator' object is not iterable
+2025-04-28 12:52:01,939 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-28 12:52:01,941 - INFO - [initiate_upload] - [5a9530c3-48e7-4d54-bea0-0fa4549a3bb4] Saving temporary file for 'index.html' to 'uploads_temp\5a9530c3-48e7-4d54-bea0-0fa4549a3bb4_upload.tmp'
+2025-04-28 12:52:01,943 - INFO - [initiate_upload] - [5a9530c3-48e7-4d54-bea0-0fa4549a3bb4] Temporary file saved successfully for 'index.html'.
+2025-04-28 12:52:01,948 - INFO - [stream_progress] - SSE connection request for upload_id: 5a9530c3-48e7-4d54-bea0-0fa4549a3bb4
+2025-04-28 12:52:01,951 - ERROR - [exception] - Error in ASGI Framework
+Traceback (most recent call last):
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\hypercorn\asyncio\task_group.py", line 27, in _handle
+    await app(scope, receive, send, sync_spawn, call_soon)
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\hypercorn\app_wrappers.py", line 51, in __call__
+    await self.handle_http(scope, receive, send, sync_spawn, call_soon)
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\hypercorn\app_wrappers.py", line 83, in handle_http
+    await sync_spawn(self.run_app, environ, partial(call_soon, send))
+  File "C:\Users\DELL\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\hypercorn\app_wrappers.py", line 113, in run_app
+    for output in response_body:
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\werkzeug\wsgi.py", line 256, in __next__
+    return self._next()
+           ^^^^^^^^^^^^
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\werkzeug\wrappers\response.py", line 32, in _iter_encoded
+    for item in iterable:
+TypeError: 'async_generator' object is not iterable
+2025-04-28 12:52:02,400 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-28 12:52:02,405 - INFO - [initiate_upload] - [56f8beb9-0e44-41d6-a924-04400fd21066] Saving temporary file for 'index.html' to 'uploads_temp\56f8beb9-0e44-41d6-a924-04400fd21066_upload.tmp'
+2025-04-28 12:52:02,410 - INFO - [initiate_upload] - [56f8beb9-0e44-41d6-a924-04400fd21066] Temporary file saved successfully for 'index.html'.
+2025-04-28 12:52:02,419 - INFO - [stream_progress] - SSE connection request for upload_id: 56f8beb9-0e44-41d6-a924-04400fd21066
+2025-04-28 12:52:02,421 - ERROR - [exception] - Error in ASGI Framework
+Traceback (most recent call last):
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\hypercorn\asyncio\task_group.py", line 27, in _handle
+    await app(scope, receive, send, sync_spawn, call_soon)
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\hypercorn\app_wrappers.py", line 51, in __call__
+    await self.handle_http(scope, receive, send, sync_spawn, call_soon)
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\hypercorn\app_wrappers.py", line 83, in handle_http
+    await sync_spawn(self.run_app, environ, partial(call_soon, send))
+  File "C:\Users\DELL\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\hypercorn\app_wrappers.py", line 113, in run_app
+    for output in response_body:
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\werkzeug\wsgi.py", line 256, in __next__
+    return self._next()
+           ^^^^^^^^^^^^
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\werkzeug\wrappers\response.py", line 32, in _iter_encoded
+    for item in iterable:
+TypeError: 'async_generator' object is not iterable
+2025-04-28 12:52:02,667 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-28 12:52:02,669 - INFO - [initiate_upload] - [e57afe17-7584-4b9c-8f57-2a9178e87270] Saving temporary file for 'index.html' to 'uploads_temp\e57afe17-7584-4b9c-8f57-2a9178e87270_upload.tmp'
+2025-04-28 12:52:02,673 - INFO - [initiate_upload] - [e57afe17-7584-4b9c-8f57-2a9178e87270] Temporary file saved successfully for 'index.html'.
+2025-04-28 12:52:02,690 - INFO - [stream_progress] - SSE connection request for upload_id: e57afe17-7584-4b9c-8f57-2a9178e87270
+2025-04-28 12:52:02,693 - ERROR - [exception] - Error in ASGI Framework
+Traceback (most recent call last):
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\hypercorn\asyncio\task_group.py", line 27, in _handle
+    await app(scope, receive, send, sync_spawn, call_soon)
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\hypercorn\app_wrappers.py", line 51, in __call__
+    await self.handle_http(scope, receive, send, sync_spawn, call_soon)
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\hypercorn\app_wrappers.py", line 83, in handle_http
+    await sync_spawn(self.run_app, environ, partial(call_soon, send))
+  File "C:\Users\DELL\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\hypercorn\app_wrappers.py", line 113, in run_app
+    for output in response_body:
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\werkzeug\wsgi.py", line 256, in __next__
+    return self._next()
+           ^^^^^^^^^^^^
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\werkzeug\wrappers\response.py", line 32, in _iter_encoded
+    for item in iterable:
+TypeError: 'async_generator' object is not iterable
+2025-04-28 12:52:20,857 - INFO - [index] - Serving index page.
+2025-04-28 12:52:42,837 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-28 12:52:42,844 - INFO - [initiate_upload] - [c4a03756-5745-449e-91bc-f9447a95532a] Saving temporary file for 'index.html' to 'uploads_temp\c4a03756-5745-449e-91bc-f9447a95532a_upload.tmp'
+2025-04-28 12:52:42,850 - INFO - [initiate_upload] - [c4a03756-5745-449e-91bc-f9447a95532a] Temporary file saved successfully for 'index.html'.
+2025-04-28 12:52:42,865 - INFO - [stream_progress] - SSE connection request for upload_id: c4a03756-5745-449e-91bc-f9447a95532a
+2025-04-28 12:52:42,867 - ERROR - [exception] - Error in ASGI Framework
+Traceback (most recent call last):
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\hypercorn\asyncio\task_group.py", line 27, in _handle
+    await app(scope, receive, send, sync_spawn, call_soon)
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\hypercorn\app_wrappers.py", line 51, in __call__
+    await self.handle_http(scope, receive, send, sync_spawn, call_soon)
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\hypercorn\app_wrappers.py", line 83, in handle_http
+    await sync_spawn(self.run_app, environ, partial(call_soon, send))
+  File "C:\Users\DELL\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\hypercorn\app_wrappers.py", line 113, in run_app
+    for output in response_body:
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\werkzeug\wsgi.py", line 256, in __next__
+    return self._next()
+           ^^^^^^^^^^^^
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\werkzeug\wrappers\response.py", line 32, in _iter_encoded
+    for item in iterable:
+TypeError: 'async_generator' object is not iterable
+2025-04-28 12:53:27,379 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-28 12:53:27,383 - INFO - [initiate_upload] - [747d5fba-9deb-4668-afa6-d7c68dae30a6] Saving temporary file for '07-Security-1.jpg' to 'uploads_temp\747d5fba-9deb-4668-afa6-d7c68dae30a6_upload.tmp'
+2025-04-28 12:53:27,386 - INFO - [initiate_upload] - [747d5fba-9deb-4668-afa6-d7c68dae30a6] Temporary file saved successfully for '07-Security-1.jpg'.
+2025-04-28 12:53:27,396 - INFO - [stream_progress] - SSE connection request for upload_id: 747d5fba-9deb-4668-afa6-d7c68dae30a6
+2025-04-28 12:53:27,398 - ERROR - [exception] - Error in ASGI Framework
+Traceback (most recent call last):
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\hypercorn\asyncio\task_group.py", line 27, in _handle
+    await app(scope, receive, send, sync_spawn, call_soon)
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\hypercorn\app_wrappers.py", line 51, in __call__
+    await self.handle_http(scope, receive, send, sync_spawn, call_soon)
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\hypercorn\app_wrappers.py", line 83, in handle_http
+    await sync_spawn(self.run_app, environ, partial(call_soon, send))
+  File "C:\Users\DELL\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\hypercorn\app_wrappers.py", line 113, in run_app
+    for output in response_body:
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\werkzeug\wsgi.py", line 256, in __next__
+    return self._next()
+           ^^^^^^^^^^^^
+  File "e:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\werkzeug\wrappers\response.py", line 32, in _iter_encoded
+    for item in iterable:
+TypeError: 'async_generator' object is not iterable

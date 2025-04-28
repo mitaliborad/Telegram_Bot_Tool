@@ -1,0 +1,12 @@
+2025-04-28 15:53:35,310 - INFO - [<module>] - Logging configured. Log file: Selenium-Logs\app_20250428_155335.log
+2025-04-28 15:53:35,326 - INFO - [<module>] - Configuration loaded.
+2025-04-28 15:53:35,326 - INFO - [<module>] - Utility functions defined.
+2025-04-28 15:53:35,328 - INFO - [<module>] - Flask-CORS initialized. Allowing origins: http://localhost:4200
+2025-04-28 15:53:35,329 - INFO - [<module>] - Flask application initialized.
+2025-04-28 15:53:35,329 - INFO - [<module>] - Global state variables initialized.
+2025-04-28 15:53:35,765 - INFO - [<module>] - Telegram API functions defined.
+2025-04-28 15:53:35,765 - INFO - [<module>] - Flask routes defined.
+2025-04-28 15:53:35,765 - INFO - [<module>] - Starting Flask development server...
+2025-04-28 15:53:35,803 - WARNING - [_log] -  * Debugger is active!
+2025-04-28 15:53:35,805 - INFO - [_log] -  * Debugger PIN: 107-410-311
+2025-04-28 15:58:03,787 - INFO - [_log] -  * Detected change in 'E:\\Telegram_tool\\Telegram_Bot_Tool\\app_setup.py', reloading

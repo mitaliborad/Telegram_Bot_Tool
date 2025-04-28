@@ -1,0 +1,82 @@
+2025-04-28 15:28:50,762 - INFO - [<module>] - Logging configured. Log file: Selenium-Logs\app_20250428_152850.log
+2025-04-28 15:28:50,762 - INFO - [<module>] - Configuration loaded.
+2025-04-28 15:28:50,762 - INFO - [<module>] - Utility functions defined.
+2025-04-28 15:28:50,762 - INFO - [<module>] - Flask-CORS initialized. Allowing origins: http://localhost:4200
+2025-04-28 15:28:50,762 - INFO - [<module>] - Flask application initialized.
+2025-04-28 15:28:50,762 - INFO - [<module>] - Global state variables initialized.
+2025-04-28 15:28:51,196 - INFO - [<module>] - Telegram API functions defined.
+2025-04-28 15:28:51,196 - INFO - [<module>] - Flask routes defined.
+2025-04-28 15:28:51,196 - INFO - [<module>] - Starting Flask development server...
+2025-04-28 15:28:51,235 - WARNING - [_log] -  * Debugger is active!
+2025-04-28 15:28:51,235 - INFO - [_log] -  * Debugger PIN: 107-410-311
+2025-04-28 15:30:32,078 - INFO - [index] - Serving index page.
+2025-04-28 15:30:32,099 - INFO - [_log] - 127.0.0.1 - - [28/Apr/2025 15:30:32] "GET / HTTP/1.1" 200 -
+2025-04-28 15:30:32,157 - INFO - [_log] - 127.0.0.1 - - [28/Apr/2025 15:30:32] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-04-28 15:30:36,276 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-28 15:30:36,276 - INFO - [initiate_upload] - Saving temporary file for upload_id '1ef8dfd8-d2a3-4e1a-aa5f-ecad54d3b2b8' to 'uploads_temp\1ef8dfd8-d2a3-4e1a-aa5f-ecad54d3b2b8_telegram_api.py'
+2025-04-28 15:30:36,276 - INFO - [initiate_upload] - Temporary file saved successfully for 'telegram_api.py' (ID: 1ef8dfd8-d2a3-4e1a-aa5f-ecad54d3b2b8).
+2025-04-28 15:30:36,276 - INFO - [_log] - 127.0.0.1 - - [28/Apr/2025 15:30:36] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-28 15:30:36,284 - INFO - [stream_progress] - SSE connection request for upload_id: 1ef8dfd8-d2a3-4e1a-aa5f-ecad54d3b2b8
+2025-04-28 15:30:36,286 - INFO - [process_upload_and_generate_updates] - [1ef8dfd8-d2a3-4e1a-aa5f-ecad54d3b2b8] Starting processing...
+2025-04-28 15:30:36,286 - INFO - [process_upload_and_generate_updates] - [1ef8dfd8-d2a3-4e1a-aa5f-ecad54d3b2b8] Processing upload: User='testt', File='telegram_api.py', TempPath='uploads_temp\1ef8dfd8-d2a3-4e1a-aa5f-ecad54d3b2b8_telegram_api.py'
+2025-04-28 15:30:36,287 - INFO - [process_upload_and_generate_updates] - [1ef8dfd8-d2a3-4e1a-aa5f-ecad54d3b2b8] Original temp file size: 7248 bytes.
+2025-04-28 15:30:36,288 - INFO - [_log] - 127.0.0.1 - - [28/Apr/2025 15:30:36] "GET /stream-progress/1ef8dfd8-d2a3-4e1a-aa5f-ecad54d3b2b8 HTTP/1.1" 200 -
+2025-04-28 15:30:36,288 - INFO - [process_upload_and_generate_updates] - [1ef8dfd8-d2a3-4e1a-aa5f-ecad54d3b2b8] Generated Access ID: 85faa19343
+2025-04-28 15:30:36,290 - INFO - [process_upload_and_generate_updates] - [1ef8dfd8-d2a3-4e1a-aa5f-ecad54d3b2b8] 'telegram_api.py' is small. Compressing and sending as single file.
+2025-04-28 15:30:36,294 - INFO - [process_upload_and_generate_updates] - [1ef8dfd8-d2a3-4e1a-aa5f-ecad54d3b2b8] Compressed 'telegram_api.py' to 1843 bytes.
+2025-04-28 15:30:36,294 - INFO - [process_upload_and_generate_updates] - [1ef8dfd8-d2a3-4e1a-aa5f-ecad54d3b2b8] Attempting send 'telegram_api.py.zip' to chat ID: -4603853425
+2025-04-28 15:30:36,296 - INFO - [send_file_to_telegram] - Sending file 'telegram_api.py.zip' to Telegram chat ID: -4603853425
+2025-04-28 15:30:37,430 - INFO - [send_file_to_telegram] - Telegram API success for 'telegram_api.py.zip'.
+2025-04-28 15:30:37,435 - INFO - [process_upload_and_generate_updates] - [1ef8dfd8-d2a3-4e1a-aa5f-ecad54d3b2b8] Attempting send 'telegram_api.py.zip' to chat ID: -1002614397019
+2025-04-28 15:30:37,438 - INFO - [send_file_to_telegram] - Sending file 'telegram_api.py.zip' to Telegram chat ID: -1002614397019
+2025-04-28 15:30:38,507 - INFO - [send_file_to_telegram] - Telegram API success for 'telegram_api.py.zip'.
+2025-04-28 15:30:38,507 - INFO - [process_upload_and_generate_updates] - [1ef8dfd8-d2a3-4e1a-aa5f-ecad54d3b2b8] Attempting send 'telegram_api.py.zip' to chat ID: -4641852757
+2025-04-28 15:30:38,508 - INFO - [send_file_to_telegram] - Sending file 'telegram_api.py.zip' to Telegram chat ID: -4641852757
+2025-04-28 15:30:39,513 - INFO - [send_file_to_telegram] - Telegram API success for 'telegram_api.py.zip'.
+2025-04-28 15:30:39,513 - INFO - [process_upload_and_generate_updates] - [1ef8dfd8-d2a3-4e1a-aa5f-ecad54d3b2b8] Single file 'telegram_api.py' sent successfully to PRIMARY chat ID -4603853425.
+2025-04-28 15:30:39,514 - INFO - [process_upload_and_generate_updates] - [1ef8dfd8-d2a3-4e1a-aa5f-ecad54d3b2b8] Total successful sends (including backups): 3 / 3
+2025-04-28 15:30:39,515 - ERROR - [process_upload_and_generate_updates] - [1ef8dfd8-d2a3-4e1a-aa5f-ecad54d3b2b8] Inconsistency: Primary send succeeded but failed to extract IDs from its response: {'ok': True, 'result': {'message_id': 1052, 'from': {'id': 7812479394, 'is_bot': True, 'first_name': 'Harry Bot', 'username': 'hhhHarryBot'}, 'chat': {'id': -4603853425, 'title': 'AGroup', 'type': 'group', 'all_members_are_administrators': True, 'accepted_gift_types': {'unlimited_gifts': False, 'limited_gifts': False, 'unique_gifts': False, 'premium_subscription': False}}, 'date': 1745834438, 'document': {'file_name': 'telegram_api.py.zip', 'mime_type': 'application/zip', 'file_id': 'BQACAgUAAxkDAAIEHGgPUcaHnSbzW_tpODo1LQVoy6T6AAKeFwACCmZ4VGYtVbL-YzGFNgQ', 'file_unique_id': 'AgADnhcAAgpmeFQ', 'file_size': 1843}}}
+2025-04-28 15:30:39,519 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-28 15:30:39,530 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-28 15:30:39,531 - INFO - [process_upload_and_generate_updates] - [1ef8dfd8-d2a3-4e1a-aa5f-ecad54d3b2b8] Generated landing page URL: http://127.0.0.1:5000/get/85faa19343
+2025-04-28 15:30:39,531 - INFO - [process_upload_and_generate_updates] - [1ef8dfd8-d2a3-4e1a-aa5f-ecad54d3b2b8] Entering final cleanup.
+2025-04-28 15:30:39,533 - INFO - [process_upload_and_generate_updates] - [1ef8dfd8-d2a3-4e1a-aa5f-ecad54d3b2b8] Successfully deleted original temporary file: uploads_temp\1ef8dfd8-d2a3-4e1a-aa5f-ecad54d3b2b8_telegram_api.py
+2025-04-28 15:30:39,534 - INFO - [process_upload_and_generate_updates] - [1ef8dfd8-d2a3-4e1a-aa5f-ecad54d3b2b8] Processing finished with status: completed
+2025-04-28 15:31:00,858 - INFO - [list_user_files] - Request received to list files for user: 'testt'
+2025-04-28 15:31:00,872 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-28 15:31:00,873 - INFO - [list_user_files] - Found 12 file records for user 'testt'.
+2025-04-28 15:31:00,877 - INFO - [_log] - 127.0.0.1 - - [28/Apr/2025 15:31:00] "GET /files/testt HTTP/1.1" 200 -
+2025-04-28 15:35:58,886 - INFO - [index] - Serving index page.
+2025-04-28 15:35:58,890 - INFO - [_log] - 127.0.0.1 - - [28/Apr/2025 15:35:58] "GET / HTTP/1.1" 200 -
+2025-04-28 15:35:58,987 - INFO - [_log] - 127.0.0.1 - - [28/Apr/2025 15:35:58] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-04-28 15:36:03,284 - INFO - [initiate_upload] - Received request to initiate upload.
+2025-04-28 15:36:03,284 - INFO - [initiate_upload] - Saving temporary file for upload_id '0756b09d-28b9-47c6-8541-7801a21e8ed8' to 'uploads_temp\0756b09d-28b9-47c6-8541-7801a21e8ed8_Telegram_app.py'
+2025-04-28 15:36:03,284 - INFO - [initiate_upload] - Temporary file saved successfully for 'Telegram_app.py' (ID: 0756b09d-28b9-47c6-8541-7801a21e8ed8).
+2025-04-28 15:36:03,284 - INFO - [_log] - 127.0.0.1 - - [28/Apr/2025 15:36:03] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-28 15:36:03,599 - INFO - [stream_progress] - SSE connection request for upload_id: 0756b09d-28b9-47c6-8541-7801a21e8ed8
+2025-04-28 15:36:03,601 - INFO - [process_upload_and_generate_updates] - [0756b09d-28b9-47c6-8541-7801a21e8ed8] Starting processing...
+2025-04-28 15:36:03,602 - INFO - [process_upload_and_generate_updates] - [0756b09d-28b9-47c6-8541-7801a21e8ed8] Processing upload: User='testt', File='Telegram_app.py', TempPath='uploads_temp\0756b09d-28b9-47c6-8541-7801a21e8ed8_Telegram_app.py'
+2025-04-28 15:36:03,604 - INFO - [process_upload_and_generate_updates] - [0756b09d-28b9-47c6-8541-7801a21e8ed8] Original temp file size: 131030 bytes.
+2025-04-28 15:36:03,605 - INFO - [_log] - 127.0.0.1 - - [28/Apr/2025 15:36:03] "GET /stream-progress/0756b09d-28b9-47c6-8541-7801a21e8ed8 HTTP/1.1" 200 -
+2025-04-28 15:36:03,607 - INFO - [process_upload_and_generate_updates] - [0756b09d-28b9-47c6-8541-7801a21e8ed8] Generated Access ID: 2daa3cde78
+2025-04-28 15:36:03,609 - INFO - [process_upload_and_generate_updates] - [0756b09d-28b9-47c6-8541-7801a21e8ed8] 'Telegram_app.py' is small. Compressing and sending as single file.
+2025-04-28 15:36:03,658 - INFO - [process_upload_and_generate_updates] - [0756b09d-28b9-47c6-8541-7801a21e8ed8] Compressed 'Telegram_app.py' to 24063 bytes.
+2025-04-28 15:36:03,659 - INFO - [process_upload_and_generate_updates] - [0756b09d-28b9-47c6-8541-7801a21e8ed8] Attempting send 'Telegram_app.py.zip' to chat ID: -4603853425
+2025-04-28 15:36:03,660 - INFO - [send_file_to_telegram] - Sending file 'Telegram_app.py.zip' to Telegram chat ID: -4603853425
+2025-04-28 15:36:05,064 - INFO - [send_file_to_telegram] - Telegram API success for 'Telegram_app.py.zip'.
+2025-04-28 15:36:05,065 - INFO - [process_upload_and_generate_updates] - [0756b09d-28b9-47c6-8541-7801a21e8ed8] Attempting send 'Telegram_app.py.zip' to chat ID: -1002614397019
+2025-04-28 15:36:05,066 - INFO - [send_file_to_telegram] - Sending file 'Telegram_app.py.zip' to Telegram chat ID: -1002614397019
+2025-04-28 15:36:06,446 - INFO - [send_file_to_telegram] - Telegram API success for 'Telegram_app.py.zip'.
+2025-04-28 15:36:06,446 - INFO - [process_upload_and_generate_updates] - [0756b09d-28b9-47c6-8541-7801a21e8ed8] Attempting send 'Telegram_app.py.zip' to chat ID: -4641852757
+2025-04-28 15:36:06,446 - INFO - [send_file_to_telegram] - Sending file 'Telegram_app.py.zip' to Telegram chat ID: -4641852757
+2025-04-28 15:36:07,888 - INFO - [send_file_to_telegram] - Telegram API success for 'Telegram_app.py.zip'.
+2025-04-28 15:36:07,888 - INFO - [process_upload_and_generate_updates] - [0756b09d-28b9-47c6-8541-7801a21e8ed8] Single file 'Telegram_app.py' sent successfully to PRIMARY chat ID -4603853425.
+2025-04-28 15:36:07,889 - INFO - [process_upload_and_generate_updates] - [0756b09d-28b9-47c6-8541-7801a21e8ed8] Total successful sends (including backups): 3 / 3
+2025-04-28 15:36:07,889 - ERROR - [process_upload_and_generate_updates] - [0756b09d-28b9-47c6-8541-7801a21e8ed8] Inconsistency: Primary send succeeded but failed to extract IDs from its response: {'ok': True, 'result': {'message_id': 1054, 'from': {'id': 7812479394, 'is_bot': True, 'first_name': 'Harry Bot', 'username': 'hhhHarryBot'}, 'chat': {'id': -4603853425, 'title': 'AGroup', 'type': 'group', 'all_members_are_administrators': True, 'accepted_gift_types': {'unlimited_gifts': False, 'limited_gifts': False, 'unique_gifts': False, 'premium_subscription': False}}, 'date': 1745834765, 'document': {'file_name': 'Telegram_app.py.zip', 'mime_type': 'application/zip', 'file_id': 'BQACAgUAAxkDAAIEHmgPUw213d4g7cuhVorW6XY9VGYRAAKiFwACCmZ4VA9gSXEbTs0bNgQ', 'file_unique_id': 'AgADohcAAgpmeFQ', 'file_size': 24063}}}
+2025-04-28 15:36:07,892 - INFO - [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-28 15:36:07,903 - INFO - [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-28 15:36:07,905 - INFO - [process_upload_and_generate_updates] - [0756b09d-28b9-47c6-8541-7801a21e8ed8] Generated landing page URL: http://localhost:5000/get/2daa3cde78
+2025-04-28 15:36:07,907 - INFO - [process_upload_and_generate_updates] - [0756b09d-28b9-47c6-8541-7801a21e8ed8] Entering final cleanup.
+2025-04-28 15:36:07,908 - INFO - [process_upload_and_generate_updates] - [0756b09d-28b9-47c6-8541-7801a21e8ed8] Successfully deleted original temporary file: uploads_temp\0756b09d-28b9-47c6-8541-7801a21e8ed8_Telegram_app.py
+2025-04-28 15:36:07,909 - INFO - [process_upload_and_generate_updates] - [0756b09d-28b9-47c6-8541-7801a21e8ed8] Processing finished with status: completed
+2025-04-28 15:38:12,591 - INFO - [_log] -  * Detected change in 'E:\\Telegram_tool\\Telegram_Bot_Tool\\app_setup.py', reloading

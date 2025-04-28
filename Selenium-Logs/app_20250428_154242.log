@@ -1,0 +1,21 @@
+2025-04-28 15:42:42,940 - INFO - [<module>] - Logging configured. Log file: Selenium-Logs\app_20250428_154242.log
+2025-04-28 15:42:42,941 - INFO - [<module>] - Configuration loaded.
+2025-04-28 15:42:42,941 - INFO - [<module>] - Utility functions defined.
+2025-04-28 15:42:42,943 - INFO - [<module>] - Flask-CORS initialized. Allowing origins: *
+2025-04-28 15:42:42,943 - INFO - [<module>] - Flask application initialized.
+2025-04-28 15:42:42,943 - INFO - [<module>] - Global state variables initialized.
+2025-04-28 15:42:43,405 - INFO - [<module>] - Telegram API functions defined.
+2025-04-28 15:42:43,410 - INFO - [<module>] - Flask routes defined.
+2025-04-28 15:42:43,410 - INFO - [<module>] - Starting Flask development server...
+2025-04-28 15:42:43,459 - INFO - [_log] - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.13:5000
+2025-04-28 15:42:43,459 - INFO - [_log] - [33mPress CTRL+C to quit[0m
+2025-04-28 15:42:43,461 - INFO - [_log] -  * Restarting with stat
+2025-04-28 15:53:02,111 - INFO - [_log] -  * Restarting with stat
+2025-04-28 15:53:34,975 - INFO - [_log] -  * Restarting with stat
+2025-04-28 15:58:03,853 - INFO - [_log] -  * Restarting with stat
+2025-04-28 15:59:46,745 - INFO - [_log] -  * Restarting with stat
+2025-04-28 16:32:55,214 - INFO - [_log] -  * Restarting with stat
+2025-04-28 16:36:28,823 - INFO - [_log] -  * Restarting with stat

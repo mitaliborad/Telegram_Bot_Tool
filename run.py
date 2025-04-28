@@ -28,14 +28,13 @@ logging.info("Custom Jinja filter 'format_bytes' registered.")
 # TODO: Replace 'http://localhost:4200' with your Angular app's actual URL in production
 # Use "*" for development testing only if necessary, as it's less secure.
 allowed_origins = "http://localhost:4200" # Or use "*" for testing
-# allowed_origins = "*"
 
 # Initialize CORS with the app and specific origins
 CORS(app, resources={r"/*": {"origins": allowed_origins}})
 logging.info(f"Flask-CORS initialized. Allowing origins: {allowed_origins}")
 # --- END CORS Configuration ---
 
-
+#CORS for making connection
 logging.info("Flask application initialized.")
 
 # Stores progress data for ongoing uploads, keyed by upload_id

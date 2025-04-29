@@ -1,0 +1,43 @@
+2025-04-29 15:16:09,932 - INFO - [MainThread] [<module>] - ============================================================
+2025-04-29 15:16:09,933 - INFO - [MainThread] [<module>] - Logging configured. Level: INFO. Log file: Selenium-Logs\app_20250429_151609.log
+2025-04-29 15:16:09,933 - INFO - [MainThread] [<module>] - Primary Chat ID: -4603853425
+2025-04-29 15:16:09,933 - INFO - [MainThread] [<module>] - All Target Chat IDs: ['-4603853425']
+2025-04-29 15:16:09,934 - INFO - [MainThread] [<module>] - Chunk Size: 20971520 bytes
+2025-04-29 15:16:09,934 - INFO - [MainThread] [<module>] - API Timeouts (Connect/Read): 10s / 60s
+2025-04-29 15:16:09,935 - INFO - [MainThread] [<module>] - API Retries: 3 attempts, 2s delay
+2025-04-29 15:16:09,935 - INFO - [MainThread] [<module>] - Max Upload Workers: 3
+2025-04-29 15:16:09,936 - INFO - [MainThread] [<module>] - Max Download Workers: 12
+2025-04-29 15:16:09,936 - INFO - [MainThread] [<module>] - ============================================================
+2025-04-29 15:16:09,936 - INFO - [MainThread] [<module>] - Configuration loaded successfully.
+2025-04-29 15:16:09,937 - INFO - [MainThread] [<module>] - Utility functions defined.
+2025-04-29 15:16:09,939 - INFO - [MainThread] [<module>] - Custom Jinja filter 'format_bytes' registered.
+2025-04-29 15:16:09,939 - INFO - [MainThread] [<module>] - Flask-CORS initialized. Allowing origins: http://localhost:4200
+2025-04-29 15:16:09,940 - INFO - [MainThread] [<module>] - Flask application initialized.
+2025-04-29 15:16:09,940 - INFO - [MainThread] [<module>] - Global state variables initialized (upload_progress_data, download_prep_data).
+2025-04-29 15:16:09,942 - INFO - [MainThread] [<module>] - Custom Jinja filter 'format_bytes' registered.
+2025-04-29 15:16:09,943 - INFO - [MainThread] [<module>] - Flask-CORS initialized. Allowing origins: http://localhost:4200
+2025-04-29 15:16:09,943 - INFO - [MainThread] [<module>] - Flask application initialized.
+2025-04-29 15:16:09,944 - INFO - [MainThread] [<module>] - Global state variables initialized (upload_progress_data, download_prep_data).
+2025-04-29 15:16:10,424 - INFO - [MainThread] [<module>] - Initialized requests.Session for Telegram API calls.
+2025-04-29 15:16:10,425 - INFO - [MainThread] [<module>] - Telegram API functions defined with Session and Retries.
+2025-04-29 15:16:10,429 - INFO - [MainThread] [<module>] - Flask routes defined using configurable workers and linter fixes.
+2025-04-29 15:16:10,430 - INFO - [MainThread] [<module>] - Starting Flask development server...
+2025-04-29 15:16:10,467 - WARNING - [MainThread] [_log] -  * Debugger is active!
+2025-04-29 15:16:10,472 - INFO - [MainThread] [_log] -  * Debugger PIN: 107-410-311
+2025-04-29 15:16:10,498 - INFO - [Thread-2 (process_request_thread)] [index] - Serving index page.
+2025-04-29 15:16:10,500 - INFO - [Thread-3 (process_request_thread)] [index] - Serving index page.
+2025-04-29 15:16:10,501 - INFO - [Thread-4 (process_request_thread)] [index] - Serving index page.
+2025-04-29 15:16:10,502 - INFO - [Thread-5 (process_request_thread)] [index] - Serving index page.
+2025-04-29 15:16:10,503 - INFO - [Thread-6 (process_request_thread)] [index] - Serving index page.
+2025-04-29 15:16:10,505 - INFO - [Thread-7 (process_request_thread)] [index] - Serving index page.
+2025-04-29 15:16:10,507 - INFO - [Thread-8 (process_request_thread)] [index] - Serving index page.
+2025-04-29 15:16:10,508 - INFO - [Thread-9 (process_request_thread)] [index] - Serving index page.
+2025-04-29 15:16:10,537 - INFO - [Thread-2 (process_request_thread)] [_log] - 127.0.0.1 - - [29/Apr/2025 15:16:10] "GET / HTTP/1.1" 200 -
+2025-04-29 15:16:10,547 - INFO - [Thread-4 (process_request_thread)] [_log] - 127.0.0.1 - - [29/Apr/2025 15:16:10] "GET / HTTP/1.1" 200 -
+2025-04-29 15:16:10,556 - INFO - [Thread-5 (process_request_thread)] [_log] - 127.0.0.1 - - [29/Apr/2025 15:16:10] "GET / HTTP/1.1" 200 -
+2025-04-29 15:16:10,567 - INFO - [Thread-8 (process_request_thread)] [_log] - 127.0.0.1 - - [29/Apr/2025 15:16:10] "GET / HTTP/1.1" 200 -
+2025-04-29 15:16:10,575 - INFO - [Thread-6 (process_request_thread)] [_log] - 127.0.0.1 - - [29/Apr/2025 15:16:10] "GET / HTTP/1.1" 200 -
+2025-04-29 15:16:10,584 - INFO - [Thread-7 (process_request_thread)] [_log] - 127.0.0.1 - - [29/Apr/2025 15:16:10] "GET / HTTP/1.1" 200 -
+2025-04-29 15:16:10,592 - INFO - [Thread-3 (process_request_thread)] [_log] - 127.0.0.1 - - [29/Apr/2025 15:16:10] "GET / HTTP/1.1" 200 -
+2025-04-29 15:16:10,602 - INFO - [Thread-9 (process_request_thread)] [_log] - 127.0.0.1 - - [29/Apr/2025 15:16:10] "GET / HTTP/1.1" 200 -
+2025-04-29 15:16:10,632 - INFO - [Thread-10 (process_request_thread)] [_log] - 127.0.0.1 - - [29/Apr/2025 15:16:10] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -

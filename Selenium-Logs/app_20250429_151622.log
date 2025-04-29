@@ -1,0 +1,87 @@
+2025-04-29 15:16:22,950 - INFO - [MainThread] [<module>] - ============================================================
+2025-04-29 15:16:22,951 - INFO - [MainThread] [<module>] - Logging configured. Level: INFO. Log file: Selenium-Logs\app_20250429_151622.log
+2025-04-29 15:16:22,951 - INFO - [MainThread] [<module>] - Primary Chat ID: -4603853425
+2025-04-29 15:16:22,951 - INFO - [MainThread] [<module>] - All Target Chat IDs: ['-4603853425']
+2025-04-29 15:16:22,952 - INFO - [MainThread] [<module>] - Chunk Size: 20971520 bytes
+2025-04-29 15:16:22,952 - INFO - [MainThread] [<module>] - API Timeouts (Connect/Read): 10s / 60s
+2025-04-29 15:16:22,952 - INFO - [MainThread] [<module>] - API Retries: 3 attempts, 2s delay
+2025-04-29 15:16:22,953 - INFO - [MainThread] [<module>] - Max Upload Workers: 3
+2025-04-29 15:16:22,953 - INFO - [MainThread] [<module>] - Max Download Workers: 12
+2025-04-29 15:16:22,954 - INFO - [MainThread] [<module>] - ============================================================
+2025-04-29 15:16:22,954 - INFO - [MainThread] [<module>] - Configuration loaded successfully.
+2025-04-29 15:16:22,954 - INFO - [MainThread] [<module>] - Utility functions defined.
+2025-04-29 15:16:22,957 - INFO - [MainThread] [<module>] - Custom Jinja filter 'format_bytes' registered.
+2025-04-29 15:16:22,957 - INFO - [MainThread] [<module>] - Flask-CORS initialized. Allowing origins: http://localhost:4200
+2025-04-29 15:16:22,957 - INFO - [MainThread] [<module>] - Flask application initialized.
+2025-04-29 15:16:22,958 - INFO - [MainThread] [<module>] - Global state variables initialized (upload_progress_data, download_prep_data).
+2025-04-29 15:16:22,960 - INFO - [MainThread] [<module>] - Custom Jinja filter 'format_bytes' registered.
+2025-04-29 15:16:22,960 - INFO - [MainThread] [<module>] - Flask-CORS initialized. Allowing origins: http://localhost:4200
+2025-04-29 15:16:22,960 - INFO - [MainThread] [<module>] - Flask application initialized.
+2025-04-29 15:16:22,961 - INFO - [MainThread] [<module>] - Global state variables initialized (upload_progress_data, download_prep_data).
+2025-04-29 15:16:23,411 - INFO - [MainThread] [<module>] - Initialized requests.Session for Telegram API calls.
+2025-04-29 15:16:23,412 - INFO - [MainThread] [<module>] - Telegram API functions defined with Session and Retries.
+2025-04-29 15:16:23,416 - INFO - [MainThread] [<module>] - Flask routes defined using configurable workers and linter fixes.
+2025-04-29 15:16:23,416 - INFO - [MainThread] [<module>] - Starting Flask development server...
+2025-04-29 15:16:23,451 - WARNING - [MainThread] [_log] -  * Debugger is active!
+2025-04-29 15:16:23,457 - INFO - [MainThread] [_log] -  * Debugger PIN: 107-410-311
+2025-04-29 15:16:26,797 - INFO - [Thread-3 (process_request_thread)] [index] - Serving index page.
+2025-04-29 15:16:26,818 - INFO - [Thread-3 (process_request_thread)] [_log] - 127.0.0.1 - - [29/Apr/2025 15:16:26] "GET / HTTP/1.1" 200 -
+2025-04-29 15:16:51,790 - INFO - [Thread-2 (process_request_thread)] [initiate_upload] - Request initiate upload.
+2025-04-29 15:16:52,770 - INFO - [Thread-2 (process_request_thread)] [initiate_upload] - [dddfc0e2-b0ae-48bc-8661-fcce5b2a0571] Temp storage: uploads_temp\dddfc0e2-b0ae-48bc-8661-fcce5b2a0571_Hellbound S02 E01 WebRip 480p x265 10bit Hindi English MSubs.mkv
+2025-04-29 15:16:52,951 - INFO - [Thread-2 (process_request_thread)] [initiate_upload] - [dddfc0e2-b0ae-48bc-8661-fcce5b2a0571] Temp saved: 'Hellbound S02 E01 WebRip 480p x265 10bit Hindi English MSubs.mkv'.
+2025-04-29 15:16:52,961 - INFO - [Thread-2 (process_request_thread)] [_log] - 127.0.0.1 - - [29/Apr/2025 15:16:52] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-29 15:16:52,969 - INFO - [Thread-4 (process_request_thread)] [stream_progress] - SSE connect request for upload_id: dddfc0e2-b0ae-48bc-8661-fcce5b2a0571
+2025-04-29 15:16:52,970 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [dddfc0e2-b0ae-48bc-8661-fcce5b2a0571] Starting processing generator...
+2025-04-29 15:16:52,970 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [dddfc0e2-b0ae-48bc-8661-fcce5b2a0571] Processing: User='ELENA', File='Hellbound S02 E01 WebRip 480p x265 10bit Hindi English MSubs.mkv'
+2025-04-29 15:16:52,971 - INFO - [Thread-4 (process_request_thread)] [_log] - 127.0.0.1 - - [29/Apr/2025 15:16:52] "GET /stream-progress/dddfc0e2-b0ae-48bc-8661-fcce5b2a0571 HTTP/1.1" 200 -
+2025-04-29 15:16:52,971 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [dddfc0e2-b0ae-48bc-8661-fcce5b2a0571] Access ID: e648db3009
+2025-04-29 15:16:52,971 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [dddfc0e2-b0ae-48bc-8661-fcce5b2a0571] Large file workflow.
+2025-04-29 15:16:57,523 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [dddfc0e2-b0ae-48bc-8661-fcce5b2a0571] Compressed to 129562686 bytes in 4.55s.
+2025-04-29 15:16:57,557 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [dddfc0e2-b0ae-48bc-8661-fcce5b2a0571] Read chunk 1 (20971520 bytes). Name: 'Hellbound S02 E01 WebRip 480p x265 10bit Hindi English MSubs.zip.part_001'
+2025-04-29 15:16:57,557 - INFO - [Thread-4 (process_request_thread)] [_send_chunk_task] - [dddfc0e2-b0ae-48bc-8661-fcce5b2a0571] T> Sending chunk 1 ('Hellbound S02 E01 WebRip 480p x265 10bit Hindi English MSubs.zip.part_001') to -4603853425
+2025-04-29 15:16:57,557 - INFO - [Thread-4 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'Hellbound S02 E01 WebRip 480p x265 10bit Hindi English MSubs.zip.part_001'] Attempting send.
+2025-04-29 15:17:07,207 - INFO - [Thread-4 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'Hellbound S02 E01 WebRip 480p x265 10bit Hindi English MSubs.zip.part_001'] API success (Attempt 1).
+2025-04-29 15:17:07,209 - INFO - [Thread-4 (process_request_thread)] [_send_chunk_task] - [dddfc0e2-b0ae-48bc-8661-fcce5b2a0571] T> Sent chunk 1 to -4603853425. Success: True
+2025-04-29 15:17:07,226 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [dddfc0e2-b0ae-48bc-8661-fcce5b2a0571] Read chunk 2 (20971520 bytes). Name: 'Hellbound S02 E01 WebRip 480p x265 10bit Hindi English MSubs.zip.part_002'
+2025-04-29 15:17:07,227 - INFO - [Thread-4 (process_request_thread)] [_send_chunk_task] - [dddfc0e2-b0ae-48bc-8661-fcce5b2a0571] T> Sending chunk 2 ('Hellbound S02 E01 WebRip 480p x265 10bit Hindi English MSubs.zip.part_002') to -4603853425
+2025-04-29 15:17:07,228 - INFO - [Thread-4 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'Hellbound S02 E01 WebRip 480p x265 10bit Hindi English MSubs.zip.part_002'] Attempting send.
+2025-04-29 15:17:17,784 - INFO - [Thread-4 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'Hellbound S02 E01 WebRip 480p x265 10bit Hindi English MSubs.zip.part_002'] API success (Attempt 1).
+2025-04-29 15:17:17,786 - INFO - [Thread-4 (process_request_thread)] [_send_chunk_task] - [dddfc0e2-b0ae-48bc-8661-fcce5b2a0571] T> Sent chunk 2 to -4603853425. Success: True
+2025-04-29 15:17:17,804 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [dddfc0e2-b0ae-48bc-8661-fcce5b2a0571] Read chunk 3 (20971520 bytes). Name: 'Hellbound S02 E01 WebRip 480p x265 10bit Hindi English MSubs.zip.part_003'
+2025-04-29 15:17:17,804 - INFO - [Thread-4 (process_request_thread)] [_send_chunk_task] - [dddfc0e2-b0ae-48bc-8661-fcce5b2a0571] T> Sending chunk 3 ('Hellbound S02 E01 WebRip 480p x265 10bit Hindi English MSubs.zip.part_003') to -4603853425
+2025-04-29 15:17:17,805 - INFO - [Thread-4 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'Hellbound S02 E01 WebRip 480p x265 10bit Hindi English MSubs.zip.part_003'] Attempting send.
+2025-04-29 15:17:27,819 - WARNING - [Thread-4 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'Hellbound S02 E01 WebRip 480p x265 10bit Hindi English MSubs.zip.part_003'] Connection error attempt 1: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/sendDocument (Caused by SSLError(SSLWantWriteError(3, 'The operation did not complete (write) (_ssl.c:2427)')))
+2025-04-29 15:17:27,821 - INFO - [Thread-4 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'Hellbound S02 E01 WebRip 480p x265 10bit Hindi English MSubs.zip.part_003'] Retrying in 2s...
+2025-04-29 15:17:40,253 - WARNING - [Thread-4 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'Hellbound S02 E01 WebRip 480p x265 10bit Hindi English MSubs.zip.part_003'] Connection error attempt 2: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/sendDocument (Caused by SSLError(SSLWantWriteError(3, 'The operation did not complete (write) (_ssl.c:2427)')))
+2025-04-29 15:17:40,253 - INFO - [Thread-4 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'Hellbound S02 E01 WebRip 480p x265 10bit Hindi English MSubs.zip.part_003'] Retrying in 2s...
+2025-04-29 15:17:53,338 - INFO - [Thread-4 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'Hellbound S02 E01 WebRip 480p x265 10bit Hindi English MSubs.zip.part_003'] API success (Attempt 3).
+2025-04-29 15:17:53,339 - INFO - [Thread-4 (process_request_thread)] [_send_chunk_task] - [dddfc0e2-b0ae-48bc-8661-fcce5b2a0571] T> Sent chunk 3 to -4603853425. Success: True
+2025-04-29 15:17:53,353 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [dddfc0e2-b0ae-48bc-8661-fcce5b2a0571] Read chunk 4 (20971520 bytes). Name: 'Hellbound S02 E01 WebRip 480p x265 10bit Hindi English MSubs.zip.part_004'
+2025-04-29 15:17:53,354 - INFO - [Thread-4 (process_request_thread)] [_send_chunk_task] - [dddfc0e2-b0ae-48bc-8661-fcce5b2a0571] T> Sending chunk 4 ('Hellbound S02 E01 WebRip 480p x265 10bit Hindi English MSubs.zip.part_004') to -4603853425
+2025-04-29 15:17:53,356 - INFO - [Thread-4 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'Hellbound S02 E01 WebRip 480p x265 10bit Hindi English MSubs.zip.part_004'] Attempting send.
+2025-04-29 15:18:03,953 - INFO - [Thread-4 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'Hellbound S02 E01 WebRip 480p x265 10bit Hindi English MSubs.zip.part_004'] API success (Attempt 1).
+2025-04-29 15:18:03,955 - INFO - [Thread-4 (process_request_thread)] [_send_chunk_task] - [dddfc0e2-b0ae-48bc-8661-fcce5b2a0571] T> Sent chunk 4 to -4603853425. Success: True
+2025-04-29 15:18:03,966 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [dddfc0e2-b0ae-48bc-8661-fcce5b2a0571] Read chunk 5 (20971520 bytes). Name: 'Hellbound S02 E01 WebRip 480p x265 10bit Hindi English MSubs.zip.part_005'
+2025-04-29 15:18:03,967 - INFO - [Thread-4 (process_request_thread)] [_send_chunk_task] - [dddfc0e2-b0ae-48bc-8661-fcce5b2a0571] T> Sending chunk 5 ('Hellbound S02 E01 WebRip 480p x265 10bit Hindi English MSubs.zip.part_005') to -4603853425
+2025-04-29 15:18:03,967 - INFO - [Thread-4 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'Hellbound S02 E01 WebRip 480p x265 10bit Hindi English MSubs.zip.part_005'] Attempting send.
+2025-04-29 15:18:15,283 - INFO - [Thread-4 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'Hellbound S02 E01 WebRip 480p x265 10bit Hindi English MSubs.zip.part_005'] API success (Attempt 1).
+2025-04-29 15:18:15,285 - INFO - [Thread-4 (process_request_thread)] [_send_chunk_task] - [dddfc0e2-b0ae-48bc-8661-fcce5b2a0571] T> Sent chunk 5 to -4603853425. Success: True
+2025-04-29 15:18:15,298 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [dddfc0e2-b0ae-48bc-8661-fcce5b2a0571] Read chunk 6 (20971520 bytes). Name: 'Hellbound S02 E01 WebRip 480p x265 10bit Hindi English MSubs.zip.part_006'
+2025-04-29 15:18:15,298 - INFO - [Thread-4 (process_request_thread)] [_send_chunk_task] - [dddfc0e2-b0ae-48bc-8661-fcce5b2a0571] T> Sending chunk 6 ('Hellbound S02 E01 WebRip 480p x265 10bit Hindi English MSubs.zip.part_006') to -4603853425
+2025-04-29 15:18:15,298 - INFO - [Thread-4 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'Hellbound S02 E01 WebRip 480p x265 10bit Hindi English MSubs.zip.part_006'] Attempting send.
+2025-04-29 15:18:27,662 - INFO - [Thread-4 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'Hellbound S02 E01 WebRip 480p x265 10bit Hindi English MSubs.zip.part_006'] API success (Attempt 1).
+2025-04-29 15:18:27,664 - INFO - [Thread-4 (process_request_thread)] [_send_chunk_task] - [dddfc0e2-b0ae-48bc-8661-fcce5b2a0571] T> Sent chunk 6 to -4603853425. Success: True
+2025-04-29 15:18:27,671 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [dddfc0e2-b0ae-48bc-8661-fcce5b2a0571] Read chunk 7 (3733566 bytes). Name: 'Hellbound S02 E01 WebRip 480p x265 10bit Hindi English MSubs.zip.part_007'
+2025-04-29 15:18:27,671 - INFO - [Thread-4 (process_request_thread)] [_send_chunk_task] - [dddfc0e2-b0ae-48bc-8661-fcce5b2a0571] T> Sending chunk 7 ('Hellbound S02 E01 WebRip 480p x265 10bit Hindi English MSubs.zip.part_007') to -4603853425
+2025-04-29 15:18:27,671 - INFO - [Thread-4 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'Hellbound S02 E01 WebRip 480p x265 10bit Hindi English MSubs.zip.part_007'] Attempting send.
+2025-04-29 15:18:30,446 - INFO - [Thread-4 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'Hellbound S02 E01 WebRip 480p x265 10bit Hindi English MSubs.zip.part_007'] API success (Attempt 1).
+2025-04-29 15:18:30,447 - INFO - [Thread-4 (process_request_thread)] [_send_chunk_task] - [dddfc0e2-b0ae-48bc-8661-fcce5b2a0571] T> Sent chunk 7 to -4603853425. Success: True
+2025-04-29 15:18:30,452 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [dddfc0e2-b0ae-48bc-8661-fcce5b2a0571] EOF reached.
+2025-04-29 15:18:30,452 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [dddfc0e2-b0ae-48bc-8661-fcce5b2a0571] Finished chunk loop.
+2025-04-29 15:18:30,453 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [dddfc0e2-b0ae-48bc-8661-fcce5b2a0571] All 7 chunks OK. Saving meta.
+2025-04-29 15:18:30,512 - INFO - [Thread-4 (process_request_thread)] [load_metadata] - Successfully loaded metadata from 'metadata.json'.
+2025-04-29 15:18:30,525 - INFO - [Thread-4 (process_request_thread)] [save_metadata] - Successfully saved metadata to 'metadata.json'.
+2025-04-29 15:18:30,537 - INFO - [Thread-4 (process_request_thread)] [_safe_remove_file] - [dddfc0e2-b0ae-48bc-8661-fcce5b2a0571] Cleaned up large compressed temp: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dddfc0e2-b0ae-48bc-8661-fcce5b2a0571_comp_d14x4j78.zip
+2025-04-29 15:18:30,538 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [dddfc0e2-b0ae-48bc-8661-fcce5b2a0571] Upload generator cleanup.
+2025-04-29 15:18:30,549 - INFO - [Thread-4 (process_request_thread)] [_safe_remove_file] - [dddfc0e2-b0ae-48bc-8661-fcce5b2a0571] Cleaned up original temp: uploads_temp\dddfc0e2-b0ae-48bc-8661-fcce5b2a0571_Hellbound S02 E01 WebRip 480p x265 10bit Hindi English MSubs.mkv
+2025-04-29 15:18:30,549 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [dddfc0e2-b0ae-48bc-8661-fcce5b2a0571] Upload generator finished. Status: completed

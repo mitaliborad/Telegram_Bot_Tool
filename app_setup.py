@@ -1,43 +1,41 @@
-# --- START OF FILE app_setup.py ---
-
-# --- Imports ---
 from flask import Flask
 import logging
-from flask_cors import CORS # <--- IMPORT CORS HERE
-
-# --- Import Utilities ---
+from flask_cors import CORS 
+from typing import Dict, Any
 from utils import format_bytes
 
 # --- Flask Application Setup ---
-app = Flask(__name__, template_folder='.') # Assuming templates are in the root
-app.secret_key = 'a_simple_secret_key_for_now' # Important for flashing messages
+app = Flask(__name__, template_folder='.') 
+app.secret_key = 'a_simple_secret_key_for_now' 
 
-# --- CORS Configuration ---
-# This tells the browser that requests FROM 'http://localhost:4200'
-# are allowed to access resources on this Flask server ('http://localhost:5000').
-# Replace 'http://localhost:4200' with the actual origin of your Angular app.
-# For production, replace it with your deployed Angular app's domain.
-# Using "*" allows any origin, which is simpler for initial testing but less secure.
-# Use "*" cautiously, especially in production.
-allowed_origins = "http://localhost:4200" # Or use "*" for development testing
+# Register custom Jinja filters
+app.jinja_env.filters['format_bytes'] = format_bytes
+logging.info("Custom Jinja filter 'format_bytes' registered.")
+
+allowed_origins = "http://localhost:4200" 
 #allowed_origins = "*" 
 
 # Initialize CORS with the app and specific origins
 CORS(app, resources={r"/*": {"origins": allowed_origins}})
-# The 'resources={r"/*": ...}' part applies CORS to all routes (paths starting with /)
-# The {"origins": ...} specifies which frontend origins are allowed to make requests.
-
 logging.info(f"Flask-CORS initialized. Allowing origins: {allowed_origins}")
-# --- END CORS Configuration ---
+logging.info("Flask application initialized.") 
 
-# Register the custom filter with Jinja
-app.jinja_env.filters['format_bytes'] = format_bytes
-logging.info("Flask application initialized.")
+# Stores progress data for ongoing uploads, keyed by upload_id
+upload_progress_data: Dict[str, Any] = {}
 
-# --- Global State Variables ---
-# These might be better managed with Flask contexts or dedicated state managers
-# in a larger application, but for direct translation, we keep them global here.
-upload_progress_data = {}
-download_prep_data = {}
+# Stores state for download preparation tasks, keyed by prep_id
+download_prep_data: Dict[str, Any] = {}
 
-logging.info("Global state variables initialized.")
+logging.info("Global state variables initialized (upload_progress_data, download_prep_data).")
+import logging
+import os 
+
+# --- Import App and Config ---
+from app_setup import app
+import routes
+
+
+# --- Application Runner ---
+if __name__ == '__main__':
+    logging.info("Starting Flask development server...")
+    app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=True)

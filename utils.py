@@ -7,8 +7,6 @@ from datetime import datetime, timezone
 from dateutil import parser as dateutil_parser
 import pytz
 
-# --- Import config variables ---
-# (METADATA_FILE is used here)
 from config import METADATA_FILE
 
 # --- Metadata Handling ---
@@ -51,7 +49,7 @@ def save_metadata(data):
 
 def format_time(seconds):
     """Converts seconds into HH:MM:SS or MM:SS string."""
-    if seconds < 0: seconds = 0 # Avoid negative display
+    if seconds < 0: seconds = 0 
     seconds = int(seconds)
     minutes, seconds = divmod(seconds, 60)
     hours, minutes = divmod(minutes, 60)

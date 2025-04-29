@@ -18,7 +18,7 @@ METADATA_FILE = 'metadata.json'
 CHUNK_SIZE = 20 * 1024 * 1024 
 
 # --- Telegram API Settings ---
-TELEGRAM_API_TIMEOUTS = { 'connect': 10, 'read': 60, 'send_document': 180, 'get_file': 30, 'download_file': 180 }
+TELEGRAM_API_TIMEOUTS = { 'connect': 10, 'read': 60, 'send_document': 300, 'get_file': 30, 'download_file': 180 }
 API_RETRY_ATTEMPTS = 3
 API_RETRY_DELAY = 2
 

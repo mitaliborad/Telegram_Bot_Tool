@@ -64,17 +64,33 @@ def initiate_upload() -> Response:
         if upload_id in upload_progress_data: del upload_progress_data[upload_id]
         return jsonify({"error": f"Server error saving file: {e}"}), 500
 
-@app.route('/stream-progress/<upload_id>')
-def stream_progress(upload_id: str) -> Response:
-    logging.info(f"SSE connect request for upload_id: {upload_id}")
-    status = upload_progress_data.get(upload_id, {}).get('status', 'unknown')
-    if upload_id not in upload_progress_data or status in ['completed', 'error', 'completed_metadata_error']:
-        logging.warning(f"Upload ID '{upload_id}' unknown or finalized (Status:{status}).")
-        def stream_gen(): yield _yield_sse_event('error', {'message': f'Upload ID {upload_id} unknown/finalized.'})
-        return Response(stream_with_context(stream_gen()), mimetype='text/event-stream')
-    return Response(stream_with_context(process_upload_and_generate_updates(upload_id)), mimetype='text/event-stream')
+# @app.route('/stream-progress/<upload_id>')
+# def stream_progress(upload_id: str) -> Response:
+#     logging.info(f"SSE connect request for upload_id: {upload_id}")
+#     status = upload_progress_data.get(upload_id, {}).get('status', 'unknown')
+#     if upload_id not in upload_progress_data or status in ['completed', 'error', 'completed_metadata_error']:
+#         logging.warning(f"Upload ID '{upload_id}' unknown or finalized (Status:{status}).")
+#         def stream_gen(): yield _yield_sse_event('error', {'message': f'Upload ID {upload_id} unknown/finalized.'})
+#         return Response(stream_with_context(stream_gen()), mimetype='text/event-stream')
+#     return Response(stream_with_context(process_upload_and_generate_updates(upload_id)), mimetype='text/event-stream')
 
-
+# # Example simplification in server.py (TEMPORARY)
+# @app.route('/stream-progress/<upload_id>')
+# def stream_progress(upload_id):
+#     print(f"SSE stream requested for ID: {upload_id}") # Log request
+#     def event_stream():
+#                 # Just send a connected message and keep connection open (for testing)
+#                 yield f"event: status\ndata: {json.dumps({'message': 'SSE Connected'})}\n\n"
+# # Keep connection open without doing real work
+#                 while True:
+#                     time.sleep(30) # Keep alive ping essentially
+#                     yield ": keepalive\n\n" # Send a comment to keep connection alive
+#                     try:
+#                         return Response(event_stream(), mimetype='text/event-stream')
+#                     except Exception as e:
+#                         print(f"Error during SSE stream for {upload_id}: {e}")
+# # Return an error response if the stream setup fails
+#                     return jsonify({"message": f"Failed to start stream: {e}"}), 500
 
 
 # --- Helper Functions ---

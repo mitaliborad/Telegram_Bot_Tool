@@ -15,14 +15,22 @@ from flask import ( Flask, request, render_template, flash, redirect, url_for,
     make_response, jsonify, send_file, Response, stream_with_context )
 from dateutil import parser as dateutil_parser
 import threading
-
+import database
+from database import (
+    save_file_metadata,
+    find_metadata_by_username,
+    find_metadata_by_access_id,
+    delete_metadata_by_filename
+)
+from config import format_time
 # --- Import necessary components ---
 from app_setup import app, upload_progress_data, download_prep_data
 from config import (
-    TELEGRAM_CHAT_IDS, PRIMARY_TELEGRAM_CHAT_ID, METADATA_FILE, CHUNK_SIZE,
-    UPLOADS_TEMP_DIR, MAX_UPLOAD_WORKERS, MAX_DOWNLOAD_WORKERS
+    TELEGRAM_CHAT_IDS, PRIMARY_TELEGRAM_CHAT_ID, CHUNK_SIZE,
+    UPLOADS_TEMP_DIR, MAX_UPLOAD_WORKERS, MAX_DOWNLOAD_WORKERS,
+    format_bytes
 )
-from utils import load_metadata, save_metadata, format_time, format_bytes
+# from utils import load_metadata, save_metadata, format_time, format_bytes
 from telegram_api import send_file_to_telegram, download_telegram_file_content
 
 # --- Type Aliases ---
@@ -64,15 +72,15 @@ def initiate_upload() -> Response:
         if upload_id in upload_progress_data: del upload_progress_data[upload_id]
         return jsonify({"error": f"Server error saving file: {e}"}), 500
 
-# @app.route('/stream-progress/<upload_id>')
-# def stream_progress(upload_id: str) -> Response:
-#     logging.info(f"SSE connect request for upload_id: {upload_id}")
-#     status = upload_progress_data.get(upload_id, {}).get('status', 'unknown')
-#     if upload_id not in upload_progress_data or status in ['completed', 'error', 'completed_metadata_error']:
-#         logging.warning(f"Upload ID '{upload_id}' unknown or finalized (Status:{status}).")
-#         def stream_gen(): yield _yield_sse_event('error', {'message': f'Upload ID {upload_id} unknown/finalized.'})
-#         return Response(stream_with_context(stream_gen()), mimetype='text/event-stream')
-#     return Response(stream_with_context(process_upload_and_generate_updates(upload_id)), mimetype='text/event-stream')
+@app.route('/stream-progress/<upload_id>')
+def stream_progress(upload_id: str) -> Response:
+    logging.info(f"SSE connect request for upload_id: {upload_id}")
+    status = upload_progress_data.get(upload_id, {}).get('status', 'unknown')
+    if upload_id not in upload_progress_data or status in ['completed', 'error', 'completed_metadata_error']:
+        logging.warning(f"Upload ID '{upload_id}' unknown or finalized (Status:{status}).")
+        def stream_gen(): yield _yield_sse_event('error', {'message': f'Upload ID {upload_id} unknown/finalized.'})
+        return Response(stream_with_context(stream_gen()), mimetype='text/event-stream')
+    return Response(stream_with_context(process_upload_and_generate_updates(upload_id)), mimetype='text/event-stream')
 
 # # Example simplification in server.py (TEMPORARY)
 # @app.route('/stream-progress/<upload_id>')
@@ -172,11 +180,6 @@ def _calculate_progress(start_time: float, bytes_done: int, total_bytes: int) ->
     elif bytes_done == total_bytes: progress["percentage"] = 100; progress["etaSeconds"] = 0; progress["etaFormatted"] = "00:00"
     return progress
 
-def _find_file_by_access_id(metadata: Metadata, access_id: str) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
-    for u, files in metadata.items():
-        for f in files:
-            if f.get('access_id') == access_id: return f, u
-    return None, None
 def _find_best_telegram_file_id(locations: List[Dict[str, Any]], primary_chat_id: Optional[str]) -> Tuple[Optional[str], Optional[str]]:
     pf, ff = None, None; pcid_str = str(primary_chat_id) if primary_chat_id else None
     for loc in locations:
@@ -279,15 +282,38 @@ def process_upload_and_generate_updates(upload_id: str) -> Generator[SseEvent, N
                 num_ok = sum(1 for r in send_res if r['success']); logging.info(f"[{upload_id}] Success: {num_ok}/{len(TELEGRAM_CHAT_IDS)}")
                 speed = (comp_size/(1024*1024)/duration) if duration > 0 else 0
                 yield _yield_sse_event('progress', {'bytesSent': comp_size, 'totalBytes': comp_size, 'percentage': 100, 'speedMBps': speed, 'etaFormatted': '00:00'})
-                meta = load_metadata(); ts = datetime.now(timezone.utc).isoformat();
-                details = _parse_send_results(upload_id, send_res)
-                record = { "original_filename": original_filename, "sent_filename": comp_filename, "is_split": False, "is_compressed": True, "original_size": total_size, "compressed_size": comp_size, "send_locations": details, "upload_timestamp": ts, "username": username, "upload_duration_seconds": round(duration, 2), "access_id": access_id }
-                meta.setdefault(username, []).append(record)
-                if not save_metadata(meta): logging.error(f"[{upload_id}] CRITICAL: META SAVE FAIL."); yield _yield_sse_event('status', {'message': 'Warn: Meta save fail.'})
+                # --- New block using database function ---
+            ts = datetime.now(timezone.utc).isoformat()
+            details = _parse_send_results(upload_id, send_res)
+            record = {
+                "original_filename": original_filename,
+                "sent_filename": comp_filename,
+                "is_split": False,
+                "is_compressed": True,
+                "original_size": total_size,
+                "compressed_size": comp_size,
+                "send_locations": details,
+                "upload_timestamp": ts,
+                "username": username,
+                "upload_duration_seconds": round(duration, 2),
+                "access_id": access_id # Make sure access_id is in the record
+            }
+            logging.info(f"[{upload_id}] Attempting to save metadata to DB...")
+            save_success, save_msg = save_file_metadata(record) # Call the DB function
+            if not save_success:
+                # Log the error critically, yield a warning status to the user
+                logging.error(f"[{upload_id}] CRITICAL: Metadata save to DB failed: {save_msg}")
+                yield _yield_sse_event('status', {'message': 'Warning: Upload OK, but metadata save failed.'})
+                # Consider setting upload_data['status'] = 'completed_metadata_error'
+            else:
+                logging.info(f"[{upload_id}] Metadata successfully saved to DB. Msg: {save_msg}")
+            # --- End of new block ---
+
+                # The rest (url = url_for..., yield _yield_sse_event('complete'...) stays the same
                 url = url_for('get_file_by_access_id', access_id=access_id, _external=True)
                 yield _yield_sse_event('complete', {'message': f'File {original_filename} uploaded!', 'download_url': url, 'filename': original_filename})
-                upload_data['status'] = 'completed'
-            else: fail_msg = primary_res[1] if primary_res else "Primary err."; logging.error(f"[{upload_id}] Upload fail: Primary."); raise IOError(f"Primary TG Err: {fail_msg}")
+                upload_data['status'] = 'completed' # Set status even if meta save failed with warning
+           
         else:
             logging.info(f"[{upload_id}] Large file workflow."); comp_filename = f"{os.path.splitext(original_filename)[0]}.zip"
             yield _yield_sse_event('status', {'message': 'Compressing large file...'})
@@ -345,13 +371,37 @@ def process_upload_and_generate_updates(upload_id: str) -> Generator[SseEvent, N
                 actual = len(chunks_meta)
                 if actual == expected:
                     logging.info(f"[{upload_id}] All {expected} chunks OK. Saving meta.")
-                    meta = load_metadata(); ts = datetime.now(timezone.utc).isoformat()
-                    record = { "original_filename": original_filename, "sent_filename": comp_filename, "is_split": True, "is_compressed": True, "original_size": total_size, "compressed_total_size": comp_size, "chunk_size": CHUNK_SIZE, "num_chunks": expected, "chunks": chunks_meta, "upload_timestamp": ts, "username": username, "total_upload_duration_seconds": round(total_send_dur, 2), "access_id": access_id }
-                    meta.setdefault(username, []).append(record)
-                    if not save_metadata(meta): logging.error(f"[{upload_id}] CRITICAL: META SAVE FAIL (chunks)."); yield _yield_sse_event('status', {'message': 'Warn: Meta save fail.'})
+                    # --- New block using database function for chunks ---
+                    ts = datetime.now(timezone.utc).isoformat()
+                    record = {
+                        "original_filename": original_filename,
+                        "sent_filename": comp_filename,
+                        "is_split": True,
+                        "is_compressed": True,
+                        "original_size": total_size,
+                        "compressed_total_size": comp_size,
+                        "chunk_size": CHUNK_SIZE,
+                        "num_chunks": expected,
+                        "chunks": chunks_meta, # Ensure chunks_meta is correctly populated
+                        "upload_timestamp": ts,
+                        "username": username,
+                        "total_upload_duration_seconds": round(total_send_dur, 2),
+                        "access_id": access_id # Make sure access_id is in the record
+                    }
+                    logging.info(f"[{upload_id}] Attempting to save chunked metadata to DB...")
+                    save_success, save_msg = save_file_metadata(record)
+                    if not save_success:
+                        logging.error(f"[{upload_id}] CRITICAL: Chunked metadata save to DB failed: {save_msg}")
+                        yield _yield_sse_event('status', {'message': 'Warning: Upload OK, but metadata save failed.'})
+                        # upload_data['status'] = 'completed_metadata_error' # Optional distinct status
+                    else:
+                        logging.info(f"[{upload_id}] Chunked metadata successfully saved to DB. Msg: {save_msg}")
+                    # --- End of new block ---
+
+                    # The rest (url = url_for..., yield _yield_sse_event('complete'...) stays the same
                     url = url_for('get_file_by_access_id', access_id=access_id, _external=True)
                     yield _yield_sse_event('complete', {'message': f'Large file {original_filename} uploaded!', 'download_url': url, 'filename': original_filename})
-                    upload_data['status'] = 'completed'
+                    upload_data['status'] = 'completed' # Set status even if meta save failed with warning
                 else: raise SystemError(f"Chunk count mismatch. Exp:{expected}, Got:{actual}.")
             finally:
                 if temp_compressed_zip_filepath and os.path.exists(temp_compressed_zip_filepath): _safe_remove_file(temp_compressed_zip_filepath, upload_id, "large compressed temp")
@@ -396,10 +446,9 @@ def stream_download_by_access_id(access_id: str) -> Response:
     """
     prep_id = str(uuid.uuid4()) # Unique ID for *this* preparation task
     logging.info(f"[{prep_id}] SSE connection request for dl prep via access_id: {access_id}")
-
+    file_info, error_msg = find_metadata_by_access_id(access_id)
+    username = file_info.get('username')
     # --- Basic Metadata Lookup (to ensure ID is valid before streaming) ---
-    metadata = load_metadata()
-    file_info, username = _find_file_by_access_id(metadata, access_id)
 
     if not file_info or not username:
          # Handle case where access_id is not found
@@ -448,20 +497,63 @@ def _prepare_download_and_generate_updates(prep_id: str) -> Generator[SseEvent, 
     try:
         # --- Phase 1: Metadata Lookup ---
         yield _yield_sse_event('status', {'message': 'Looking up file info...'}); time.sleep(0.1)
-        metadata = load_metadata();
-        if access_id:
-            file_info, username_from_lookup = _find_file_by_access_id(metadata, access_id);
-            if not file_info or not username_from_lookup: raise FileNotFoundError(f"Access ID '{access_id}' not found.")
-            if not username: username = username_from_lookup; prep_data['username'] = username
-            requested_filename = file_info.get('original_filename') # Get filename from meta
-            prep_data['requested_filename'] = requested_filename # Store it
-        elif username and requested_filename:
-            file_info = next((f for f in metadata.get(username,[]) if f.get('original_filename') == requested_filename), None);
-            if not file_info: raise FileNotFoundError(f"File '{requested_filename}' not found for user '{username}'.")
-        else: raise ValueError("Insufficient info for download prep.")
+        # metadata = load_metadata(); # <<< REMOVED
 
-        original_filename_from_meta = file_info.get('original_filename','?'); final_expected_size = file_info.get('original_size', 0)
-        is_split = file_info.get('is_split', False); is_compressed = file_info.get('is_compressed', True)
+        lookup_error_msg = "" # Variable to store potential errors
+
+        # Prioritize access_id if available (e.g., from /stream-download route)
+        if access_id:
+            logging.debug(f"[{prep_id}] Finding metadata by access_id: {access_id}")
+            file_info, lookup_error_msg = find_metadata_by_access_id(access_id)
+            if not file_info and not lookup_error_msg: # Explicitly check if not found by DB function
+                lookup_error_msg = f"Access ID '{access_id}' not found."
+            elif file_info:
+                username_from_lookup = file_info.get('username')
+                if not username: # If username wasn't passed initially
+                    if username_from_lookup:
+                        username = username_from_lookup
+                        prep_data['username'] = username # Update prep_data for logging/context
+                    else:
+                        lookup_error_msg = "Record found but missing username field."
+                        file_info = None # Treat as error if username missing
+            # If there was a DB error, lookup_error_msg will be set
+
+        # Fallback to username/filename if access_id wasn't provided or failed,
+        # but username and requested_filename are available.
+        elif username and requested_filename:
+            logging.debug(f"[{prep_id}] Finding metadata by username/filename: User='{username}', File='{requested_filename}'")
+            # Find ALL files for the user first
+            all_user_files, lookup_error_msg = find_metadata_by_username(username)
+
+            if not lookup_error_msg and all_user_files is not None: # Check if DB call was successful
+                # Now filter the specific file from the results
+                file_info = next((f for f in all_user_files if f.get('original_filename') == requested_filename), None)
+                if not file_info:
+                    # Only set error if DB call was okay but file wasn't in the list
+                    lookup_error_msg = f"File '{requested_filename}' not found for user '{username}'."
+            elif not lookup_error_msg and all_user_files is None: # Should not happen normally
+                lookup_error_msg = "Internal error: Failed to retrieve user file list."
+            # If find_metadata_by_username had an error, lookup_error_msg is already set
+
+        else:
+            # This case means we don't have enough info to look up the file
+            lookup_error_msg = "Insufficient information (access_id or username/filename) provided for download preparation."
+
+        # --- Handle lookup results ---
+        if lookup_error_msg or not file_info:
+            # Use the specific error message we determined above
+            final_error_message = lookup_error_msg or "File metadata not found."
+            logging.error(f"[{prep_id}] Metadata lookup failed: {final_error_message}")
+            # Raise the specific error to be caught by the outer try/except
+            raise FileNotFoundError(final_error_message)
+
+        # If we reach here, file_info is valid and contains the metadata
+        logging.info(f"[{prep_id}] Successfully found metadata for download preparation.")
+        # ... rest of Phase 1 continues as before, extracting details from file_info ...
+        original_filename_from_meta = file_info.get('original_filename','?');
+        final_expected_size = file_info.get('original_size', 0)
+        is_split = file_info.get('is_split', False)
+        is_compressed = file_info.get('is_compressed', True)
         prep_data['original_filename'] = original_filename_from_meta
         logging.info(f"[{prep_id}] Meta: '{original_filename_from_meta}', User:{username}, Size:{final_expected_size}, Split:{is_split}, Comp:{is_compressed}")
         yield _yield_sse_event('filename', {'filename': original_filename_from_meta}); yield _yield_sse_event('totalSizeUpdate', {'totalSize': final_expected_size})
@@ -673,17 +765,41 @@ def serve_temp_file(temp_id: str, filename: str) -> Response:
 @app.route('/files/<username>', methods=['GET'])
 def list_user_files(username: str) -> Response:
     logging.info(f"List files request for: '{username}'")
-    metadata = load_metadata(); user_files = metadata.get(username, [])
+    logging.info(f"Fetching files for user '{username}' from DB...")
+    user_files, error_msg = find_metadata_by_username(username) 
+    if error_msg:
+        logging.error(f"DB Error listing files for '{username}': {error_msg}")
+        # listStatus.textContent = f"Server error listing files." # More generic user message
+        # listStatus.style.color = 'red'
+        return jsonify([])
+    if user_files is None: # If DB error occurred, find_... returns None
+        user_files = []
     logging.info(f"Found {len(user_files)} records for '{username}'.")
+    # if len(user_files) == 0:
+    #     listStatus.textContent = 'No files found for this user.'
+    # else:
+    #     listStatus.textContent = ''
     return jsonify(user_files)
 
 @app.route('/get/<access_id>')
 def get_file_by_access_id(access_id: str) -> Union[str, Response]:
     logging.info(f"Request dl page via access_id: {access_id}")
-    metadata = load_metadata(); file_info, username = _find_file_by_access_id(metadata, access_id)
-    if not file_info or not username:
-        logging.warning(f"Access ID '{access_id}' not found for dl page.")
-        return make_response(render_template('404_error.html', message=f"Link '{access_id}' not found/expired."), 404)
+    logging.info(f"Looking up access_id '{access_id}' in DB...")
+    file_info, error_msg = find_metadata_by_access_id(access_id)
+    if error_msg or not file_info:
+        error_message_for_user = error_msg if error_msg else f"Link '{access_id}' not found or expired."
+        logging.warning(f"Failed lookup for access_id '{access_id}': {error_message_for_user}")
+    # Distinguish "not found" from server errors for status code
+        status_code = 404 if "not found" in error_message_for_user.lower() else 500
+        return make_response(render_template('404_error.html', message=error_message_for_user), status_code)
+    
+    username = file_info.get('username')
+    if not username:    
+     # This shouldn't happen if records are saved correctly, but handle defensively
+        logging.error(f"Record found for access_id '{access_id}' but missing username field.")
+        message = "File record found but is incomplete (missing user info)."
+        return make_response(render_template('404_error.html', message=message), 500)
+
     orig_name = file_info.get('original_filename', 'Unknown'); size = file_info.get('original_size')
     ts_iso = file_info.get('upload_timestamp'); date_str = "Unknown date"
     if ts_iso:
@@ -699,17 +815,23 @@ def get_file_by_access_id(access_id: str) -> Union[str, Response]:
 @app.route('/delete-file/<username>/<path:filename>', methods=['DELETE'])
 def delete_file_record(username: str, filename: str) -> Response:
     logging.info(f"DELETE request user='{username}', file='{filename}'")
-    metadata = load_metadata()
-    if username not in metadata: return jsonify({"error": f"User '{username}' not found."}), 404
-    user_files = metadata[username]; initial_len = len(user_files)
-    updated_files = [rec for rec in user_files if rec.get('original_filename') != filename]
-    if len(updated_files) == initial_len: return jsonify({"error": f"File '{filename}' not found for user '{username}'."}), 404
-    metadata[username] = updated_files; num_deleted = initial_len - len(updated_files)
-    logging.info(f"Removed {num_deleted} record(s) for '{filename}' user '{username}'.")
-    if not metadata[username]: logging.info(f"Removing empty user entry '{username}'."); del metadata[username]
-    if save_metadata(metadata): logging.info("Saved metadata after delete."); return jsonify({"message": f"Record '{filename}' deleted."}), 200
-    else: logging.error("CRITICAL: Failed save metadata after delete."); return jsonify({"error": "Server error updating metadata."}), 500
+    logging.info(f"Attempting delete from DB: User='{username}', File='{filename}'")
+    # Using original_filename for deletion as per previous logic.
+    # Consider changing frontend/backend to use access_id for guaranteed uniqueness if needed.
+    deleted_count, error_msg = delete_metadata_by_filename(username, filename) # Call DB function
 
+    if error_msg:
+        logging.error(f"DB Error deleting file record for '{username}/{filename}': {error_msg}")
+        # Provide a generic server error message to the user
+        return jsonify({"error": "Server error during deletion. Please try again later."}), 500
+
+    if deleted_count == 0:
+        logging.warning(f"No file record found to delete for '{username}/{filename}'.")
+        return jsonify({"error": f"File '{filename}' not found for user '{username}'."}), 404
+    else:
+        # It's possible multiple records were deleted if names weren't unique
+        logging.info(f"Successfully deleted {deleted_count} record(s) for '{username}/{filename}' from DB.")
+        return jsonify({"message": f"Record for '{filename}' deleted successfully."}), 200
 logging.info("Flask routes defined using configurable workers and linter fixes.")
 
 

@@ -1,0 +1,301 @@
+2025-04-30 17:51:09,642 - INFO - [MainThread] [<module>] - ============================================================
+2025-04-30 17:51:09,642 - INFO - [MainThread] [<module>] - Logging configured. Level: INFO. Log file: Selenium-Logs\app_20250430_175109.log
+2025-04-30 17:51:09,643 - INFO - [MainThread] [<module>] - Primary Chat ID: -4603853425
+2025-04-30 17:51:09,643 - INFO - [MainThread] [<module>] - All Target Chat IDs: ['-4603853425']
+2025-04-30 17:51:09,643 - WARNING - [MainThread] [format_bytes] - Error formatting bytes (20971520): name 'math' is not defined
+2025-04-30 17:51:09,643 - INFO - [MainThread] [<module>] - Chunk Size: 20971520 B (20971520 bytes)
+2025-04-30 17:51:09,644 - INFO - [MainThread] [<module>] - API Timeouts (Connect/Read): 10s / 60s
+2025-04-30 17:51:09,644 - INFO - [MainThread] [<module>] - API Retries: 3 attempts, 2s delay
+2025-04-30 17:51:09,645 - INFO - [MainThread] [<module>] - Max Upload Workers: 3
+2025-04-30 17:51:09,645 - INFO - [MainThread] [<module>] - Max Download Workers: 12
+2025-04-30 17:51:09,645 - INFO - [MainThread] [<module>] - ============================================================
+2025-04-30 17:51:09,645 - INFO - [MainThread] [<module>] - Configuration loaded successfully.
+2025-04-30 17:51:09,647 - INFO - [MainThread] [<module>] - Custom Jinja filter 'format_bytes' registered.
+2025-04-30 17:51:09,647 - INFO - [MainThread] [<module>] - Flask-CORS initialized. Allowing origins: http://localhost:4200
+2025-04-30 17:51:09,647 - INFO - [MainThread] [<module>] - Flask application initialized.
+2025-04-30 17:51:09,647 - INFO - [MainThread] [<module>] - Global state variables initialized (upload_progress_data, download_prep_data).
+2025-04-30 17:51:09,649 - INFO - [MainThread] [<module>] - Custom Jinja filter 'format_bytes' registered.
+2025-04-30 17:51:09,650 - INFO - [MainThread] [<module>] - Flask-CORS initialized. Allowing origins: http://localhost:4200
+2025-04-30 17:51:09,650 - INFO - [MainThread] [<module>] - Flask application initialized.
+2025-04-30 17:51:09,650 - INFO - [MainThread] [<module>] - Global state variables initialized (upload_progress_data, download_prep_data).
+2025-04-30 17:51:09,806 - INFO - [MainThread] [<module>] - Database module initialized.
+2025-04-30 17:51:10,253 - INFO - [MainThread] [<module>] - Initialized requests.Session for Telegram API calls.
+2025-04-30 17:51:10,253 - INFO - [MainThread] [<module>] - Telegram API functions defined with Session and Retries.
+2025-04-30 17:51:10,257 - INFO - [MainThread] [<module>] - Flask routes defined using configurable workers and linter fixes.
+2025-04-30 17:51:10,257 - INFO - [MainThread] [<module>] - Starting Flask development server...
+2025-04-30 17:51:10,280 - WARNING - [MainThread] [_log] -  * Debugger is active!
+2025-04-30 17:51:10,286 - INFO - [MainThread] [_log] -  * Debugger PIN: 107-410-311
+2025-04-30 17:51:13,543 - INFO - [Thread-3 (process_request_thread)] [index] - Serving index page.
+2025-04-30 17:51:13,557 - INFO - [Thread-3 (process_request_thread)] [_log] - 127.0.0.1 - - [30/Apr/2025 17:51:13] "GET / HTTP/1.1" 200 -
+2025-04-30 17:51:18,351 - INFO - [Thread-2 (process_request_thread)] [initiate_upload] - Request initiate upload.
+2025-04-30 17:51:18,353 - INFO - [Thread-2 (process_request_thread)] [initiate_upload] - [d24b0fb5-2b05-4f27-8a31-5b7b1e8474a6] Temp storage: uploads_temp\d24b0fb5-2b05-4f27-8a31-5b7b1e8474a6_.gitattributes
+2025-04-30 17:51:18,354 - INFO - [Thread-2 (process_request_thread)] [initiate_upload] - [d24b0fb5-2b05-4f27-8a31-5b7b1e8474a6] Temp saved: '.gitattributes'.
+2025-04-30 17:51:18,355 - INFO - [Thread-2 (process_request_thread)] [_log] - 127.0.0.1 - - [30/Apr/2025 17:51:18] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-30 17:51:18,362 - INFO - [Thread-4 (process_request_thread)] [stream_progress] - SSE connect request for upload_id: d24b0fb5-2b05-4f27-8a31-5b7b1e8474a6
+2025-04-30 17:51:18,363 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [d24b0fb5-2b05-4f27-8a31-5b7b1e8474a6] Starting processing generator...
+2025-04-30 17:51:18,364 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [d24b0fb5-2b05-4f27-8a31-5b7b1e8474a6] Processing: User='ELENA', File='.gitattributes'
+2025-04-30 17:51:18,364 - INFO - [Thread-4 (process_request_thread)] [_log] - 127.0.0.1 - - [30/Apr/2025 17:51:18] "GET /stream-progress/d24b0fb5-2b05-4f27-8a31-5b7b1e8474a6 HTTP/1.1" 200 -
+2025-04-30 17:51:18,365 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [d24b0fb5-2b05-4f27-8a31-5b7b1e8474a6] Access ID: 7d9b8a2a2d
+2025-04-30 17:51:18,365 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [d24b0fb5-2b05-4f27-8a31-5b7b1e8474a6] Single file workflow.
+2025-04-30 17:51:18,379 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [d24b0fb5-2b05-4f27-8a31-5b7b1e8474a6] Compressed size: 188
+2025-04-30 17:51:18,380 - INFO - [Thread-4 (process_request_thread)] [_send_single_file_task] - [d24b0fb5-2b05-4f27-8a31-5b7b1e8474a6] T> Sending '.gitattributes.zip' (188b) to -4603853425
+2025-04-30 17:51:18,380 - INFO - [Thread-4 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File '.gitattributes.zip'] Attempting send.
+2025-04-30 17:51:19,255 - INFO - [Thread-4 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File '.gitattributes.zip'] API success (Attempt 1).
+2025-04-30 17:51:19,256 - INFO - [Thread-4 (process_request_thread)] [_send_single_file_task] - [d24b0fb5-2b05-4f27-8a31-5b7b1e8474a6] T> Sent '.gitattributes.zip' to -4603853425. Success: True
+2025-04-30 17:51:19,257 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [d24b0fb5-2b05-4f27-8a31-5b7b1e8474a6] Single sends done in 0.88s.
+2025-04-30 17:51:19,257 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [d24b0fb5-2b05-4f27-8a31-5b7b1e8474a6] Success: 1/1
+2025-04-30 17:51:19,258 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [d24b0fb5-2b05-4f27-8a31-5b7b1e8474a6] Attempting to save metadata to DB...
+2025-04-30 17:51:19,258 - INFO - [Thread-4 (process_request_thread)] [_connect_to_db] - Attempting to connect to MongoDB Atlas host: telegramtool.sfoz7jc.mongodb.net...
+2025-04-30 17:51:20,030 - INFO - [Thread-4 (process_request_thread)] [_connect_to_db] - ✅ Successfully connected and pinged MongoDB Atlas!
+2025-04-30 17:51:20,030 - INFO - [Thread-4 (process_request_thread)] [get_db] - Accessed database: Telegrambot
+2025-04-30 17:51:20,031 - INFO - [Thread-4 (process_request_thread)] [get_metadata_collection] - Accessed collection: file_metadata
+2025-04-30 17:51:20,066 - INFO - [Thread-4 (process_request_thread)] [save_file_metadata] - Successfully inserted metadata for access_id: 7d9b8a2a2d
+2025-04-30 17:51:20,066 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [d24b0fb5-2b05-4f27-8a31-5b7b1e8474a6] Metadata successfully saved to DB. Msg: Metadata inserted (ID: 681215c0231941833fb85e4f).
+2025-04-30 17:51:20,067 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [d24b0fb5-2b05-4f27-8a31-5b7b1e8474a6] Upload generator cleanup.
+2025-04-30 17:51:20,068 - INFO - [Thread-4 (process_request_thread)] [_safe_remove_file] - [d24b0fb5-2b05-4f27-8a31-5b7b1e8474a6] Cleaned up original temp: uploads_temp\d24b0fb5-2b05-4f27-8a31-5b7b1e8474a6_.gitattributes
+2025-04-30 17:51:20,069 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [d24b0fb5-2b05-4f27-8a31-5b7b1e8474a6] Upload generator finished. Status: completed
+2025-04-30 17:51:23,996 - INFO - [Thread-5 (process_request_thread)] [get_file_by_access_id] - Request dl page via access_id: 7d9b8a2a2d
+2025-04-30 17:51:23,998 - INFO - [Thread-5 (process_request_thread)] [get_file_by_access_id] - Looking up access_id '7d9b8a2a2d' in DB...
+2025-04-30 17:51:24,013 - INFO - [Thread-5 (process_request_thread)] [_log] - 127.0.0.1 - - [30/Apr/2025 17:51:24] "[35m[1mGET /get/7d9b8a2a2d HTTP/1.1[0m" 500 -
+2025-04-30 17:51:24,185 - INFO - [Thread-6 (process_request_thread)] [_log] - 127.0.0.1 - - [30/Apr/2025 17:51:24] "GET /get/7d9b8a2a2d?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+2025-04-30 17:51:24,196 - INFO - [Thread-7 (process_request_thread)] [_log] - 127.0.0.1 - - [30/Apr/2025 17:51:24] "GET /get/7d9b8a2a2d?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+2025-04-30 17:51:24,267 - INFO - [Thread-8 (process_request_thread)] [_log] - 127.0.0.1 - - [30/Apr/2025 17:51:24] "GET /get/7d9b8a2a2d?__debugger__=yes&cmd=resource&f=console.png&s=Gz2uDHyKtauhpCSApNpT HTTP/1.1" 200 -
+2025-04-30 17:51:24,274 - INFO - [Thread-9 (process_request_thread)] [_log] - 127.0.0.1 - - [30/Apr/2025 17:51:24] "GET /get/7d9b8a2a2d?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+2025-04-30 17:52:16,147 - INFO - [Thread-10 (process_request_thread)] [initiate_upload] - Request initiate upload.
+2025-04-30 17:52:16,148 - INFO - [Thread-10 (process_request_thread)] [initiate_upload] - [29297bc5-e184-4911-88ec-af36d9763027] Temp storage: uploads_temp\29297bc5-e184-4911-88ec-af36d9763027_.gitattributes
+2025-04-30 17:52:16,149 - INFO - [Thread-10 (process_request_thread)] [initiate_upload] - [29297bc5-e184-4911-88ec-af36d9763027] Temp saved: '.gitattributes'.
+2025-04-30 17:52:16,151 - INFO - [Thread-10 (process_request_thread)] [_log] - 127.0.0.1 - - [30/Apr/2025 17:52:16] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-30 17:52:16,159 - INFO - [Thread-11 (process_request_thread)] [stream_progress] - SSE connect request for upload_id: 29297bc5-e184-4911-88ec-af36d9763027
+2025-04-30 17:52:16,161 - INFO - [Thread-11 (process_request_thread)] [process_upload_and_generate_updates] - [29297bc5-e184-4911-88ec-af36d9763027] Starting processing generator...
+2025-04-30 17:52:16,162 - INFO - [Thread-11 (process_request_thread)] [process_upload_and_generate_updates] - [29297bc5-e184-4911-88ec-af36d9763027] Processing: User='ELENA', File='.gitattributes'
+2025-04-30 17:52:16,162 - INFO - [Thread-11 (process_request_thread)] [_log] - 127.0.0.1 - - [30/Apr/2025 17:52:16] "GET /stream-progress/29297bc5-e184-4911-88ec-af36d9763027 HTTP/1.1" 200 -
+2025-04-30 17:52:16,163 - INFO - [Thread-11 (process_request_thread)] [process_upload_and_generate_updates] - [29297bc5-e184-4911-88ec-af36d9763027] Access ID: 0f85e269c0
+2025-04-30 17:52:16,163 - INFO - [Thread-11 (process_request_thread)] [process_upload_and_generate_updates] - [29297bc5-e184-4911-88ec-af36d9763027] Single file workflow.
+2025-04-30 17:52:16,165 - INFO - [Thread-11 (process_request_thread)] [process_upload_and_generate_updates] - [29297bc5-e184-4911-88ec-af36d9763027] Compressed size: 188
+2025-04-30 17:52:16,166 - INFO - [Thread-11 (process_request_thread)] [_send_single_file_task] - [29297bc5-e184-4911-88ec-af36d9763027] T> Sending '.gitattributes.zip' (188b) to -4603853425
+2025-04-30 17:52:16,167 - INFO - [Thread-11 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File '.gitattributes.zip'] Attempting send.
+2025-04-30 17:52:16,994 - INFO - [Thread-11 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File '.gitattributes.zip'] API success (Attempt 1).
+2025-04-30 17:52:16,994 - INFO - [Thread-11 (process_request_thread)] [_send_single_file_task] - [29297bc5-e184-4911-88ec-af36d9763027] T> Sent '.gitattributes.zip' to -4603853425. Success: True
+2025-04-30 17:52:16,994 - INFO - [Thread-11 (process_request_thread)] [process_upload_and_generate_updates] - [29297bc5-e184-4911-88ec-af36d9763027] Single sends done in 0.83s.
+2025-04-30 17:52:16,995 - INFO - [Thread-11 (process_request_thread)] [process_upload_and_generate_updates] - [29297bc5-e184-4911-88ec-af36d9763027] Success: 1/1
+2025-04-30 17:52:16,995 - INFO - [Thread-11 (process_request_thread)] [process_upload_and_generate_updates] - [29297bc5-e184-4911-88ec-af36d9763027] Attempting to save metadata to DB...
+2025-04-30 17:52:16,997 - ERROR - [Thread-11 (process_request_thread)] [process_upload_and_generate_updates] - [29297bc5-e184-4911-88ec-af36d9763027] Upload failed: Collection objects do not implement truth value testing or bool(). Please compare with None instead: collection is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 302, in process_upload_and_generate_updates
+    save_success, save_msg = save_file_metadata(record) # Call the DB function
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 148, in save_file_metadata
+    collection, error = get_metadata_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 118, in get_metadata_collection
+    if _collection:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\collection.py", line 311, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Collection objects do not implement truth value testing or bool(). Please compare with None instead: collection is not None
+2025-04-30 17:52:17,000 - INFO - [Thread-11 (process_request_thread)] [process_upload_and_generate_updates] - [29297bc5-e184-4911-88ec-af36d9763027] Upload generator cleanup.
+2025-04-30 17:52:17,002 - INFO - [Thread-11 (process_request_thread)] [_safe_remove_file] - [29297bc5-e184-4911-88ec-af36d9763027] Cleaned up original temp: uploads_temp\29297bc5-e184-4911-88ec-af36d9763027_.gitattributes
+2025-04-30 17:52:17,002 - INFO - [Thread-11 (process_request_thread)] [process_upload_and_generate_updates] - [29297bc5-e184-4911-88ec-af36d9763027] Upload generator finished. Status: error
+2025-04-30 17:53:17,633 - INFO - [Thread-12 (process_request_thread)] [initiate_upload] - Request initiate upload.
+2025-04-30 17:53:17,634 - INFO - [Thread-12 (process_request_thread)] [initiate_upload] - [ce59408f-d723-4b2b-8076-ac93f2f68f3d] Temp storage: uploads_temp\ce59408f-d723-4b2b-8076-ac93f2f68f3d_requirements.txt
+2025-04-30 17:53:17,635 - INFO - [Thread-12 (process_request_thread)] [initiate_upload] - [ce59408f-d723-4b2b-8076-ac93f2f68f3d] Temp saved: 'requirements.txt'.
+2025-04-30 17:53:17,636 - INFO - [Thread-12 (process_request_thread)] [_log] - 127.0.0.1 - - [30/Apr/2025 17:53:17] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-30 17:53:17,642 - INFO - [Thread-13 (process_request_thread)] [stream_progress] - SSE connect request for upload_id: ce59408f-d723-4b2b-8076-ac93f2f68f3d
+2025-04-30 17:53:17,642 - INFO - [Thread-13 (process_request_thread)] [process_upload_and_generate_updates] - [ce59408f-d723-4b2b-8076-ac93f2f68f3d] Starting processing generator...
+2025-04-30 17:53:17,644 - INFO - [Thread-13 (process_request_thread)] [process_upload_and_generate_updates] - [ce59408f-d723-4b2b-8076-ac93f2f68f3d] Processing: User='ELENA', File='requirements.txt'
+2025-04-30 17:53:17,645 - INFO - [Thread-13 (process_request_thread)] [_log] - 127.0.0.1 - - [30/Apr/2025 17:53:17] "GET /stream-progress/ce59408f-d723-4b2b-8076-ac93f2f68f3d HTTP/1.1" 200 -
+2025-04-30 17:53:17,646 - INFO - [Thread-13 (process_request_thread)] [process_upload_and_generate_updates] - [ce59408f-d723-4b2b-8076-ac93f2f68f3d] Access ID: 88370ab896
+2025-04-30 17:53:17,648 - INFO - [Thread-13 (process_request_thread)] [process_upload_and_generate_updates] - [ce59408f-d723-4b2b-8076-ac93f2f68f3d] Single file workflow.
+2025-04-30 17:53:17,650 - INFO - [Thread-13 (process_request_thread)] [process_upload_and_generate_updates] - [ce59408f-d723-4b2b-8076-ac93f2f68f3d] Compressed size: 255
+2025-04-30 17:53:17,651 - INFO - [Thread-13 (process_request_thread)] [_send_single_file_task] - [ce59408f-d723-4b2b-8076-ac93f2f68f3d] T> Sending 'requirements.zip' (255b) to -4603853425
+2025-04-30 17:53:17,652 - INFO - [Thread-13 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'requirements.zip'] Attempting send.
+2025-04-30 17:53:18,314 - INFO - [Thread-13 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'requirements.zip'] API success (Attempt 1).
+2025-04-30 17:53:18,315 - INFO - [Thread-13 (process_request_thread)] [_send_single_file_task] - [ce59408f-d723-4b2b-8076-ac93f2f68f3d] T> Sent 'requirements.zip' to -4603853425. Success: True
+2025-04-30 17:53:18,316 - INFO - [Thread-13 (process_request_thread)] [process_upload_and_generate_updates] - [ce59408f-d723-4b2b-8076-ac93f2f68f3d] Single sends done in 0.67s.
+2025-04-30 17:53:18,317 - INFO - [Thread-13 (process_request_thread)] [process_upload_and_generate_updates] - [ce59408f-d723-4b2b-8076-ac93f2f68f3d] Success: 1/1
+2025-04-30 17:53:18,319 - INFO - [Thread-13 (process_request_thread)] [process_upload_and_generate_updates] - [ce59408f-d723-4b2b-8076-ac93f2f68f3d] Attempting to save metadata to DB...
+2025-04-30 17:53:18,320 - ERROR - [Thread-13 (process_request_thread)] [process_upload_and_generate_updates] - [ce59408f-d723-4b2b-8076-ac93f2f68f3d] Upload failed: Collection objects do not implement truth value testing or bool(). Please compare with None instead: collection is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 302, in process_upload_and_generate_updates
+    save_success, save_msg = save_file_metadata(record) # Call the DB function
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 148, in save_file_metadata
+    collection, error = get_metadata_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 118, in get_metadata_collection
+    if _collection:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\collection.py", line 311, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Collection objects do not implement truth value testing or bool(). Please compare with None instead: collection is not None
+2025-04-30 17:53:18,329 - INFO - [Thread-13 (process_request_thread)] [process_upload_and_generate_updates] - [ce59408f-d723-4b2b-8076-ac93f2f68f3d] Upload generator cleanup.
+2025-04-30 17:53:18,329 - INFO - [Thread-13 (process_request_thread)] [_safe_remove_file] - [ce59408f-d723-4b2b-8076-ac93f2f68f3d] Cleaned up original temp: uploads_temp\ce59408f-d723-4b2b-8076-ac93f2f68f3d_requirements.txt
+2025-04-30 17:53:18,330 - INFO - [Thread-13 (process_request_thread)] [process_upload_and_generate_updates] - [ce59408f-d723-4b2b-8076-ac93f2f68f3d] Upload generator finished. Status: error
+2025-04-30 17:53:52,365 - INFO - [Thread-14 (process_request_thread)] [initiate_upload] - Request initiate upload.
+2025-04-30 17:53:52,366 - INFO - [Thread-14 (process_request_thread)] [initiate_upload] - [5f170551-e8ed-4883-9b48-9d6f9785a025] Temp storage: uploads_temp\5f170551-e8ed-4883-9b48-9d6f9785a025_requirements.txt
+2025-04-30 17:53:52,367 - INFO - [Thread-14 (process_request_thread)] [initiate_upload] - [5f170551-e8ed-4883-9b48-9d6f9785a025] Temp saved: 'requirements.txt'.
+2025-04-30 17:53:52,368 - INFO - [Thread-14 (process_request_thread)] [_log] - 127.0.0.1 - - [30/Apr/2025 17:53:52] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-30 17:53:52,373 - INFO - [Thread-15 (process_request_thread)] [stream_progress] - SSE connect request for upload_id: 5f170551-e8ed-4883-9b48-9d6f9785a025
+2025-04-30 17:53:52,374 - INFO - [Thread-15 (process_request_thread)] [process_upload_and_generate_updates] - [5f170551-e8ed-4883-9b48-9d6f9785a025] Starting processing generator...
+2025-04-30 17:53:52,374 - INFO - [Thread-15 (process_request_thread)] [process_upload_and_generate_updates] - [5f170551-e8ed-4883-9b48-9d6f9785a025] Processing: User='ELENA', File='requirements.txt'
+2025-04-30 17:53:52,375 - INFO - [Thread-15 (process_request_thread)] [_log] - 127.0.0.1 - - [30/Apr/2025 17:53:52] "GET /stream-progress/5f170551-e8ed-4883-9b48-9d6f9785a025 HTTP/1.1" 200 -
+2025-04-30 17:53:52,375 - INFO - [Thread-15 (process_request_thread)] [process_upload_and_generate_updates] - [5f170551-e8ed-4883-9b48-9d6f9785a025] Access ID: f88670d4b4
+2025-04-30 17:53:52,376 - INFO - [Thread-15 (process_request_thread)] [process_upload_and_generate_updates] - [5f170551-e8ed-4883-9b48-9d6f9785a025] Single file workflow.
+2025-04-30 17:53:52,381 - INFO - [Thread-15 (process_request_thread)] [process_upload_and_generate_updates] - [5f170551-e8ed-4883-9b48-9d6f9785a025] Compressed size: 255
+2025-04-30 17:53:52,382 - INFO - [Thread-15 (process_request_thread)] [_send_single_file_task] - [5f170551-e8ed-4883-9b48-9d6f9785a025] T> Sending 'requirements.zip' (255b) to -4603853425
+2025-04-30 17:53:52,383 - INFO - [Thread-15 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'requirements.zip'] Attempting send.
+2025-04-30 17:53:53,088 - INFO - [Thread-15 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'requirements.zip'] API success (Attempt 1).
+2025-04-30 17:53:53,088 - INFO - [Thread-15 (process_request_thread)] [_send_single_file_task] - [5f170551-e8ed-4883-9b48-9d6f9785a025] T> Sent 'requirements.zip' to -4603853425. Success: True
+2025-04-30 17:53:53,089 - INFO - [Thread-15 (process_request_thread)] [process_upload_and_generate_updates] - [5f170551-e8ed-4883-9b48-9d6f9785a025] Single sends done in 0.71s.
+2025-04-30 17:53:53,089 - INFO - [Thread-15 (process_request_thread)] [process_upload_and_generate_updates] - [5f170551-e8ed-4883-9b48-9d6f9785a025] Success: 1/1
+2025-04-30 17:53:53,090 - INFO - [Thread-15 (process_request_thread)] [process_upload_and_generate_updates] - [5f170551-e8ed-4883-9b48-9d6f9785a025] Attempting to save metadata to DB...
+2025-04-30 17:53:53,090 - ERROR - [Thread-15 (process_request_thread)] [process_upload_and_generate_updates] - [5f170551-e8ed-4883-9b48-9d6f9785a025] Upload failed: Collection objects do not implement truth value testing or bool(). Please compare with None instead: collection is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 302, in process_upload_and_generate_updates
+    save_success, save_msg = save_file_metadata(record) # Call the DB function
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 148, in save_file_metadata
+    collection, error = get_metadata_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 118, in get_metadata_collection
+    if _collection:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\collection.py", line 311, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Collection objects do not implement truth value testing or bool(). Please compare with None instead: collection is not None
+2025-04-30 17:53:53,093 - INFO - [Thread-15 (process_request_thread)] [process_upload_and_generate_updates] - [5f170551-e8ed-4883-9b48-9d6f9785a025] Upload generator cleanup.
+2025-04-30 17:53:53,095 - INFO - [Thread-15 (process_request_thread)] [_safe_remove_file] - [5f170551-e8ed-4883-9b48-9d6f9785a025] Cleaned up original temp: uploads_temp\5f170551-e8ed-4883-9b48-9d6f9785a025_requirements.txt
+2025-04-30 17:53:53,096 - INFO - [Thread-15 (process_request_thread)] [process_upload_and_generate_updates] - [5f170551-e8ed-4883-9b48-9d6f9785a025] Upload generator finished. Status: error
+2025-04-30 17:53:54,305 - INFO - [Thread-16 (process_request_thread)] [initiate_upload] - Request initiate upload.
+2025-04-30 17:53:54,307 - INFO - [Thread-16 (process_request_thread)] [initiate_upload] - [200df193-80f7-400e-8bcd-f609142ee568] Temp storage: uploads_temp\200df193-80f7-400e-8bcd-f609142ee568_requirements.txt
+2025-04-30 17:53:54,308 - INFO - [Thread-16 (process_request_thread)] [initiate_upload] - [200df193-80f7-400e-8bcd-f609142ee568] Temp saved: 'requirements.txt'.
+2025-04-30 17:53:54,309 - INFO - [Thread-16 (process_request_thread)] [_log] - 127.0.0.1 - - [30/Apr/2025 17:53:54] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-30 17:53:54,312 - INFO - [Thread-17 (process_request_thread)] [stream_progress] - SSE connect request for upload_id: 200df193-80f7-400e-8bcd-f609142ee568
+2025-04-30 17:53:54,313 - INFO - [Thread-17 (process_request_thread)] [process_upload_and_generate_updates] - [200df193-80f7-400e-8bcd-f609142ee568] Starting processing generator...
+2025-04-30 17:53:54,313 - INFO - [Thread-17 (process_request_thread)] [process_upload_and_generate_updates] - [200df193-80f7-400e-8bcd-f609142ee568] Processing: User='ELENA', File='requirements.txt'
+2025-04-30 17:53:54,314 - INFO - [Thread-17 (process_request_thread)] [_log] - 127.0.0.1 - - [30/Apr/2025 17:53:54] "GET /stream-progress/200df193-80f7-400e-8bcd-f609142ee568 HTTP/1.1" 200 -
+2025-04-30 17:53:54,314 - INFO - [Thread-17 (process_request_thread)] [process_upload_and_generate_updates] - [200df193-80f7-400e-8bcd-f609142ee568] Access ID: d2e07b0088
+2025-04-30 17:53:54,315 - INFO - [Thread-17 (process_request_thread)] [process_upload_and_generate_updates] - [200df193-80f7-400e-8bcd-f609142ee568] Single file workflow.
+2025-04-30 17:53:54,319 - INFO - [Thread-17 (process_request_thread)] [process_upload_and_generate_updates] - [200df193-80f7-400e-8bcd-f609142ee568] Compressed size: 255
+2025-04-30 17:53:54,322 - INFO - [Thread-17 (process_request_thread)] [_send_single_file_task] - [200df193-80f7-400e-8bcd-f609142ee568] T> Sending 'requirements.zip' (255b) to -4603853425
+2025-04-30 17:53:54,323 - INFO - [Thread-17 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'requirements.zip'] Attempting send.
+2025-04-30 17:53:55,098 - INFO - [Thread-17 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'requirements.zip'] API success (Attempt 1).
+2025-04-30 17:53:55,099 - INFO - [Thread-17 (process_request_thread)] [_send_single_file_task] - [200df193-80f7-400e-8bcd-f609142ee568] T> Sent 'requirements.zip' to -4603853425. Success: True
+2025-04-30 17:53:55,099 - INFO - [Thread-17 (process_request_thread)] [process_upload_and_generate_updates] - [200df193-80f7-400e-8bcd-f609142ee568] Single sends done in 0.78s.
+2025-04-30 17:53:55,100 - INFO - [Thread-17 (process_request_thread)] [process_upload_and_generate_updates] - [200df193-80f7-400e-8bcd-f609142ee568] Success: 1/1
+2025-04-30 17:53:55,100 - INFO - [Thread-17 (process_request_thread)] [process_upload_and_generate_updates] - [200df193-80f7-400e-8bcd-f609142ee568] Attempting to save metadata to DB...
+2025-04-30 17:53:55,101 - ERROR - [Thread-17 (process_request_thread)] [process_upload_and_generate_updates] - [200df193-80f7-400e-8bcd-f609142ee568] Upload failed: Collection objects do not implement truth value testing or bool(). Please compare with None instead: collection is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 302, in process_upload_and_generate_updates
+    save_success, save_msg = save_file_metadata(record) # Call the DB function
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 148, in save_file_metadata
+    collection, error = get_metadata_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 118, in get_metadata_collection
+    if _collection:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\collection.py", line 311, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Collection objects do not implement truth value testing or bool(). Please compare with None instead: collection is not None
+2025-04-30 17:53:55,108 - INFO - [Thread-17 (process_request_thread)] [process_upload_and_generate_updates] - [200df193-80f7-400e-8bcd-f609142ee568] Upload generator cleanup.
+2025-04-30 17:53:55,110 - INFO - [Thread-17 (process_request_thread)] [_safe_remove_file] - [200df193-80f7-400e-8bcd-f609142ee568] Cleaned up original temp: uploads_temp\200df193-80f7-400e-8bcd-f609142ee568_requirements.txt
+2025-04-30 17:53:55,111 - INFO - [Thread-17 (process_request_thread)] [process_upload_and_generate_updates] - [200df193-80f7-400e-8bcd-f609142ee568] Upload generator finished. Status: error
+2025-04-30 17:53:56,509 - INFO - [Thread-18 (process_request_thread)] [initiate_upload] - Request initiate upload.
+2025-04-30 17:53:56,511 - INFO - [Thread-18 (process_request_thread)] [initiate_upload] - [65204a88-6988-4bcc-947a-dc6d325a7cde] Temp storage: uploads_temp\65204a88-6988-4bcc-947a-dc6d325a7cde_requirements.txt
+2025-04-30 17:53:56,512 - INFO - [Thread-18 (process_request_thread)] [initiate_upload] - [65204a88-6988-4bcc-947a-dc6d325a7cde] Temp saved: 'requirements.txt'.
+2025-04-30 17:53:56,513 - INFO - [Thread-18 (process_request_thread)] [_log] - 127.0.0.1 - - [30/Apr/2025 17:53:56] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-30 17:53:56,519 - INFO - [Thread-19 (process_request_thread)] [stream_progress] - SSE connect request for upload_id: 65204a88-6988-4bcc-947a-dc6d325a7cde
+2025-04-30 17:53:56,519 - INFO - [Thread-19 (process_request_thread)] [process_upload_and_generate_updates] - [65204a88-6988-4bcc-947a-dc6d325a7cde] Starting processing generator...
+2025-04-30 17:53:56,520 - INFO - [Thread-19 (process_request_thread)] [process_upload_and_generate_updates] - [65204a88-6988-4bcc-947a-dc6d325a7cde] Processing: User='ELENA', File='requirements.txt'
+2025-04-30 17:53:56,520 - INFO - [Thread-19 (process_request_thread)] [_log] - 127.0.0.1 - - [30/Apr/2025 17:53:56] "GET /stream-progress/65204a88-6988-4bcc-947a-dc6d325a7cde HTTP/1.1" 200 -
+2025-04-30 17:53:56,521 - INFO - [Thread-19 (process_request_thread)] [process_upload_and_generate_updates] - [65204a88-6988-4bcc-947a-dc6d325a7cde] Access ID: 3fe18217ca
+2025-04-30 17:53:56,521 - INFO - [Thread-19 (process_request_thread)] [process_upload_and_generate_updates] - [65204a88-6988-4bcc-947a-dc6d325a7cde] Single file workflow.
+2025-04-30 17:53:56,523 - INFO - [Thread-19 (process_request_thread)] [process_upload_and_generate_updates] - [65204a88-6988-4bcc-947a-dc6d325a7cde] Compressed size: 255
+2025-04-30 17:53:56,524 - INFO - [Thread-19 (process_request_thread)] [_send_single_file_task] - [65204a88-6988-4bcc-947a-dc6d325a7cde] T> Sending 'requirements.zip' (255b) to -4603853425
+2025-04-30 17:53:56,524 - INFO - [Thread-19 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'requirements.zip'] Attempting send.
+2025-04-30 17:53:57,031 - INFO - [Thread-19 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'requirements.zip'] API success (Attempt 1).
+2025-04-30 17:53:57,032 - INFO - [Thread-19 (process_request_thread)] [_send_single_file_task] - [65204a88-6988-4bcc-947a-dc6d325a7cde] T> Sent 'requirements.zip' to -4603853425. Success: True
+2025-04-30 17:53:57,032 - INFO - [Thread-19 (process_request_thread)] [process_upload_and_generate_updates] - [65204a88-6988-4bcc-947a-dc6d325a7cde] Single sends done in 0.51s.
+2025-04-30 17:53:57,033 - INFO - [Thread-19 (process_request_thread)] [process_upload_and_generate_updates] - [65204a88-6988-4bcc-947a-dc6d325a7cde] Success: 1/1
+2025-04-30 17:53:57,033 - INFO - [Thread-19 (process_request_thread)] [process_upload_and_generate_updates] - [65204a88-6988-4bcc-947a-dc6d325a7cde] Attempting to save metadata to DB...
+2025-04-30 17:53:57,033 - ERROR - [Thread-19 (process_request_thread)] [process_upload_and_generate_updates] - [65204a88-6988-4bcc-947a-dc6d325a7cde] Upload failed: Collection objects do not implement truth value testing or bool(). Please compare with None instead: collection is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 302, in process_upload_and_generate_updates
+    save_success, save_msg = save_file_metadata(record) # Call the DB function
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 148, in save_file_metadata
+    collection, error = get_metadata_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 118, in get_metadata_collection
+    if _collection:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\collection.py", line 311, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Collection objects do not implement truth value testing or bool(). Please compare with None instead: collection is not None
+2025-04-30 17:53:57,035 - INFO - [Thread-19 (process_request_thread)] [process_upload_and_generate_updates] - [65204a88-6988-4bcc-947a-dc6d325a7cde] Upload generator cleanup.
+2025-04-30 17:53:57,036 - INFO - [Thread-19 (process_request_thread)] [_safe_remove_file] - [65204a88-6988-4bcc-947a-dc6d325a7cde] Cleaned up original temp: uploads_temp\65204a88-6988-4bcc-947a-dc6d325a7cde_requirements.txt
+2025-04-30 17:53:57,037 - INFO - [Thread-19 (process_request_thread)] [process_upload_and_generate_updates] - [65204a88-6988-4bcc-947a-dc6d325a7cde] Upload generator finished. Status: error
+2025-04-30 17:53:57,746 - INFO - [Thread-20 (process_request_thread)] [initiate_upload] - Request initiate upload.
+2025-04-30 17:53:57,749 - INFO - [Thread-20 (process_request_thread)] [initiate_upload] - [611bfae2-ae23-4211-a5d9-3062632555d5] Temp storage: uploads_temp\611bfae2-ae23-4211-a5d9-3062632555d5_requirements.txt
+2025-04-30 17:53:57,750 - INFO - [Thread-20 (process_request_thread)] [initiate_upload] - [611bfae2-ae23-4211-a5d9-3062632555d5] Temp saved: 'requirements.txt'.
+2025-04-30 17:53:57,751 - INFO - [Thread-20 (process_request_thread)] [_log] - 127.0.0.1 - - [30/Apr/2025 17:53:57] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-30 17:53:57,755 - INFO - [Thread-21 (process_request_thread)] [stream_progress] - SSE connect request for upload_id: 611bfae2-ae23-4211-a5d9-3062632555d5
+2025-04-30 17:53:57,755 - INFO - [Thread-21 (process_request_thread)] [process_upload_and_generate_updates] - [611bfae2-ae23-4211-a5d9-3062632555d5] Starting processing generator...
+2025-04-30 17:53:57,756 - INFO - [Thread-21 (process_request_thread)] [process_upload_and_generate_updates] - [611bfae2-ae23-4211-a5d9-3062632555d5] Processing: User='ELENA', File='requirements.txt'
+2025-04-30 17:53:57,756 - INFO - [Thread-21 (process_request_thread)] [_log] - 127.0.0.1 - - [30/Apr/2025 17:53:57] "GET /stream-progress/611bfae2-ae23-4211-a5d9-3062632555d5 HTTP/1.1" 200 -
+2025-04-30 17:53:57,757 - INFO - [Thread-21 (process_request_thread)] [process_upload_and_generate_updates] - [611bfae2-ae23-4211-a5d9-3062632555d5] Access ID: 78c6403392
+2025-04-30 17:53:57,757 - INFO - [Thread-21 (process_request_thread)] [process_upload_and_generate_updates] - [611bfae2-ae23-4211-a5d9-3062632555d5] Single file workflow.
+2025-04-30 17:53:57,759 - INFO - [Thread-21 (process_request_thread)] [process_upload_and_generate_updates] - [611bfae2-ae23-4211-a5d9-3062632555d5] Compressed size: 255
+2025-04-30 17:53:57,760 - INFO - [Thread-21 (process_request_thread)] [_send_single_file_task] - [611bfae2-ae23-4211-a5d9-3062632555d5] T> Sending 'requirements.zip' (255b) to -4603853425
+2025-04-30 17:53:57,760 - INFO - [Thread-21 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'requirements.zip'] Attempting send.
+2025-04-30 17:53:58,273 - INFO - [Thread-21 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'requirements.zip'] API success (Attempt 1).
+2025-04-30 17:53:58,274 - INFO - [Thread-21 (process_request_thread)] [_send_single_file_task] - [611bfae2-ae23-4211-a5d9-3062632555d5] T> Sent 'requirements.zip' to -4603853425. Success: True
+2025-04-30 17:53:58,274 - INFO - [Thread-21 (process_request_thread)] [process_upload_and_generate_updates] - [611bfae2-ae23-4211-a5d9-3062632555d5] Single sends done in 0.51s.
+2025-04-30 17:53:58,274 - INFO - [Thread-21 (process_request_thread)] [process_upload_and_generate_updates] - [611bfae2-ae23-4211-a5d9-3062632555d5] Success: 1/1
+2025-04-30 17:53:58,275 - INFO - [Thread-21 (process_request_thread)] [process_upload_and_generate_updates] - [611bfae2-ae23-4211-a5d9-3062632555d5] Attempting to save metadata to DB...
+2025-04-30 17:53:58,276 - ERROR - [Thread-21 (process_request_thread)] [process_upload_and_generate_updates] - [611bfae2-ae23-4211-a5d9-3062632555d5] Upload failed: Collection objects do not implement truth value testing or bool(). Please compare with None instead: collection is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 302, in process_upload_and_generate_updates
+    save_success, save_msg = save_file_metadata(record) # Call the DB function
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 148, in save_file_metadata
+    collection, error = get_metadata_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 118, in get_metadata_collection
+    if _collection:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\collection.py", line 311, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Collection objects do not implement truth value testing or bool(). Please compare with None instead: collection is not None
+2025-04-30 17:53:58,279 - INFO - [Thread-21 (process_request_thread)] [process_upload_and_generate_updates] - [611bfae2-ae23-4211-a5d9-3062632555d5] Upload generator cleanup.
+2025-04-30 17:53:58,281 - INFO - [Thread-21 (process_request_thread)] [_safe_remove_file] - [611bfae2-ae23-4211-a5d9-3062632555d5] Cleaned up original temp: uploads_temp\611bfae2-ae23-4211-a5d9-3062632555d5_requirements.txt
+2025-04-30 17:53:58,283 - INFO - [Thread-21 (process_request_thread)] [process_upload_and_generate_updates] - [611bfae2-ae23-4211-a5d9-3062632555d5] Upload generator finished. Status: error
+2025-04-30 17:54:16,031 - INFO - [Thread-22 (process_request_thread)] [initiate_upload] - Request initiate upload.
+2025-04-30 17:54:16,033 - INFO - [Thread-22 (process_request_thread)] [initiate_upload] - [113408f6-b957-42eb-a78a-03788e67b473] Temp storage: uploads_temp\113408f6-b957-42eb-a78a-03788e67b473_requirements.txt
+2025-04-30 17:54:16,034 - INFO - [Thread-22 (process_request_thread)] [initiate_upload] - [113408f6-b957-42eb-a78a-03788e67b473] Temp saved: 'requirements.txt'.
+2025-04-30 17:54:16,035 - INFO - [Thread-22 (process_request_thread)] [_log] - 127.0.0.1 - - [30/Apr/2025 17:54:16] "POST /initiate-upload HTTP/1.1" 200 -
+2025-04-30 17:54:16,039 - INFO - [Thread-23 (process_request_thread)] [stream_progress] - SSE connect request for upload_id: 113408f6-b957-42eb-a78a-03788e67b473
+2025-04-30 17:54:16,039 - INFO - [Thread-23 (process_request_thread)] [process_upload_and_generate_updates] - [113408f6-b957-42eb-a78a-03788e67b473] Starting processing generator...
+2025-04-30 17:54:16,040 - INFO - [Thread-23 (process_request_thread)] [process_upload_and_generate_updates] - [113408f6-b957-42eb-a78a-03788e67b473] Processing: User='ELENA', File='requirements.txt'
+2025-04-30 17:54:16,040 - INFO - [Thread-23 (process_request_thread)] [_log] - 127.0.0.1 - - [30/Apr/2025 17:54:16] "GET /stream-progress/113408f6-b957-42eb-a78a-03788e67b473 HTTP/1.1" 200 -
+2025-04-30 17:54:16,041 - INFO - [Thread-23 (process_request_thread)] [process_upload_and_generate_updates] - [113408f6-b957-42eb-a78a-03788e67b473] Access ID: 9e8a0311ef
+2025-04-30 17:54:16,042 - INFO - [Thread-23 (process_request_thread)] [process_upload_and_generate_updates] - [113408f6-b957-42eb-a78a-03788e67b473] Single file workflow.
+2025-04-30 17:54:16,047 - INFO - [Thread-23 (process_request_thread)] [process_upload_and_generate_updates] - [113408f6-b957-42eb-a78a-03788e67b473] Compressed size: 255
+2025-04-30 17:54:16,049 - INFO - [Thread-23 (process_request_thread)] [_send_single_file_task] - [113408f6-b957-42eb-a78a-03788e67b473] T> Sending 'requirements.zip' (255b) to -4603853425
+2025-04-30 17:54:16,050 - INFO - [Thread-23 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'requirements.zip'] Attempting send.
+2025-04-30 17:54:16,591 - INFO - [Thread-23 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'requirements.zip'] API success (Attempt 1).
+2025-04-30 17:54:16,592 - INFO - [Thread-23 (process_request_thread)] [_send_single_file_task] - [113408f6-b957-42eb-a78a-03788e67b473] T> Sent 'requirements.zip' to -4603853425. Success: True
+2025-04-30 17:54:16,592 - INFO - [Thread-23 (process_request_thread)] [process_upload_and_generate_updates] - [113408f6-b957-42eb-a78a-03788e67b473] Single sends done in 0.54s.
+2025-04-30 17:54:16,592 - INFO - [Thread-23 (process_request_thread)] [process_upload_and_generate_updates] - [113408f6-b957-42eb-a78a-03788e67b473] Success: 1/1
+2025-04-30 17:54:16,593 - INFO - [Thread-23 (process_request_thread)] [process_upload_and_generate_updates] - [113408f6-b957-42eb-a78a-03788e67b473] Attempting to save metadata to DB...
+2025-04-30 17:54:16,593 - ERROR - [Thread-23 (process_request_thread)] [process_upload_and_generate_updates] - [113408f6-b957-42eb-a78a-03788e67b473] Upload failed: Collection objects do not implement truth value testing or bool(). Please compare with None instead: collection is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 302, in process_upload_and_generate_updates
+    save_success, save_msg = save_file_metadata(record) # Call the DB function
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 148, in save_file_metadata
+    collection, error = get_metadata_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 118, in get_metadata_collection
+    if _collection:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\collection.py", line 311, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Collection objects do not implement truth value testing or bool(). Please compare with None instead: collection is not None
+2025-04-30 17:54:16,597 - INFO - [Thread-23 (process_request_thread)] [process_upload_and_generate_updates] - [113408f6-b957-42eb-a78a-03788e67b473] Upload generator cleanup.
+2025-04-30 17:54:16,598 - INFO - [Thread-23 (process_request_thread)] [_safe_remove_file] - [113408f6-b957-42eb-a78a-03788e67b473] Cleaned up original temp: uploads_temp\113408f6-b957-42eb-a78a-03788e67b473_requirements.txt
+2025-04-30 17:54:16,599 - INFO - [Thread-23 (process_request_thread)] [process_upload_and_generate_updates] - [113408f6-b957-42eb-a78a-03788e67b473] Upload generator finished. Status: error

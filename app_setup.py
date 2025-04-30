@@ -2,7 +2,7 @@ from flask import Flask
 import logging
 from flask_cors import CORS 
 from typing import Dict, Any
-from utils import format_bytes
+from config import format_bytes
 
 # --- Flask Application Setup ---
 app = Flask(__name__, template_folder='.') 

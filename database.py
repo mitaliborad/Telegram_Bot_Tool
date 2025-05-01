@@ -42,21 +42,30 @@ def _connect_to_db() -> Tuple[Optional[MongoClient], str]:
         # except Exception as e:
         #      logging.error(f"Error pinging existing MongoDB client: {e}")
         #      return _client, f"Error pinging existing MongoDB client: {e}" # Return client but signal potential issue
-         return _client, "" # Assume existing client is okay for now
+         return _client, "" 
 
 
     ATLAS_USER = os.getenv("ATLAS_USER")
     ATLAS_PASSWORD = os.getenv("ATLAS_PASSWORD")
     ATLAS_CLUSTER_HOST = os.getenv("ATLAS_CLUSTER_HOST")
+    print(f"--- DEBUG: Connecting with HOST = '{ATLAS_CLUSTER_HOST}' ---")
+
+    if not ATLAS_USER: # Added check
+         error_msg = "Database Error: ATLAS_USER environment variable not set or empty."
+         logging.critical(error_msg)
+         return None, error_msg
+    if not ATLAS_PASSWORD: # Added check
+         error_msg = "Database Error: ATLAS_PASSWORD environment variable not set or empty."
+         logging.critical(error_msg)
+         return None, error_msg
+    if not ATLAS_CLUSTER_HOST: # Existing check is fine
+         error_msg = "Database Error: ATLAS_CLUSTER_HOST environment variable not set or empty."
+         logging.critical(error_msg)
+         return None, error_msg
     
     encoded_user = urllib.parse.quote_plus(ATLAS_USER)
     encoded_password = urllib.parse.quote_plus(ATLAS_PASSWORD)
-
-    if not all([ATLAS_USER, ATLAS_PASSWORD, ATLAS_CLUSTER_HOST]):
-        error_msg = "Database Error: Missing one or more ATLAS environment variables (USER, PASSWORD, CLUSTER_HOST)."
-        logging.critical(error_msg) # Use critical for config errors
-        return None, error_msg
-
+    
     try:
         # URL Encode username and password
         encoded_user = urllib.parse.quote_plus(ATLAS_USER)

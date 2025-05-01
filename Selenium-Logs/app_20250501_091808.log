@@ -1,0 +1,129 @@
+2025-05-01 09:18:08,372 - INFO - [MainThread] [<module>] - ============================================================
+2025-05-01 09:18:08,372 - INFO - [MainThread] [<module>] - Logging configured. Level: INFO. Log file: Selenium-Logs\app_20250501_091808.log
+2025-05-01 09:18:08,372 - INFO - [MainThread] [<module>] - Primary Chat ID: -4603853425
+2025-05-01 09:18:08,372 - INFO - [MainThread] [<module>] - All Target Chat IDs: ['-4603853425']
+2025-05-01 09:18:08,388 - WARNING - [MainThread] [format_bytes] - Error formatting bytes (20971520): name 'math' is not defined
+2025-05-01 09:18:08,388 - INFO - [MainThread] [<module>] - Chunk Size: 20971520 B (20971520 bytes)
+2025-05-01 09:18:08,388 - INFO - [MainThread] [<module>] - API Timeouts (Connect/Read): 10s / 60s
+2025-05-01 09:18:08,388 - INFO - [MainThread] [<module>] - API Retries: 3 attempts, 2s delay
+2025-05-01 09:18:08,388 - INFO - [MainThread] [<module>] - Max Upload Workers: 3
+2025-05-01 09:18:08,388 - INFO - [MainThread] [<module>] - Max Download Workers: 12
+2025-05-01 09:18:08,388 - INFO - [MainThread] [<module>] - ============================================================
+2025-05-01 09:18:08,388 - INFO - [MainThread] [<module>] - Configuration loaded successfully.
+2025-05-01 09:18:08,393 - INFO - [MainThread] [<module>] - Custom Jinja filter 'format_bytes' registered.
+2025-05-01 09:18:08,393 - INFO - [MainThread] [<module>] - Flask-CORS initialized. Allowing origins: http://localhost:4200
+2025-05-01 09:18:08,394 - INFO - [MainThread] [<module>] - Flask application initialized.
+2025-05-01 09:18:08,394 - INFO - [MainThread] [<module>] - Global state variables initialized (upload_progress_data, download_prep_data).
+2025-05-01 09:18:08,396 - INFO - [MainThread] [<module>] - Custom Jinja filter 'format_bytes' registered.
+2025-05-01 09:18:08,397 - INFO - [MainThread] [<module>] - Flask-CORS initialized. Allowing origins: http://localhost:4200
+2025-05-01 09:18:08,397 - INFO - [MainThread] [<module>] - Flask application initialized.
+2025-05-01 09:18:08,397 - INFO - [MainThread] [<module>] - Global state variables initialized (upload_progress_data, download_prep_data).
+2025-05-01 09:18:08,578 - INFO - [MainThread] [<module>] - Database module initialized.
+2025-05-01 09:18:09,012 - INFO - [MainThread] [<module>] - Initialized requests.Session for Telegram API calls.
+2025-05-01 09:18:09,012 - INFO - [MainThread] [<module>] - Telegram API functions defined with Session and Retries.
+2025-05-01 09:18:09,012 - INFO - [MainThread] [<module>] - Flask routes defined using configurable workers and linter fixes.
+2025-05-01 09:18:09,012 - INFO - [MainThread] [<module>] - Starting Flask development server...
+2025-05-01 09:18:09,043 - WARNING - [MainThread] [_log] -  * Debugger is active!
+2025-05-01 09:18:09,050 - INFO - [MainThread] [_log] -  * Debugger PIN: 107-410-311
+2025-05-01 09:18:12,330 - INFO - [Thread-3 (process_request_thread)] [index] - Serving index page.
+2025-05-01 09:18:12,345 - INFO - [Thread-3 (process_request_thread)] [_log] - 127.0.0.1 - - [01/May/2025 09:18:12] "GET / HTTP/1.1" 200 -
+2025-05-01 09:18:12,398 - INFO - [Thread-2 (process_request_thread)] [_log] - 127.0.0.1 - - [01/May/2025 09:18:12] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-05-01 09:18:18,153 - INFO - [Thread-4 (process_request_thread)] [initiate_upload] - Request initiate upload.
+2025-05-01 09:18:18,159 - INFO - [Thread-4 (process_request_thread)] [initiate_upload] - [0234c663-9941-4669-be63-e3b3aa7365c8] Temp storage: uploads_temp\0234c663-9941-4669-be63-e3b3aa7365c8_404_error.html
+2025-05-01 09:18:18,159 - INFO - [Thread-4 (process_request_thread)] [initiate_upload] - [0234c663-9941-4669-be63-e3b3aa7365c8] Temp saved: '404_error.html'.
+2025-05-01 09:18:18,166 - INFO - [Thread-4 (process_request_thread)] [_log] - 127.0.0.1 - - [01/May/2025 09:18:18] "POST /initiate-upload HTTP/1.1" 200 -
+2025-05-01 09:18:18,172 - INFO - [Thread-5 (process_request_thread)] [stream_progress] - SSE connect request for upload_id: 0234c663-9941-4669-be63-e3b3aa7365c8
+2025-05-01 09:18:18,175 - INFO - [Thread-5 (process_request_thread)] [process_upload_and_generate_updates] - [0234c663-9941-4669-be63-e3b3aa7365c8] Starting processing generator...
+2025-05-01 09:18:18,177 - INFO - [Thread-5 (process_request_thread)] [process_upload_and_generate_updates] - [0234c663-9941-4669-be63-e3b3aa7365c8] Processing: User='ELENA', File='404_error.html'
+2025-05-01 09:18:18,178 - INFO - [Thread-5 (process_request_thread)] [_log] - 127.0.0.1 - - [01/May/2025 09:18:18] "GET /stream-progress/0234c663-9941-4669-be63-e3b3aa7365c8 HTTP/1.1" 200 -
+2025-05-01 09:18:18,183 - INFO - [Thread-5 (process_request_thread)] [process_upload_and_generate_updates] - [0234c663-9941-4669-be63-e3b3aa7365c8] Access ID: 5c4188f21b
+2025-05-01 09:18:18,183 - INFO - [Thread-5 (process_request_thread)] [process_upload_and_generate_updates] - [0234c663-9941-4669-be63-e3b3aa7365c8] Single file workflow.
+2025-05-01 09:18:18,212 - INFO - [Thread-5 (process_request_thread)] [process_upload_and_generate_updates] - [0234c663-9941-4669-be63-e3b3aa7365c8] Compressed size: 917
+2025-05-01 09:18:18,212 - INFO - [Thread-5 (process_request_thread)] [_send_single_file_task] - [0234c663-9941-4669-be63-e3b3aa7365c8] T> Sending '404_error.zip' (917b) to -4603853425
+2025-05-01 09:18:18,212 - INFO - [Thread-5 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File '404_error.zip'] Attempting send.
+2025-05-01 09:18:19,215 - INFO - [Thread-5 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File '404_error.zip'] API success (Attempt 1).
+2025-05-01 09:18:19,216 - INFO - [Thread-5 (process_request_thread)] [_send_single_file_task] - [0234c663-9941-4669-be63-e3b3aa7365c8] T> Sent '404_error.zip' to -4603853425. Success: True
+2025-05-01 09:18:19,218 - INFO - [Thread-5 (process_request_thread)] [process_upload_and_generate_updates] - [0234c663-9941-4669-be63-e3b3aa7365c8] Single sends done in 1.01s.
+2025-05-01 09:18:19,219 - INFO - [Thread-5 (process_request_thread)] [process_upload_and_generate_updates] - [0234c663-9941-4669-be63-e3b3aa7365c8] Success: 1/1
+2025-05-01 09:18:19,219 - INFO - [Thread-5 (process_request_thread)] [process_upload_and_generate_updates] - [0234c663-9941-4669-be63-e3b3aa7365c8] Attempting to save metadata to DB...
+2025-05-01 09:18:19,220 - INFO - [Thread-5 (process_request_thread)] [_connect_to_db] - Attempting to connect to MongoDB Atlas host: telegrambot.sfoz7jc.mongodb.net...
+2025-05-01 09:18:19,499 - ERROR - [Thread-5 (process_request_thread)] [_connect_to_db] - An unexpected error occurred during MongoDB connection: The DNS query name does not exist: _mongodb._tcp.telegrambot.sfoz7jc.mongodb.net.
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 69, in _connect_to_db
+    client = MongoClient(CONNECTION_STRING, server_api=ServerApi('1'))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 884, in __init__
+    self._get_topology()  # type: ignore[unused-coroutine]
+    ^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 1737, in _get_topology
+    self._resolve_srv()
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 903, in _resolve_srv
+    res = uri_parser._parse_srv(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\uri_parser.py", line 163, in _parse_srv
+    nodes = dns_resolver.get_hosts()
+            ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\srv_resolver.py", line 157, in get_hosts
+    _, nodes = self._get_srv_response_and_hosts(True)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\srv_resolver.py", line 131, in _get_srv_response_and_hosts
+    results = self._resolve_uri(encapsulate_errors)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\srv_resolver.py", line 125, in _resolve_uri
+    raise ConfigurationError(str(exc)) from None
+pymongo.errors.ConfigurationError: The DNS query name does not exist: _mongodb._tcp.telegrambot.sfoz7jc.mongodb.net.
+2025-05-01 09:18:19,559 - ERROR - [Thread-5 (process_request_thread)] [process_upload_and_generate_updates] - [0234c663-9941-4669-be63-e3b3aa7365c8] CRITICAL: Metadata save to DB failed: Failed to get collection: An unexpected error occurred during MongoDB connection: The DNS query name does not exist: _mongodb._tcp.telegrambot.sfoz7jc.mongodb.net.
+2025-05-01 09:18:19,559 - INFO - [Thread-5 (process_request_thread)] [process_upload_and_generate_updates] - [0234c663-9941-4669-be63-e3b3aa7365c8] Upload generator cleanup.
+2025-05-01 09:18:19,560 - INFO - [Thread-5 (process_request_thread)] [_safe_remove_file] - [0234c663-9941-4669-be63-e3b3aa7365c8] Cleaned up original temp: uploads_temp\0234c663-9941-4669-be63-e3b3aa7365c8_404_error.html
+2025-05-01 09:18:19,561 - INFO - [Thread-5 (process_request_thread)] [process_upload_and_generate_updates] - [0234c663-9941-4669-be63-e3b3aa7365c8] Upload generator finished. Status: processing
+2025-05-01 09:24:09,352 - INFO - [Thread-6 (process_request_thread)] [index] - Serving index page.
+2025-05-01 09:24:09,355 - INFO - [Thread-6 (process_request_thread)] [_log] - 127.0.0.1 - - [01/May/2025 09:24:09] "GET / HTTP/1.1" 200 -
+2025-05-01 09:24:16,763 - INFO - [Thread-7 (process_request_thread)] [initiate_upload] - Request initiate upload.
+2025-05-01 09:24:16,763 - INFO - [Thread-7 (process_request_thread)] [initiate_upload] - [56b1806e-87ad-4266-bcb6-da85e8871adb] Temp storage: uploads_temp\56b1806e-87ad-4266-bcb6-da85e8871adb_requirements.txt
+2025-05-01 09:24:16,763 - INFO - [Thread-7 (process_request_thread)] [initiate_upload] - [56b1806e-87ad-4266-bcb6-da85e8871adb] Temp saved: 'requirements.txt'.
+2025-05-01 09:24:16,763 - INFO - [Thread-7 (process_request_thread)] [_log] - 127.0.0.1 - - [01/May/2025 09:24:16] "POST /initiate-upload HTTP/1.1" 200 -
+2025-05-01 09:24:16,763 - INFO - [Thread-8 (process_request_thread)] [stream_progress] - SSE connect request for upload_id: 56b1806e-87ad-4266-bcb6-da85e8871adb
+2025-05-01 09:24:16,763 - INFO - [Thread-8 (process_request_thread)] [process_upload_and_generate_updates] - [56b1806e-87ad-4266-bcb6-da85e8871adb] Starting processing generator...
+2025-05-01 09:24:16,774 - INFO - [Thread-8 (process_request_thread)] [process_upload_and_generate_updates] - [56b1806e-87ad-4266-bcb6-da85e8871adb] Processing: User='ELENA', File='requirements.txt'
+2025-05-01 09:24:16,777 - INFO - [Thread-8 (process_request_thread)] [_log] - 127.0.0.1 - - [01/May/2025 09:24:16] "GET /stream-progress/56b1806e-87ad-4266-bcb6-da85e8871adb HTTP/1.1" 200 -
+2025-05-01 09:24:16,779 - INFO - [Thread-8 (process_request_thread)] [process_upload_and_generate_updates] - [56b1806e-87ad-4266-bcb6-da85e8871adb] Access ID: be2d8b9429
+2025-05-01 09:24:16,781 - INFO - [Thread-8 (process_request_thread)] [process_upload_and_generate_updates] - [56b1806e-87ad-4266-bcb6-da85e8871adb] Single file workflow.
+2025-05-01 09:24:16,783 - INFO - [Thread-8 (process_request_thread)] [process_upload_and_generate_updates] - [56b1806e-87ad-4266-bcb6-da85e8871adb] Compressed size: 255
+2025-05-01 09:24:16,784 - INFO - [Thread-8 (process_request_thread)] [_send_single_file_task] - [56b1806e-87ad-4266-bcb6-da85e8871adb] T> Sending 'requirements.zip' (255b) to -4603853425
+2025-05-01 09:24:16,785 - INFO - [Thread-8 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'requirements.zip'] Attempting send.
+2025-05-01 09:24:17,449 - INFO - [Thread-8 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'requirements.zip'] API success (Attempt 1).
+2025-05-01 09:24:17,449 - INFO - [Thread-8 (process_request_thread)] [_send_single_file_task] - [56b1806e-87ad-4266-bcb6-da85e8871adb] T> Sent 'requirements.zip' to -4603853425. Success: True
+2025-05-01 09:24:17,450 - INFO - [Thread-8 (process_request_thread)] [process_upload_and_generate_updates] - [56b1806e-87ad-4266-bcb6-da85e8871adb] Single sends done in 0.67s.
+2025-05-01 09:24:17,450 - INFO - [Thread-8 (process_request_thread)] [process_upload_and_generate_updates] - [56b1806e-87ad-4266-bcb6-da85e8871adb] Success: 1/1
+2025-05-01 09:24:17,451 - INFO - [Thread-8 (process_request_thread)] [process_upload_and_generate_updates] - [56b1806e-87ad-4266-bcb6-da85e8871adb] Attempting to save metadata to DB...
+2025-05-01 09:24:17,451 - INFO - [Thread-8 (process_request_thread)] [_connect_to_db] - Attempting to connect to MongoDB Atlas host: telegrambot.sfoz7jc.mongodb.net...
+2025-05-01 09:24:17,488 - ERROR - [Thread-8 (process_request_thread)] [_connect_to_db] - An unexpected error occurred during MongoDB connection: The DNS query name does not exist: _mongodb._tcp.telegrambot.sfoz7jc.mongodb.net.
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 69, in _connect_to_db
+    client = MongoClient(CONNECTION_STRING, server_api=ServerApi('1'))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 884, in __init__
+    self._get_topology()  # type: ignore[unused-coroutine]
+    ^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 1737, in _get_topology
+    self._resolve_srv()
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 903, in _resolve_srv
+    res = uri_parser._parse_srv(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\uri_parser.py", line 163, in _parse_srv
+    nodes = dns_resolver.get_hosts()
+            ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\srv_resolver.py", line 157, in get_hosts
+    _, nodes = self._get_srv_response_and_hosts(True)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\srv_resolver.py", line 131, in _get_srv_response_and_hosts
+    results = self._resolve_uri(encapsulate_errors)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\srv_resolver.py", line 125, in _resolve_uri
+    raise ConfigurationError(str(exc)) from None
+pymongo.errors.ConfigurationError: The DNS query name does not exist: _mongodb._tcp.telegrambot.sfoz7jc.mongodb.net.
+2025-05-01 09:24:17,492 - ERROR - [Thread-8 (process_request_thread)] [process_upload_and_generate_updates] - [56b1806e-87ad-4266-bcb6-da85e8871adb] CRITICAL: Metadata save to DB failed: Failed to get collection: An unexpected error occurred during MongoDB connection: The DNS query name does not exist: _mongodb._tcp.telegrambot.sfoz7jc.mongodb.net.
+2025-05-01 09:24:17,493 - INFO - [Thread-8 (process_request_thread)] [process_upload_and_generate_updates] - [56b1806e-87ad-4266-bcb6-da85e8871adb] Upload generator cleanup.
+2025-05-01 09:24:17,499 - INFO - [Thread-8 (process_request_thread)] [_safe_remove_file] - [56b1806e-87ad-4266-bcb6-da85e8871adb] Cleaned up original temp: uploads_temp\56b1806e-87ad-4266-bcb6-da85e8871adb_requirements.txt
+2025-05-01 09:24:17,500 - INFO - [Thread-8 (process_request_thread)] [process_upload_and_generate_updates] - [56b1806e-87ad-4266-bcb6-da85e8871adb] Upload generator finished. Status: processing
+2025-05-01 09:35:21,976 - INFO - [MainThread] [_log] -  * Detected change in 'E:\\Telegram_tool\\Telegram_Bot_Tool\\database.py', reloading

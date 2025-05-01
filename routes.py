@@ -766,20 +766,35 @@ def serve_temp_file(temp_id: str, filename: str) -> Response:
 def list_user_files(username: str) -> Response:
     logging.info(f"List files request for: '{username}'")
     logging.info(f"Fetching files for user '{username}' from DB...")
-    user_files, error_msg = find_metadata_by_username(username) 
+    user_files, error_msg = find_metadata_by_username(username)
+
     if error_msg:
         logging.error(f"DB Error listing files for '{username}': {error_msg}")
-        # listStatus.textContent = f"Server error listing files." # More generic user message
-        # listStatus.style.color = 'red'
-        return jsonify([])
-    if user_files is None: # If DB error occurred, find_... returns None
-        user_files = []
+        return jsonify({"error": "Server error retrieving file list."}), 500
+
+    if user_files is None:
+         user_files = []
+
     logging.info(f"Found {len(user_files)} records for '{username}'.")
-    # if len(user_files) == 0:
-    #     listStatus.textContent = 'No files found for this user.'
-    # else:
-    #     listStatus.textContent = ''
-    return jsonify(user_files)
+
+    # --- NEW: Convert ObjectId to string before returning ---
+    serializable_files = []
+    for file_record in user_files:
+        # Convert the '_id' field if it exists and is an ObjectId
+        if '_id' in file_record and hasattr(file_record['_id'], 'binary'): # Check it's likely an ObjectId
+             file_record['_id'] = str(file_record['_id']) # Convert ObjectId to string
+
+        # --- Optional: Convert datetime objects too if needed ---
+        # You might also have datetime objects from 'upload_timestamp'
+        # If jsonify has issues with those later, add conversion here:
+        # if 'upload_timestamp' in file_record and isinstance(file_record['upload_timestamp'], datetime):
+        #     file_record['upload_timestamp'] = file_record['upload_timestamp'].isoformat()
+
+        serializable_files.append(file_record)
+    # --- End of NEW block ---
+
+    # Return the modified list
+    return jsonify(serializable_files) # Return the list with converted IDs
 
 @app.route('/get/<access_id>')
 def get_file_by_access_id(access_id: str) -> Union[str, Response]:

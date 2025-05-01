@@ -29,3 +29,5 @@
  * Running on http://192.168.1.21:5000
 2025-05-01 09:52:23,009 - INFO - [MainThread] [_log] - [33mPress CTRL+C to quit[0m
 2025-05-01 09:52:23,011 - INFO - [MainThread] [_log] -  * Restarting with stat
+2025-05-01 09:52:38,506 - INFO - [MainThread] [_log] -  * Restarting with stat
+2025-05-01 10:04:54,665 - INFO - [MainThread] [_log] -  * Restarting with stat

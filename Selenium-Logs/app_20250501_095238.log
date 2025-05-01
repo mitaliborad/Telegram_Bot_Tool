@@ -25,3 +25,43 @@
 2025-05-01 09:52:39,586 - INFO - [MainThread] [<module>] - Starting Flask development server...
 2025-05-01 09:52:39,615 - WARNING - [MainThread] [_log] -  * Debugger is active!
 2025-05-01 09:52:39,620 - INFO - [MainThread] [_log] -  * Debugger PIN: 107-410-311
+2025-05-01 09:58:28,809 - INFO - [Thread-2 (process_request_thread)] [index] - Serving index page.
+2025-05-01 09:58:28,824 - INFO - [Thread-2 (process_request_thread)] [_log] - 127.0.0.1 - - [01/May/2025 09:58:28] "GET / HTTP/1.1" 200 -
+2025-05-01 09:58:35,762 - INFO - [Thread-3 (process_request_thread)] [initiate_upload] - Request initiate upload.
+2025-05-01 09:58:35,763 - INFO - [Thread-3 (process_request_thread)] [initiate_upload] - [8876ce36-2369-4125-8e03-4c5d26022015] Temp storage: uploads_temp\8876ce36-2369-4125-8e03-4c5d26022015_database.py
+2025-05-01 09:58:35,764 - INFO - [Thread-3 (process_request_thread)] [initiate_upload] - [8876ce36-2369-4125-8e03-4c5d26022015] Temp saved: 'database.py'.
+2025-05-01 09:58:35,765 - INFO - [Thread-3 (process_request_thread)] [_log] - 127.0.0.1 - - [01/May/2025 09:58:35] "POST /initiate-upload HTTP/1.1" 200 -
+2025-05-01 09:58:35,775 - INFO - [Thread-4 (process_request_thread)] [stream_progress] - SSE connect request for upload_id: 8876ce36-2369-4125-8e03-4c5d26022015
+2025-05-01 09:58:35,775 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [8876ce36-2369-4125-8e03-4c5d26022015] Starting processing generator...
+2025-05-01 09:58:35,776 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [8876ce36-2369-4125-8e03-4c5d26022015] Processing: User='siren', File='database.py'
+2025-05-01 09:58:35,781 - INFO - [Thread-4 (process_request_thread)] [_log] - 127.0.0.1 - - [01/May/2025 09:58:35] "GET /stream-progress/8876ce36-2369-4125-8e03-4c5d26022015 HTTP/1.1" 200 -
+2025-05-01 09:58:35,788 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [8876ce36-2369-4125-8e03-4c5d26022015] Access ID: 79bb763673
+2025-05-01 09:58:35,790 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [8876ce36-2369-4125-8e03-4c5d26022015] Single file workflow.
+2025-05-01 09:58:35,816 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [8876ce36-2369-4125-8e03-4c5d26022015] Compressed size: 3357
+2025-05-01 09:58:35,822 - INFO - [Thread-4 (process_request_thread)] [_send_single_file_task] - [8876ce36-2369-4125-8e03-4c5d26022015] T> Sending 'database.zip' (3357b) to -4603853425
+2025-05-01 09:58:35,824 - INFO - [Thread-4 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'database.zip'] Attempting send.
+2025-05-01 09:58:36,807 - INFO - [Thread-4 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'database.zip'] API success (Attempt 1).
+2025-05-01 09:58:36,809 - INFO - [Thread-4 (process_request_thread)] [_send_single_file_task] - [8876ce36-2369-4125-8e03-4c5d26022015] T> Sent 'database.zip' to -4603853425. Success: True
+2025-05-01 09:58:36,810 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [8876ce36-2369-4125-8e03-4c5d26022015] Single sends done in 0.99s.
+2025-05-01 09:58:36,811 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [8876ce36-2369-4125-8e03-4c5d26022015] Success: 1/1
+2025-05-01 09:58:36,811 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [8876ce36-2369-4125-8e03-4c5d26022015] Attempting to save metadata to DB...
+2025-05-01 09:58:36,813 - INFO - [Thread-4 (process_request_thread)] [_connect_to_db] - Attempting to connect to MongoDB Atlas host: telegrambot.6armfs2.mongodb.net...
+2025-05-01 09:58:37,754 - INFO - [Thread-4 (process_request_thread)] [_connect_to_db] - ✅ Successfully connected and pinged MongoDB Atlas!
+2025-05-01 09:58:37,755 - INFO - [Thread-4 (process_request_thread)] [get_db] - Accessed database: Telegrambot
+2025-05-01 09:58:37,755 - INFO - [Thread-4 (process_request_thread)] [get_metadata_collection] - Accessed collection: file_metadata
+2025-05-01 09:58:37,793 - INFO - [Thread-4 (process_request_thread)] [save_file_metadata] - Successfully inserted metadata for access_id: 79bb763673
+2025-05-01 09:58:37,793 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [8876ce36-2369-4125-8e03-4c5d26022015] Metadata successfully saved to DB. Msg: Metadata inserted (ID: 6812f8751969d4a304aeb133).
+2025-05-01 09:58:37,794 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [8876ce36-2369-4125-8e03-4c5d26022015] Upload generator cleanup.
+2025-05-01 09:58:37,805 - INFO - [Thread-4 (process_request_thread)] [_safe_remove_file] - [8876ce36-2369-4125-8e03-4c5d26022015] Cleaned up original temp: uploads_temp\8876ce36-2369-4125-8e03-4c5d26022015_database.py
+2025-05-01 09:58:37,807 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [8876ce36-2369-4125-8e03-4c5d26022015] Upload generator finished. Status: completed
+2025-05-01 09:58:41,577 - INFO - [Thread-5 (process_request_thread)] [get_file_by_access_id] - Request dl page via access_id: 79bb763673
+2025-05-01 09:58:41,578 - INFO - [Thread-5 (process_request_thread)] [get_file_by_access_id] - Looking up access_id '79bb763673' in DB...
+2025-05-01 09:58:41,596 - INFO - [Thread-5 (process_request_thread)] [_log] - 127.0.0.1 - - [01/May/2025 09:58:41] "[35m[1mGET /get/79bb763673 HTTP/1.1[0m" 500 -
+2025-05-01 09:58:41,816 - INFO - [Thread-6 (process_request_thread)] [_log] - 127.0.0.1 - - [01/May/2025 09:58:41] "GET /get/79bb763673?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+2025-05-01 09:58:41,833 - INFO - [Thread-7 (process_request_thread)] [_log] - 127.0.0.1 - - [01/May/2025 09:58:41] "GET /get/79bb763673?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+2025-05-01 09:58:41,926 - INFO - [Thread-8 (process_request_thread)] [_log] - 127.0.0.1 - - [01/May/2025 09:58:41] "GET /get/79bb763673?__debugger__=yes&cmd=resource&f=console.png&s=4pbZ8plL5uzmx71kUWxO HTTP/1.1" 200 -
+2025-05-01 09:58:41,934 - INFO - [Thread-9 (process_request_thread)] [_log] - 127.0.0.1 - - [01/May/2025 09:58:41] "GET /get/79bb763673?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+2025-05-01 09:58:48,974 - INFO - [Thread-10 (process_request_thread)] [list_user_files] - List files request for: 'siren'
+2025-05-01 09:58:48,974 - INFO - [Thread-10 (process_request_thread)] [list_user_files] - Fetching files for user 'siren' from DB...
+2025-05-01 09:58:48,983 - INFO - [Thread-10 (process_request_thread)] [_log] - 127.0.0.1 - - [01/May/2025 09:58:48] "[35m[1mGET /files/siren HTTP/1.1[0m" 500 -
+2025-05-01 10:04:54,304 - INFO - [MainThread] [_log] -  * Detected change in 'E:\\Telegram_tool\\Telegram_Bot_Tool\\database.py', reloading

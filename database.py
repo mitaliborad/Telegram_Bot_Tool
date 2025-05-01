@@ -124,7 +124,7 @@ def get_metadata_collection() -> Tuple[Optional[Collection], str]:
     Returns the collection instance and an error message.
     """
     global _collection
-    if _collection:
+    if _collection is not None:
         return _collection, ""
 
     db_instance, error = get_db()

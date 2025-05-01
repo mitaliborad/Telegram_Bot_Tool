@@ -1,0 +1,64 @@
+2025-05-01 17:09:16,376 - INFO - [MainThread] [<module>] - ============================================================
+2025-05-01 17:09:16,376 - INFO - [MainThread] [<module>] - Logging configured. Level: INFO. Log file: Selenium-Logs\app_20250501_170916.log
+2025-05-01 17:09:16,377 - INFO - [MainThread] [<module>] - Primary Chat ID: -4603853425
+2025-05-01 17:09:16,378 - INFO - [MainThread] [<module>] - All Target Chat IDs: ['-4603853425', '-1002614397019', '-4641852757']
+2025-05-01 17:09:16,379 - WARNING - [MainThread] [format_bytes] - Error formatting bytes (20971520): name 'math' is not defined
+2025-05-01 17:09:16,379 - INFO - [MainThread] [<module>] - Chunk Size: 20971520 B (20971520 bytes)
+2025-05-01 17:09:16,381 - INFO - [MainThread] [<module>] - API Timeouts (Connect/Read): 10s / 60s
+2025-05-01 17:09:16,381 - INFO - [MainThread] [<module>] - API Retries: 3 attempts, 2s delay
+2025-05-01 17:09:16,381 - INFO - [MainThread] [<module>] - Max Upload Workers: 5
+2025-05-01 17:09:16,382 - INFO - [MainThread] [<module>] - Max Download Workers: 12
+2025-05-01 17:09:16,382 - INFO - [MainThread] [<module>] - ============================================================
+2025-05-01 17:09:16,382 - INFO - [MainThread] [<module>] - Configuration loaded successfully.
+2025-05-01 17:09:16,384 - INFO - [MainThread] [<module>] - Custom Jinja filter 'format_bytes' registered.
+2025-05-01 17:09:16,384 - INFO - [MainThread] [<module>] - Flask-CORS initialized. Allowing origins: http://localhost:4200
+2025-05-01 17:09:16,385 - INFO - [MainThread] [<module>] - Flask application initialized.
+2025-05-01 17:09:16,385 - INFO - [MainThread] [<module>] - Global state variables initialized (upload_progress_data, download_prep_data).
+2025-05-01 17:09:16,387 - INFO - [MainThread] [<module>] - Custom Jinja filter 'format_bytes' registered.
+2025-05-01 17:09:16,387 - INFO - [MainThread] [<module>] - Flask-CORS initialized. Allowing origins: http://localhost:4200
+2025-05-01 17:09:16,387 - INFO - [MainThread] [<module>] - Flask application initialized.
+2025-05-01 17:09:16,388 - INFO - [MainThread] [<module>] - Global state variables initialized (upload_progress_data, download_prep_data).
+2025-05-01 17:09:16,549 - INFO - [MainThread] [<module>] - Database module initialized.
+2025-05-01 17:09:17,020 - INFO - [MainThread] [<module>] - Initialized requests.Session for Telegram API calls.
+2025-05-01 17:09:17,020 - INFO - [MainThread] [<module>] - Telegram API functions defined with Session and Retries.
+2025-05-01 17:09:17,028 - INFO - [MainThread] [<module>] - Flask routes defined.
+2025-05-01 17:09:17,028 - INFO - [MainThread] [<module>] - Starting Flask development server...
+2025-05-01 17:09:17,054 - WARNING - [MainThread] [_log] -  * Debugger is active!
+2025-05-01 17:09:17,059 - INFO - [MainThread] [_log] -  * Debugger PIN: 107-410-311
+2025-05-01 17:09:20,253 - INFO - [Thread-3 (process_request_thread)] [index] - Serving index page.
+2025-05-01 17:09:20,270 - INFO - [Thread-3 (process_request_thread)] [_log] - 127.0.0.1 - - [01/May/2025 17:09:20] "GET / HTTP/1.1" 200 -
+2025-05-01 17:09:29,330 - INFO - [Thread-2 (process_request_thread)] [initiate_upload] - Request initiate upload.
+2025-05-01 17:09:29,839 - INFO - [Thread-2 (process_request_thread)] [initiate_upload] - [fe7afc9a-3038-4ddc-93e4-5ce0b29720bc] Preparing to save upload to temp path: uploads_temp\fe7afc9a-3038-4ddc-93e4-5ce0b29720bc_test download (3).mkv
+2025-05-01 17:09:30,203 - INFO - [Thread-2 (process_request_thread)] [initiate_upload] - [fe7afc9a-3038-4ddc-93e4-5ce0b29720bc] Successfully saved temporary file: 'test download (3).mkv' (132739902 bytes).
+2025-05-01 17:09:30,485 - INFO - [Thread-2 (process_request_thread)] [_log] - 127.0.0.1 - - [01/May/2025 17:09:30] "POST /initiate-upload HTTP/1.1" 200 -
+2025-05-01 17:09:30,500 - INFO - [Thread-4 (process_request_thread)] [stream_progress] - SSE connection request received for upload_id: fe7afc9a-3038-4ddc-93e4-5ce0b29720bc
+2025-05-01 17:09:30,500 - INFO - [Thread-4 (process_request_thread)] [stream_progress] - [fe7afc9a-3038-4ddc-93e4-5ce0b29720bc] Valid SSE request. Starting background processing generator...
+2025-05-01 17:09:30,504 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [fe7afc9a-3038-4ddc-93e4-5ce0b29720bc] Starting background processing generator...
+2025-05-01 17:09:30,504 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [fe7afc9a-3038-4ddc-93e4-5ce0b29720bc] Background processing started for: User='Brayer', File='test download (3).mkv'
+2025-05-01 17:09:30,504 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [fe7afc9a-3038-4ddc-93e4-5ce0b29720bc] Initialized Upload ThreadPoolExecutor (max_workers=5)
+2025-05-01 17:09:30,506 - INFO - [Thread-4 (process_request_thread)] [_log] - 127.0.0.1 - - [01/May/2025 17:09:30] "GET /stream-progress/fe7afc9a-3038-4ddc-93e4-5ce0b29720bc HTTP/1.1" 200 -
+2025-05-01 17:09:30,506 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [fe7afc9a-3038-4ddc-93e4-5ce0b29720bc] Generated Access ID: 05c315063d
+2025-05-01 17:09:30,508 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [fe7afc9a-3038-4ddc-93e4-5ce0b29720bc] Large file workflow.
+2025-05-01 17:09:35,225 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [fe7afc9a-3038-4ddc-93e4-5ce0b29720bc] Compressed Size: 129562600 bytes in 4.72s.
+2025-05-01 17:09:35,255 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [fe7afc9a-3038-4ddc-93e4-5ce0b29720bc] Sending chunk 1/7 ('test download (3).zip.part_001', 20971520 bytes)
+2025-05-01 17:09:35,256 - INFO - [Upload_fe7a_0] [_send_chunk_task] - [fe7afc9a-3038-4ddc-93e4-5ce0b29720bc] T> Sending chunk 1 ('test download (3).zip.part_001', 20971520 bytes) to chat -4603853425
+2025-05-01 17:09:35,256 - INFO - [Upload_fe7a_0] [send_file_to_telegram] - [ChatID -4603853425, File 'test download (3).zip.part_001'] Attempting send.
+2025-05-01 17:09:35,256 - INFO - [Upload_fe7a_1] [_send_chunk_task] - [fe7afc9a-3038-4ddc-93e4-5ce0b29720bc] T> Sending chunk 1 ('test download (3).zip.part_001', 20971520 bytes) to chat -1002614397019
+2025-05-01 17:09:35,257 - INFO - [Upload_fe7a_2] [_send_chunk_task] - [fe7afc9a-3038-4ddc-93e4-5ce0b29720bc] T> Sending chunk 1 ('test download (3).zip.part_001', 20971520 bytes) to chat -4641852757
+2025-05-01 17:09:35,257 - INFO - [Upload_fe7a_1] [send_file_to_telegram] - [ChatID -1002614397019, File 'test download (3).zip.part_001'] Attempting send.
+2025-05-01 17:09:35,258 - INFO - [Upload_fe7a_2] [send_file_to_telegram] - [ChatID -4641852757, File 'test download (3).zip.part_001'] Attempting send.
+2025-05-01 17:09:35,281 - INFO - [Thread-4 (process_request_thread)] [_safe_remove_file] - [fe7afc9a-3038-4ddc-93e4-5ce0b29720bc] Successfully cleaned up temporary compressed zip file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\fe7afc9a-3038-4ddc-93e4-5ce0b29720bc_comp_ev0avk8t.zip
+2025-05-01 17:09:35,309 - ERROR - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [fe7afc9a-3038-4ddc-93e4-5ce0b29720bc] Processing failed: Primary fut missing chunk 1.
+2025-05-01 17:09:35,323 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [fe7afc9a-3038-4ddc-93e4-5ce0b29720bc] Reached end of processing generator.
+2025-05-01 17:09:35,326 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [fe7afc9a-3038-4ddc-93e4-5ce0b29720bc] Upload ThreadPoolExecutor shutdown signaled.
+2025-05-01 17:09:35,342 - INFO - [Thread-4 (process_request_thread)] [_safe_remove_file] - [fe7afc9a-3038-4ddc-93e4-5ce0b29720bc] Successfully cleaned up original uploaded temp file: uploads_temp\fe7afc9a-3038-4ddc-93e4-5ce0b29720bc_test download (3).mkv
+2025-05-01 17:09:35,345 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [fe7afc9a-3038-4ddc-93e4-5ce0b29720bc] Background processing generator finished. Final Status: error
+2025-05-01 17:09:45,668 - WARNING - [Upload_fe7a_2] [send_file_to_telegram] - [ChatID -4641852757, File 'test download (3).zip.part_001'] Connection error attempt 1: ('Connection aborted.', TimeoutError('The write operation timed out'))
+2025-05-01 17:09:45,669 - INFO - [Upload_fe7a_2] [send_file_to_telegram] - [ChatID -4641852757, File 'test download (3).zip.part_001'] Retrying in 2s...
+2025-05-01 17:09:47,077 - INFO - [Upload_fe7a_0] [send_file_to_telegram] - [ChatID -4603853425, File 'test download (3).zip.part_001'] API success (Attempt 1).
+2025-05-01 17:09:47,080 - INFO - [Upload_fe7a_0] [_send_chunk_task] - [fe7afc9a-3038-4ddc-93e4-5ce0b29720bc] T> Sent chunk 1 to chat -4603853425. Success: True
+2025-05-01 17:09:48,222 - INFO - [Upload_fe7a_1] [send_file_to_telegram] - [ChatID -1002614397019, File 'test download (3).zip.part_001'] API success (Attempt 1).
+2025-05-01 17:09:48,226 - INFO - [Upload_fe7a_1] [_send_chunk_task] - [fe7afc9a-3038-4ddc-93e4-5ce0b29720bc] T> Sent chunk 1 to chat -1002614397019. Success: True
+2025-05-01 17:09:59,514 - INFO - [Upload_fe7a_2] [send_file_to_telegram] - [ChatID -4641852757, File 'test download (3).zip.part_001'] API success (Attempt 2).
+2025-05-01 17:09:59,514 - INFO - [Upload_fe7a_2] [_send_chunk_task] - [fe7afc9a-3038-4ddc-93e4-5ce0b29720bc] T> Sent chunk 1 to chat -4641852757. Success: True
+2025-05-01 17:10:21,265 - INFO - [MainThread] [_log] -  * Detected change in 'E:\\Telegram_tool\\Telegram_Bot_Tool\\config.py', reloading

@@ -1,0 +1,166 @@
+2025-05-01 17:10:26,753 - INFO - [MainThread] [<module>] - ============================================================
+2025-05-01 17:10:26,753 - INFO - [MainThread] [<module>] - Logging configured. Level: INFO. Log file: Selenium-Logs\app_20250501_171026.log
+2025-05-01 17:10:26,754 - INFO - [MainThread] [<module>] - Primary Chat ID: -4603853425
+2025-05-01 17:10:26,754 - INFO - [MainThread] [<module>] - All Target Chat IDs: ['-4603853425']
+2025-05-01 17:10:26,754 - WARNING - [MainThread] [format_bytes] - Error formatting bytes (20971520): name 'math' is not defined
+2025-05-01 17:10:26,754 - INFO - [MainThread] [<module>] - Chunk Size: 20971520 B (20971520 bytes)
+2025-05-01 17:10:26,755 - INFO - [MainThread] [<module>] - API Timeouts (Connect/Read): 10s / 60s
+2025-05-01 17:10:26,756 - INFO - [MainThread] [<module>] - API Retries: 3 attempts, 2s delay
+2025-05-01 17:10:26,756 - INFO - [MainThread] [<module>] - Max Upload Workers: 3
+2025-05-01 17:10:26,756 - INFO - [MainThread] [<module>] - Max Download Workers: 12
+2025-05-01 17:10:26,757 - INFO - [MainThread] [<module>] - ============================================================
+2025-05-01 17:10:26,757 - INFO - [MainThread] [<module>] - Configuration loaded successfully.
+2025-05-01 17:10:26,759 - INFO - [MainThread] [<module>] - Custom Jinja filter 'format_bytes' registered.
+2025-05-01 17:10:26,759 - INFO - [MainThread] [<module>] - Flask-CORS initialized. Allowing origins: http://localhost:4200
+2025-05-01 17:10:26,759 - INFO - [MainThread] [<module>] - Flask application initialized.
+2025-05-01 17:10:26,760 - INFO - [MainThread] [<module>] - Global state variables initialized (upload_progress_data, download_prep_data).
+2025-05-01 17:10:26,761 - INFO - [MainThread] [<module>] - Custom Jinja filter 'format_bytes' registered.
+2025-05-01 17:10:26,762 - INFO - [MainThread] [<module>] - Flask-CORS initialized. Allowing origins: http://localhost:4200
+2025-05-01 17:10:26,762 - INFO - [MainThread] [<module>] - Flask application initialized.
+2025-05-01 17:10:26,762 - INFO - [MainThread] [<module>] - Global state variables initialized (upload_progress_data, download_prep_data).
+2025-05-01 17:10:26,925 - INFO - [MainThread] [<module>] - Database module initialized.
+2025-05-01 17:10:27,368 - INFO - [MainThread] [<module>] - Initialized requests.Session for Telegram API calls.
+2025-05-01 17:10:27,368 - INFO - [MainThread] [<module>] - Telegram API functions defined with Session and Retries.
+2025-05-01 17:10:27,373 - INFO - [MainThread] [<module>] - Flask routes defined.
+2025-05-01 17:10:27,373 - INFO - [MainThread] [<module>] - Starting Flask development server...
+2025-05-01 17:10:27,400 - WARNING - [MainThread] [_log] -  * Debugger is active!
+2025-05-01 17:10:27,405 - INFO - [MainThread] [_log] -  * Debugger PIN: 107-410-311
+2025-05-01 17:10:30,912 - INFO - [Thread-3 (process_request_thread)] [index] - Serving index page.
+2025-05-01 17:10:30,927 - INFO - [Thread-3 (process_request_thread)] [_log] - 127.0.0.1 - - [01/May/2025 17:10:30] "GET / HTTP/1.1" 200 -
+2025-05-01 17:10:38,020 - INFO - [Thread-2 (process_request_thread)] [initiate_upload] - Request initiate upload.
+2025-05-01 17:10:38,525 - INFO - [Thread-2 (process_request_thread)] [initiate_upload] - [73ebf129-40aa-4962-8cfa-5d37f9034bc3] Preparing to save upload to temp path: uploads_temp\73ebf129-40aa-4962-8cfa-5d37f9034bc3_test download (3).mkv
+2025-05-01 17:10:38,758 - INFO - [Thread-2 (process_request_thread)] [initiate_upload] - [73ebf129-40aa-4962-8cfa-5d37f9034bc3] Successfully saved temporary file: 'test download (3).mkv' (132739902 bytes).
+2025-05-01 17:10:38,770 - INFO - [Thread-2 (process_request_thread)] [_log] - 127.0.0.1 - - [01/May/2025 17:10:38] "POST /initiate-upload HTTP/1.1" 200 -
+2025-05-01 17:10:38,776 - INFO - [Thread-4 (process_request_thread)] [stream_progress] - SSE connection request received for upload_id: 73ebf129-40aa-4962-8cfa-5d37f9034bc3
+2025-05-01 17:10:38,776 - INFO - [Thread-4 (process_request_thread)] [stream_progress] - [73ebf129-40aa-4962-8cfa-5d37f9034bc3] Valid SSE request. Starting background processing generator...
+2025-05-01 17:10:38,777 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [73ebf129-40aa-4962-8cfa-5d37f9034bc3] Starting background processing generator...
+2025-05-01 17:10:38,778 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [73ebf129-40aa-4962-8cfa-5d37f9034bc3] Background processing started for: User='Brayer', File='test download (3).mkv'
+2025-05-01 17:10:38,778 - INFO - [Thread-4 (process_request_thread)] [_log] - 127.0.0.1 - - [01/May/2025 17:10:38] "GET /stream-progress/73ebf129-40aa-4962-8cfa-5d37f9034bc3 HTTP/1.1" 200 -
+2025-05-01 17:10:38,779 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [73ebf129-40aa-4962-8cfa-5d37f9034bc3] Generated Access ID: e77a50a96d
+2025-05-01 17:10:38,779 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [73ebf129-40aa-4962-8cfa-5d37f9034bc3] Large file workflow.
+2025-05-01 17:10:43,615 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [73ebf129-40aa-4962-8cfa-5d37f9034bc3] Compressed Size: 129562600 bytes in 4.84s.
+2025-05-01 17:10:43,640 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [73ebf129-40aa-4962-8cfa-5d37f9034bc3] Sending chunk 1/7 ('test download (3).zip.part_001', 20971520 bytes)
+2025-05-01 17:10:43,640 - INFO - [Thread-4 (process_request_thread)] [_send_chunk_task] - [73ebf129-40aa-4962-8cfa-5d37f9034bc3] T> Sending chunk 1 ('test download (3).zip.part_001', 20971520 bytes) to chat -4603853425
+2025-05-01 17:10:43,641 - INFO - [Thread-4 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'test download (3).zip.part_001'] Attempting send.
+2025-05-01 17:10:55,416 - INFO - [Thread-4 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'test download (3).zip.part_001'] API success (Attempt 1).
+2025-05-01 17:10:55,418 - INFO - [Thread-4 (process_request_thread)] [_send_chunk_task] - [73ebf129-40aa-4962-8cfa-5d37f9034bc3] T> Sent chunk 1 to chat -4603853425. Success: True
+2025-05-01 17:10:55,436 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [73ebf129-40aa-4962-8cfa-5d37f9034bc3] Sending chunk 2/7 ('test download (3).zip.part_002', 20971520 bytes)
+2025-05-01 17:10:55,436 - INFO - [Thread-4 (process_request_thread)] [_send_chunk_task] - [73ebf129-40aa-4962-8cfa-5d37f9034bc3] T> Sending chunk 2 ('test download (3).zip.part_002', 20971520 bytes) to chat -4603853425
+2025-05-01 17:10:55,437 - INFO - [Thread-4 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'test download (3).zip.part_002'] Attempting send.
+2025-05-01 17:11:05,895 - INFO - [Thread-4 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'test download (3).zip.part_002'] API success (Attempt 1).
+2025-05-01 17:11:05,900 - INFO - [Thread-4 (process_request_thread)] [_send_chunk_task] - [73ebf129-40aa-4962-8cfa-5d37f9034bc3] T> Sent chunk 2 to chat -4603853425. Success: True
+2025-05-01 17:11:05,918 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [73ebf129-40aa-4962-8cfa-5d37f9034bc3] Sending chunk 3/7 ('test download (3).zip.part_003', 20971520 bytes)
+2025-05-01 17:11:05,919 - INFO - [Thread-4 (process_request_thread)] [_send_chunk_task] - [73ebf129-40aa-4962-8cfa-5d37f9034bc3] T> Sending chunk 3 ('test download (3).zip.part_003', 20971520 bytes) to chat -4603853425
+2025-05-01 17:11:05,919 - INFO - [Thread-4 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'test download (3).zip.part_003'] Attempting send.
+2025-05-01 17:11:17,679 - INFO - [Thread-4 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'test download (3).zip.part_003'] API success (Attempt 1).
+2025-05-01 17:11:17,681 - INFO - [Thread-4 (process_request_thread)] [_send_chunk_task] - [73ebf129-40aa-4962-8cfa-5d37f9034bc3] T> Sent chunk 3 to chat -4603853425. Success: True
+2025-05-01 17:11:17,692 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [73ebf129-40aa-4962-8cfa-5d37f9034bc3] Sending chunk 4/7 ('test download (3).zip.part_004', 20971520 bytes)
+2025-05-01 17:11:17,694 - INFO - [Thread-4 (process_request_thread)] [_send_chunk_task] - [73ebf129-40aa-4962-8cfa-5d37f9034bc3] T> Sending chunk 4 ('test download (3).zip.part_004', 20971520 bytes) to chat -4603853425
+2025-05-01 17:11:17,695 - INFO - [Thread-4 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'test download (3).zip.part_004'] Attempting send.
+2025-05-01 17:11:28,145 - INFO - [Thread-4 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'test download (3).zip.part_004'] API success (Attempt 1).
+2025-05-01 17:11:28,149 - INFO - [Thread-4 (process_request_thread)] [_send_chunk_task] - [73ebf129-40aa-4962-8cfa-5d37f9034bc3] T> Sent chunk 4 to chat -4603853425. Success: True
+2025-05-01 17:11:28,167 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [73ebf129-40aa-4962-8cfa-5d37f9034bc3] Sending chunk 5/7 ('test download (3).zip.part_005', 20971520 bytes)
+2025-05-01 17:11:28,168 - INFO - [Thread-4 (process_request_thread)] [_send_chunk_task] - [73ebf129-40aa-4962-8cfa-5d37f9034bc3] T> Sending chunk 5 ('test download (3).zip.part_005', 20971520 bytes) to chat -4603853425
+2025-05-01 17:11:28,168 - INFO - [Thread-4 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'test download (3).zip.part_005'] Attempting send.
+2025-05-01 17:11:39,488 - INFO - [Thread-4 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'test download (3).zip.part_005'] API success (Attempt 1).
+2025-05-01 17:11:39,511 - INFO - [Thread-4 (process_request_thread)] [_send_chunk_task] - [73ebf129-40aa-4962-8cfa-5d37f9034bc3] T> Sent chunk 5 to chat -4603853425. Success: True
+2025-05-01 17:11:39,534 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [73ebf129-40aa-4962-8cfa-5d37f9034bc3] Sending chunk 6/7 ('test download (3).zip.part_006', 20971520 bytes)
+2025-05-01 17:11:39,544 - INFO - [Thread-4 (process_request_thread)] [_send_chunk_task] - [73ebf129-40aa-4962-8cfa-5d37f9034bc3] T> Sending chunk 6 ('test download (3).zip.part_006', 20971520 bytes) to chat -4603853425
+2025-05-01 17:11:39,544 - INFO - [Thread-4 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'test download (3).zip.part_006'] Attempting send.
+2025-05-01 17:11:51,020 - INFO - [Thread-4 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'test download (3).zip.part_006'] API success (Attempt 1).
+2025-05-01 17:11:51,025 - INFO - [Thread-4 (process_request_thread)] [_send_chunk_task] - [73ebf129-40aa-4962-8cfa-5d37f9034bc3] T> Sent chunk 6 to chat -4603853425. Success: True
+2025-05-01 17:11:51,038 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [73ebf129-40aa-4962-8cfa-5d37f9034bc3] Sending chunk 7/7 ('test download (3).zip.part_007', 3733480 bytes)
+2025-05-01 17:11:51,042 - INFO - [Thread-4 (process_request_thread)] [_send_chunk_task] - [73ebf129-40aa-4962-8cfa-5d37f9034bc3] T> Sending chunk 7 ('test download (3).zip.part_007', 3733480 bytes) to chat -4603853425
+2025-05-01 17:11:51,043 - INFO - [Thread-4 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'test download (3).zip.part_007'] Attempting send.
+2025-05-01 17:11:53,174 - INFO - [Thread-4 (process_request_thread)] [send_file_to_telegram] - [ChatID -4603853425, File 'test download (3).zip.part_007'] API success (Attempt 1).
+2025-05-01 17:11:53,175 - INFO - [Thread-4 (process_request_thread)] [_send_chunk_task] - [73ebf129-40aa-4962-8cfa-5d37f9034bc3] T> Sent chunk 7 to chat -4603853425. Success: True
+2025-05-01 17:11:53,182 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [73ebf129-40aa-4962-8cfa-5d37f9034bc3] All 7 chunks processed. Saving meta.
+2025-05-01 17:11:53,184 - INFO - [Thread-4 (process_request_thread)] [_connect_to_db] - Attempting to connect to MongoDB Atlas host: telegrambot.6armfs2.mongodb.net...
+2025-05-01 17:11:54,003 - INFO - [Thread-4 (process_request_thread)] [_connect_to_db] - ✅ Successfully connected and pinged MongoDB Atlas!
+2025-05-01 17:11:54,003 - INFO - [Thread-4 (process_request_thread)] [get_db] - Accessed database: Telegrambot
+2025-05-01 17:11:54,004 - INFO - [Thread-4 (process_request_thread)] [get_metadata_collection] - Accessed collection: file_metadata
+2025-05-01 17:11:54,043 - INFO - [Thread-4 (process_request_thread)] [save_file_metadata] - Successfully inserted metadata for access_id: e77a50a96d
+2025-05-01 17:11:54,044 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [73ebf129-40aa-4962-8cfa-5d37f9034bc3] Chunked metadata saved. Msg: Metadata inserted (ID: 68135e021969d4a304aebe84).
+2025-05-01 17:11:54,059 - INFO - [Thread-4 (process_request_thread)] [_safe_remove_file] - [73ebf129-40aa-4962-8cfa-5d37f9034bc3] Successfully cleaned up temporary compressed zip file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\73ebf129-40aa-4962-8cfa-5d37f9034bc3_comp_rwrp4201.zip
+2025-05-01 17:11:54,059 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [73ebf129-40aa-4962-8cfa-5d37f9034bc3] Reached end of processing generator.
+2025-05-01 17:11:54,076 - INFO - [Thread-4 (process_request_thread)] [_safe_remove_file] - [73ebf129-40aa-4962-8cfa-5d37f9034bc3] Successfully cleaned up original uploaded temp file: uploads_temp\73ebf129-40aa-4962-8cfa-5d37f9034bc3_test download (3).mkv
+2025-05-01 17:11:54,077 - INFO - [Thread-4 (process_request_thread)] [process_upload_and_generate_updates] - [73ebf129-40aa-4962-8cfa-5d37f9034bc3] Background processing generator finished. Final Status: completed
+2025-05-01 17:12:05,034 - INFO - [Thread-5 (process_request_thread)] [get_file_by_access_id] - Download page request received for access_id: e77a50a96d
+2025-05-01 17:12:05,041 - INFO - [Thread-5 (process_request_thread)] [get_file_by_access_id] - Looking up metadata for access_id 'e77a50a96d' in DB...
+2025-05-01 17:12:05,067 - INFO - [Thread-5 (process_request_thread)] [find_metadata_by_access_id] - Found metadata record for access_id: e77a50a96d
+2025-05-01 17:12:05,068 - INFO - [Thread-5 (process_request_thread)] [get_file_by_access_id] - Rendering download page for 'test download (3).mkv' (AccessID: e77a50a96d).
+2025-05-01 17:12:05,151 - INFO - [Thread-5 (process_request_thread)] [_log] - 127.0.0.1 - - [01/May/2025 17:12:05] "GET /get/e77a50a96d HTTP/1.1" 200 -
+2025-05-01 17:12:06,937 - INFO - [Thread-6 (process_request_thread)] [stream_download_by_access_id] - [7a5b1672-9963-4aed-a7c5-1dc2057b106f] SSE connection request for download prep via access_id: e77a50a96d
+2025-05-01 17:12:06,961 - INFO - [Thread-6 (process_request_thread)] [find_metadata_by_access_id] - Found metadata record for access_id: e77a50a96d
+2025-05-01 17:12:06,964 - INFO - [Thread-6 (process_request_thread)] [_prepare_download_and_generate_updates] - [7a5b1672-9963-4aed-a7c5-1dc2057b106f] Download preparation generator started.
+2025-05-01 17:12:06,965 - INFO - [Thread-6 (process_request_thread)] [_log] - 127.0.0.1 - - [01/May/2025 17:12:06] "GET /stream-download/e77a50a96d HTTP/1.1" 200 -
+2025-05-01 17:12:07,088 - INFO - [Thread-6 (process_request_thread)] [find_metadata_by_access_id] - Found metadata record for access_id: e77a50a96d
+2025-05-01 17:12:07,089 - INFO - [Thread-6 (process_request_thread)] [_prepare_download_and_generate_updates] - [7a5b1672-9963-4aed-a7c5-1dc2057b106f] Successfully found metadata for download preparation.
+2025-05-01 17:12:07,089 - INFO - [Thread-6 (process_request_thread)] [_prepare_download_and_generate_updates] - [7a5b1672-9963-4aed-a7c5-1dc2057b106f] Meta Details: OriginalName='test download (3).mkv', Size=132739902, Split=True, Comp=True
+2025-05-01 17:12:07,291 - INFO - [Thread-6 (process_request_thread)] [_prepare_download_and_generate_updates] - [7a5b1672-9963-4aed-a7c5-1dc2057b106f] Preparing split file.
+2025-05-01 17:12:07,292 - INFO - [Thread-6 (process_request_thread)] [_prepare_download_and_generate_updates] - [7a5b1672-9963-4aed-a7c5-1dc2057b106f] Expect 7 chunks. Total fetch: ~123.56 MB.
+2025-05-01 17:12:07,293 - INFO - [Thread-6 (process_request_thread)] [_prepare_download_and_generate_updates] - [7a5b1672-9963-4aed-a7c5-1dc2057b106f] Download Executor (max=12)
+2025-05-01 17:12:07,295 - INFO - [Thread-6 (process_request_thread)] [_prepare_download_and_generate_updates] - [7a5b1672-9963-4aed-a7c5-1dc2057b106f] Submitting 7 chunk downloads...
+2025-05-01 17:12:07,297 - INFO - [DlPrep_7a5b_0] [_download_chunk_task] - [7a5b1672-9963-4aed-a7c5-1dc2057b106f] T> Starting download chunk 1 (Telegram file_id: BQACAgUAAxkDAAIF32gTXcefUsWG_9z44mhHc7B7RC3WAAL3GwACkvGhVA_Om0WjyYSuNgQ)
+2025-05-01 17:12:07,298 - INFO - [DlPrep_7a5b_0] [download_telegram_file_content] - [FileID BQACAgUAAxkDAAIF32gTXcefUsWG_9z44mhHc7B7RC3WAAL3GwACkvGhVA_Om0WjyYSuNgQ] Attempting download.
+2025-05-01 17:12:07,298 - INFO - [DlPrep_7a5b_1] [_download_chunk_task] - [7a5b1672-9963-4aed-a7c5-1dc2057b106f] T> Starting download chunk 2 (Telegram file_id: BQACAgUAAxkDAAIF4GgTXdIfccFEEDSU_VwNCH-UncCEAAL4GwACkvGhVIUiogd1hECcNgQ)
+2025-05-01 17:12:07,299 - INFO - [DlPrep_7a5b_2] [_download_chunk_task] - [7a5b1672-9963-4aed-a7c5-1dc2057b106f] T> Starting download chunk 3 (Telegram file_id: BQACAgUAAxkDAAIF4WgTXd1ifOmQJvyFQSpNWDXUMcDtAAL6GwACkvGhVH5Et24_Lq8PNgQ)
+2025-05-01 17:12:07,302 - INFO - [DlPrep_7a5b_3] [_download_chunk_task] - [7a5b1672-9963-4aed-a7c5-1dc2057b106f] T> Starting download chunk 4 (Telegram file_id: BQACAgUAAxkDAAIF4mgTXegFWyAXeswihLGkfk66gaG5AAL7GwACkvGhVP6bn8Vya36ANgQ)
+2025-05-01 17:12:07,305 - INFO - [DlPrep_7a5b_1] [download_telegram_file_content] - [FileID BQACAgUAAxkDAAIF4GgTXdIfccFEEDSU_VwNCH-UncCEAAL4GwACkvGhVIUiogd1hECcNgQ] Attempting download.
+2025-05-01 17:12:07,306 - INFO - [DlPrep_7a5b_4] [_download_chunk_task] - [7a5b1672-9963-4aed-a7c5-1dc2057b106f] T> Starting download chunk 5 (Telegram file_id: BQACAgUAAxkDAAIF42gTXfMyNckUt-NxEE4T4c1An-VMAAL8GwACkvGhVCCKsfek0tYhNgQ)
+2025-05-01 17:12:07,353 - INFO - [DlPrep_7a5b_2] [download_telegram_file_content] - [FileID BQACAgUAAxkDAAIF4WgTXd1ifOmQJvyFQSpNWDXUMcDtAAL6GwACkvGhVH5Et24_Lq8PNgQ] Attempting download.
+2025-05-01 17:12:07,354 - INFO - [DlPrep_7a5b_3] [download_telegram_file_content] - [FileID BQACAgUAAxkDAAIF4mgTXegFWyAXeswihLGkfk66gaG5AAL7GwACkvGhVP6bn8Vya36ANgQ] Attempting download.
+2025-05-01 17:12:07,358 - INFO - [DlPrep_7a5b_5] [_download_chunk_task] - [7a5b1672-9963-4aed-a7c5-1dc2057b106f] T> Starting download chunk 6 (Telegram file_id: BQACAgUAAxkDAAIF5GgTXf8Ed84nsIPPTiWKEIKpy_tlAAL9GwACkvGhVGJV-KepqyAdNgQ)
+2025-05-01 17:12:07,359 - INFO - [DlPrep_7a5b_4] [download_telegram_file_content] - [FileID BQACAgUAAxkDAAIF42gTXfMyNckUt-NxEE4T4c1An-VMAAL8GwACkvGhVCCKsfek0tYhNgQ] Attempting download.
+2025-05-01 17:12:07,360 - INFO - [DlPrep_7a5b_6] [_download_chunk_task] - [7a5b1672-9963-4aed-a7c5-1dc2057b106f] T> Starting download chunk 7 (Telegram file_id: BQACAgUAAxkDAAIF5WgTXgHyCXm3amoNYwahn2IVMlW6AAL-GwACkvGhVLeQ8eWf0laONgQ)
+2025-05-01 17:12:07,374 - INFO - [Thread-6 (process_request_thread)] [_prepare_download_and_generate_updates] - [7a5b1672-9963-4aed-a7c5-1dc2057b106f] All 7 chunk download tasks submitted.
+2025-05-01 17:12:07,393 - INFO - [DlPrep_7a5b_5] [download_telegram_file_content] - [FileID BQACAgUAAxkDAAIF5GgTXf8Ed84nsIPPTiWKEIKpy_tlAAL9GwACkvGhVGJV-KepqyAdNgQ] Attempting download.
+2025-05-01 17:12:07,396 - INFO - [DlPrep_7a5b_6] [download_telegram_file_content] - [FileID BQACAgUAAxkDAAIF5WgTXgHyCXm3amoNYwahn2IVMlW6AAL-GwACkvGhVLeQ8eWf0laONgQ] Attempting download.
+2025-05-01 17:12:10,577 - INFO - [DlPrep_7a5b_1] [download_telegram_file_content] - [FileID BQACAgUAAxkDAAIF4GgTXdIfccFEEDSU_VwNCH-UncCEAAL4GwACkvGhVIUiogd1hECcNgQ] Got DL URL (Attempt 1): https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_636.part_002
+2025-05-01 17:12:10,577 - INFO - [DlPrep_7a5b_1] [download_telegram_file_content] - [FileID BQACAgUAAxkDAAIF4GgTXdIfccFEEDSU_VwNCH-UncCEAAL4GwACkvGhVIUiogd1hECcNgQ] Attempting content download from URL.
+2025-05-01 17:12:12,585 - INFO - [DlPrep_7a5b_4] [download_telegram_file_content] - [FileID BQACAgUAAxkDAAIF42gTXfMyNckUt-NxEE4T4c1An-VMAAL8GwACkvGhVCCKsfek0tYhNgQ] Got DL URL (Attempt 1): https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_637.part_005
+2025-05-01 17:12:12,586 - INFO - [DlPrep_7a5b_4] [download_telegram_file_content] - [FileID BQACAgUAAxkDAAIF42gTXfMyNckUt-NxEE4T4c1An-VMAAL8GwACkvGhVCCKsfek0tYhNgQ] Attempting content download from URL.
+2025-05-01 17:12:14,618 - INFO - [DlPrep_7a5b_5] [download_telegram_file_content] - [FileID BQACAgUAAxkDAAIF5GgTXf8Ed84nsIPPTiWKEIKpy_tlAAL9GwACkvGhVGJV-KepqyAdNgQ] Got DL URL (Attempt 1): https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_638.part_006
+2025-05-01 17:12:14,619 - INFO - [DlPrep_7a5b_5] [download_telegram_file_content] - [FileID BQACAgUAAxkDAAIF5GgTXf8Ed84nsIPPTiWKEIKpy_tlAAL9GwACkvGhVGJV-KepqyAdNgQ] Attempting content download from URL.
+2025-05-01 17:12:14,935 - INFO - [DlPrep_7a5b_1] [download_telegram_file_content] - [FileID BQACAgUAAxkDAAIF4GgTXdIfccFEEDSU_VwNCH-UncCEAAL4GwACkvGhVIUiogd1hECcNgQ] Downloaded 20971520 bytes (Attempt 1).
+2025-05-01 17:12:14,936 - INFO - [DlPrep_7a5b_1] [_download_chunk_task] - [7a5b1672-9963-4aed-a7c5-1dc2057b106f] T> Successfully downloaded chunk 2 (20971520 bytes).
+2025-05-01 17:12:16,733 - INFO - [DlPrep_7a5b_2] [download_telegram_file_content] - [FileID BQACAgUAAxkDAAIF4WgTXd1ifOmQJvyFQSpNWDXUMcDtAAL6GwACkvGhVH5Et24_Lq8PNgQ] Got DL URL (Attempt 1): https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_639.part_003
+2025-05-01 17:12:16,734 - INFO - [DlPrep_7a5b_2] [download_telegram_file_content] - [FileID BQACAgUAAxkDAAIF4WgTXd1ifOmQJvyFQSpNWDXUMcDtAAL6GwACkvGhVH5Et24_Lq8PNgQ] Attempting content download from URL.
+2025-05-01 17:12:17,205 - INFO - [DlPrep_7a5b_6] [download_telegram_file_content] - [FileID BQACAgUAAxkDAAIF5WgTXgHyCXm3amoNYwahn2IVMlW6AAL-GwACkvGhVLeQ8eWf0laONgQ] Got DL URL (Attempt 1): https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_640.part_007
+2025-05-01 17:12:17,209 - INFO - [DlPrep_7a5b_6] [download_telegram_file_content] - [FileID BQACAgUAAxkDAAIF5WgTXgHyCXm3amoNYwahn2IVMlW6AAL-GwACkvGhVLeQ8eWf0laONgQ] Attempting content download from URL.
+2025-05-01 17:12:18,046 - INFO - [DlPrep_7a5b_4] [download_telegram_file_content] - [FileID BQACAgUAAxkDAAIF42gTXfMyNckUt-NxEE4T4c1An-VMAAL8GwACkvGhVCCKsfek0tYhNgQ] Downloaded 20971520 bytes (Attempt 1).
+2025-05-01 17:12:18,046 - INFO - [DlPrep_7a5b_4] [_download_chunk_task] - [7a5b1672-9963-4aed-a7c5-1dc2057b106f] T> Successfully downloaded chunk 5 (20971520 bytes).
+2025-05-01 17:12:19,472 - INFO - [DlPrep_7a5b_3] [download_telegram_file_content] - [FileID BQACAgUAAxkDAAIF4mgTXegFWyAXeswihLGkfk66gaG5AAL7GwACkvGhVP6bn8Vya36ANgQ] Got DL URL (Attempt 1): https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_641.part_004
+2025-05-01 17:12:19,473 - INFO - [DlPrep_7a5b_3] [download_telegram_file_content] - [FileID BQACAgUAAxkDAAIF4mgTXegFWyAXeswihLGkfk66gaG5AAL7GwACkvGhVP6bn8Vya36ANgQ] Attempting content download from URL.
+2025-05-01 17:12:19,536 - INFO - [Thread-7 (process_request_thread)] [list_user_files] - List files request received for username: 'Brayer'
+2025-05-01 17:12:19,538 - INFO - [Thread-7 (process_request_thread)] [list_user_files] - Fetching metadata for user 'Brayer' from DB...
+2025-05-01 17:12:19,588 - INFO - [Thread-7 (process_request_thread)] [find_metadata_by_username] - Found 10 metadata records for username: Brayer
+2025-05-01 17:12:19,589 - INFO - [Thread-7 (process_request_thread)] [list_user_files] - Found 10 records for 'Brayer'.
+2025-05-01 17:12:19,591 - INFO - [Thread-7 (process_request_thread)] [_log] - 127.0.0.1 - - [01/May/2025 17:12:19] "GET /files/Brayer HTTP/1.1" 200 -
+2025-05-01 17:12:20,054 - INFO - [DlPrep_7a5b_6] [download_telegram_file_content] - [FileID BQACAgUAAxkDAAIF5WgTXgHyCXm3amoNYwahn2IVMlW6AAL-GwACkvGhVLeQ8eWf0laONgQ] Downloaded 3733480 bytes (Attempt 1).
+2025-05-01 17:12:20,055 - INFO - [DlPrep_7a5b_6] [_download_chunk_task] - [7a5b1672-9963-4aed-a7c5-1dc2057b106f] T> Successfully downloaded chunk 7 (3733480 bytes).
+2025-05-01 17:12:20,271 - INFO - [DlPrep_7a5b_5] [download_telegram_file_content] - [FileID BQACAgUAAxkDAAIF5GgTXf8Ed84nsIPPTiWKEIKpy_tlAAL9GwACkvGhVGJV-KepqyAdNgQ] Downloaded 20971520 bytes (Attempt 1).
+2025-05-01 17:12:20,271 - INFO - [DlPrep_7a5b_5] [_download_chunk_task] - [7a5b1672-9963-4aed-a7c5-1dc2057b106f] T> Successfully downloaded chunk 6 (20971520 bytes).
+2025-05-01 17:12:21,098 - INFO - [DlPrep_7a5b_0] [download_telegram_file_content] - [FileID BQACAgUAAxkDAAIF32gTXcefUsWG_9z44mhHc7B7RC3WAAL3GwACkvGhVA_Om0WjyYSuNgQ] Got DL URL (Attempt 1): https://api.telegram.org/file/bot7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs/documents/file_642.part_001
+2025-05-01 17:12:21,099 - INFO - [DlPrep_7a5b_0] [download_telegram_file_content] - [FileID BQACAgUAAxkDAAIF32gTXcefUsWG_9z44mhHc7B7RC3WAAL3GwACkvGhVA_Om0WjyYSuNgQ] Attempting content download from URL.
+2025-05-01 17:12:21,960 - INFO - [DlPrep_7a5b_2] [download_telegram_file_content] - [FileID BQACAgUAAxkDAAIF4WgTXd1ifOmQJvyFQSpNWDXUMcDtAAL6GwACkvGhVH5Et24_Lq8PNgQ] Downloaded 20971520 bytes (Attempt 1).
+2025-05-01 17:12:21,961 - INFO - [DlPrep_7a5b_2] [_download_chunk_task] - [7a5b1672-9963-4aed-a7c5-1dc2057b106f] T> Successfully downloaded chunk 3 (20971520 bytes).
+2025-05-01 17:12:23,910 - INFO - [DlPrep_7a5b_3] [download_telegram_file_content] - [FileID BQACAgUAAxkDAAIF4mgTXegFWyAXeswihLGkfk66gaG5AAL7GwACkvGhVP6bn8Vya36ANgQ] Downloaded 20971520 bytes (Attempt 1).
+2025-05-01 17:12:23,911 - INFO - [DlPrep_7a5b_3] [_download_chunk_task] - [7a5b1672-9963-4aed-a7c5-1dc2057b106f] T> Successfully downloaded chunk 4 (20971520 bytes).
+2025-05-01 17:12:28,152 - INFO - [DlPrep_7a5b_0] [download_telegram_file_content] - [FileID BQACAgUAAxkDAAIF32gTXcefUsWG_9z44mhHc7B7RC3WAAL3GwACkvGhVA_Om0WjyYSuNgQ] Downloaded 20971520 bytes (Attempt 1).
+2025-05-01 17:12:28,153 - INFO - [DlPrep_7a5b_0] [_download_chunk_task] - [7a5b1672-9963-4aed-a7c5-1dc2057b106f] T> Successfully downloaded chunk 1 (20971520 bytes).
+2025-05-01 17:12:28,153 - INFO - [Thread-6 (process_request_thread)] [_prepare_download_and_generate_updates] - [7a5b1672-9963-4aed-a7c5-1dc2057b106f] All 7 chunks dl OK. Total fetched: 129562600b.
+2025-05-01 17:12:28,384 - INFO - [Thread-6 (process_request_thread)] [_prepare_download_and_generate_updates] - [7a5b1672-9963-4aed-a7c5-1dc2057b106f] Finished reassembly.
+2025-05-01 17:12:28,407 - INFO - [Thread-6 (process_request_thread)] [_prepare_download_and_generate_updates] - [7a5b1672-9963-4aed-a7c5-1dc2057b106f] Decompressing 'test download (3).mkv' into E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_final_7a5b1672-9963-4aed-a7c5-1dc2057b106f_to38kvf6.mkv
+2025-05-01 17:12:29,760 - INFO - [Thread-6 (process_request_thread)] [_prepare_download_and_generate_updates] - [7a5b1672-9963-4aed-a7c5-1dc2057b106f] Decompression complete.
+2025-05-01 17:12:29,761 - INFO - [Thread-6 (process_request_thread)] [_prepare_download_and_generate_updates] - [7a5b1672-9963-4aed-a7c5-1dc2057b106f] Final file ready: 'E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_final_7a5b1672-9963-4aed-a7c5-1dc2057b106f_to38kvf6.mkv', Size: 132739902.
+2025-05-01 17:12:29,862 - INFO - [Thread-6 (process_request_thread)] [_prepare_download_and_generate_updates] - [7a5b1672-9963-4aed-a7c5-1dc2057b106f] Prep complete. Sent 'ready'.
+2025-05-01 17:12:29,863 - INFO - [Thread-6 (process_request_thread)] [_prepare_download_and_generate_updates] - [7a5b1672-9963-4aed-a7c5-1dc2057b106f] Reached end of download preparation generator.
+2025-05-01 17:12:29,864 - INFO - [Thread-6 (process_request_thread)] [_prepare_download_and_generate_updates] - [7a5b1672-9963-4aed-a7c5-1dc2057b106f] Download Executor shutdown signaled.
+2025-05-01 17:12:29,880 - INFO - [Thread-8 (process_request_thread)] [serve_temp_file] - File serve request received: TempID='7a5b1672-9963-4aed-a7c5-1dc2057b106f', Filename='test download (3).mkv'
+2025-05-01 17:12:29,965 - INFO - [Thread-6 (process_request_thread)] [_safe_remove_file] - [7a5b1672-9963-4aed-a7c5-1dc2057b106f] Successfully cleaned up intermediate reassembled file: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_reass_7a5b1672-9963-4aed-a7c5-1dc2057b106f_2crqamd6.zip.reassembled
+2025-05-01 17:12:29,966 - INFO - [Thread-6 (process_request_thread)] [_prepare_download_and_generate_updates] - [7a5b1672-9963-4aed-a7c5-1dc2057b106f] Download prep generator finished. Status: ready
+2025-05-01 17:12:29,981 - INFO - [Thread-8 (process_request_thread)] [serve_temp_file] - [7a5b1672-9963-4aed-a7c5-1dc2057b106f] Preparing streaming response for 'test download (3).mkv'.
+2025-05-01 17:12:29,981 - INFO - [Thread-8 (process_request_thread)] [generate_stream_with_cleanup] - [7a5b1672-9963-4aed-a7c5-1dc2057b106f] Scheduling cleanup in 120s for: E:\Telegram_tool\Telegram_Bot_Tool\uploads_temp\dl_final_7a5b1672-9963-4aed-a7c5-1dc2057b106f_to38kvf6.mkv
+2025-05-01 17:12:30,300 - INFO - [Thread-8 (process_request_thread)] [_log] - 127.0.0.1 - - [01/May/2025 17:12:30] "GET /serve-temp-file/7a5b1672-9963-4aed-a7c5-1dc2057b106f/test%20download%20(3).mkv HTTP/1.1" 200 -
+2025-05-01 17:12:30,886 - INFO - [Thread-8 (process_request_thread)] [generate_stream_with_cleanup] - [7a5b1672-9963-4aed-a7c5-1dc2057b106f] Finished streaming.

@@ -1,0 +1,192 @@
+2025-05-02 17:21:27,268 - INFO - [MainThread] [<module>] - ============================================================
+2025-05-02 17:21:27,268 - INFO - [MainThread] [<module>] - Logging configured. Level: INFO. Log file: Selenium-Logs\app_20250502_172127.log
+2025-05-02 17:21:27,268 - INFO - [MainThread] [<module>] - Primary Chat ID: -4603853425
+2025-05-02 17:21:27,269 - INFO - [MainThread] [<module>] - All Target Chat IDs: ['-4603853425', '-1002614397019', '-4641852757']
+2025-05-02 17:21:27,269 - INFO - [MainThread] [<module>] - Chunk Size: 20.0 MB (20971520 bytes)
+2025-05-02 17:21:27,269 - INFO - [MainThread] [<module>] - API Timeouts (Connect/Read): 10s / 60s
+2025-05-02 17:21:27,270 - INFO - [MainThread] [<module>] - API Retries: 3 attempts, 2s delay
+2025-05-02 17:21:27,271 - INFO - [MainThread] [<module>] - Max Upload Workers: 5
+2025-05-02 17:21:27,272 - INFO - [MainThread] [<module>] - Max Download Workers: 12
+2025-05-02 17:21:27,272 - INFO - [MainThread] [<module>] - ============================================================
+2025-05-02 17:21:27,272 - INFO - [MainThread] [<module>] - Configuration loaded successfully.
+2025-05-02 17:21:27,273 - INFO - [MainThread] [<module>] - Custom Jinja filter 'format_bytes' registered.
+2025-05-02 17:21:27,273 - INFO - [MainThread] [<module>] - Flask-CORS initialized. Allowing origins: *
+2025-05-02 17:21:27,274 - INFO - [MainThread] [<module>] - Flask application initialized.
+2025-05-02 17:21:27,274 - INFO - [MainThread] [<module>] - Global state variables initialized (upload_progress_data, download_prep_data).
+2025-05-02 17:21:27,276 - INFO - [MainThread] [<module>] - Custom Jinja filter 'format_bytes' registered.
+2025-05-02 17:21:27,276 - INFO - [MainThread] [<module>] - Flask-CORS initialized. Allowing origins: *
+2025-05-02 17:21:27,277 - INFO - [MainThread] [<module>] - Flask application initialized.
+2025-05-02 17:21:27,277 - INFO - [MainThread] [<module>] - Global state variables initialized (upload_progress_data, download_prep_data).
+2025-05-02 17:21:27,437 - INFO - [MainThread] [<module>] - Database module initialized.
+2025-05-02 17:21:27,880 - INFO - [MainThread] [<module>] - Initialized requests.Session for Telegram API calls.
+2025-05-02 17:21:27,880 - INFO - [MainThread] [<module>] - Telegram API functions defined with Session and Retries.
+2025-05-02 17:21:27,886 - INFO - [MainThread] [<module>] - Flask routes defined using configurable workers and linter fixes.
+2025-05-02 17:21:27,887 - INFO - [MainThread] [<module>] - Starting Flask development server...
+2025-05-02 17:21:27,907 - WARNING - [MainThread] [_log] -  * Debugger is active!
+2025-05-02 17:21:27,916 - INFO - [MainThread] [_log] -  * Debugger PIN: 107-410-311
+2025-05-02 17:21:34,013 - INFO - [Thread-3 (process_request_thread)] [index] - Serving index page.
+2025-05-02 17:21:34,039 - INFO - [Thread-3 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 17:21:34] "GET / HTTP/1.1" 200 -
+2025-05-02 17:21:36,170 - INFO - [Thread-2 (process_request_thread)] [show_register_page] - Serving registration page.
+2025-05-02 17:21:36,173 - INFO - [Thread-2 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 17:21:36] "GET /register HTTP/1.1" 200 -
+2025-05-02 17:22:00,139 - INFO - [Thread-5 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 17:22:00,140 - ERROR - [Thread-5 (process_request_thread)] [register_user] - Error parsing registration JSON data: 415 Unsupported Media Type: Did not attempt to load JSON data because the request Content-Type was not 'application/json'.
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 70, in register_user
+    data = request.get_json() # <-- Get data as JSON dictionary
+           ^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\werkzeug\wrappers\request.py", line 604, in get_json
+    return self.on_json_loading_failed(None)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\flask\wrappers.py", line 214, in on_json_loading_failed
+    return super().on_json_loading_failed(e)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\werkzeug\wrappers\request.py", line 647, in on_json_loading_failed
+    raise UnsupportedMediaType(
+werkzeug.exceptions.UnsupportedMediaType: 415 Unsupported Media Type: Did not attempt to load JSON data because the request Content-Type was not 'application/json'.
+2025-05-02 17:22:00,146 - INFO - [Thread-5 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 17:22:00] "[31m[1mPOST /register HTTP/1.1[0m" 400 -
+2025-05-02 17:22:01,300 - INFO - [Thread-6 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 17:22:01,300 - ERROR - [Thread-6 (process_request_thread)] [register_user] - Error parsing registration JSON data: 415 Unsupported Media Type: Did not attempt to load JSON data because the request Content-Type was not 'application/json'.
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 70, in register_user
+    data = request.get_json() # <-- Get data as JSON dictionary
+           ^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\werkzeug\wrappers\request.py", line 604, in get_json
+    return self.on_json_loading_failed(None)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\flask\wrappers.py", line 214, in on_json_loading_failed
+    return super().on_json_loading_failed(e)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\werkzeug\wrappers\request.py", line 647, in on_json_loading_failed
+    raise UnsupportedMediaType(
+werkzeug.exceptions.UnsupportedMediaType: 415 Unsupported Media Type: Did not attempt to load JSON data because the request Content-Type was not 'application/json'.
+2025-05-02 17:22:01,304 - INFO - [Thread-6 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 17:22:01] "[31m[1mPOST /register HTTP/1.1[0m" 400 -
+2025-05-02 17:22:01,812 - INFO - [Thread-7 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 17:22:01,812 - ERROR - [Thread-7 (process_request_thread)] [register_user] - Error parsing registration JSON data: 415 Unsupported Media Type: Did not attempt to load JSON data because the request Content-Type was not 'application/json'.
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 70, in register_user
+    data = request.get_json() # <-- Get data as JSON dictionary
+           ^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\werkzeug\wrappers\request.py", line 604, in get_json
+    return self.on_json_loading_failed(None)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\flask\wrappers.py", line 214, in on_json_loading_failed
+    return super().on_json_loading_failed(e)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\werkzeug\wrappers\request.py", line 647, in on_json_loading_failed
+    raise UnsupportedMediaType(
+werkzeug.exceptions.UnsupportedMediaType: 415 Unsupported Media Type: Did not attempt to load JSON data because the request Content-Type was not 'application/json'.
+2025-05-02 17:22:01,812 - INFO - [Thread-7 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 17:22:01] "[31m[1mPOST /register HTTP/1.1[0m" 400 -
+2025-05-02 17:22:02,065 - INFO - [Thread-8 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 17:22:02,065 - ERROR - [Thread-8 (process_request_thread)] [register_user] - Error parsing registration JSON data: 415 Unsupported Media Type: Did not attempt to load JSON data because the request Content-Type was not 'application/json'.
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 70, in register_user
+    data = request.get_json() # <-- Get data as JSON dictionary
+           ^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\werkzeug\wrappers\request.py", line 604, in get_json
+    return self.on_json_loading_failed(None)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\flask\wrappers.py", line 214, in on_json_loading_failed
+    return super().on_json_loading_failed(e)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\werkzeug\wrappers\request.py", line 647, in on_json_loading_failed
+    raise UnsupportedMediaType(
+werkzeug.exceptions.UnsupportedMediaType: 415 Unsupported Media Type: Did not attempt to load JSON data because the request Content-Type was not 'application/json'.
+2025-05-02 17:22:02,066 - INFO - [Thread-8 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 17:22:02] "[31m[1mPOST /register HTTP/1.1[0m" 400 -
+2025-05-02 17:22:02,204 - INFO - [Thread-9 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 17:22:02,204 - ERROR - [Thread-9 (process_request_thread)] [register_user] - Error parsing registration JSON data: 415 Unsupported Media Type: Did not attempt to load JSON data because the request Content-Type was not 'application/json'.
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 70, in register_user
+    data = request.get_json() # <-- Get data as JSON dictionary
+           ^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\werkzeug\wrappers\request.py", line 604, in get_json
+    return self.on_json_loading_failed(None)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\flask\wrappers.py", line 214, in on_json_loading_failed
+    return super().on_json_loading_failed(e)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\werkzeug\wrappers\request.py", line 647, in on_json_loading_failed
+    raise UnsupportedMediaType(
+werkzeug.exceptions.UnsupportedMediaType: 415 Unsupported Media Type: Did not attempt to load JSON data because the request Content-Type was not 'application/json'.
+2025-05-02 17:22:02,204 - INFO - [Thread-9 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 17:22:02] "[31m[1mPOST /register HTTP/1.1[0m" 400 -
+2025-05-02 17:22:02,682 - INFO - [Thread-10 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 17:22:02,682 - ERROR - [Thread-10 (process_request_thread)] [register_user] - Error parsing registration JSON data: 415 Unsupported Media Type: Did not attempt to load JSON data because the request Content-Type was not 'application/json'.
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 70, in register_user
+    data = request.get_json() # <-- Get data as JSON dictionary
+           ^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\werkzeug\wrappers\request.py", line 604, in get_json
+    return self.on_json_loading_failed(None)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\flask\wrappers.py", line 214, in on_json_loading_failed
+    return super().on_json_loading_failed(e)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\werkzeug\wrappers\request.py", line 647, in on_json_loading_failed
+    raise UnsupportedMediaType(
+werkzeug.exceptions.UnsupportedMediaType: 415 Unsupported Media Type: Did not attempt to load JSON data because the request Content-Type was not 'application/json'.
+2025-05-02 17:22:02,682 - INFO - [Thread-10 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 17:22:02] "[31m[1mPOST /register HTTP/1.1[0m" 400 -
+2025-05-02 17:27:14,835 - INFO - [Thread-12 (process_request_thread)] [show_register_page] - Serving registration page.
+2025-05-02 17:27:14,966 - INFO - [Thread-12 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 17:27:14] "GET /register HTTP/1.1" 200 -
+2025-05-02 17:27:39,231 - INFO - [Thread-14 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 17:27:39] "OPTIONS /register HTTP/1.1" 200 -
+2025-05-02 17:27:39,509 - INFO - [Thread-15 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 17:27:39,510 - INFO - [Thread-15 (process_request_thread)] [register_user] - Received JSON data: {"firstName": "u", "lastName": "u", "email": "us12@gmail.com", "password": "us12", "confirmPassword": "us12", "agreeTerms": true, "understandPrivacy": true}
+2025-05-02 17:27:39,511 - INFO - [Thread-15 (process_request_thread)] [_connect_to_db] - Attempting to connect to MongoDB Atlas host: telegrambot.6armfs2.mongodb.net...
+2025-05-02 17:27:40,276 - INFO - [Thread-15 (process_request_thread)] [_connect_to_db] - ✅ Successfully connected and pinged MongoDB Atlas!
+2025-05-02 17:27:40,276 - INFO - [Thread-15 (process_request_thread)] [get_db] - Accessed database: Telegrambot
+2025-05-02 17:27:40,276 - INFO - [Thread-15 (process_request_thread)] [get_userinfo_collection] - Accessed collection: userinfo
+2025-05-02 17:27:40,299 - INFO - [Thread-15 (process_request_thread)] [find_user_by_email] - No user record found for email: us12@gmail.com
+2025-05-02 17:27:41,156 - INFO - [Thread-15 (process_request_thread)] [save_user] - Successfully inserted new user with ID: 6814b335654cd5a5373491ca
+2025-05-02 17:27:41,156 - INFO - [Thread-15 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 17:27:41] "[35m[1mPOST /register HTTP/1.1[0m" 201 -
+2025-05-02 17:27:53,302 - INFO - [Thread-13 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 17:27:53] "GET /login HTTP/1.1" 200 -
+2025-05-02 17:28:03,098 - INFO - [Thread-17 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 17:28:03] "[32mPOST /login HTTP/1.1[0m" 302 -
+2025-05-02 17:28:03,103 - INFO - [Thread-18 (process_request_thread)] [index] - Serving index page.
+2025-05-02 17:28:03,104 - INFO - [Thread-18 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 17:28:03] "GET / HTTP/1.1" 200 -
+2025-05-02 17:28:08,663 - INFO - [Thread-19 (process_request_thread)] [initiate_upload] - Request initiate upload.
+2025-05-02 17:28:08,666 - INFO - [Thread-19 (process_request_thread)] [initiate_upload] - [5180fc79-af33-404e-aff6-1581159fa596] Temp storage: uploads_temp\5180fc79-af33-404e-aff6-1581159fa596_download_page.html
+2025-05-02 17:28:08,666 - INFO - [Thread-19 (process_request_thread)] [initiate_upload] - [5180fc79-af33-404e-aff6-1581159fa596] Temp saved: 'download_page.html'.
+2025-05-02 17:28:08,670 - INFO - [Thread-19 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 17:28:08] "POST /initiate-upload HTTP/1.1" 200 -
+2025-05-02 17:28:08,676 - INFO - [Thread-20 (process_request_thread)] [stream_progress] - SSE connect request for upload_id: 5180fc79-af33-404e-aff6-1581159fa596
+2025-05-02 17:28:08,677 - INFO - [Thread-20 (process_request_thread)] [process_upload_and_generate_updates] - [5180fc79-af33-404e-aff6-1581159fa596] Starting processing generator...
+2025-05-02 17:28:08,677 - INFO - [Thread-20 (process_request_thread)] [process_upload_and_generate_updates] - [5180fc79-af33-404e-aff6-1581159fa596] Processing: User='admin', File='download_page.html'
+2025-05-02 17:28:08,677 - INFO - [Thread-20 (process_request_thread)] [process_upload_and_generate_updates] - [5180fc79-af33-404e-aff6-1581159fa596] Initialized Upload Executor (max=5)
+2025-05-02 17:28:08,679 - INFO - [Thread-20 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 17:28:08] "GET /stream-progress/5180fc79-af33-404e-aff6-1581159fa596 HTTP/1.1" 200 -
+2025-05-02 17:28:08,679 - INFO - [Thread-20 (process_request_thread)] [process_upload_and_generate_updates] - [5180fc79-af33-404e-aff6-1581159fa596] Access ID: ae1e8aa8c9
+2025-05-02 17:28:08,679 - INFO - [Thread-20 (process_request_thread)] [process_upload_and_generate_updates] - [5180fc79-af33-404e-aff6-1581159fa596] Single file workflow.
+2025-05-02 17:28:08,756 - INFO - [Thread-20 (process_request_thread)] [process_upload_and_generate_updates] - [5180fc79-af33-404e-aff6-1581159fa596] Compressed size: 4401
+2025-05-02 17:28:08,756 - INFO - [Upload_5180_0] [_send_single_file_task] - [5180fc79-af33-404e-aff6-1581159fa596] T> Sending 'download_page.zip' (4401b) to -4603853425
+2025-05-02 17:28:08,756 - INFO - [Upload_5180_0] [send_file_to_telegram] - [ChatID -4603853425, File 'download_page.zip'] Attempting send.
+2025-05-02 17:28:08,756 - INFO - [Upload_5180_1] [_send_single_file_task] - [5180fc79-af33-404e-aff6-1581159fa596] T> Sending 'download_page.zip' (4401b) to -1002614397019
+2025-05-02 17:28:08,756 - INFO - [Upload_5180_2] [_send_single_file_task] - [5180fc79-af33-404e-aff6-1581159fa596] T> Sending 'download_page.zip' (4401b) to -4641852757
+2025-05-02 17:28:08,756 - INFO - [Thread-20 (process_request_thread)] [process_upload_and_generate_updates] - [5180fc79-af33-404e-aff6-1581159fa596] Submitted 3 single-file tasks.
+2025-05-02 17:28:08,756 - INFO - [Upload_5180_1] [send_file_to_telegram] - [ChatID -1002614397019, File 'download_page.zip'] Attempting send.
+2025-05-02 17:28:08,756 - INFO - [Upload_5180_2] [send_file_to_telegram] - [ChatID -4641852757, File 'download_page.zip'] Attempting send.
+2025-05-02 17:28:08,756 - INFO - [Thread-20 (process_request_thread)] [process_upload_and_generate_updates] - [5180fc79-af33-404e-aff6-1581159fa596] Wait primary (-4603853425)...
+2025-05-02 17:28:09,756 - INFO - [Upload_5180_0] [send_file_to_telegram] - [ChatID -4603853425, File 'download_page.zip'] API success (Attempt 1).
+2025-05-02 17:28:09,756 - INFO - [Upload_5180_0] [_send_single_file_task] - [5180fc79-af33-404e-aff6-1581159fa596] T> Sent 'download_page.zip' to -4603853425. Success: True
+2025-05-02 17:28:09,757 - INFO - [Thread-20 (process_request_thread)] [process_upload_and_generate_updates] - [5180fc79-af33-404e-aff6-1581159fa596] Primary done. OK:True
+2025-05-02 17:28:09,757 - INFO - [Thread-20 (process_request_thread)] [process_upload_and_generate_updates] - [5180fc79-af33-404e-aff6-1581159fa596] Wait backups...
+2025-05-02 17:28:09,768 - INFO - [Upload_5180_1] [send_file_to_telegram] - [ChatID -1002614397019, File 'download_page.zip'] API success (Attempt 1).
+2025-05-02 17:28:09,769 - INFO - [Upload_5180_1] [_send_single_file_task] - [5180fc79-af33-404e-aff6-1581159fa596] T> Sent 'download_page.zip' to -1002614397019. Success: True
+2025-05-02 17:28:09,798 - INFO - [Upload_5180_2] [send_file_to_telegram] - [ChatID -4641852757, File 'download_page.zip'] API success (Attempt 1).
+2025-05-02 17:28:09,799 - INFO - [Upload_5180_2] [_send_single_file_task] - [5180fc79-af33-404e-aff6-1581159fa596] T> Sent 'download_page.zip' to -4641852757. Success: True
+2025-05-02 17:28:09,800 - INFO - [Thread-20 (process_request_thread)] [process_upload_and_generate_updates] - [5180fc79-af33-404e-aff6-1581159fa596] Single sends done in 1.04s.
+2025-05-02 17:28:09,801 - INFO - [Thread-20 (process_request_thread)] [process_upload_and_generate_updates] - [5180fc79-af33-404e-aff6-1581159fa596] Success: 3/3
+2025-05-02 17:28:09,802 - INFO - [Thread-20 (process_request_thread)] [process_upload_and_generate_updates] - [5180fc79-af33-404e-aff6-1581159fa596] Attempting to save metadata to DB...
+2025-05-02 17:28:09,804 - INFO - [Thread-20 (process_request_thread)] [get_metadata_collection] - Accessed collection: user_files
+2025-05-02 17:28:09,830 - INFO - [Thread-20 (process_request_thread)] [save_file_metadata] - Successfully inserted metadata for access_id: ae1e8aa8c9
+2025-05-02 17:28:09,831 - INFO - [Thread-20 (process_request_thread)] [process_upload_and_generate_updates] - [5180fc79-af33-404e-aff6-1581159fa596] Metadata successfully saved to DB. Msg: Metadata inserted (ID: 6814b3511969d4a304aec64f).
+2025-05-02 17:28:09,832 - INFO - [Thread-20 (process_request_thread)] [process_upload_and_generate_updates] - [5180fc79-af33-404e-aff6-1581159fa596] Upload generator cleanup.
+2025-05-02 17:28:09,833 - INFO - [Thread-20 (process_request_thread)] [process_upload_and_generate_updates] - [5180fc79-af33-404e-aff6-1581159fa596] Upload executor shutdown.
+2025-05-02 17:28:09,835 - INFO - [Thread-20 (process_request_thread)] [_safe_remove_file] - [5180fc79-af33-404e-aff6-1581159fa596] Cleaned up original temp: uploads_temp\5180fc79-af33-404e-aff6-1581159fa596_download_page.html
+2025-05-02 17:28:09,839 - INFO - [Thread-20 (process_request_thread)] [process_upload_and_generate_updates] - [5180fc79-af33-404e-aff6-1581159fa596] Upload generator finished. Status: completed
+2025-05-02 17:28:21,810 - INFO - [Thread-21 (process_request_thread)] [list_user_files] - List files request for: 'us'
+2025-05-02 17:28:21,811 - INFO - [Thread-21 (process_request_thread)] [list_user_files] - Fetching files for user 'us' from DB...
+2025-05-02 17:28:21,830 - INFO - [Thread-21 (process_request_thread)] [find_metadata_by_username] - Found 0 metadata records for username: us
+2025-05-02 17:28:21,830 - INFO - [Thread-21 (process_request_thread)] [list_user_files] - Found 0 records for 'us'.
+2025-05-02 17:28:21,832 - INFO - [Thread-21 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 17:28:21] "GET /files/us HTTP/1.1" 200 -
+2025-05-02 17:28:22,697 - INFO - [Thread-22 (process_request_thread)] [list_user_files] - List files request for: 'us'
+2025-05-02 17:28:22,697 - INFO - [Thread-22 (process_request_thread)] [list_user_files] - Fetching files for user 'us' from DB...
+2025-05-02 17:28:22,716 - INFO - [Thread-22 (process_request_thread)] [find_metadata_by_username] - Found 0 metadata records for username: us
+2025-05-02 17:28:22,717 - INFO - [Thread-22 (process_request_thread)] [list_user_files] - Found 0 records for 'us'.
+2025-05-02 17:28:22,718 - INFO - [Thread-22 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 17:28:22] "GET /files/us HTTP/1.1" 200 -
+2025-05-02 17:29:37,414 - INFO - [Thread-23 (process_request_thread)] [show_register_page] - Serving registration page.
+2025-05-02 17:29:37,416 - INFO - [Thread-23 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 17:29:37] "GET /register HTTP/1.1" 200 -

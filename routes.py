@@ -71,6 +71,7 @@ def register_user():
         if not data:
             logging.warning("Registration failed: No JSON data received.")
             return make_response(jsonify({"error": "Invalid request format. Expected JSON."}), 400)
+        logging.info(f"Received JSON data: {json.dumps(data)}")
         
         # Get form data with validation
         firstName = data.get('firstName', '').strip()

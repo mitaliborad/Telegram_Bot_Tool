@@ -94,91 +94,100 @@
     <script>
         // register.html (Inside the <script> tag)
 
-const registerForm = document.getElementById('register-form');
-const signupButton = document.getElementById('signup-button');
-const messageArea = document.getElementById('message-area');
+        const registerForm = document.getElementById('register-form');
+        const signupButton = document.getElementById('signup-button');
+        const messageArea = document.getElementById('message-area');
 
-// Input fields
-const firstNameInput = document.getElementById('first-name');
-const lastNameInput = document.getElementById('last-name');
-const emailInput = document.getElementById('email');
-const passwordInput = document.getElementById('password');
-const repeatPasswordInput = document.getElementById('repeat-password');
-const agreeTermsCheckbox = document.getElementById('agree-terms');
-const understandPrivacyCheckbox = document.getElementById('understand-privacy');
+        // Input fields
+        const firstNameInput = document.getElementById('first-name');
+        const lastNameInput = document.getElementById('last-name');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const repeatPasswordInput = document.getElementById('repeat-password');
+        const agreeTermsCheckbox = document.getElementById('agree-terms');
+        const understandPrivacyCheckbox = document.getElementById('understand-privacy'); // Corrected ID reference if needed
 
-registerForm.addEventListener('submit', async (event) => {
-    event.preventDefault(); // Prevent default page reload on form submission
+        registerForm.addEventListener('submit', async (event) => {
+            event.preventDefault(); // Prevent default page reload
 
-    // Clear previous messages
-    messageArea.textContent = '';
-    messageArea.className = ''; // Reset message styling
+            messageArea.textContent = '';
+            messageArea.className = '';
 
-    // Disable button during submission
-    signupButton.disabled = true;
-    signupButton.textContent = 'Signing up...';
+            signupButton.disabled = true;
+            signupButton.textContent = 'Signing up...';
 
-    // --- Basic Client-Side Validation ---
-    if (!agreeTermsCheckbox.checked || !understandPrivacyCheckbox.checked) {
-        messageArea.textContent = 'Please agree to the terms and conditions.';
-        messageArea.className = 'error-message';
-        signupButton.disabled = false;
-        signupButton.textContent = 'Sign up';
-        return; // Stop submission
-    }
+            // --- Basic Client-Side Validation (keep as is) ---
+            if (!agreeTermsCheckbox.checked || !understandPrivacyCheckbox.checked) {
+                messageArea.textContent = 'Please agree to the terms and conditions.';
+                messageArea.className = 'error-message';
+                signupButton.disabled = false;
+                signupButton.textContent = 'Sign up';
+                return;
+            }
 
-    const password = passwordInput.value;
-    const repeatPassword = repeatPasswordInput.value;
+            const password = passwordInput.value;
+            const repeatPassword = repeatPasswordInput.value;
 
-    if (password !== repeatPassword) {
-        messageArea.textContent = 'Passwords do not match.';
-        messageArea.className = 'error-message';
-        signupButton.disabled = false;
-        signupButton.textContent = 'Sign up';
-        return; // Stop submission
-    }
+            if (password !== repeatPassword) {
+                messageArea.textContent = 'Passwords do not match.';
+                messageArea.className = 'error-message';
+                signupButton.disabled = false;
+                signupButton.textContent = 'Sign up';
+                return;
+            }
 
-    // --- Prepare Data for Backend ---
-    // FormData automatically collects data from form fields with 'name' attributes
-    const formData = new FormData(registerForm);
+            // --- Prepare Data for Backend AS JSON ---
+            // Create a plain JavaScript object with the data
+            const dataToSend = {
+                firstName: firstNameInput.value,
+                lastName: lastNameInput.value,
+                email: emailInput.value,
+                password: password, // Use the variable already defined
+                confirmPassword: repeatPassword, // Use the variable already defined
+                // Ensure these keys match what the backend expects in data.get(...)
+                agreeTerms: agreeTermsCheckbox.checked,
+                understandPrivacy: understandPrivacyCheckbox.checked
+            };
 
-    // --- Send Data to Backend API ---
-    try {
-        // IMPORTANT: Replace with your actual Flask backend URL if different
-        const apiUrl = 'http://localhost:5000/register';
+            // Convert the object to a JSON string
+            const jsonData = JSON.stringify(dataToSend);
 
-        const response = await fetch(apiUrl, {
-    method: 'POST',
-    body: formData,
-    headers: {
-        'Accept': 'application/json' // Ensure server knows we want JSON response
-    }
-});
+            // --- Send Data to Backend API ---
+            try {
+                const apiUrl = 'http://localhost:5000/register';
 
-        const result = await response.json(); // Expect JSON response from Flask
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    // *** Set the Content-Type header to application/json ***
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json' // Keep this, good practice
+                    },
+                    // *** Send the JSON string as the body ***
+                    body: jsonData
+                });
 
-        if (response.ok) { // Check if status code is 2xx (e.g., 201 Created)
-            messageArea.textContent = result.message || 'Registration successful!';
-            messageArea.className = 'success-message';
-            registerForm.reset(); // Clear the form on success
-            // Optionally redirect after a delay:
-            // setTimeout(() => { window.location.href = '/login'; }, 2000);
-        } else {
-            // Handle errors (e.g., 400, 409, 500)
-            messageArea.textContent = result.error || `Registration failed (Status: ${response.status})`;
-            messageArea.className = 'error-message';
-        }
+                const result = await response.json(); // Expect JSON response
 
-    } catch (error) {
-        console.error('Registration Fetch Error:', error);
-        messageArea.textContent = 'An error occurred. Check console or network connection.';
-        messageArea.className = 'error-message';
-    } finally {
-        // Re-enable button regardless of success or error
-        signupButton.disabled = false;
-        signupButton.textContent = 'Sign up';
-    }
-});
+                if (response.ok) {
+                    messageArea.textContent = result.message || 'Registration successful!';
+                    messageArea.className = 'success-message';
+                    registerForm.reset();
+                } else {
+                    // Backend error message (e.g., email exists, validation fails)
+                    messageArea.textContent = result.error || `Registration failed (Status: ${response.status})`;
+                    messageArea.className = 'error-message';
+                }
+
+            } catch (error) {
+                console.error('Registration Fetch Error:', error);
+                messageArea.textContent = 'An error occurred. Check console or network connection.';
+                messageArea.className = 'error-message';
+            } finally {
+                signupButton.disabled = false;
+                signupButton.textContent = 'Sign up';
+            }
+        });
     </script>
 </body>
 </html>

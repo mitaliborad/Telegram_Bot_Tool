@@ -148,10 +148,12 @@ registerForm.addEventListener('submit', async (event) => {
         const apiUrl = 'http://localhost:5000/register';
 
         const response = await fetch(apiUrl, {
-            method: 'POST',
-            body: formData // Send form data directly
-            // No 'Content-Type' header needed when sending FormData; browser sets it
-        });
+    method: 'POST',
+    body: formData,
+    headers: {
+        'Accept': 'application/json' // Ensure server knows we want JSON response
+    }
+});
 
         const result = await response.json(); // Expect JSON response from Flask
 

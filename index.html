@@ -246,11 +246,13 @@
 </head>
 <body>
     <h1>Telegram File Storage</h1>
+    <div style="text-align:right; margin-bottom:20px;">
+        <button onclick="window.location='/login'" style="background:#4CAF50;">Login</button>
+        <button onclick="window.location='/register'" style="background:#2196F3;">Sign Up</button>
+      </div>
 
     <div class="container">
         <h2>Upload File</h2>
-        <label for="username">Username:</label>
-        <input type="text" id="username" placeholder="Enter your username" required><br><br>
 
         <div id="drop-zone">
             <p>Drag & Drop file here or click to select</p>
@@ -358,7 +360,6 @@
         const fileInput = document.getElementById('file-input');
         const uploadButton = document.getElementById('upload-button');
         const uploadStatus = document.getElementById('upload-status'); // General status/error message area FOR UPLOAD
-        const usernameInput = document.getElementById('username');
         const listUsernameInput = document.getElementById('list-username');
         const listFilesButton = document.getElementById('list-files-button');
         const fileList = document.getElementById('file-list');
@@ -434,7 +435,7 @@
             console.log("Handling file selection:", file.name);
             fileToUpload = file;
             dropZone.querySelector('p').textContent = `Selected: ${file.name}`;
-            uploadButton.disabled = !usernameInput.value.trim(); // Enable only if username is also present
+            uploadButton.disabled = !fileToUpload; // Enable only if username is also present
             uploadStatus.textContent = '';
             progressDetailsDiv.style.display = 'none'; // Hide progress details
             uploadProgress.value = 0; // Reset progress bar
@@ -456,12 +457,6 @@
             }
         }
 
-        // --- Enable upload button only when both username and file are present ---
-         usernameInput.addEventListener('input', () => {
-            // Enable button only if a file is selected AND username is not empty
-            uploadButton.disabled = !(usernameInput.value.trim() && fileToUpload);
-         });
-
 
         // --- Upload Button Logic ---
         uploadButton.addEventListener('click', async () => {
@@ -470,7 +465,7 @@
                 uploadStatus.style.color = 'red';
                 return;
             }
-            const username = usernameInput.value.trim();
+            const username = "logged_in_user"; // Temporary fix until auth is ready
             if (!username) {
                 uploadStatus.textContent = 'Please enter a username.';
                 uploadStatus.style.color = 'red';
@@ -479,7 +474,6 @@
 
             // --- UI Update: Start Upload ---
             uploadButton.disabled = true;
-            usernameInput.disabled = true; // Disable username input during upload
             dropZone.style.pointerEvents = 'none'; // Prevent selecting new file
             dropZone.style.opacity = '0.7';
             uploadStatus.textContent = 'Initiating upload...';
@@ -521,8 +515,7 @@
                 uploadStatus.textContent = `Upload Error: ${error.message}`;
                 uploadStatus.style.color = 'red';
                 // --- UI Reset on Initiation Error ---
-                uploadButton.disabled = !(usernameInput.value.trim() && fileToUpload); // Re-enable based on state
-                usernameInput.disabled = false;
+                uploadButton.disabled = !fileToUpload; // Re-enable based on state
                 dropZone.style.pointerEvents = 'auto';
                 dropZone.style.opacity = '1';
                 progressDetailsDiv.style.display = 'none';
@@ -736,9 +729,7 @@
             }
             // Re-enable upload button, username, and drop zone
             // Only re-enable upload button if file and username are still valid
-            uploadButton.disabled = !(usernameInput.value.trim() && fileToUpload);
-            usernameInput.disabled = false;
-            dropZone.style.pointerEvents = 'auto';
+            uploadButton.disabled = !fileToUpload;  // Enable button only based on file selection            dropZone.style.pointerEvents = 'auto';
             dropZone.style.opacity = '1';
             // Disable pause button
             pauseResumeButton.disabled = true;
@@ -756,7 +747,7 @@
                       // fileInput.value = ''; // Keep file input state
 
                       // Disable button until new file selected or username changed
-                      uploadButton.disabled = !(usernameInput.value.trim() && fileToUpload);
+                      uploadButton.disabled = !fileToUpload;  // Enable button only based on file selection
                       // uploadStatus.textContent = ''; // Keep success message visible longer? Or clear? Let's clear after another delay or on new action.
 
                  }, 5000); // Hide progress after 5 seconds if successful

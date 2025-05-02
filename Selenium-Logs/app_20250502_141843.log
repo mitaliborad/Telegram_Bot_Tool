@@ -1,0 +1,1154 @@
+2025-05-02 14:18:43,421 - INFO - [MainThread] [<module>] - ============================================================
+2025-05-02 14:18:43,421 - INFO - [MainThread] [<module>] - Logging configured. Level: INFO. Log file: Selenium-Logs\app_20250502_141843.log
+2025-05-02 14:18:43,421 - INFO - [MainThread] [<module>] - Primary Chat ID: -4603853425
+2025-05-02 14:18:43,421 - INFO - [MainThread] [<module>] - All Target Chat IDs: ['-4603853425', '-1002614397019', '-4641852757']
+2025-05-02 14:18:43,421 - INFO - [MainThread] [<module>] - Chunk Size: 20.0 MB (20971520 bytes)
+2025-05-02 14:18:43,429 - INFO - [MainThread] [<module>] - API Timeouts (Connect/Read): 10s / 60s
+2025-05-02 14:18:43,429 - INFO - [MainThread] [<module>] - API Retries: 3 attempts, 2s delay
+2025-05-02 14:18:43,429 - INFO - [MainThread] [<module>] - Max Upload Workers: 5
+2025-05-02 14:18:43,429 - INFO - [MainThread] [<module>] - Max Download Workers: 12
+2025-05-02 14:18:43,429 - INFO - [MainThread] [<module>] - ============================================================
+2025-05-02 14:18:43,429 - INFO - [MainThread] [<module>] - Configuration loaded successfully.
+2025-05-02 14:18:43,429 - INFO - [MainThread] [<module>] - Custom Jinja filter 'format_bytes' registered.
+2025-05-02 14:18:43,429 - INFO - [MainThread] [<module>] - Flask-CORS initialized. Allowing origins: http://localhost:4200
+2025-05-02 14:18:43,429 - INFO - [MainThread] [<module>] - Flask application initialized.
+2025-05-02 14:18:43,433 - INFO - [MainThread] [<module>] - Global state variables initialized (upload_progress_data, download_prep_data).
+2025-05-02 14:18:43,435 - INFO - [MainThread] [<module>] - Custom Jinja filter 'format_bytes' registered.
+2025-05-02 14:18:43,436 - INFO - [MainThread] [<module>] - Flask-CORS initialized. Allowing origins: http://localhost:4200
+2025-05-02 14:18:43,436 - INFO - [MainThread] [<module>] - Flask application initialized.
+2025-05-02 14:18:43,436 - INFO - [MainThread] [<module>] - Global state variables initialized (upload_progress_data, download_prep_data).
+2025-05-02 14:18:43,605 - INFO - [MainThread] [<module>] - Database module initialized.
+2025-05-02 14:18:44,079 - INFO - [MainThread] [<module>] - Initialized requests.Session for Telegram API calls.
+2025-05-02 14:18:44,079 - INFO - [MainThread] [<module>] - Telegram API functions defined with Session and Retries.
+2025-05-02 14:18:44,084 - INFO - [MainThread] [<module>] - Flask routes defined using configurable workers and linter fixes.
+2025-05-02 14:18:44,087 - INFO - [MainThread] [<module>] - Starting Flask development server...
+2025-05-02 14:18:44,114 - WARNING - [MainThread] [_log] -  * Debugger is active!
+2025-05-02 14:18:44,119 - INFO - [MainThread] [_log] -  * Debugger PIN: 107-410-311
+2025-05-02 14:18:44,159 - INFO - [Thread-2 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:18:44] "GET /login HTTP/1.1" 200 -
+2025-05-02 14:19:40,683 - INFO - [Thread-3 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:19:40] "GET /login HTTP/1.1" 200 -
+2025-05-02 14:19:50,347 - INFO - [Thread-4 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:19:50] "[32mPOST /login HTTP/1.1[0m" 302 -
+2025-05-02 14:19:50,353 - INFO - [Thread-5 (process_request_thread)] [index] - Serving index page.
+2025-05-02 14:19:50,369 - INFO - [Thread-5 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:19:50] "GET / HTTP/1.1" 200 -
+2025-05-02 14:19:55,817 - INFO - [Thread-6 (process_request_thread)] [initiate_upload] - Request initiate upload.
+2025-05-02 14:19:55,819 - INFO - [Thread-6 (process_request_thread)] [initiate_upload] - [6f8644f4-a912-4ed2-b9c7-8ab779e9151c] Temp storage: uploads_temp\6f8644f4-a912-4ed2-b9c7-8ab779e9151c_gitattributes (4)
+2025-05-02 14:19:55,819 - INFO - [Thread-6 (process_request_thread)] [initiate_upload] - [6f8644f4-a912-4ed2-b9c7-8ab779e9151c] Temp saved: 'gitattributes (4)'.
+2025-05-02 14:19:55,819 - INFO - [Thread-6 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:19:55] "POST /initiate-upload HTTP/1.1" 200 -
+2025-05-02 14:19:55,832 - INFO - [Thread-7 (process_request_thread)] [stream_progress] - SSE connect request for upload_id: 6f8644f4-a912-4ed2-b9c7-8ab779e9151c
+2025-05-02 14:19:55,833 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [6f8644f4-a912-4ed2-b9c7-8ab779e9151c] Starting processing generator...
+2025-05-02 14:19:55,833 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [6f8644f4-a912-4ed2-b9c7-8ab779e9151c] Processing: User='admin', File='gitattributes (4)'
+2025-05-02 14:19:55,833 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [6f8644f4-a912-4ed2-b9c7-8ab779e9151c] Initialized Upload Executor (max=5)
+2025-05-02 14:19:55,833 - INFO - [Thread-7 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:19:55] "GET /stream-progress/6f8644f4-a912-4ed2-b9c7-8ab779e9151c HTTP/1.1" 200 -
+2025-05-02 14:19:55,833 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [6f8644f4-a912-4ed2-b9c7-8ab779e9151c] Access ID: 4e5e9706e5
+2025-05-02 14:19:55,833 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [6f8644f4-a912-4ed2-b9c7-8ab779e9151c] Single file workflow.
+2025-05-02 14:19:55,833 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [6f8644f4-a912-4ed2-b9c7-8ab779e9151c] Compressed size: 194
+2025-05-02 14:19:55,839 - INFO - [Upload_6f86_0] [_send_single_file_task] - [6f8644f4-a912-4ed2-b9c7-8ab779e9151c] T> Sending 'gitattributes (4).zip' (194b) to -4603853425
+2025-05-02 14:19:55,840 - INFO - [Upload_6f86_0] [send_file_to_telegram] - [ChatID -4603853425, File 'gitattributes (4).zip'] Attempting send.
+2025-05-02 14:19:55,840 - INFO - [Upload_6f86_1] [_send_single_file_task] - [6f8644f4-a912-4ed2-b9c7-8ab779e9151c] T> Sending 'gitattributes (4).zip' (194b) to -1002614397019
+2025-05-02 14:19:55,841 - INFO - [Upload_6f86_2] [_send_single_file_task] - [6f8644f4-a912-4ed2-b9c7-8ab779e9151c] T> Sending 'gitattributes (4).zip' (194b) to -4641852757
+2025-05-02 14:19:55,842 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [6f8644f4-a912-4ed2-b9c7-8ab779e9151c] Submitted 3 single-file tasks.
+2025-05-02 14:19:55,846 - INFO - [Upload_6f86_1] [send_file_to_telegram] - [ChatID -1002614397019, File 'gitattributes (4).zip'] Attempting send.
+2025-05-02 14:19:55,847 - INFO - [Upload_6f86_2] [send_file_to_telegram] - [ChatID -4641852757, File 'gitattributes (4).zip'] Attempting send.
+2025-05-02 14:19:55,851 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [6f8644f4-a912-4ed2-b9c7-8ab779e9151c] Wait primary (-4603853425)...
+2025-05-02 14:19:56,913 - INFO - [Upload_6f86_2] [send_file_to_telegram] - [ChatID -4641852757, File 'gitattributes (4).zip'] API success (Attempt 1).
+2025-05-02 14:19:56,914 - INFO - [Upload_6f86_2] [_send_single_file_task] - [6f8644f4-a912-4ed2-b9c7-8ab779e9151c] T> Sent 'gitattributes (4).zip' to -4641852757. Success: True
+2025-05-02 14:19:56,918 - INFO - [Upload_6f86_1] [send_file_to_telegram] - [ChatID -1002614397019, File 'gitattributes (4).zip'] API success (Attempt 1).
+2025-05-02 14:19:56,918 - INFO - [Upload_6f86_1] [_send_single_file_task] - [6f8644f4-a912-4ed2-b9c7-8ab779e9151c] T> Sent 'gitattributes (4).zip' to -1002614397019. Success: True
+2025-05-02 14:19:56,935 - INFO - [Upload_6f86_0] [send_file_to_telegram] - [ChatID -4603853425, File 'gitattributes (4).zip'] API success (Attempt 1).
+2025-05-02 14:19:56,936 - INFO - [Upload_6f86_0] [_send_single_file_task] - [6f8644f4-a912-4ed2-b9c7-8ab779e9151c] T> Sent 'gitattributes (4).zip' to -4603853425. Success: True
+2025-05-02 14:19:56,937 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [6f8644f4-a912-4ed2-b9c7-8ab779e9151c] Primary done. OK:True
+2025-05-02 14:19:56,938 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [6f8644f4-a912-4ed2-b9c7-8ab779e9151c] Wait backups...
+2025-05-02 14:19:56,939 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [6f8644f4-a912-4ed2-b9c7-8ab779e9151c] Single sends done in 1.11s.
+2025-05-02 14:19:56,941 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [6f8644f4-a912-4ed2-b9c7-8ab779e9151c] Success: 3/3
+2025-05-02 14:19:56,941 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [6f8644f4-a912-4ed2-b9c7-8ab779e9151c] Attempting to save metadata to DB...
+2025-05-02 14:19:56,943 - INFO - [Thread-7 (process_request_thread)] [_connect_to_db] - Attempting to connect to MongoDB Atlas host: telegrambot.6armfs2.mongodb.net...
+2025-05-02 14:19:57,907 - INFO - [Thread-7 (process_request_thread)] [_connect_to_db] - ✅ Successfully connected and pinged MongoDB Atlas!
+2025-05-02 14:19:57,907 - INFO - [Thread-7 (process_request_thread)] [get_db] - Accessed database: Telegrambot
+2025-05-02 14:19:57,907 - INFO - [Thread-7 (process_request_thread)] [get_metadata_collection] - Accessed collection: user_files
+2025-05-02 14:19:57,945 - INFO - [Thread-7 (process_request_thread)] [save_file_metadata] - Successfully inserted metadata for access_id: 4e5e9706e5
+2025-05-02 14:19:57,945 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [6f8644f4-a912-4ed2-b9c7-8ab779e9151c] Metadata successfully saved to DB. Msg: Metadata inserted (ID: 681487351969d4a304aec30e).
+2025-05-02 14:19:57,946 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [6f8644f4-a912-4ed2-b9c7-8ab779e9151c] Upload generator cleanup.
+2025-05-02 14:19:57,946 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [6f8644f4-a912-4ed2-b9c7-8ab779e9151c] Upload executor shutdown.
+2025-05-02 14:19:57,948 - INFO - [Thread-7 (process_request_thread)] [_safe_remove_file] - [6f8644f4-a912-4ed2-b9c7-8ab779e9151c] Cleaned up original temp: uploads_temp\6f8644f4-a912-4ed2-b9c7-8ab779e9151c_gitattributes (4)
+2025-05-02 14:19:57,953 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [6f8644f4-a912-4ed2-b9c7-8ab779e9151c] Upload generator finished. Status: completed
+2025-05-02 14:20:13,539 - INFO - [Thread-8 (process_request_thread)] [show_register_page] - Serving registration page.
+2025-05-02 14:20:13,543 - INFO - [Thread-8 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:20:13] "GET /register HTTP/1.1" 200 -
+2025-05-02 14:20:59,400 - INFO - [Thread-10 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:20:59,403 - ERROR - [Thread-10 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:20:59,408 - INFO - [Thread-10 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:20:59] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:00,639 - INFO - [Thread-11 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:00,641 - ERROR - [Thread-11 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:00,641 - INFO - [Thread-11 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:00] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:01,489 - INFO - [Thread-12 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:01,489 - ERROR - [Thread-12 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:01,489 - INFO - [Thread-12 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:01] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:01,749 - INFO - [Thread-13 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:01,749 - ERROR - [Thread-13 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:01,760 - INFO - [Thread-13 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:01] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:02,063 - INFO - [Thread-14 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:02,065 - ERROR - [Thread-14 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:02,065 - INFO - [Thread-14 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:02] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:02,564 - INFO - [Thread-15 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:02,569 - ERROR - [Thread-15 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:02,576 - INFO - [Thread-15 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:02] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:04,253 - INFO - [Thread-16 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:04,253 - ERROR - [Thread-16 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:04,253 - INFO - [Thread-16 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:04] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:04,868 - INFO - [Thread-17 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:04,870 - ERROR - [Thread-17 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:04,875 - INFO - [Thread-17 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:04] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:05,118 - INFO - [Thread-18 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:05,118 - ERROR - [Thread-18 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:05,118 - INFO - [Thread-18 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:05] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:05,303 - INFO - [Thread-19 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:05,303 - ERROR - [Thread-19 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:05,303 - INFO - [Thread-19 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:05] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:05,503 - INFO - [Thread-20 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:05,503 - ERROR - [Thread-20 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:05,503 - INFO - [Thread-20 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:05] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:05,740 - INFO - [Thread-21 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:05,740 - ERROR - [Thread-21 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:05,750 - INFO - [Thread-21 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:05] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:05,959 - INFO - [Thread-22 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:05,960 - ERROR - [Thread-22 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:05,983 - INFO - [Thread-22 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:05] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:06,189 - INFO - [Thread-23 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:06,199 - ERROR - [Thread-23 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:06,214 - INFO - [Thread-23 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:06] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:06,423 - INFO - [Thread-24 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:06,429 - ERROR - [Thread-24 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:06,436 - INFO - [Thread-24 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:06] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:06,642 - INFO - [Thread-25 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:06,642 - ERROR - [Thread-25 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:06,654 - INFO - [Thread-25 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:06] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:06,858 - INFO - [Thread-26 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:06,858 - ERROR - [Thread-26 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:06,881 - INFO - [Thread-26 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:06] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:07,059 - INFO - [Thread-27 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:07,064 - ERROR - [Thread-27 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:07,083 - INFO - [Thread-27 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:07] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:07,264 - INFO - [Thread-28 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:07,269 - ERROR - [Thread-28 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:07,285 - INFO - [Thread-28 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:07] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:07,465 - INFO - [Thread-29 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:07,468 - ERROR - [Thread-29 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:07,482 - INFO - [Thread-29 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:07] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:07,645 - INFO - [Thread-30 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:07,649 - ERROR - [Thread-30 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:07,658 - INFO - [Thread-30 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:07] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:07,861 - INFO - [Thread-31 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:07,861 - ERROR - [Thread-31 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:07,861 - INFO - [Thread-31 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:07] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:08,080 - INFO - [Thread-32 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:08,080 - ERROR - [Thread-32 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:08,080 - INFO - [Thread-32 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:08] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:08,282 - INFO - [Thread-33 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:08,285 - ERROR - [Thread-33 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:08,290 - INFO - [Thread-33 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:08] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:08,464 - INFO - [Thread-34 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:08,467 - ERROR - [Thread-34 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:08,469 - INFO - [Thread-34 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:08] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:08,683 - INFO - [Thread-35 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:08,683 - ERROR - [Thread-35 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:08,707 - INFO - [Thread-35 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:08] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:08,883 - INFO - [Thread-36 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:08,883 - ERROR - [Thread-36 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:08,897 - INFO - [Thread-36 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:08] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:09,101 - INFO - [Thread-37 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:09,104 - ERROR - [Thread-37 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:09,110 - INFO - [Thread-37 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:09] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:09,284 - INFO - [Thread-38 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:09,286 - ERROR - [Thread-38 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:09,287 - INFO - [Thread-38 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:09] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:09,485 - INFO - [Thread-39 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:09,485 - ERROR - [Thread-39 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:09,489 - INFO - [Thread-39 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:09] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:09,704 - INFO - [Thread-40 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:09,707 - ERROR - [Thread-40 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:09,727 - INFO - [Thread-40 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:09] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:09,870 - INFO - [Thread-41 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:09,874 - ERROR - [Thread-41 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:09,886 - INFO - [Thread-41 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:09] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:10,073 - INFO - [Thread-42 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:10,077 - ERROR - [Thread-42 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:10,088 - INFO - [Thread-42 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:10] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:10,269 - INFO - [Thread-43 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:10,269 - ERROR - [Thread-43 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:10,283 - INFO - [Thread-43 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:10] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:10,455 - INFO - [Thread-44 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:10,455 - ERROR - [Thread-44 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:10,459 - INFO - [Thread-44 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:10] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:10,673 - INFO - [Thread-45 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:10,673 - ERROR - [Thread-45 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:10,679 - INFO - [Thread-45 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:10] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:10,859 - INFO - [Thread-46 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:10,859 - ERROR - [Thread-46 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:10,859 - INFO - [Thread-46 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:10] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:11,048 - INFO - [Thread-47 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:11,051 - ERROR - [Thread-47 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:11,058 - INFO - [Thread-47 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:11] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:11,242 - INFO - [Thread-48 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:11,249 - ERROR - [Thread-48 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:11,264 - INFO - [Thread-48 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:11] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:11,459 - INFO - [Thread-49 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:11,462 - ERROR - [Thread-49 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:11,470 - INFO - [Thread-49 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:11] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:11,644 - INFO - [Thread-50 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:11,648 - ERROR - [Thread-50 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:11,663 - INFO - [Thread-50 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:11] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:11,839 - INFO - [Thread-51 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:11,844 - ERROR - [Thread-51 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:11,854 - INFO - [Thread-51 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:11] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:12,029 - INFO - [Thread-52 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:12,029 - ERROR - [Thread-52 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:12,049 - INFO - [Thread-52 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:12] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:12,213 - INFO - [Thread-53 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:12,216 - ERROR - [Thread-53 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:12,225 - INFO - [Thread-53 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:12] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:12,409 - INFO - [Thread-54 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:12,409 - ERROR - [Thread-54 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:12,409 - INFO - [Thread-54 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:12] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:12,611 - INFO - [Thread-55 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:12,611 - ERROR - [Thread-55 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:12,615 - INFO - [Thread-55 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:12] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:12,779 - INFO - [Thread-56 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:12,784 - ERROR - [Thread-56 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:12,792 - INFO - [Thread-56 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:12] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:12,982 - INFO - [Thread-57 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:12,989 - ERROR - [Thread-57 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:13,002 - INFO - [Thread-57 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:13] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:13,183 - INFO - [Thread-58 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:13,186 - ERROR - [Thread-58 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:13,190 - INFO - [Thread-58 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:13] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:13,384 - INFO - [Thread-59 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:13,384 - ERROR - [Thread-59 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:13,401 - INFO - [Thread-59 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:13] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:13,564 - INFO - [Thread-60 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:13,569 - ERROR - [Thread-60 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:13,579 - INFO - [Thread-60 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:13] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:13,767 - INFO - [Thread-61 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:13,768 - ERROR - [Thread-61 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:13,771 - INFO - [Thread-61 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:13] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:13,952 - INFO - [Thread-62 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:13,952 - ERROR - [Thread-62 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:13,970 - INFO - [Thread-62 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:13] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:14,149 - INFO - [Thread-63 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:14,149 - ERROR - [Thread-63 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:14,171 - INFO - [Thread-63 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:14] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:14,337 - INFO - [Thread-64 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:14,340 - ERROR - [Thread-64 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:14,346 - INFO - [Thread-64 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:14] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:14,539 - INFO - [Thread-65 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:14,539 - ERROR - [Thread-65 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:14,544 - INFO - [Thread-65 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:14] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:14,703 - INFO - [Thread-66 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:14,703 - ERROR - [Thread-66 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:14,709 - INFO - [Thread-66 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:14] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:14,921 - INFO - [Thread-67 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:14,921 - ERROR - [Thread-67 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:14,921 - INFO - [Thread-67 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:14] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:15,139 - INFO - [Thread-68 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:15,139 - ERROR - [Thread-68 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:15,139 - INFO - [Thread-68 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:15] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 14:21:15,323 - INFO - [Thread-69 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 14:21:15,325 - ERROR - [Thread-69 (process_request_thread)] [register_user] - Registration error: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+Traceback (most recent call last):
+  File "E:\Telegram_tool\Telegram_Bot_Tool\routes.py", line 93, in register_user
+    existing_user, error = find_user_by_email(email)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 330, in find_user_by_email
+    collection, error = get_userinfo_collection()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 306, in get_userinfo_collection
+    db_instance, error = get_db() # Reuse existing DB connection function
+                         ^^^^^^^^
+  File "E:\Telegram_tool\Telegram_Bot_Tool\database.py", line 91, in get_db
+    if _db:
+  File "E:\Telegram_tool\Telegram_Bot_Tool\.venv\Lib\site-packages\pymongo\synchronous\database.py", line 342, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None
+2025-05-02 14:21:15,327 - INFO - [Thread-69 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 14:21:15] "[35m[1mPOST /register HTTP/1.1[0m" 500 -

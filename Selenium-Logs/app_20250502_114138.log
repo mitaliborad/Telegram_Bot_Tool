@@ -1,0 +1,42 @@
+2025-05-02 11:41:38,808 - INFO - [MainThread] [<module>] - ============================================================
+2025-05-02 11:41:38,808 - INFO - [MainThread] [<module>] - Logging configured. Level: INFO. Log file: Selenium-Logs\app_20250502_114138.log
+2025-05-02 11:41:38,808 - INFO - [MainThread] [<module>] - Primary Chat ID: -4603853425
+2025-05-02 11:41:38,808 - INFO - [MainThread] [<module>] - All Target Chat IDs: ['-4603853425', '-1002614397019', '-4641852757']
+2025-05-02 11:41:38,808 - INFO - [MainThread] [<module>] - Chunk Size: 20.0 MB (20971520 bytes)
+2025-05-02 11:41:38,808 - INFO - [MainThread] [<module>] - API Timeouts (Connect/Read): 10s / 60s
+2025-05-02 11:41:38,808 - INFO - [MainThread] [<module>] - API Retries: 3 attempts, 2s delay
+2025-05-02 11:41:38,808 - INFO - [MainThread] [<module>] - Max Upload Workers: 5
+2025-05-02 11:41:38,808 - INFO - [MainThread] [<module>] - Max Download Workers: 12
+2025-05-02 11:41:38,808 - INFO - [MainThread] [<module>] - ============================================================
+2025-05-02 11:41:38,808 - INFO - [MainThread] [<module>] - Configuration loaded successfully.
+2025-05-02 11:41:38,808 - INFO - [MainThread] [<module>] - Custom Jinja filter 'format_bytes' registered.
+2025-05-02 11:41:38,818 - INFO - [MainThread] [<module>] - Flask-CORS initialized. Allowing origins: http://localhost:4200
+2025-05-02 11:41:38,818 - INFO - [MainThread] [<module>] - Flask application initialized.
+2025-05-02 11:41:38,818 - INFO - [MainThread] [<module>] - Global state variables initialized (upload_progress_data, download_prep_data).
+2025-05-02 11:41:38,821 - INFO - [MainThread] [<module>] - Custom Jinja filter 'format_bytes' registered.
+2025-05-02 11:41:38,822 - INFO - [MainThread] [<module>] - Flask-CORS initialized. Allowing origins: http://localhost:4200
+2025-05-02 11:41:38,823 - INFO - [MainThread] [<module>] - Flask application initialized.
+2025-05-02 11:41:38,823 - INFO - [MainThread] [<module>] - Global state variables initialized (upload_progress_data, download_prep_data).
+2025-05-02 11:41:39,019 - INFO - [MainThread] [<module>] - Database module initialized.
+2025-05-02 11:41:39,490 - INFO - [MainThread] [<module>] - Initialized requests.Session for Telegram API calls.
+2025-05-02 11:41:39,490 - INFO - [MainThread] [<module>] - Telegram API functions defined with Session and Retries.
+2025-05-02 11:41:39,498 - INFO - [MainThread] [<module>] - Flask routes defined using configurable workers and linter fixes.
+2025-05-02 11:41:39,498 - INFO - [MainThread] [<module>] - Starting Flask development server...
+2025-05-02 11:41:39,526 - WARNING - [MainThread] [_log] -  * Debugger is active!
+2025-05-02 11:41:39,531 - INFO - [MainThread] [_log] -  * Debugger PIN: 107-410-311
+2025-05-02 11:41:48,956 - INFO - [Thread-3 (process_request_thread)] [index] - Serving index page.
+2025-05-02 11:41:48,970 - INFO - [Thread-3 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 11:41:48] "GET / HTTP/1.1" 200 -
+2025-05-02 11:41:50,024 - INFO - [Thread-2 (process_request_thread)] [index] - Serving index page.
+2025-05-02 11:41:50,025 - INFO - [Thread-2 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 11:41:50] "GET / HTTP/1.1" 200 -
+2025-05-02 11:41:51,470 - INFO - [Thread-4 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 11:41:51] "GET /login HTTP/1.1" 200 -
+2025-05-02 11:42:21,263 - INFO - [Thread-5 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 11:42:21] "[32mPOST /login HTTP/1.1[0m" 302 -
+2025-05-02 11:42:21,267 - INFO - [Thread-6 (process_request_thread)] [index] - Serving index page.
+2025-05-02 11:42:21,270 - INFO - [Thread-6 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 11:42:21] "GET / HTTP/1.1" 200 -
+2025-05-02 11:44:59,872 - INFO - [Thread-7 (process_request_thread)] [index] - Serving index page.
+2025-05-02 11:44:59,936 - INFO - [Thread-7 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 11:44:59] "GET / HTTP/1.1" 200 -
+2025-05-02 11:45:01,449 - INFO - [Thread-8 (process_request_thread)] [index] - Serving index page.
+2025-05-02 11:45:01,449 - INFO - [Thread-8 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 11:45:01] "GET / HTTP/1.1" 200 -
+2025-05-02 11:45:03,020 - INFO - [Thread-9 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 11:45:03] "GET /login HTTP/1.1" 200 -
+2025-05-02 11:45:24,100 - INFO - [Thread-11 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 11:45:24] "[32mPOST /login HTTP/1.1[0m" 302 -
+2025-05-02 11:45:24,107 - INFO - [Thread-10 (process_request_thread)] [index] - Serving index page.
+2025-05-02 11:45:24,109 - INFO - [Thread-10 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 11:45:24] "GET / HTTP/1.1" 200 -

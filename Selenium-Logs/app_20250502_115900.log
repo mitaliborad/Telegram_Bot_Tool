@@ -1,0 +1,93 @@
+2025-05-02 11:59:00,631 - INFO - [MainThread] [<module>] - ============================================================
+2025-05-02 11:59:00,631 - INFO - [MainThread] [<module>] - Logging configured. Level: INFO. Log file: Selenium-Logs\app_20250502_115900.log
+2025-05-02 11:59:00,631 - INFO - [MainThread] [<module>] - Primary Chat ID: -4603853425
+2025-05-02 11:59:00,631 - INFO - [MainThread] [<module>] - All Target Chat IDs: ['-4603853425', '-1002614397019', '-4641852757']
+2025-05-02 11:59:00,631 - INFO - [MainThread] [<module>] - Chunk Size: 20.0 MB (20971520 bytes)
+2025-05-02 11:59:00,631 - INFO - [MainThread] [<module>] - API Timeouts (Connect/Read): 10s / 60s
+2025-05-02 11:59:00,631 - INFO - [MainThread] [<module>] - API Retries: 3 attempts, 2s delay
+2025-05-02 11:59:00,631 - INFO - [MainThread] [<module>] - Max Upload Workers: 5
+2025-05-02 11:59:00,631 - INFO - [MainThread] [<module>] - Max Download Workers: 12
+2025-05-02 11:59:00,631 - INFO - [MainThread] [<module>] - ============================================================
+2025-05-02 11:59:00,631 - INFO - [MainThread] [<module>] - Configuration loaded successfully.
+2025-05-02 11:59:00,631 - INFO - [MainThread] [<module>] - Custom Jinja filter 'format_bytes' registered.
+2025-05-02 11:59:00,631 - INFO - [MainThread] [<module>] - Flask-CORS initialized. Allowing origins: http://localhost:4200
+2025-05-02 11:59:00,631 - INFO - [MainThread] [<module>] - Flask application initialized.
+2025-05-02 11:59:00,631 - INFO - [MainThread] [<module>] - Global state variables initialized (upload_progress_data, download_prep_data).
+2025-05-02 11:59:00,642 - INFO - [MainThread] [<module>] - Custom Jinja filter 'format_bytes' registered.
+2025-05-02 11:59:00,642 - INFO - [MainThread] [<module>] - Flask-CORS initialized. Allowing origins: http://localhost:4200
+2025-05-02 11:59:00,643 - INFO - [MainThread] [<module>] - Flask application initialized.
+2025-05-02 11:59:00,643 - INFO - [MainThread] [<module>] - Global state variables initialized (upload_progress_data, download_prep_data).
+2025-05-02 11:59:00,822 - INFO - [MainThread] [<module>] - Database module initialized.
+2025-05-02 11:59:01,287 - INFO - [MainThread] [<module>] - Initialized requests.Session for Telegram API calls.
+2025-05-02 11:59:01,288 - INFO - [MainThread] [<module>] - Telegram API functions defined with Session and Retries.
+2025-05-02 11:59:01,293 - INFO - [MainThread] [<module>] - Flask routes defined using configurable workers and linter fixes.
+2025-05-02 11:59:01,294 - INFO - [MainThread] [<module>] - Starting Flask development server...
+2025-05-02 11:59:01,321 - WARNING - [MainThread] [_log] -  * Debugger is active!
+2025-05-02 11:59:01,326 - INFO - [MainThread] [_log] -  * Debugger PIN: 107-410-311
+2025-05-02 11:59:04,242 - INFO - [Thread-2 (process_request_thread)] [index] - Serving index page.
+2025-05-02 11:59:04,303 - INFO - [Thread-2 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 11:59:04] "GET / HTTP/1.1" 200 -
+2025-05-02 11:59:06,135 - INFO - [Thread-3 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 11:59:06] "GET /login HTTP/1.1" 200 -
+2025-05-02 11:59:17,939 - INFO - [Thread-5 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 11:59:17] "[32mPOST /login HTTP/1.1[0m" 302 -
+2025-05-02 11:59:17,945 - INFO - [Thread-4 (process_request_thread)] [index] - Serving index page.
+2025-05-02 11:59:17,946 - INFO - [Thread-4 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 11:59:17] "GET / HTTP/1.1" 200 -
+2025-05-02 11:59:24,704 - INFO - [Thread-6 (process_request_thread)] [initiate_upload] - Request initiate upload.
+2025-05-02 11:59:24,707 - INFO - [Thread-6 (process_request_thread)] [initiate_upload] - [e2716772-b790-40f9-9995-bd8b7be3d7ba] Temp storage: uploads_temp\e2716772-b790-40f9-9995-bd8b7be3d7ba_telegram_api.py
+2025-05-02 11:59:24,709 - INFO - [Thread-6 (process_request_thread)] [initiate_upload] - [e2716772-b790-40f9-9995-bd8b7be3d7ba] Temp saved: 'telegram_api.py'.
+2025-05-02 11:59:24,711 - INFO - [Thread-6 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 11:59:24] "POST /initiate-upload HTTP/1.1" 200 -
+2025-05-02 11:59:24,733 - INFO - [Thread-7 (process_request_thread)] [stream_progress] - SSE connect request for upload_id: e2716772-b790-40f9-9995-bd8b7be3d7ba
+2025-05-02 11:59:24,735 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [e2716772-b790-40f9-9995-bd8b7be3d7ba] Starting processing generator...
+2025-05-02 11:59:24,736 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [e2716772-b790-40f9-9995-bd8b7be3d7ba] Processing: User='admin', File='telegram_api.py'
+2025-05-02 11:59:24,737 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [e2716772-b790-40f9-9995-bd8b7be3d7ba] Initialized Upload Executor (max=5)
+2025-05-02 11:59:24,737 - INFO - [Thread-7 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 11:59:24] "GET /stream-progress/e2716772-b790-40f9-9995-bd8b7be3d7ba HTTP/1.1" 200 -
+2025-05-02 11:59:24,751 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [e2716772-b790-40f9-9995-bd8b7be3d7ba] Access ID: 6876b4254a
+2025-05-02 11:59:24,771 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [e2716772-b790-40f9-9995-bd8b7be3d7ba] Single file workflow.
+2025-05-02 11:59:24,798 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [e2716772-b790-40f9-9995-bd8b7be3d7ba] Compressed size: 2934
+2025-05-02 11:59:24,799 - INFO - [Upload_e271_0] [_send_single_file_task] - [e2716772-b790-40f9-9995-bd8b7be3d7ba] T> Sending 'telegram_api.zip' (2934b) to -4603853425
+2025-05-02 11:59:24,799 - INFO - [Upload_e271_0] [send_file_to_telegram] - [ChatID -4603853425, File 'telegram_api.zip'] Attempting send.
+2025-05-02 11:59:24,799 - INFO - [Upload_e271_1] [_send_single_file_task] - [e2716772-b790-40f9-9995-bd8b7be3d7ba] T> Sending 'telegram_api.zip' (2934b) to -1002614397019
+2025-05-02 11:59:24,800 - INFO - [Upload_e271_2] [_send_single_file_task] - [e2716772-b790-40f9-9995-bd8b7be3d7ba] T> Sending 'telegram_api.zip' (2934b) to -4641852757
+2025-05-02 11:59:24,800 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [e2716772-b790-40f9-9995-bd8b7be3d7ba] Submitted 3 single-file tasks.
+2025-05-02 11:59:24,800 - INFO - [Upload_e271_1] [send_file_to_telegram] - [ChatID -1002614397019, File 'telegram_api.zip'] Attempting send.
+2025-05-02 11:59:24,801 - INFO - [Upload_e271_2] [send_file_to_telegram] - [ChatID -4641852757, File 'telegram_api.zip'] Attempting send.
+2025-05-02 11:59:24,801 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [e2716772-b790-40f9-9995-bd8b7be3d7ba] Wait primary (-4603853425)...
+2025-05-02 11:59:25,720 - INFO - [Upload_e271_1] [send_file_to_telegram] - [ChatID -1002614397019, File 'telegram_api.zip'] API success (Attempt 1).
+2025-05-02 11:59:25,720 - INFO - [Upload_e271_1] [_send_single_file_task] - [e2716772-b790-40f9-9995-bd8b7be3d7ba] T> Sent 'telegram_api.zip' to -1002614397019. Success: True
+2025-05-02 11:59:25,825 - INFO - [Upload_e271_0] [send_file_to_telegram] - [ChatID -4603853425, File 'telegram_api.zip'] API success (Attempt 1).
+2025-05-02 11:59:25,825 - INFO - [Upload_e271_0] [_send_single_file_task] - [e2716772-b790-40f9-9995-bd8b7be3d7ba] T> Sent 'telegram_api.zip' to -4603853425. Success: True
+2025-05-02 11:59:25,830 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [e2716772-b790-40f9-9995-bd8b7be3d7ba] Primary done. OK:True
+2025-05-02 11:59:25,831 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [e2716772-b790-40f9-9995-bd8b7be3d7ba] Wait backups...
+2025-05-02 11:59:25,837 - INFO - [Upload_e271_2] [send_file_to_telegram] - [ChatID -4641852757, File 'telegram_api.zip'] API success (Attempt 1).
+2025-05-02 11:59:25,838 - INFO - [Upload_e271_2] [_send_single_file_task] - [e2716772-b790-40f9-9995-bd8b7be3d7ba] T> Sent 'telegram_api.zip' to -4641852757. Success: True
+2025-05-02 11:59:25,841 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [e2716772-b790-40f9-9995-bd8b7be3d7ba] Single sends done in 1.04s.
+2025-05-02 11:59:25,841 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [e2716772-b790-40f9-9995-bd8b7be3d7ba] Success: 3/3
+2025-05-02 11:59:25,843 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [e2716772-b790-40f9-9995-bd8b7be3d7ba] Attempting to save metadata to DB...
+2025-05-02 11:59:25,844 - INFO - [Thread-7 (process_request_thread)] [_connect_to_db] - Attempting to connect to MongoDB Atlas host: telegrambot.6armfs2.mongodb.net...
+2025-05-02 11:59:26,871 - INFO - [Thread-7 (process_request_thread)] [_connect_to_db] - ✅ Successfully connected and pinged MongoDB Atlas!
+2025-05-02 11:59:26,877 - INFO - [Thread-7 (process_request_thread)] [get_db] - Accessed database: Telegrambot
+2025-05-02 11:59:26,878 - INFO - [Thread-7 (process_request_thread)] [get_metadata_collection] - Accessed collection: user_files
+2025-05-02 11:59:26,911 - INFO - [Thread-7 (process_request_thread)] [save_file_metadata] - Successfully inserted metadata for access_id: 6876b4254a
+2025-05-02 11:59:26,912 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [e2716772-b790-40f9-9995-bd8b7be3d7ba] Metadata successfully saved to DB. Msg: Metadata inserted (ID: 681466471969d4a304aec131).
+2025-05-02 11:59:26,912 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [e2716772-b790-40f9-9995-bd8b7be3d7ba] Upload generator cleanup.
+2025-05-02 11:59:26,929 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [e2716772-b790-40f9-9995-bd8b7be3d7ba] Upload executor shutdown.
+2025-05-02 11:59:26,938 - INFO - [Thread-7 (process_request_thread)] [_safe_remove_file] - [e2716772-b790-40f9-9995-bd8b7be3d7ba] Cleaned up original temp: uploads_temp\e2716772-b790-40f9-9995-bd8b7be3d7ba_telegram_api.py
+2025-05-02 11:59:26,940 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [e2716772-b790-40f9-9995-bd8b7be3d7ba] Upload generator finished. Status: completed
+2025-05-02 11:59:46,862 - INFO - [Thread-8 (process_request_thread)] [list_user_files] - List files request for: 'your@email.com'
+2025-05-02 11:59:46,863 - INFO - [Thread-8 (process_request_thread)] [list_user_files] - Fetching files for user 'your@email.com' from DB...
+2025-05-02 11:59:46,880 - INFO - [Thread-8 (process_request_thread)] [find_metadata_by_username] - Found 0 metadata records for username: your@email.com
+2025-05-02 11:59:46,882 - INFO - [Thread-8 (process_request_thread)] [list_user_files] - Found 0 records for 'your@email.com'.
+2025-05-02 11:59:46,884 - INFO - [Thread-8 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 11:59:46] "GET /files/your@email.com HTTP/1.1" 200 -
+2025-05-02 11:59:58,671 - INFO - [Thread-9 (process_request_thread)] [list_user_files] - List files request for: 'admin'
+2025-05-02 11:59:58,672 - INFO - [Thread-9 (process_request_thread)] [list_user_files] - Fetching files for user 'admin' from DB...
+2025-05-02 11:59:58,692 - INFO - [Thread-9 (process_request_thread)] [find_metadata_by_username] - Found 4 metadata records for username: admin
+2025-05-02 11:59:58,692 - INFO - [Thread-9 (process_request_thread)] [list_user_files] - Found 4 records for 'admin'.
+2025-05-02 11:59:58,694 - INFO - [Thread-9 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 11:59:58] "GET /files/admin HTTP/1.1" 200 -
+2025-05-02 12:00:17,216 - INFO - [Thread-11 (process_request_thread)] [get_file_by_access_id] - Request dl page via access_id: 6876b4254a
+2025-05-02 12:00:17,217 - INFO - [Thread-11 (process_request_thread)] [get_file_by_access_id] - Looking up access_id '6876b4254a' in DB...
+2025-05-02 12:00:17,234 - INFO - [Thread-11 (process_request_thread)] [find_metadata_by_access_id] - Found metadata record for access_id: 6876b4254a
+2025-05-02 12:00:17,235 - INFO - [Thread-11 (process_request_thread)] [get_file_by_access_id] - Rendering dl page for 'telegram_api.py' (id: 6876b4254a).
+2025-05-02 12:00:17,286 - INFO - [Thread-11 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 12:00:17] "GET /get/6876b4254a HTTP/1.1" 200 -
+2025-05-02 12:02:19,607 - INFO - [Thread-12 (process_request_thread)] [show_register_page] - Serving registration page.
+2025-05-02 12:02:19,611 - INFO - [Thread-12 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 12:02:19] "GET /register HTTP/1.1" 200 -
+2025-05-02 12:02:38,554 - INFO - [Thread-14 (process_request_thread)] [register_user] - Received registration request.
+2025-05-02 12:02:38,598 - INFO - [Thread-14 (process_request_thread)] [_log] - 127.0.0.1 - - [02/May/2025 12:02:38] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-05-02 12:07:28,446 - INFO - [MainThread] [_log] -  * Detected change in 'E:\\Telegram_tool\\Telegram_Bot_Tool\\routes.py', reloading

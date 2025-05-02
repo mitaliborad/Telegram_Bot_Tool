@@ -14,7 +14,7 @@ load_dotenv()
 
 # --- Configuration ---
 DATABASE_NAME = "Telegrambot"      
-COLLECTION_NAME = "file_metadata"     
+COLLECTION_NAME = "user_files"     
 
 # --- MongoDB Connection Setup ---
 _client: Optional[MongoClient] = None

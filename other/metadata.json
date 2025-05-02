@@ -4393,6 +4393,28 @@
             "username": "ELENA",
             "upload_duration_seconds": 1.39,
             "access_id": "cc5f25cd63"
+        },
+        {
+            "original_filename": "image (9).png",
+            "sent_filename": "image (9).zip",
+            "is_split": false,
+            "is_compressed": true,
+            "original_size": 18019,
+            "compressed_size": 15835,
+            "send_locations": [
+                {
+                    "chat_id": "-4603853425",
+                    "success": true,
+                    "message_id": 1286,
+                    "file_id": "BQACAgUAAxkDAAIFBmgRnM_0eCzMKwUOvXSZqa5tG61PAAImGAACcNORVFysWlTkEZqONgQ",
+                    "file_unique_id": "AgADJhgAAnDTkVQ",
+                    "file_size": 15835
+                }
+            ],
+            "upload_timestamp": "2025-04-30T03:45:19.247404+00:00",
+            "username": "ELENA",
+            "upload_duration_seconds": 1.41,
+            "access_id": "161b514654"
         }
     ],
     "GlowingQuest": [
@@ -4509,6 +4531,28 @@
             "username": "DreamyVoyage",
             "upload_duration_seconds": 1.16,
             "access_id": "2abae18324"
+        },
+        {
+            "original_filename": "file-browser.ts",
+            "sent_filename": "file-browser.zip",
+            "is_split": false,
+            "is_compressed": true,
+            "original_size": 18448,
+            "compressed_size": 4716,
+            "send_locations": [
+                {
+                    "chat_id": "-4603853425",
+                    "success": true,
+                    "message_id": 1287,
+                    "file_id": "BQACAgUAAxkDAAIFB2gRnNwYRctwjbUOnQvBFSOWMr_oAAInGAACcNORVFoGTBJzVTiBNgQ",
+                    "file_unique_id": "AgADJxgAAnDTkVQ",
+                    "file_size": 4716
+                }
+            ],
+            "upload_timestamp": "2025-04-30T03:45:32.481775+00:00",
+            "username": "DreamyVoyage",
+            "upload_duration_seconds": 0.67,
+            "access_id": "52bc709eb4"
         }
     ]
 }

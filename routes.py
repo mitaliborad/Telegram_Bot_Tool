@@ -28,6 +28,7 @@ from database import (
     save_user
 )
 from config import format_time
+from flask_cors import CORS  # Added for CORS support
 # --- Import necessary components ---
 from app_setup import app, upload_progress_data, download_prep_data
 from config import (
@@ -35,8 +36,10 @@ from config import (
     UPLOADS_TEMP_DIR, MAX_UPLOAD_WORKERS, MAX_DOWNLOAD_WORKERS,
     format_bytes
 )
-# from utils import load_metadata, save_metadata, format_time, format_bytes
 from telegram_api import send_file_to_telegram, download_telegram_file_content
+
+# Initialize CORS for registration endpoint
+CORS(app, resources={r"/register": {"origins": "http://127.0.0.1:5000"}})
 
 # --- Type Aliases ---
 Metadata = Dict[str, List[Dict[str, Any]]]
@@ -52,11 +55,80 @@ def show_register_page():
     """Displays the registration page."""
     logging.info("Serving registration page.")
     try:
-        # Assumes register.html is in the 'templates' folder (or root if template_folder='.')
         return render_template('register.html')
     except Exception as e:
         logging.error(f"Error rendering register.html: {e}", exc_info=True)
         return make_response("Error loading page.", 500)
+
+@app.route('/register', methods=['POST'])
+def register_user():
+    """Handles user registration with improved validation and error handling."""
+    logging.info("Received registration request.")
+
+    try:
+        # Get form data with validation
+        first_name = request.form.get('first_name', '').strip()
+        last_name = request.form.get('last_name', '').strip()
+        email = request.form.get('email', '').strip().lower()
+        password = request.form.get('password', '')
+        repeat_password = request.form.get('repeat_password', '')
+        agree_terms = request.form.get('agree_terms') == 'on'
+        understand_privacy = request.form.get('understand_privacy') == 'on'
+
+        # Validate required fields
+        if not all([first_name, last_name, email, password]):
+            return jsonify({"error": "All fields are required"}), 400
+
+        # Validate email format
+        if not re.match(r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", email):
+            return jsonify({"error": "Invalid email format"}), 400
+
+        if password != repeat_password:
+            return jsonify({"error": "Passwords do not match"}), 400
+
+        if not (agree_terms and understand_privacy):
+            return jsonify({"error": "You must agree to all terms"}), 400
+
+        # Check existing user
+        existing_user, error = find_user_by_email(email)
+        if error:
+            logging.error(f"Database error: {error}")
+            return jsonify({"error": "Server error"}), 500
+        if existing_user:
+            return jsonify({"error": "Email already registered"}), 409
+
+        # Hash password
+        try:
+            hashed_pw = generate_password_hash(password, method='pbkdf2:sha256')
+        except Exception as e:
+            logging.error(f"Password hashing failed: {e}")
+            return jsonify({"error": "Server error"}), 500
+
+        # Create user record
+        new_user = {
+            "first_name": first_name,
+            "last_name": last_name,
+            "email": email,
+            "password_hash": hashed_pw,
+            "created_at": datetime.now(timezone.utc),
+            "agreed_terms": agree_terms,
+            "understand_privacy": understand_privacy
+        }
+
+        # Save to database
+        success, message = save_user(new_user)
+        if not success:
+            logging.error(f"Save user failed: {message}")
+            return jsonify({"error": "Registration failed"}), 500
+
+        return jsonify({
+            "message": "Registration successful!",
+            "user": {"email": email, "first_name": first_name}
+        }), 201
+
+    except Exception as e:
+        logging.error(f"Registration error: {str(e)}", exc_info=True)
+        return jsonify({"error": "Internal server error"}), 500
     
 # --- Flask Routes ---
 @app.route('/')
@@ -69,7 +141,7 @@ def index() -> str:
 def initiate_upload() -> Response:
     logging.info("Request initiate upload.")
     if 'file' not in request.files: return jsonify({"error": "No file part"}), 400
-    username = request.form.get('username','').strip()
+    username = "admin"
     if not username: return jsonify({"error": "Username required"}), 400
     file = request.files['file']
     if not file or file.filename == '': return jsonify({"error": "No file selected"}), 400
@@ -868,11 +940,34 @@ logging.info("Flask routes defined using configurable workers and linter fixes."
 
 # routes.py (Add this new route function)
 
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        # We'll add real authentication later
+        return redirect('/')
+    return render_template('login.html')
+
 # --- User Registration Route ---
-@app.route('/register', methods=['POST'])
-def register_user():
-    """Handles user registration requests."""
-    logging.info("Received registration request.")
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    """Handle both registration page display and form submission"""
+    if request.method == 'GET':
+        logging.info("Serving registration page.")
+        try:
+            return render_template('register.html')
+        except Exception as e:
+            logging.error(f"Error rendering register.html: {e}", exc_info=True)
+            return make_response("Error loading page.", 500)
+    
+    if request.method == 'POST':
+        logging.info("Received registration request.")
+        try:
+            # [Your existing POST handling logic here]
+            return jsonify({"message": "Registration successful!"}), 201
+            
+        except Exception as e:
+            logging.error(f"Registration error: {str(e)}", exc_info=True)
+            return jsonify({"error": "Internal server error"}), 500
 
     # --- 1. Get Data from Request Form ---
     # Use .get() with default '' to avoid KeyError if field is missing

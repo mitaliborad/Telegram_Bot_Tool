@@ -4,18 +4,17 @@ from datetime import datetime
 
 # --- Configuration ---
 TELEGRAM_BOT_TOKEN = '7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs' 
-TELEGRAM_CHAT_IDS = ['-4603853425'] 
-#,'-1002614397019','-4641852757'
+TELEGRAM_CHAT_IDS = ['-4603853425','-1002614397019','-4641852757'] 
+#
 
 # --- Critical Check ---
 if not TELEGRAM_CHAT_IDS: raise ValueError("Config Error: TELEGRAM_CHAT_IDS empty.")
 if not TELEGRAM_BOT_TOKEN or 'YOUR_BOT_TOKEN' in TELEGRAM_BOT_TOKEN: raise ValueError("Config Error: TELEGRAM_BOT_TOKEN not set.")
-
 PRIMARY_TELEGRAM_CHAT_ID = str(TELEGRAM_CHAT_IDS[0]) if TELEGRAM_CHAT_IDS else None
 CHUNK_SIZE = 20 * 1024 * 1024
 
 # --- Telegram API Settings ---
-TELEGRAM_API_TIMEOUTS = { 'connect': 10, 'read': 60, 'send_document': 1000, 'get_file': 30, 'download_file': 180 }
+TELEGRAM_API_TIMEOUTS = { 'connect': 10, 'read': 60, 'send_document': 300, 'get_file': 30, 'download_file': 180 }
 API_RETRY_ATTEMPTS = 3
 API_RETRY_DELAY = 2
 
@@ -32,10 +31,11 @@ for dir_path in [LOG_DIR, UPLOADS_TEMP_DIR]:
     if not os.path.exists(dir_path):
         try:
             os.makedirs(dir_path)
+            
             logging.info(f"Created directory: {dir_path}")
         except OSError as e:
             logging.error(f"Error creating directory {dir_path}: {e}", exc_info=True) 
-            
+           
 # --- Logging Setup ---
 log_filename = os.path.join(LOG_DIR, f"app_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log")
 log_format = '%(asctime)s - %(levelname)s - [%(threadName)s] [%(funcName)s] - %(message)s'
@@ -46,7 +46,7 @@ logging.basicConfig(
     format=log_format,
     handlers=[
         logging.FileHandler(log_filename, encoding='utf-8'),
-        logging.StreamHandler() 
+        logging.StreamHandler() # Outputs logs to console as well
     ],
     force=True 
 )
@@ -75,7 +75,7 @@ logging.info(f"Logging configured. Level: {logging.getLevelName(logging.getLogge
 if PRIMARY_TELEGRAM_CHAT_ID: 
     logging.info(f"Primary Chat ID: {PRIMARY_TELEGRAM_CHAT_ID}")
 logging.info(f"All Target Chat IDs: {TELEGRAM_CHAT_IDS}")
-logging.info(f"Chunk Size: {format_bytes(CHUNK_SIZE)} ({CHUNK_SIZE} bytes)") 
+logging.info(f"Chunk Size: {format_bytes(CHUNK_SIZE)} ({CHUNK_SIZE} bytes)") # Use format_bytes here too
 logging.info(f"API Timeouts (Connect/Read): {TELEGRAM_API_TIMEOUTS['connect']}s / {TELEGRAM_API_TIMEOUTS['read']}s")
 logging.info(f"API Retries: {API_RETRY_ATTEMPTS} attempts, {API_RETRY_DELAY}s delay")
 logging.info(f"Max Upload Workers: {MAX_UPLOAD_WORKERS}")
@@ -84,12 +84,11 @@ logging.info("="*60)
 
 
 logging.info("Configuration loaded successfully.")
-
 import math
 
 def format_time(seconds):
     """Converts seconds into HH:MM:SS or MM:SS string."""
-    if not isinstance(seconds, (int, float)) or seconds < 0 or not math.isfinite(seconds): 
+    if not isinstance(seconds, (int, float)) or seconds < 0 or not math.isfinite(seconds): # Added type/finite check
         logging.debug(f"Invalid input to format_time: {seconds}. Returning '--:--'.")
         return "--:--"
     seconds = int(seconds)

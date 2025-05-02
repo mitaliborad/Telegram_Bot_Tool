@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Your Website</title>
+    <style>
+        /* Basic Styling - Adjust as needed */
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #f4f4f4; }
+        .container { background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); width: 400px; }
+        h1 { text-align: center; color: #333; margin-bottom: 25px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; color: #555; }
+        input[type="text"], input[type="email"], input[type="password"] {
+            width: calc(100% - 20px); /* Adjust for padding */
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+        }
+        .name-group { display: flex; gap: 15px; }
+        .name-group .form-group { flex: 1; }
+        .checkbox-group label { display: flex; align-items: center; font-size: 0.9em; color: #666; }
+        .checkbox-group input[type="checkbox"] { margin-right: 8px; }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #e84970; /* Pinkish color like screenshot */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        button:hover { background-color: #d13c5f; }
+        button:disabled { background-color: #cccccc; cursor: not-allowed; }
+        #message-area { margin-top: 15px; text-align: center; font-weight: bold; min-height: 1.5em; }
+        .success-message { color: green; }
+        .error-message { color: red; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sign up for a free account</h1>
+        <form id="register-form">
+            <div class="name-group">
+                <div class="form-group">
+                    <label for="first-name">First name</label>
+                    <input type="text" id="first-name" name="first_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="last-name">Last name</label>
+                    <input type="text" id="last-name" name="last_name" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Your email address</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+                <!-- Optional: Add show/hide password icon later -->
+            </div>
+
+            <div class="form-group">
+                <label for="repeat-password">Repeat password</label>
+                <input type="password" id="repeat-password" name="repeat_password" required>
+            </div>
+
+            <div class="form-group checkbox-group">
+                <label>
+                    <input type="checkbox" id="agree-terms" name="agree_terms" required>
+                    I agree with the MEGA Terms of Service
+                </label>
+            </div>
+            <div class="form-group checkbox-group">
+                 <label>
+                    <input type="checkbox" id="understand-privacy" name="understand_privacy" required>
+                    I understand that MEGA has no access to my password...
+                </label>
+            </div>
+
+            <button type="submit" id="signup-button">Sign up</button>
+        </form>
+         <!-- Area to display success or error messages -->
+        <div id="message-area"></div>
+    </div>
+
+    <!-- JavaScript will go here in the next step -->
+    <script>
+        // JavaScript code will be added here
+    </script>
+</body>
+</html>

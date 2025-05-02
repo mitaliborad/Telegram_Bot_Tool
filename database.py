@@ -288,3 +288,109 @@ def close_db_connection():
 
 logging.info("Database module initialized.")
 
+
+
+# --- User Information Collection Functions ---
+
+_userinfo_collection: Optional[Collection] = None # Global variable for userinfo collection
+
+def get_userinfo_collection() -> Tuple[Optional[Collection], str]:
+    """
+    Gets the userinfo collection instance, connecting if necessary.
+    Returns the collection instance and an error message.
+    """
+    global _userinfo_collection # Allow modification of the global variable
+    if _userinfo_collection is not None:
+        return _userinfo_collection, ""
+
+    db_instance, error = get_db() # Reuse existing DB connection function
+    if error or db_instance is None:
+        return None, error
+
+    try:
+        # Use the specific collection name for user info
+        _userinfo_collection = db_instance["userinfo"]
+        logging.info(f"Accessed collection: userinfo")
+        return _userinfo_collection, ""
+    except Exception as e:
+        error_msg = f"Error accessing collection 'userinfo': {e}"
+        logging.exception(error_msg)
+        return None, error_msg
+
+def find_user_by_email(email: str) -> Tuple[Optional[Dict[str, Any]], str]:
+    """
+    Finds a single user record by their email address.
+
+    Args:
+        email: The email address to search for.
+
+    Returns:
+        A tuple (user_document or None, error_message)
+    """
+    collection, error = get_userinfo_collection()
+    if error or collection is None:
+        return None, f"Failed to get userinfo collection: {error}"
+
+    try:
+        # Convert email to lowercase for case-insensitive check
+        email_lower = email.lower()
+        user = collection.find_one({"email": email_lower})
+        if user:
+            logging.info(f"Found user record for email: {email_lower}")
+            return user, ""
+        else:
+            logging.info(f"No user record found for email: {email_lower}")
+            return None, "" # Return None, but no error message if simply not found
+
+    except OperationFailure as of:
+        error_msg = f"Database operation failed finding user by email: {of}"
+        logging.exception(error_msg)
+        return None, error_msg
+    except Exception as e:
+        error_msg = f"Unexpected error finding user by email: {e}"
+        logging.exception(error_msg)
+        return None, error_msg
+
+def save_user(user_data: Dict[str, Any]) -> Tuple[bool, str]:
+    """
+    Saves a new user document to the userinfo collection.
+    Assumes email uniqueness has already been checked.
+
+    Args:
+        user_data: A dictionary containing the new user's data (including hashed password).
+
+    Returns:
+        A tuple (success: bool, message: str)
+    """
+    collection, error = get_userinfo_collection()
+    if error or collection is None:
+        return False, f"Failed to get userinfo collection: {error}"
+
+    if "email" not in user_data or "password_hash" not in user_data:
+        return False, "User data is missing required email or password_hash fields."
+
+    try:
+        # Convert email to lowercase before saving
+        user_data["email"] = user_data["email"].lower()
+
+        result = collection.insert_one(user_data)
+        if result.inserted_id:
+            logging.info(f"Successfully inserted new user with ID: {result.inserted_id}")
+            return True, f"User created successfully (ID: {result.inserted_id})."
+        else:
+             logging.warning(f"User insert operation completed but reported no inserted ID.")
+             return False, "User insert operation finished unexpectedly."
+
+    except OperationFailure as of:
+        # This might catch duplicate key errors if an index is set on email,
+        # but we should ideally check find_user_by_email first.
+        error_msg = f"Database operation failed saving user: {of}"
+        logging.exception(error_msg)
+        # Check if it's a duplicate key error (E11000)
+        if "E11000" in str(of):
+            return False, "Email address already exists."
+        return False, error_msg
+    except Exception as e:
+        error_msg = f"Unexpected error saving user: {e}"
+        logging.exception(error_msg)
+        return False, error_msg

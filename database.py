@@ -28,7 +28,7 @@ def _connect_to_db() -> Tuple[Optional[MongoClient], str]:
     """
     global _client # Allow modification of the global variable
 
-    if _client:
+    if _client is not None:
          return _client, "" 
 
 
@@ -88,7 +88,7 @@ def get_db() -> Tuple[Optional[Database], str]:
     Returns the database instance and an error message.
     """
     global _db
-    if _db:
+    if _db is not None:
         return _db, ""
 
     client, error = _connect_to_db()

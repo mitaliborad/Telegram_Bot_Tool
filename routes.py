@@ -39,7 +39,7 @@ from config import (
 from telegram_api import send_file_to_telegram, download_telegram_file_content
 
 # Initialize CORS for registration endpoint
-CORS(app, resources={r"/register": {"origins": "http://127.0.0.1:5000"}})
+# CORS(app, resources={r"/register": {"origins": "http://127.0.0.1:5000"}})
 
 # --- Type Aliases ---
 Metadata = Dict[str, List[Dict[str, Any]]]
@@ -66,69 +66,78 @@ def register_user():
     logging.info("Received registration request.")
 
     try:
+        
+        data = request.get_json() # <-- Get data as JSON dictionary
+        if not data:
+            logging.warning("Registration failed: No JSON data received.")
+            return make_response(jsonify({"error": "Invalid request format. Expected JSON."}), 400)
+        
         # Get form data with validation
-        first_name = request.form.get('first_name', '').strip()
-        last_name = request.form.get('last_name', '').strip()
-        email = request.form.get('email', '').strip().lower()
-        password = request.form.get('password', '')
-        repeat_password = request.form.get('repeat_password', '')
-        agree_terms = request.form.get('agree_terms') == 'on'
-        understand_privacy = request.form.get('understand_privacy') == 'on'
+        firstName = data.get('firstName', '').strip()
+        lastName = data.get('lastName', '').strip()
+        email = data.get('email', '').strip().lower() # Keep lowercasing email
+        password = data.get('password', '')
+        confirmPassword = data.get('confirmPassword', '') # Get confirmation field
+        # Checkboxes likely sent as boolean true/false in JSON
+        agreeTerms = data.get('agreeTerms', False)
+        understand_privacy = data.get('understandPrivacy', False)
 
+    except Exception as e: # Catch potential JSON parsing errors etc.
+        logging.error(f"Error parsing registration JSON data: {e}", exc_info=True)
+        # Return JSON error
+        return make_response(jsonify({"error": "Invalid request data."}), 400)
+    
         # Validate required fields
-        if not all([first_name, last_name, email, password]):
+    if not all([firstName, lastName, email, password]):
             return jsonify({"error": "All fields are required"}), 400
 
         # Validate email format
-        if not re.match(r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", email):
+    if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
             return jsonify({"error": "Invalid email format"}), 400
 
-        if password != repeat_password:
+    if password != confirmPassword:
             return jsonify({"error": "Passwords do not match"}), 400
 
-        if not (agree_terms and understand_privacy):
+    if not (agreeTerms and understand_privacy):
             return jsonify({"error": "You must agree to all terms"}), 400
 
         # Check existing user
-        existing_user, error = find_user_by_email(email)
-        if error:
+    existing_user, error = find_user_by_email(email)
+    if error:
             logging.error(f"Database error: {error}")
             return jsonify({"error": "Server error"}), 500
-        if existing_user:
+    if existing_user:
             return jsonify({"error": "Email already registered"}), 409
 
         # Hash password
-        try:
+    try:
             hashed_pw = generate_password_hash(password, method='pbkdf2:sha256')
-        except Exception as e:
+    except Exception as e:
             logging.error(f"Password hashing failed: {e}")
             return jsonify({"error": "Server error"}), 500
 
         # Create user record
-        new_user = {
-            "first_name": first_name,
-            "last_name": last_name,
+    new_user = {
+            "firstName": firstName,
+            "lastName": lastName,
             "email": email,
             "password_hash": hashed_pw,
             "created_at": datetime.now(timezone.utc),
-            "agreed_terms": agree_terms,
+            "agreed_terms": agreeTerms,
             "understand_privacy": understand_privacy
         }
 
         # Save to database
-        success, message = save_user(new_user)
-        if not success:
+    success, message = save_user(new_user)
+    if not success:
             logging.error(f"Save user failed: {message}")
             return jsonify({"error": "Registration failed"}), 500
 
-        return jsonify({
-            "message": "Registration successful!",
-            "user": {"email": email, "first_name": first_name}
-        }), 201
+    return make_response(jsonify({
+        "message": "Registration successful!",
+        "user": {"email": email, "firstName": firstName}
+    }), 201)
 
-    except Exception as e:
-        logging.error(f"Registration error: {str(e)}", exc_info=True)
-        return jsonify({"error": "Internal server error"}), 500
     
 # --- Flask Routes ---
 @app.route('/')
@@ -971,20 +980,20 @@ def register():
 
     # --- 1. Get Data from Request Form ---
     # Use .get() with default '' to avoid KeyError if field is missing
-    first_name = request.form.get('first_name', '').strip()
-    last_name = request.form.get('last_name', '').strip()
+    firstName = request.form.get('firstName', '').strip()
+    lastName = request.form.get('lastName', '').strip()
     email = request.form.get('email', '').strip()
-    password = request.form.get('password', '') # Don't strip password yet
-    repeat_password = request.form.get('repeat_password', '')
+    password = request.form.get('password', '') 
+    confirmPassword = request.form.get('confirmPassword', '')
     # You might want to check the agreement checkboxes too, depending on requirements
-    # agree_terms = request.form.get('agree_terms') == 'on' # Example
+    # agreeTerms = request.form.get('agreeTerms') == 'on' # Example
 
     # --- 2. Basic Validation ---
-    if not all([first_name, last_name, email, password, repeat_password]):
+    if not all([firstName, lastName, email, password, confirmPassword]):
         logging.warning("Registration failed: Missing required fields.")
         return make_response(jsonify({"error": "Please fill in all required fields."}), 400)
 
-    if password != repeat_password:
+    if password != confirmPassword:
         logging.warning("Registration failed: Passwords do not match.")
         return make_response(jsonify({"error": "Passwords do not match."}), 400)
 
@@ -1013,12 +1022,12 @@ def register():
 
     # --- 5. Prepare User Document for Database ---
     new_user_data = {
-        "first_name": first_name,
-        "last_name": last_name,
+        "firstName": firstName,
+        "lastName": lastName,
         "email": email, # Will be lowercased in save_user function
         "password_hash": hashed_password,
         "created_at": datetime.now(timezone.utc) # Store registration timestamp
-        # Add other fields as needed, e.g., agree_terms
+        # Add other fields as needed, e.g., agreeTerms
     }
 
     # --- 6. Save User to Database ---

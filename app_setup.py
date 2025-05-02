@@ -12,8 +12,8 @@ app.secret_key = 'a_simple_secret_key_for_now'
 app.jinja_env.filters['format_bytes'] = format_bytes
 logging.info("Custom Jinja filter 'format_bytes' registered.")
 
-allowed_origins = "http://localhost:4200" 
-#allowed_origins = "*" 
+#allowed_origins = "http://localhost:4200" 
+allowed_origins = "*" 
 
 # Initialize CORS with the app and specific origins
 CORS(app, resources={r"/*": {"origins": allowed_origins}})

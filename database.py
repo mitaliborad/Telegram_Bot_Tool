@@ -11,6 +11,9 @@ from typing import Optional, Dict, Any, List, Tuple
 from flask_login import UserMixin
 from werkzeug.security import check_password_hash
 from bson import ObjectId
+from pymongo.collection import Collection
+from pymongo.database import Database
+from pymongo.errors import OperationFailure
 
 # --- Load Environment Variables ---
 load_dotenv()
@@ -503,3 +506,51 @@ def find_user_by_username(username: str) -> Tuple[Optional[Dict[str, Any]], str]
         error_msg = f"Unexpected error finding user by username '{username}': {e}"
         logging.exception(error_msg) # Log the full traceback
         return None, error_msg # Return None and the error message
+    
+def find_metadata_by_email(user_email: str) -> Tuple[Optional[List[Dict[str, Any]]], str]:
+    """
+    Finds all file metadata records for a given user email.
+    Args: user_email: The user's email address.
+    Returns: A tuple (list_of_records or None, error_message)
+    """
+    collection, error = get_metadata_collection() # Use the 'user_files' collection
+    if error or collection is None:
+        return None, f"Failed to get metadata collection: {error}"
+
+    try:
+        # Ensure the query field 'user_email' matches what you save in the record
+        records_cursor = collection.find({"user_email": user_email.lower()}) # Query by email
+        records_list = list(records_cursor)
+        logging.info(f"Found {len(records_list)} metadata records for email: {user_email}")
+        return records_list, ""
+    except Exception as e:
+        error_msg = f"Unexpected error finding metadata by email '{user_email}': {e}"
+        logging.exception(error_msg)
+        return None, error_msg
+    
+def delete_metadata_by_access_id(access_id: str) -> Tuple[int, str]:
+    """
+    Deletes a single metadata record matching the unique access_id.
+    Args: access_id: The unique access ID of the record to delete.
+    Returns: A tuple (deleted_count (0 or 1), error_message)
+    """
+    collection, error = get_metadata_collection() # Use the 'user_files' collection
+    if error or collection is None:
+        return 0, f"Failed to get metadata collection: {error}"
+
+    try:
+        result = collection.delete_one({"access_id": access_id}) # Use delete_one for unique ID
+        deleted_count = result.deleted_count
+        if deleted_count == 1:
+            logging.info(f"Deleted metadata record for access_id '{access_id}'.")
+        elif deleted_count == 0:
+             logging.warning(f"No metadata record found to delete for access_id '{access_id}'.")
+        else:
+            # Should not happen with delete_one
+            logging.error(f"Unexpected result deleting by access_id '{access_id}': Count={deleted_count}")
+
+        return deleted_count, ""
+    except Exception as e:
+        error_msg = f"Unexpected error deleting metadata by access_id '{access_id}': {e}"
+        logging.exception(error_msg)
+        return 0, error_msg

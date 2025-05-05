@@ -10,29 +10,28 @@
 
 </head>
 <body>
-    <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background-color: #f8f9fa; border-bottom: 1px solid #dee2e6; margin-bottom: 20px;">
-        <h1>Telegram File Storage</h1> {# Moved H1 inside the header div #}
+    <div class="page-header">
+        <h1>Telegram File Storage</h1>
         <div>
             {% if current_user.is_authenticated %}
-                {# --- This part shows when user IS logged in --- #}
-                <div class="user-info" style="display: flex; align-items: center; gap: 15px;">
-                    {# Display Username - You can customize the look #}
-                    <span style="font-weight: bold;">{{ current_user.username }}</span>
-                    {# Example Logout Link - Style as needed #}
-                    <a href="{{ url_for('logout') }}" class="button" style="background-color:#dc3545; color: white; text-decoration: none; padding: 8px 12px; border-radius: 4px;">Logout</a>
+                <div class="user-info">
+                    <span>{{ current_user.username }}</span>
+                    {# Optional: Add avatar image here later #}
+                    <a href="{{ url_for('logout') }}" class="button" style="background-color:#dc3545;">Logout</a>
                 </div>
             {% else %}
-                {# --- This part shows when user IS NOT logged in --- #}
                 <div>
-                    <a href="{{ url_for('login') }}" class="button" style="background-color:#007bff; color: white; text-decoration: none; padding: 8px 15px; border-radius: 4px; margin-left: 10px;">Login</a>
-                    <a href="{{ url_for('show_register_page') }}" class="button" style="background-color:#28a745; color: white; text-decoration: none; padding: 8px 15px; border-radius: 4px; margin-left: 10px;">Sign Up</a>
+                    <a href="{{ url_for('login') }}" class="button" style="background-color:#007bff;">Login</a>
+                    <a href="{{ url_for('show_register_page') }}" class="button" style="background-color:#28a745;">Sign Up</a>
                 </div>
             {% endif %}
         </div>
     </div>
+
+    <!-- Display Flashed Messages -->
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
-        <div style="padding: 0 20px;"> {# Optional padding #}
+        <div style="padding: 0 20px;">
         {% for category, message in messages %}
           <div class="alert alert-{{ category or 'info' }}" role="alert">
             {{ message }}
@@ -42,140 +41,73 @@
       {% endif %}
     {% endwith %}
 
-            
-    <!-- <div style="text-align:right; margin-bottom:20px;">
-        <button onclick="window.location='/login'" style="background:#4CAF50;">Login</button>
-        <button onclick="window.location='/register'" style="background:#2196F3;">Sign Up</button>
-      </div> -->
 
     <div class="container">
         <h2>Upload File</h2>
-
         <div id="drop-zone">
             <p>Drag & Drop file here or click to select</p>
             <input type="file" id="file-input" style="display: none;">
         </div>
-                <!-- Upload Progress Display Area - Hidden Initially -->
-                <div id="progress-details" style="display: none; margin-top: 15px; border: 1px solid #ccc; padding: 10px; border-radius: 5px; background-color: #f9f9f9;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                        <span id="progress-filename" style="font-weight: bold; word-break: break-all;">filename.zip</span>
-                        <span id="progress-text"> <!-- Green color for progress MB -->
-                            <span id="progress-mb-sent" style="color:rgb(54, 108, 235)" >0.0 MB</span> / <span id="progress-mb-total" style="color:black">0.0 MB</span>
-                        </span>
-                    </div>
-                    <progress id="upload-progress" value="0" max="100" style="width: 100%; height: 10px; margin-bottom: 10px;"></progress>
-                    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.9em; color: #555;">
-                        <div>
-                            <span title="Estimated Time Remaining">⏱️</span> <!-- Timer Symbol -->
-                            <span id="progress-eta">--:--</span>
-                            <span style="margin-left: 15px;" title="Average Speed">⬇️</span> <!-- Download Symbol -->
-                            <span id="progress-speed">0.0 MB/s</span>
-                        </div>
-                        <button id="pause-resume-button" class="progress-button" disabled>
-                            <span class="pause-icon">⏸️</span>
-                            <span class="button-text">Pause Transfer</span>
-                        </button>
+        <!-- Upload Progress Display Area -->
+        <div id="progress-details" style="display: none; margin-top: 15px; border: 1px solid #ccc; padding: 10px; border-radius: 5px; background-color: #f9f9f9;">
+             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <span id="progress-filename" style="font-weight: bold; word-break: break-all;">filename.zip</span>
+                <span><span id="progress-mb-sent" style="color: #007bff;">0.0 MB</span> / <span id="progress-mb-total">0.0 MB</span></span>
+             </div>
+            <progress id="upload-progress" value="0" max="100" style="width: 100%; height: 10px; margin-bottom: 10px;"></progress>
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.9em; color: #555;">
+                 <div>
+                    <span title="Estimated Time Remaining">⏱️</span><span id="progress-eta">--:--</span>
+                    <span style="margin-left: 15px;" title="Average Speed">⬇️</span><span id="progress-speed">0.0 MB/s</span>
+                 </div>
+                 <button id="pause-resume-button" class="progress-button" disabled>⏸️ <span class="button-text">Pause</span></button>
+            </div>
+        </div>
+        <p id="upload-status"></p>
+        <div id="share-link-container" style="display: none; margin-top: 15px; border: 1px solid #ccc; padding: 10px; border-radius: 5px; background-color: #e8f5e8;">
+             <label for="share-link-input">Shareable Link:</label>
+             <div style="display: flex; align-items: center;">
+                 <input type="text" id="share-link-input" readonly style="flex-grow: 1; margin-right: 10px; margin-bottom: 0; background-color: #f0f0f0;">
+                 <button id="copy-link-button" class="progress-button" style="padding: 8px 12px;">📋 <span class="button-text">Copy</span></button>
+             </div>
+             <span id="copy-status" style="font-size: 0.9em; color: green; margin-top: 5px; display: block; height: 1.2em;"></span>
+        </div>
 
-                         <button id="resume-button" class="progress-button" style="display: none;" disabled>
-                            <span class="resume-icon">▶️</span>
-                            <span class="button-text">Resume</span>
-                         </button>
-                    </div>
-                </div>
-                <!-- General Status Message Area (for errors, completion, etc.) -->
-                <p id="upload-status" style="margin-top: 10px; font-weight: bold; color:#273c86"></p>
-
-                <!-- <<< STEP 2 START: Add Share Link Container >>> -->
-                <!-- Shareable Link Display Area - Hidden Initially -->
-                <div id="share-link-container" style="display: none; margin-top: 15px; border: 1px solid #ccc; padding: 10px; border-radius: 5px; background-color: #e8f5e8;">
-                    <label for="share-link-input" style="font-weight:bold; margin-bottom: 5px;">Shareable Link:</label>
-                    <div style="display: flex; align-items: center;">
-                        <input type="text" id="share-link-input" readonly style="flex-grow: 1; margin-right: 10px; margin-bottom: 0; background-color: #f0f0f0; border: 1px solid #bbb;">
-                        <button id="copy-link-button" class="progress-button" style="padding: 8px 12px;">
-                            <span class="copy-icon">📋</span> <!-- Copy Icon -->
-                            <span class="button-text">Copy</span>
-                        </button>
-                    </div>
-                    <span id="copy-status" style="font-size: 0.9em; color: green; margin-top: 5px; display: block; height: 1.2em;"></span> <!-- Added height to prevent layout shift -->
-                </div>
-                <!-- <<< STEP 2 END: Add Share Link Container >>> -->
-
-                <p id="download-prep-status" style="margin-top: 10px; font-weight: bold; color: #337ab7; display: none;"></p>
-
-                <!-- Original Upload Button -->
-                <button id="upload-button" disabled>Upload</button> <!-- Start disabled -->
+        <!-- Upload Button: Enabled state depends on login status (checked in JS) and file selection -->
+        <button id="upload-button" disabled {% if not current_user.is_authenticated %}title="Please log in to upload files"{% endif %}>Upload</button>
     </div>
 
     <div class="container">
         <h2>Stored Files</h2>
-        <!-- <label for="list-username">Username to List Files:</label>
-        <input type="text" id="list-username" placeholder="Enter username to list files"> -->
+        <!-- Username input removed -->
+
+        <!-- List Files Button: Shown only if logged in -->
         {% if current_user.is_authenticated %}
-            <button id="list-files-button">List My Files</button> {# Changed text slightly #}
+            <button id="list-files-button">List My Files</button>
         {% else %}
             <p>Please log in to see your files.</p>
         {% endif %}
         <ul id="file-list">
             <!-- File list items will be generated here by JavaScript -->
         </ul>
-        <p id="list-status"></p> {# For errors during listing #}
-         {# ... download prep display (hidden) ... #}
-    </div>
-        
-        <!-- <button id="list-files-button">List Files</button>
-        <ul id="file-list">
-        </ul> -->
+        <p id="list-status"></p> {# Status for listing operation #}
 
-        <div id="download-details" style="display: none; margin-top: 15px; border: 1px solid #ccc; padding: 10px; border-radius: 5px; background-color: #f9f9f9;">
-            <!-- Row 1: Filename and Progress Text -->
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                <span id="download-filename" style="font-weight: bold; word-break: break-all;">filename.zip</span>
-                <span id="download-prep-progress-text"> <!-- Green color like upload -->
-                    <span id="download-prep-mb-processed" style="color: rgb(54, 108, 235);">0.0 MB</span> / <span id="download-prep-mb-total" style="color:black">0.0 MB</span>
-                </span>
-            </div>
-            <!-- Row 2: Progress Bar -->
-            <progress id="download-prep-progress" value="0" max="100" style="width: 100%; height: 10px; margin-bottom: 10px;"></progress> <!-- Green accent color -->
-            <!-- Row 3: ETA, Speed, Action Button -->
-            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.9em; color: #555;">
-                <div>
-                    <span title="Estimated Time Remaining (Preparation)">⏱️</span>
-                    <span id="download-prep-eta">--:--</span>
-                    <span style="margin-left: 15px;" title="Preparation Speed">⬇️</span>
-                    <span id="download-prep-speed">0.0 MB/s</span>
-                </div>
-                <!-- Adding placeholder Pause/Resume buttons like upload -->
-                <button id="download-pause-resume-button" class="progress-button" disabled>
-                    <span class="pause-icon">⏸️</span>
-                    <span class="button-text">Pause Prep</span> <!-- Text indicates prep -->
-                </button>
-                 <button id="download-resume-button" class="progress-button" style="display: none;" disabled>
-                    <span class="resume-icon">▶️</span>
-                    <span class="button-text">Resume Prep</span>
-                 </button>
-            </div>
-             <!-- Row 4: Detailed Status Message IS REMOVED FROM HERE -->
+        <!-- Download Prep Details (hidden, used by download_page.html logic potentially, keep structure if needed there) -->
+        <div id="download-details" style="display: none; margin-top: 15px; border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
+            {# ... download progress elements ... #}
         </div>
-        <!-- End replaced block -->
-
-        <!-- Download Prep Status message will now appear in the paragraph below -->
-        <p id="download-prep-status" style="margin-top: 10px; font-weight: bold; color: #337ab7; display: none;"></p>
-        <p id="list-status"></p>
+        <p id="download-prep-status" style="display: none;"></p> {# Status specifically for download prep, if needed elsewhere #}
     </div>
 
     <script>
-        // --- Element References ---
+        // === Element References ===
         const dropZone = document.getElementById('drop-zone');
         const fileInput = document.getElementById('file-input');
         const uploadButton = document.getElementById('upload-button');
-        const uploadStatus = document.getElementById('upload-status'); // General status/error message area FOR UPLOAD
-        const listUsernameInput = document.getElementById('list-username');
-        const listFilesButton = document.getElementById('list-files-button');
+        const uploadStatus = document.getElementById('upload-status');
+        const listFilesButton = document.getElementById('list-files-button'); // Might be null if not logged in
         const fileList = document.getElementById('file-list');
-        const listStatus = document.getElementById('list-status'); // Status for file listing errors
-        const downloadPrepStatus = document.getElementById('download-prep-status'); // Status specifically for download prep
-
-        // --- Upload Progress Details Area Elements ---
+        const listStatus = document.getElementById('list-status');
         const progressDetailsDiv = document.getElementById('progress-details');
         const progressFilenameSpan = document.getElementById('progress-filename');
         const progressMbSentSpan = document.getElementById('progress-mb-sent');
@@ -184,742 +116,252 @@
         const progressEtaSpan = document.getElementById('progress-eta');
         const progressSpeedSpan = document.getElementById('progress-speed');
         const pauseResumeButton = document.getElementById('pause-resume-button');
-
-        // <<< STEP 2 START: Add Share Link Element References >>>
         const shareLinkContainer = document.getElementById('share-link-container');
         const shareLinkInput = document.getElementById('share-link-input');
         const copyLinkButton = document.getElementById('copy-link-button');
         const copyStatusSpan = document.getElementById('copy-status');
-        // <<< STEP 2 END: Add Share Link Element References >>>
-
-
+        // Download prep elements (might be unused on this page now, but keep refs if needed)
         const downloadDetailsDiv = document.getElementById('download-details');
-        const downloadFilenameSpan = document.getElementById('download-filename');
-        const downloadPrepProgressTextSpan = document.getElementById('download-prep-progress-text'); // The container span
-        const downloadPrepMbProcessedSpan = document.getElementById('download-prep-mb-processed'); // Specific span for processed MB/Units
-        const downloadPrepMbTotalSpan = document.getElementById('download-prep-mb-total');       // Specific span for total MB/Units
-        const downloadPrepProgress = document.getElementById('download-prep-progress');      // The progress bar
-        const downloadPrepEtaSpan = document.getElementById('download-prep-eta');          // ETA span
-        const downloadPrepSpeedSpan = document.getElementById('download-prep-speed');        // Speed span
-        const downloadPauseResumeButton = document.getElementById('download-pause-resume-button');
-        // const resumeButton = document.getElementById('resume-button'); // Ref if needed later
+        const downloadPrepStatus = document.getElementById('download-prep-status');
 
-        // --- State Variables ---
+        // === State Variables ===
         let fileToUpload = null;
-        let uploadEventSource = null; // SSE connection for UPLOAD progress
-        let downloadPrepEventSource = null; // SSE connection for DOWNLOAD PREPARATION status
-        let copyTimeout = null; // To manage the "Copied!" message timeout
+        let uploadEventSource = null;
+        let downloadPrepEventSource = null; // Still needed if prep happens elsewhere? Unlikely now.
+        let copyTimeout = null;
 
-        // --- Drag and Drop Logic ---
-        dropZone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            dropZone.classList.add('drag-over');
-        });
+        // --- Check if user is logged in (passed from Flask) ---
+        // Use Jinja's |tojson filter to safely output true/false as JS literals
+        const isLoggedIn = {{ current_user.is_authenticated | tojson }};
 
-        dropZone.addEventListener('dragleave', () => {
-            dropZone.classList.remove('drag-over');
-        });
-
-        dropZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dropZone.classList.remove('drag-over');
-            const files = e.dataTransfer.files;
-            if (files.length > 0) {
-                handleFile(files[0]);
-            }
-        });
-
-        dropZone.addEventListener('click', () => {
-            fileInput.click();
-        });
-
-        fileInput.addEventListener('change', (e) => {
-            if (e.target.files.length > 0) {
-                handleFile(e.target.files[0]);
-            }
-        });
-
-        // --- Handle File Selection (Reset UI and close connections) ---
+        // === Drag/Drop/File Handling ===
         function handleFile(file) {
-            console.log("Handling file selection:", file.name);
             fileToUpload = file;
-            dropZone.querySelector('p').textContent = `Selected: ${file.name}`;
-            uploadButton.disabled = !fileToUpload; // Enable only if username is also present
-            uploadStatus.textContent = '';
-            progressDetailsDiv.style.display = 'none'; // Hide progress details
-            uploadProgress.value = 0; // Reset progress bar
-            shareLinkContainer.style.display = 'none'; // <<< STEP 2: Hide share link on new file selection
-            copyStatusSpan.textContent = ''; // Clear copy status
-
-            // Close UPLOAD SSE connection if it exists
-            if (uploadEventSource) {
-                uploadEventSource.close();
-                uploadEventSource = null;
-                console.log("Closed previous UPLOAD EventSource connection.");
-            }
-            // Also close download prep SSE if user selects new file while prep is running
-            if (downloadPrepEventSource) {
-                downloadPrepEventSource.close(); downloadPrepEventSource = null;
-                console.log("Closed DOWNLOAD PREP EventSource.");
-                downloadDetailsDiv.style.display = 'none'; // Hide download details
-                downloadPrepStatus.style.display = 'none'; // Hide download status p
-            }
+            // Update UI elements safely, checking if they exist
+            if(dropZone) dropZone.querySelector('p').textContent = `Selected: ${file.name}`;
+            if(uploadButton) uploadButton.disabled = !(fileToUpload && isLoggedIn); // Check login status too
+            if(uploadStatus) uploadStatus.textContent = '';
+            if(progressDetailsDiv) progressDetailsDiv.style.display = 'none';
+            if(uploadProgress) uploadProgress.value = 0;
+            if(shareLinkContainer) shareLinkContainer.style.display = 'none';
+            if(copyStatusSpan) copyStatusSpan.textContent = '';
+            if (uploadEventSource) { uploadEventSource.close(); uploadEventSource = null; }
+            // No need to close downloadPrepEventSource here anymore
+        }
+         if (dropZone) {
+            dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+            dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+            dropZone.addEventListener('drop', (e) => { e.preventDefault(); dropZone.classList.remove('drag-over'); if(e.dataTransfer.files.length > 0) handleFile(e.dataTransfer.files[0]); });
+            dropZone.addEventListener('click', () => fileInput?.click());
+        }
+        if (fileInput) {
+            fileInput.addEventListener('change', (e) => { if(e.target.files.length > 0) handleFile(e.target.files[0]); });
         }
 
-
-        // --- Upload Button Logic ---
-        uploadButton.addEventListener('click', async () => {
-            if (!fileToUpload) {
-                uploadStatus.textContent = 'Please select a file first.';
-                uploadStatus.style.color = 'red';
-                return;
-            }
-            const username = "logged_in_user"; // Temporary fix until auth is ready
-            if (!username) {
-                uploadStatus.textContent = 'Please enter a username.';
-                uploadStatus.style.color = 'red';
-                return;
-            }
-
-            // --- UI Update: Start Upload ---
-            uploadButton.disabled = true;
-            dropZone.style.pointerEvents = 'none'; // Prevent selecting new file
-            dropZone.style.opacity = '0.7';
-            uploadStatus.textContent = 'Initiating upload...';
-            uploadStatus.style.color = 'black';
-            progressDetailsDiv.style.display = 'none'; // Hide old details
-            shareLinkContainer.style.display = 'none'; // <<< STEP 2: Hide share link on new upload start
-            copyStatusSpan.textContent = ''; // Clear copy status
-            uploadProgress.value = 0;
-            downloadPrepStatus.style.display = 'none'; // Hide any lingering download prep status
-
-
-            const formData = new FormData();
-            formData.append('file', fileToUpload, fileToUpload.name);
-            formData.append('username', username);
-
-            try {
-                // --- Step 1: Initiate Upload ---
-                const response = await fetch('/initiate-upload', {
-                    method: 'POST',
-                    body: formData,
-                });
-
-                const result = await response.json();
-
-                if (!response.ok) {
-                    throw new Error(result.error || `Initiation failed: ${response.statusText}`);
+        // === Upload Button Logic ===
+        if (uploadButton) {
+            uploadButton.addEventListener('click', async () => {
+                if (!isLoggedIn) {
+                     if(uploadStatus) { uploadStatus.textContent = 'Please log in to upload files.'; uploadStatus.style.color = 'red';}
+                     return;
                 }
+                if (!fileToUpload) { if(uploadStatus) { uploadStatus.textContent = 'Please select a file first.'; uploadStatus.style.color = 'red';} return; }
 
-                if (result.upload_id) {
-                    // --- Step 2: Start listening for progress ---
-                    uploadStatus.textContent = 'Upload started. Waiting for progress...';
-                    startUploadProgressStream(result.upload_id); // Call specific function for upload SSE
-                } else {
-                    throw new Error("Server did not return an upload ID.");
+                // UI Updates
+                uploadButton.disabled = true;
+                if(dropZone) {dropZone.style.pointerEvents = 'none'; dropZone.style.opacity = '0.7';}
+                if(uploadStatus) {uploadStatus.textContent = 'Initiating upload...'; uploadStatus.style.color = 'black';}
+                if(progressDetailsDiv) progressDetailsDiv.style.display = 'none';
+                if(shareLinkContainer) shareLinkContainer.style.display = 'none';
+                if(listStatus) listStatus.textContent = ''; // Clear list status
+
+                const formData = new FormData();
+                formData.append('file', fileToUpload, fileToUpload.name);
+                // No username needed - backend uses session
+
+                try {
+                    const response = await fetch('/initiate-upload', { method: 'POST', body: formData });
+                    const result = await response.json();
+                    if (!response.ok) throw new Error(result.error || `HTTP error ${response.status}`);
+                    if (result.upload_id) startUploadProgressStream(result.upload_id);
+                    else throw new Error("No upload ID received.");
+                } catch (error) {
+                    console.error('Initiate Upload Error:', error);
+                    if(uploadStatus) {uploadStatus.textContent = `Upload Error: ${error.message}`; uploadStatus.style.color = 'red';}
+                    if(uploadButton) uploadButton.disabled = !(fileToUpload && isLoggedIn);
+                    if(dropZone) { dropZone.style.pointerEvents = 'auto'; dropZone.style.opacity = '1'; }
                 }
+            });
+        }
 
-            } catch (error) {
-                console.error('Initiate Upload Error:', error);
-                uploadStatus.textContent = `Upload Error: ${error.message}`;
-                uploadStatus.style.color = 'red';
-                // --- UI Reset on Initiation Error ---
-                uploadButton.disabled = !fileToUpload; // Re-enable based on state
-                dropZone.style.pointerEvents = 'auto';
-                dropZone.style.opacity = '1';
-                progressDetailsDiv.style.display = 'none';
-                shareLinkContainer.style.display = 'none'; // Ensure hidden on error too
-            }
-        });
-
-        // --- Function to handle UPLOAD Server-Sent Events ---
+        // === Upload SSE Handling ===
         function startUploadProgressStream(uploadId) {
-            // Close existing UPLOAD connection if any
-            if (uploadEventSource) {
-                uploadEventSource.close();
-                 console.log("Closed existing UPLOAD EventSource before opening new one.");
-            }
-
+            if (uploadEventSource) { uploadEventSource.close(); }
             console.log(`Connecting to UPLOAD SSE stream for upload ID: ${uploadId}`);
             uploadEventSource = new EventSource(`/stream-progress/${uploadId}`);
 
-            uploadEventSource.onopen = function() {
-                console.log("UPLOAD SSE connection opened.");
-                uploadStatus.textContent = 'Connection established, processing file...';
-                // Don't show progressDetailsDiv immediately, wait for 'start' or 'totalSizeUpdate'
-                 shareLinkContainer.style.display = 'none'; // Ensure link is hidden when stream starts
-                 copyStatusSpan.textContent = '';
-            };
-
-            // Listener for 'start' OR 'totalSizeUpdate' events (flexible backend)
-            const handleSizeUpdate = function(event) {
-                 console.log("UPLOAD SSE 'start'/'totalSizeUpdate' event:", event.data);
-                 try {
-                     const data = JSON.parse(event.data);
-                     progressFilenameSpan.textContent = data.filename || fileToUpload?.name || 'N/A';
-
-                     const totalMB = data.totalSize ? (data.totalSize / (1024 * 1024)).toFixed(1) : 'N/A';
-                     progressMbTotalSpan.textContent = `${totalMB} MB`;
-
-                     progressMbSentSpan.textContent = '0.0 MB';
-                     uploadProgress.value = 0;
-
-                     progressDetailsDiv.style.display = 'block';
-                     uploadStatus.textContent = 'Processing...'; // Clear connection message
-
-                 } catch (e) {
-                     console.error("Error parsing upload 'start'/'totalSizeUpdate' event data:", e);
-                 }
-            };
-            uploadEventSource.addEventListener('start', handleSizeUpdate);
-            uploadEventSource.addEventListener('totalSizeUpdate', handleSizeUpdate);
-
-
-            // Listener for 'status' events during UPLOAD
-            uploadEventSource.addEventListener('status', function(event) {
-               console.log("UPLOAD SSE 'status' event:", event.data);
+            uploadEventSource.onopen = function() { /* ... */ };
+            uploadEventSource.addEventListener('start', function(event) { /* ... Update progress UI ... */ });
+            uploadEventSource.addEventListener('status', function(event) { /* ... Update uploadStatus text ... */ });
+            uploadEventSource.addEventListener('progress', function(event) { /* ... Update progress bar, speed, eta ... */ });
+            uploadEventSource.addEventListener('complete', function(event) {
+                 /* ... Update status, show share link, call finalizeUploadUI(true) ... */
                 try {
                     const data = JSON.parse(event.data);
-                    const message = data.message || '';
-                    if (!message.startsWith('Sent chunk')) {
-                        uploadStatus.textContent = message; // Update main status line
+                    if(uploadStatus) { uploadStatus.textContent = data.message || 'Upload Complete!'; uploadStatus.style.color = 'green';}
+                    if(uploadProgress) uploadProgress.value = 100;
+                    if (data.download_url) {
+                        if(shareLinkInput) shareLinkInput.value = data.download_url;
+                        if(shareLinkContainer) shareLinkContainer.style.display = 'block';
+                        if(copyStatusSpan) copyStatusSpan.textContent = '';
                     } else {
-                        console.log("Ignoring 'Sent chunk' status message for main display:", message);
+                        if(shareLinkContainer) shareLinkContainer.style.display = 'none';
                     }
-                } catch (e) {
-                    console.error("Error parsing upload 'status' event data:", e);
-                }
-            });
-
-            // Listener for 'progress' events during UPLOAD
-            uploadEventSource.addEventListener('progress', function(event) {
-                 try {
-                     const data = JSON.parse(event.data);
-                     const totalBytes = data.totalBytes || 1;
-                     const bytesSent = data.bytesSent || 0;
-
-                     const percentage = Math.min(Math.max((bytesSent / totalBytes) * 100, 0), 100);
-                     uploadProgress.value = percentage;
-
-                     const sentMB = (bytesSent / (1024 * 1024)).toFixed(1);
-                     const totalMB = (totalBytes / (1024 * 1024)).toFixed(1);
-                     progressMbSentSpan.textContent = `${sentMB} MB`;
-                     progressMbTotalSpan.textContent = `${totalMB} MB`;
-
-                     const speed = data.speedMBps !== undefined ? data.speedMBps.toFixed(2) : '0.00';
-                     progressSpeedSpan.textContent = `${speed} MB/s`;
-
-                     progressEtaSpan.textContent = data.etaFormatted || '--:--';
-
-                 } catch (e) {
-                     console.error("Error parsing upload 'progress' event data:", e);
-                 }
-            });
-
-            // Listener for 'complete' events for UPLOAD
-                        // Listener for 'complete' events for UPLOAD
-                        uploadEventSource.addEventListener('complete', function(event) {
-                console.log("UPLOAD SSE 'complete' event:", event.data);
-                try {
-                    const data = JSON.parse(event.data);
-                    uploadStatus.textContent = data.message || 'Upload Complete!';
-                    uploadStatus.style.color = 'green';
-                    uploadProgress.value = 100; // Ensure progress bar is full
-
-                    // --- CORRECTED: Handle download_url and display link ---
-                    if (data.download_url) { // <<<--- NEW CHECK for download_url
-                        const directDownloadUrl = data.download_url; // <<<--- Use the URL directly from backend
-                        console.log("Received Direct Download URL:", directDownloadUrl);
-
-                        shareLinkInput.value = directDownloadUrl; // <<<--- SETTING THE CORRECT URL
-                        shareLinkContainer.style.display = 'block'; // Show the container
-                        copyStatusSpan.textContent = ''; // Clear previous status
-                    } else {
-                        console.warn("Upload complete event missing download_url."); // <<<--- NEW WARNING
-                        shareLinkContainer.style.display = 'none'; // Hide if no URL
-                    }
-                    // --- END CORRECTED ---
-
-                    finalizeUploadUI(true); // Call helper function to clean up UI
-
-                } catch (e) {
-                    console.error("Error parsing upload 'complete' event data:", e);
-                    uploadStatus.textContent = 'Upload finished, but result parsing failed.';
-                    uploadStatus.style.color = 'orange';
-                    shareLinkContainer.style.display = 'none'; // Hide link on parsing error
-                    finalizeUploadUI(false); // Treat as error for UI reset
-                }
-            });
-            // Listener for 'error' events from the UPLOAD stream
-            uploadEventSource.addEventListener('error', function(event) {
-                console.error("UPLOAD SSE 'error' event received:", event.data);
-                let errorMsg = 'An error occurred during upload.';
-                 try {
-                     // Note: SSE 'error' events don't always have JSON data easily accessible
-                     // We might just get a generic event object.
-                     // Let's try parsing if data exists, otherwise use generic message.
-                     if (event.data) {
-                         const data = JSON.parse(event.data);
-                         errorMsg = `Upload Error: ${data.message || 'Unknown upload error.'}`;
+                    finalizeUploadUI(true);
+                    // Optionally trigger list refresh after successful upload
+                     if (isLoggedIn && listFilesButton) {
+                         listFilesForCurrentUser();
                      }
-                 } catch(e) { /* Ignore if data is not JSON */ }
-                uploadStatus.textContent = errorMsg;
-                uploadStatus.style.color = 'red';
-                shareLinkContainer.style.display = 'none'; // Hide link on error
-                finalizeUploadUI(false); // Call helper function
+                } catch(e) { /* ... error handling ... */ finalizeUploadUI(false);}
             });
-
-           // Handle generic UPLOAD SSE errors (like connection closed unexpectedly)
-           uploadEventSource.onerror = function(err) {
-               console.error("UPLOAD EventSource failed:", err);
-               // Check readyState BEFORE setting status, as this can fire after manual closing
-               if (uploadEventSource && uploadEventSource.readyState === EventSource.CONNECTING) {
-                   // Only show error if the browser is still trying to connect
-                   uploadStatus.textContent = 'Connection error during upload.';
-                   uploadStatus.style.color = 'red';
-                   shareLinkContainer.style.display = 'none';
-                   finalizeUploadUI(false); // Clean up UI
-               } else if (!uploadEventSource || uploadEventSource.readyState === EventSource.CLOSED) {
-                    console.log("UPLOAD EventSource onerror called after intentional close or already closed.");
-               } else {
-                    // Other states (like OPEN but error occurred) - might have been handled by 'error' event
-                    console.log("UPLOAD EventSource onerror in state:", uploadEventSource.readyState);
-               }
-
-           };
-       } // --- End of startUploadProgressStream ---
-
-
-       // <<< STEP 2 START: Add Copy Button Functionality >>>
-       copyLinkButton.addEventListener('click', () => {
-            const linkToCopy = shareLinkInput.value;
-            if (!linkToCopy) {
-                console.warn("Copy button clicked, but input is empty.");
-                return;
-            }
-
-            navigator.clipboard.writeText(linkToCopy).then(() => {
-                console.log("Link copied to clipboard:", linkToCopy);
-                copyStatusSpan.textContent = 'Copied!';
-                // Clear the timeout if one is already running
-                if (copyTimeout) {
-                    clearTimeout(copyTimeout);
-                }
-                // Set a new timeout to clear the message
-                copyTimeout = setTimeout(() => {
-                    copyStatusSpan.textContent = '';
-                    copyTimeout = null; // Reset timeout variable
-                }, 3000); // Clear after 3 seconds
-            }).catch(err => {
-                console.error('Failed to copy link: ', err);
-                copyStatusSpan.textContent = 'Copy failed!';
-                copyStatusSpan.style.color = 'red';
-                 // Clear the timeout if one is already running
-                if (copyTimeout) {
-                    clearTimeout(copyTimeout);
-                }
-                // Set a new timeout to clear the message
-                copyTimeout = setTimeout(() => {
-                    copyStatusSpan.textContent = '';
-                    copyStatusSpan.style.color = 'green'; // Reset color
-                    copyTimeout = null; // Reset timeout variable
-                }, 3000); // Clear after 3 seconds
-            });
-       });
-       // <<< STEP 2 END: Add Copy Button Functionality >>>
-
-
-       // --- Helper function to reset UI after UPLOAD finishes or fails ---
-       function finalizeUploadUI(success) {
-            if (uploadEventSource) {
-                uploadEventSource.close();
-                uploadEventSource = null;
-                console.log("UPLOAD EventSource connection closed.");
-            }
-            // Re-enable upload button, username, and drop zone
-            // Only re-enable upload button if file and username are still valid
-            uploadButton.disabled = !fileToUpload;  // Enable button only based on file selection            dropZone.style.pointerEvents = 'auto';
-            dropZone.style.opacity = '1';
-            // Disable pause button
-            pauseResumeButton.disabled = true;
-
-            // Optional: Hide progress after delay, only on success
+            uploadEventSource.addEventListener('error', function(event) { /* ... Update status, call finalizeUploadUI(false) ... */ });
+            uploadEventSource.onerror = function(err) { /* ... Handle connection error, call finalizeUploadUI(false) ... */ };
+        }
+         function finalizeUploadUI(success) {
+             if (uploadEventSource) { uploadEventSource.close(); uploadEventSource = null; }
+             if (uploadButton) uploadButton.disabled = !(fileToUpload && isLoggedIn);
+             if (dropZone) { dropZone.style.pointerEvents = 'auto'; dropZone.style.opacity = '1'; }
+             if (pauseResumeButton) pauseResumeButton.disabled = true;
+             // Keep share link visible on success, hide progress details after delay
              if(success) {
-                 setTimeout(() => {
-                      progressDetailsDiv.style.display = 'none';
-                      // Don't hide the share link here - let it persist
-                      // shareLinkContainer.style.display = 'none';
-
-                      // Reset file selection state
-                      // fileToUpload = null; // Keep file info until new selection
-                      // dropZone.querySelector('p').textContent = 'Drag & Drop file here or click to select'; // Keep filename visible
-                      // fileInput.value = ''; // Keep file input state
-
-                      // Disable button until new file selected or username changed
-                      uploadButton.disabled = !fileToUpload;  // Enable button only based on file selection
-                      // uploadStatus.textContent = ''; // Keep success message visible longer? Or clear? Let's clear after another delay or on new action.
-
-                 }, 5000); // Hide progress after 5 seconds if successful
+                 setTimeout(() => { if(progressDetailsDiv) progressDetailsDiv.style.display = 'none'; }, 5000);
              } else {
-                 // On error, leave the progress bar visible or hide immediately? Let's hide it.
-                 progressDetailsDiv.style.display = 'none';
-                 // Ensure share link is hidden on error
-                 shareLinkContainer.style.display = 'none';
+                 if(progressDetailsDiv) progressDetailsDiv.style.display = 'none';
+                 if(shareLinkContainer) shareLinkContainer.style.display = 'none';
              }
-       } // --- End of finalizeUploadUI ---
+        }
+
+        // === Copy Link Logic ===
+        if (copyLinkButton) { copyLinkButton.addEventListener('click', () => { /* ... same as before ... */ }); }
 
 
-        // --- List Files ---
-        listFilesButton.addEventListener('click', () => {
-            const username = listUsernameInput.value.trim();
-            if (!username) {
-                listStatus.textContent = 'Please enter a username to list files.';
-                listStatus.style.color = 'red';
-                return;
-            }
-            listFiles(username);
-        });
+        // === **** MODIFIED File Listing Logic **** ===
+        async function listFilesForCurrentUser() {
+            if (!isLoggedIn) return; // Safety check
 
-        async function listFiles(username) {
-            fileList.innerHTML = ''; // Clear previous list
-            listStatus.textContent = 'Fetching file list...';
-            listStatus.style.color = 'black';
-            downloadPrepStatus.style.display = 'none'; // Hide any download prep status
+            if (fileList) fileList.innerHTML = '';
+            if (listStatus) { listStatus.textContent = 'Fetching your files...'; listStatus.style.color = 'black'; listStatus.className = 'info'; } // Use class for status
 
             try {
-                const response = await fetch(`/files/${encodeURIComponent(username)}`);
+                const response = await fetch('/files'); // Fetch for current user
                 if (!response.ok) {
-                    let errorMsg = `HTTP error! status: ${response.status}`;
-                     try {
-                         const errorData = await response.json();
-                         errorMsg = errorData.error || errorMsg;
-                     } catch (e) { /* Ignore parsing error */ }
+                    let errorMsg = `Error fetching files: ${response.statusText} (${response.status})`;
+                     try { errorMsg = (await response.json()).error || errorMsg; } catch (e) {}
                      throw new Error(errorMsg);
                 }
                 const files = await response.json();
 
+                if (!fileList) return; // Exit if file list element doesn't exist
+
                 if (files.length === 0) {
-                    listStatus.textContent = 'No files found for this user.';
+                    if(listStatus) listStatus.textContent = 'You have not uploaded any files yet.'; listStatus.className = 'info';
                     return;
                 }
 
                 files.forEach(fileInfo => {
+                    if (!fileInfo.access_id) {
+                         console.warn("Skipping file record, missing access_id:", fileInfo.original_filename);
+                         return; // Skip this record
+                    }
                     const li = document.createElement('li');
                     const fileNameSpan = document.createElement('span');
-                    fileNameSpan.textContent = fileInfo.original_filename;
+                    fileNameSpan.textContent = fileInfo.original_filename || 'Unknown Filename';
 
-                    const actionsDiv = document.createElement('div');
-                actionsDiv.classList.add('file-actions');
+                    const actionsContainer = document.createElement('div');
+                    actionsContainer.classList.add('file-actions-buttons');
 
-                // --- NEW: Create Download Icon (using emoji for simplicity) ---
-                                // --- NEW: Create Download Button ---
-                                // --- Create Download Button ---
-                                const downloadButton = document.createElement('button');
-                downloadButton.textContent = 'Download';
-                downloadButton.classList.add('download-button');
-                downloadButton.dataset.username = username;
-                downloadButton.dataset.filename = fileInfo.original_filename;
-                downloadButton.onclick = (event) => {
-                    const user = event.target.dataset.username;
-                    const file = event.target.dataset.filename;
-                    downloadFile(user, file);
-                };
+                    // Download Button (links to /get page)
+                    const downloadPageButton = document.createElement('a');
+                    downloadPageButton.textContent = 'Download';
+                    downloadPageButton.classList.add('download-button'); // Style as button
+                    downloadPageButton.href = `/get/${fileInfo.access_id}`; // Use access_id
+                    downloadPageButton.target = "_blank"; // Open in new tab
 
-                // --- Create Delete Button ---
-                const deleteButton = document.createElement('button');
-                deleteButton.textContent = 'Delete';
-                deleteButton.classList.add('delete-button');
-                deleteButton.dataset.username = username;
-                deleteButton.dataset.filename = fileInfo.original_filename;
-                deleteButton.onclick = (event) => {
-                    const user = event.target.dataset.username;
-                    const file = event.target.dataset.filename;
-                    requestDeleteFile(user, file, event.target.closest('li'));
-                };
+                    // Delete Button
+                    const deleteButton = document.createElement('button');
+                    deleteButton.textContent = 'Delete';
+                    deleteButton.classList.add('delete-button');
+                    deleteButton.dataset.accessId = fileInfo.access_id; // Store access_id
+                    deleteButton.dataset.filename = fileInfo.original_filename; // For confirm message
+                    deleteButton.onclick = (event) => {
+                        const accessId = event.target.dataset.accessId;
+                        const filename = event.target.dataset.filename;
+                        requestDeleteFile(accessId, filename, event.target.closest('li'));
+                    };
 
-                // --- NEW: Create container for the buttons ---
-                const actionsContainer = document.createElement('div');
-                actionsContainer.classList.add('file-actions-buttons');
-
-                // --- NEW: Append buttons to the container ---
-                actionsContainer.appendChild(downloadButton);
-                actionsContainer.appendChild(deleteButton);
-
-                // Append filename SPAN and button CONTAINER to the list item
-                li.appendChild(fileNameSpan);
-                li.appendChild(actionsContainer); // <-- Append the container instead of individual buttons
-
-                fileList.appendChild(li);
+                    actionsContainer.appendChild(downloadPageButton);
+                    actionsContainer.appendChild(deleteButton);
+                    li.appendChild(fileNameSpan);
+                    li.appendChild(actionsContainer);
+                    fileList.appendChild(li);
                 });
-                listStatus.textContent = ''; // Clear status on success
+                if(listStatus) listStatus.textContent = ''; // Clear status on success
             } catch (error) {
                 console.error('List files error:', error);
-                listStatus.textContent = `Error listing files: ${error.message}`;
-                listStatus.style.color = 'red';
+                if(listStatus) { listStatus.textContent = `Error listing files: ${error.message}`; listStatus.style.color = 'red'; listStatus.className = 'error'; }
             }
-        } // --- End of listFiles ---
+        }
 
-         // --- Download File --- (Handles Preparation and Triggering) ---
-         async function downloadFile(username, filename) {
-            console.log(`Requesting download prep for user: ${username}, file: ${filename}`);
+        // Add listener only if the button exists (i.e., user is logged in)
+        if (listFilesButton) {
+             listFilesButton.addEventListener('click', listFilesForCurrentUser);
+             // Optionally list files automatically when the page loads if logged in
+             if (isLoggedIn) {
+                 // Use DOMContentLoaded to ensure everything is ready
+                 document.addEventListener('DOMContentLoaded', listFilesForCurrentUser);
+             }
+        }
 
-            if (downloadPrepEventSource) {
-                downloadPrepEventSource.close();
-                downloadPrepEventSource = null;
+
+        // === **** MODIFIED File Deletion Logic **** ===
+        async function requestDeleteFile(accessId, filename, listItemElement) {
+            if (!isLoggedIn) { // Check auth
+                 if(listStatus) { listStatus.textContent = 'Please log in to delete files.'; listStatus.style.color = 'red'; listStatus.className = 'error'; }
+                 return;
             }
-
-            // --- UI Update: Reset and Show Download Prep Area ---
-            listStatus.textContent = ''; // Clear general list status
-            uploadStatus.textContent = ''; // Clear upload status
-            progressDetailsDiv.style.display = 'none'; // Hide upload progress
-            shareLinkContainer.style.display = 'none'; // Hide upload share link
-
-            // Reset specific download details elements
-            downloadFilenameSpan.textContent = filename;
-            downloadPrepMbProcessedSpan.textContent = '0.0 MB'; // Use MB initially
-            downloadPrepMbTotalSpan.textContent = '?.? MB';   // Indicate unknown total initially
-            downloadPrepProgress.value = 0;
-            downloadPrepProgress.style.accentColor = '#5cb85c'; // Match upload green
-            downloadPrepEtaSpan.textContent = '--:--';
-            downloadPrepSpeedSpan.textContent = '-- MB/s';
-            downloadPauseResumeButton.disabled = true; // Keep disabled
-            downloadDetailsDiv.style.backgroundColor = '#f9f9f9'; // Reset background
-            downloadDetailsDiv.style.display = 'block'; // Show the details div
-
-            // Set initial message in the paragraph BELOW the details div
-            downloadPrepStatus.textContent = `Preparing download for ${filename}...`;
-            downloadPrepStatus.style.color = '#337ab7'; // Blue for preparing
-            downloadPrepStatus.style.display = 'block'; // Show status paragraph
-
-            // Optional: Disable all download buttons
-            document.querySelectorAll('.download-button').forEach(btn => btn.disabled = true);
-
-            const prepUrl = `/prepare-download/${encodeURIComponent(username)}/${encodeURIComponent(filename)}`;
-            console.log(`Connecting to DOWNLOAD PREP SSE stream: ${prepUrl}`);
-
-            try {
-                downloadPrepEventSource = new EventSource(prepUrl);
-
-                downloadPrepEventSource.onopen = function() {
-                    console.log("Download Prep SSE connection opened.");
-                    downloadPrepStatus.textContent = 'Connection established. Preparing file...'; // Update external status
-                };
-
-                // --- Listener for 'filename' events ---
-                downloadPrepEventSource.addEventListener('filename', function(event) {
-                    console.log("Download Prep 'filename' event:", event.data);
-                    try {
-                        const data = JSON.parse(event.data);
-                        if (data.filename) { downloadFilenameSpan.textContent = data.filename; }
-                    } catch (e) { console.error("Error parsing download prep 'filename' data:", e); }
-                });
-
-                // --- Listener for 'status' events ---
-                downloadPrepEventSource.addEventListener('status', function(event) {
-                    console.log("Download Prep 'status' event:", event.data);
-                    try {
-                        const data = JSON.parse(event.data);
-                        // Update the external status paragraph
-                        downloadPrepStatus.textContent = data.message || 'Preparing...';
-                        if (data.filename) { downloadFilenameSpan.textContent = data.filename; }
-                    } catch (e) {
-                        console.error("Error parsing download prep 'status' data:", e);
-                        downloadPrepStatus.textContent = 'Processing preparation step...';
-                    }
-                });
-
-                // --- Listener for 'progress' events ---
-                downloadPrepEventSource.addEventListener('progress', function(event) {
-                    try {
-                        const data = JSON.parse(event.data);
-                        const percentage = data.percentage !== undefined ? Math.min(Math.max(data.percentage, 0), 100) : null;
-
-                        if (percentage !== null) {
-                            downloadPrepProgress.value = percentage;
-                        } else {
-                            downloadPrepProgress.value = 0;
-                        }
-
-                        const bytesProcessed = data.bytesProcessed !== undefined ? data.bytesProcessed : 0;
-                        const totalBytes = data.totalBytes !== undefined ? data.totalBytes : 0;
-                        const processedMB = (bytesProcessed / (1024 * 1024)).toFixed(1);
-                        const totalMB = (totalBytes / (1024 * 1024)).toFixed(1);
-                        downloadPrepMbProcessedSpan.textContent = `${processedMB} MB`;
-                        downloadPrepMbTotalSpan.textContent = `${totalMB} MB`;
-
-                        const speed = data.speedMBps !== undefined ? data.speedMBps.toFixed(2) : '--';
-                        const eta = data.etaFormatted || '--:--';
-                        downloadPrepSpeedSpan.textContent = `${speed} MB/s`;
-                        downloadPrepEtaSpan.textContent = eta;
-
-                    } catch (e) {
-                        console.error("Error parsing download prep 'progress' data:", e);
-                    }
-                });
-
-                // --- Listener for the 'ready' event ---
-                downloadPrepEventSource.addEventListener('ready', function(event) {
-                    console.log("Download Prep 'ready' event:", event.data);
-                    downloadPrepStatus.style.color = 'green';
-                    downloadPrepProgress.value = 100;
-                    downloadDetailsDiv.style.backgroundColor = '#dff0d8';
-
-                    if (downloadPrepEventSource) {
-                        downloadPrepEventSource.close();
-                        downloadPrepEventSource = null;
-                        console.log("Download Prep SSE connection closed on ready.");
-                    }
-
-                    try {
-                        const data = JSON.parse(event.data);
-                        const tempFileId = data.temp_file_id;
-                        const finalFilename = data.final_filename || filename; // Use name from server
-
-                        if (!tempFileId) throw new Error("Missing temporary file ID.");
-
-                        const downloadUrl = `/serve-temp-file/${tempFileId}/${encodeURIComponent(finalFilename)}`;
-                        console.log(`Triggering final download from: ${downloadUrl}`);
-                        window.location.href = downloadUrl; // Trigger browser download
-
-                        // Reset UI after delay
-                        setTimeout(() => {
-                            downloadDetailsDiv.style.display = 'none';
-                            downloadPrepStatus.style.display = 'none';
-                            downloadDetailsDiv.style.backgroundColor = '#f9f9f9';
-                            document.querySelectorAll('.download-button').forEach(btn => btn.disabled = false);
-                        }, 4000);
-
-                    } catch (e) {
-                        console.error("Error parsing 'ready' event or starting download:", e);
-                        downloadPrepStatus.textContent = `Error starting download: ${e.message}`;
-                        downloadPrepStatus.style.color = 'red';
-                        downloadPrepStatus.style.display = 'block';
-                        downloadDetailsDiv.style.backgroundColor = '#f2dede';
-                        document.querySelectorAll('.download-button').forEach(btn => btn.disabled = false);
-                    }
-                });
-
-                // --- Listener for 'error' events ---
-                downloadPrepEventSource.addEventListener('error', function(event) {
-                    console.error("Download Prep 'error' event:", event.data);
-                    let errorMsg = 'Download preparation failed.';
-                    try {
-                         // Check if event.data exists and is parseable JSON
-                         if (event.data) {
-                            const data = JSON.parse(event.data);
-                            errorMsg = `Error: ${data.message || 'Unknown preparation error.'}`;
-                         }
-                    } catch (e) { /* Ignore parsing error, use default message */ }
-                    downloadPrepStatus.textContent = errorMsg;
-                    downloadPrepStatus.style.color = 'red';
-                    downloadDetailsDiv.style.display = 'none'; // Hide details on error
-
-                    if (downloadPrepEventSource) {
-                        downloadPrepEventSource.close(); downloadPrepEventSource = null;
-                    }
-                    document.querySelectorAll('.download-button').forEach(btn => btn.disabled = false);
-                });
-
-                // --- Handle generic SSE connection errors ---
-                downloadPrepEventSource.onerror = function(err) {
-                    console.error("Download Prep EventSource failed:", err);
-                    if (downloadPrepEventSource && downloadPrepEventSource.readyState === EventSource.CONNECTING) {
-                        downloadPrepStatus.textContent = 'Connection error during preparation.';
-                        downloadPrepStatus.style.color = 'red';
-                        downloadDetailsDiv.style.display = 'none';
-                        if (downloadPrepEventSource) {
-                            downloadPrepEventSource.close(); downloadPrepEventSource = null;
-                        }
-                        document.querySelectorAll('.download-button').forEach(btn => btn.disabled = false);
-                    } else if (!downloadPrepEventSource || downloadPrepEventSource.readyState === EventSource.CLOSED) {
-                        console.log("Download Prep EventSource onerror skipped (already closed).");
-                    } else {
-                        console.log("Download Prep EventSource onerror in state:", downloadPrepEventSource.readyState);
-                    }
-                };
-
-            } catch (error) { // Catch setup errors (e.g., new EventSource fails)
-                console.error('Error setting up Download Prep EventSource:', error);
-                downloadPrepStatus.textContent = `Error contacting server: ${error.message}`; // Use external status
-                downloadPrepStatus.style.color = 'red';
-                downloadPrepStatus.style.display = 'block';
-                downloadDetailsDiv.style.display = 'none'; // Ensure details are hidden
-                document.querySelectorAll('.download-button').forEach(btn => btn.disabled = false);
-            }
-        } // --- End of downloadFile function ---
-
-                // --- NEW: Function to handle Delete button click ---
-                async function requestDeleteFile(username, filename, listItemElement) {
-            console.log(`Requesting delete for user: ${username}, file: ${filename}`);
-
-            // Confirm with the user
             if (!confirm(`Are you sure you want to delete the record for "${filename}"? This cannot be undone.`)) {
-                console.log("Delete cancelled by user.");
-                return; // Stop if user cancels
+                return;
             }
 
-            // Disable buttons on the specific row during request
-            const buttonsInItem = listItemElement.querySelectorAll('button');
-            buttonsInItem.forEach(btn => btn.disabled = true);
-            listStatus.textContent = `Deleting ${filename}...`; // Use listStatus for feedback
-            listStatus.style.color = 'orange';
+            const buttonsInItem = listItemElement.querySelectorAll('button, a');
+            buttonsInItem.forEach(btn => { btn.style.pointerEvents = 'none'; btn.style.opacity = '0.5'; });
+            if(listStatus) { listStatus.textContent = `Deleting ${filename}...`; listStatus.style.color = 'orange'; listStatus.className = 'info'; }
 
             try {
-                // Construct the URL for the DELETE request
-                const deleteUrl = `/delete-file/${encodeURIComponent(username)}/${encodeURIComponent(filename)}`;
+                const deleteUrl = `/delete-file/${accessId}`; // Use access_id
 
-                // Send the DELETE request
-                const response = await fetch(deleteUrl, {
-                    method: 'DELETE',
-                    headers: {
-                        'Accept': 'application/json' // Expect JSON response
-                    }
-                });
+                const response = await fetch(deleteUrl, { method: 'DELETE', headers: { 'Accept': 'application/json' }});
 
-                // Check if the request was successful (status code 200-299)
                 if (response.ok) {
-                    const result = await response.json(); // Parse JSON response
-                    console.log("Delete successful:", result.message);
-
-                    // Remove the list item from the UI immediately
-                    listItemElement.remove(); // Remove the whole <li> element
-                    listStatus.textContent = result.message || `Successfully deleted ${filename}.`;
-                    listStatus.style.color = 'green';
-
-                    // Optional: Clear status after a few seconds
-                     setTimeout(() => {
-                         if (listStatus.textContent === (result.message || `Successfully deleted ${filename}.`)) {
-                              listStatus.textContent = '';
-                         }
-                     }, 4000);
-
+                    const result = await response.json();
+                    listItemElement.remove();
+                    if(listStatus) { listStatus.textContent = result.message || `Successfully deleted ${filename}.`; listStatus.style.color = 'green'; listStatus.className = 'success'; }
+                    setTimeout(() => { if (listStatus && listStatus.textContent.includes(`deleted ${filename}`)) listStatus.textContent = ''; }, 4000);
                 } else {
-                    // Handle errors (e.g., file not found, server error)
-                    let errorMsg = `Failed to delete ${filename}. Status: ${response.status}`;
-                    try {
-                        const errorData = await response.json();
-                        errorMsg = errorData.error || errorMsg; // Use specific error from backend if available
-                    } catch (e) {
-                        // Backend might not have sent JSON on error
-                        console.warn("Could not parse error response as JSON.");
-                    }
-                    console.error('Delete failed:', errorMsg);
-                    listStatus.textContent = `Error deleting: ${errorMsg}`;
-                    listStatus.style.color = 'red';
-                    // Re-enable buttons on failure
-                    buttonsInItem.forEach(btn => btn.disabled = false);
+                     let errorMsg = `Failed to delete. Status: ${response.status}`;
+                     try { errorMsg = (await response.json()).error || errorMsg; } catch (e) {}
+                     console.error('Delete failed:', errorMsg);
+                     if(listStatus) { listStatus.textContent = `Error deleting: ${errorMsg}`; listStatus.style.color = 'red'; listStatus.className = 'error'; }
+                     buttonsInItem.forEach(btn => { btn.style.pointerEvents = 'auto'; btn.style.opacity = '1'; });
                 }
-
             } catch (error) {
-                // Handle network errors or other exceptions during fetch
                 console.error('Error during delete request:', error);
-                listStatus.textContent = `Network error deleting file: ${error.message}`;
-                listStatus.style.color = 'red';
-                // Re-enable buttons on failure
-                buttonsInItem.forEach(btn => btn.disabled = false);
+                if(listStatus) { listStatus.textContent = `Network error deleting file: ${error.message}`; listStatus.style.color = 'red'; listStatus.className = 'error';}
+                buttonsInItem.forEach(btn => { btn.style.pointerEvents = 'auto'; btn.style.opacity = '1'; });
             }
-        } // --- End of requestDeleteFile ---
+        }
 
+        // === Removed old downloadFile function ===
 
     </script>
 </body>

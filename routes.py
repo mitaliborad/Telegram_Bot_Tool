@@ -232,27 +232,62 @@ def index() -> str:
 @app.route('/initiate-upload', methods=['POST'])
 def initiate_upload() -> Response:
     logging.info("Request initiate upload.")
-    if 'file' not in request.files: return jsonify({"error": "No file part"}), 400
-    # username = "admin"
-    # if not username: return jsonify({"error": "Username required"}), 400
-    user_identifier = current_user.email
-    logging.info(f"Upload initiated by user: {user_identifier}")
-    
+    upload_id = str(uuid.uuid4()) # Generate ID early for logging
+
+    if 'file' not in request.files:
+        logging.warning(f"[{upload_id}] Initiate upload failed: 'file' part missing.")
+        return jsonify({"error": "No file part"}), 400
+
     file = request.files['file']
-    if not file or file.filename == '': return jsonify({"error": "No file selected"}), 400
-    original_filename = file.filename; upload_id = str(uuid.uuid4())
+    if not file or file.filename == '':
+        logging.warning(f"[{upload_id}] Initiate upload failed: No file selected.")
+        return jsonify({"error": "No file selected"}), 400
+
+    original_filename = file.filename
+
+    # --- STEP 3.1 Start: Check Authentication ---
+    is_anonymous_upload = not current_user.is_authenticated
+    user_email = None
+    display_username = "anonymous" # Default for anonymous
+
+    if not is_anonymous_upload:
+        # User is logged in, get their details
+        user_email = current_user.email
+        display_username = current_user.username
+        logging.info(f"[{upload_id}] Authenticated upload initiated by user: Email='{user_email}', Username='{display_username}'")
+    else:
+        logging.info(f"[{upload_id}] Anonymous upload initiated.")
+    # --- STEP 3.1 End: Check Authentication ---
+
     temp_file_path = os.path.join(UPLOADS_TEMP_DIR, f"{upload_id}_{original_filename}")
-    logging.info(f"[{upload_id}] Temp storage: {temp_file_path}")
+    logging.info(f"[{upload_id}] Temp storage path: {temp_file_path}")
+
     try:
-        os.makedirs(UPLOADS_TEMP_DIR, exist_ok=True); file.save(temp_file_path)
-        logging.info(f"[{upload_id}] Temp saved: '{original_filename}'.")
-        upload_progress_data[upload_id] = { "status": "initiated", "original_filename": original_filename, "temp_file_path": temp_file_path, "username": current_user.username,"user_email": user_identifier, "error": None, "start_time": time.time() }
-        logging.debug(f"[{upload_id}] Initial progress data stored.")
+        os.makedirs(UPLOADS_TEMP_DIR, exist_ok=True)
+        file.save(temp_file_path)
+        logging.info(f"[{upload_id}] Temp file saved: '{original_filename}'.")
+
+        # --- Store info including anonymous flag ---
+        upload_progress_data[upload_id] = {
+            "status": "initiated",
+            "original_filename": original_filename,
+            "temp_file_path": temp_file_path,
+            "username": display_username,     # Store display name (could be "anonymous")
+            "user_email": user_email,         # Store email (is None if anonymous)
+            "is_anonymous": is_anonymous_upload, # <<< ADDED FLAG
+            "error": None,
+            "start_time": time.time()
+         }
+        logging.debug(f"[{upload_id}] Initial progress data stored: {upload_progress_data[upload_id]}")
+
         return jsonify({"upload_id": upload_id, "filename": original_filename})
+
     except Exception as e:
         logging.error(f"Err saving temp '{original_filename}' (ID:{upload_id}): {e}", exc_info=True)
-        if os.path.exists(temp_file_path): _safe_remove_file(temp_file_path, upload_id, "partial temp")
-        if upload_id in upload_progress_data: del upload_progress_data[upload_id]
+        if os.path.exists(temp_file_path):
+            _safe_remove_file(temp_file_path, upload_id, "partial temp") # Ensure _safe_remove_file is accessible
+        if upload_id in upload_progress_data:
+             del upload_progress_data[upload_id] # Clean up progress data on error
         return jsonify({"error": f"Server error saving file: {e}"}), 500
 
 @app.route('/stream-progress/<upload_id>')
@@ -1102,89 +1137,3 @@ def logout():
     flash('You have been successfully logged out.', 'success')
     return redirect(url_for('login'))
 
-# --- User Registration Route ---
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    """Handle both registration page display and form submission"""
-    if request.method == 'GET':
-        logging.info("Serving registration page.")
-        try:
-            return render_template('register.html')
-        except Exception as e:
-            logging.error(f"Error rendering register.html: {e}", exc_info=True)
-            return make_response("Error loading page.", 500)
-    
-    if request.method == 'POST':
-        logging.info("Received registration request.")
-        try:
-            # [Your existing POST handling logic here]
-            return jsonify({"message": "Registration successful!"}), 201
-            
-        except Exception as e:
-            logging.error(f"Registration error: {str(e)}", exc_info=True)
-            return jsonify({"error": "Internal server error"}), 500
-
-    # --- 1. Get Data from Request Form ---
-    # Use .get() with default '' to avoid KeyError if field is missing
-    username = request.form.get('username', '').strip()
-    email = request.form.get('email', '').strip()
-    password = request.form.get('password', '') 
-    confirmPassword = request.form.get('confirmPassword', '')
-    # You might want to check the agreement checkboxes too, depending on requirements
-    # agreeTerms = request.form.get('agreeTerms') == 'on' # Example
-
-    # --- 2. Basic Validation ---
-    if not all([username, email, password, confirmPassword]):
-        logging.warning("Registration failed: Missing required fields.")
-        return make_response(jsonify({"error": "Please fill in all required fields."}), 400)
-
-    if password != confirmPassword:
-        logging.warning("Registration failed: Passwords do not match.")
-        return make_response(jsonify({"error": "Passwords do not match."}), 400)
-
-    # Basic email format check (not exhaustive)
-    if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
-         logging.warning(f"Registration failed: Invalid email format '{email}'.")
-         return make_response(jsonify({"error": "Invalid email format."}), 400)
-
-    # --- 3. Check if User Already Exists ---
-    existing_user, db_error = find_user_by_email(email)
-    if db_error:
-        logging.error(f"Database error checking email '{email}': {db_error}")
-        return make_response(jsonify({"error": "Server error during registration. Please try again."}), 500)
-    if existing_user:
-        logging.warning(f"Registration failed: Email '{email}' already exists.")
-        return make_response(jsonify({"error": "An account with this email address already exists."}), 409) # 409 Conflict
-
-    # --- 4. Hash the Password ---
-    # Use a strong hashing method like sha256 or bcrypt (default method is good)
-    try:
-        # Let werkzeug handle salt generation etc.
-        hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
-    except Exception as e:
-        logging.error(f"Password hashing failed: {e}", exc_info=True)
-        return make_response(jsonify({"error": "Server error during registration processing."}), 500)
-
-    # --- 5. Prepare User Document for Database ---
-    new_user_data = {
-        "username" : username,
-        "email": email, # Will be lowercased in save_user function
-        "password_hash": hashed_password,
-        "created_at": datetime.now(timezone.utc) # Store registration timestamp
-        # Add other fields as needed, e.g., agreeTerms
-    }
-
-    # --- 6. Save User to Database ---
-    save_success, save_msg = save_user(new_user_data)
-
-    if not save_success:
-        logging.error(f"Failed to save new user '{email}': {save_msg}")
-        # Check if the error was specifically about the email existing (just in case check failed earlier)
-        if "already exists" in save_msg.lower():
-             return make_response(jsonify({"error": "An account with this email address already exists."}), 409)
-        else:
-             return make_response(jsonify({"error": "Server error saving registration. Please try again."}), 500)
-
-    # --- 7. Success Response ---
-    logging.info(f"User '{email}' registered successfully.")
-    return make_response(jsonify({"message": "Registration successful!"}), 201) # 201 Created

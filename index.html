@@ -10,11 +10,43 @@
 
 </head>
 <body>
-    <h1>Telegram File Storage</h1>
-    <div style="text-align:right; margin-bottom:20px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background-color: #f8f9fa; border-bottom: 1px solid #dee2e6; margin-bottom: 20px;">
+        <h1>Telegram File Storage</h1> {# Moved H1 inside the header div #}
+        <div>
+            {% if current_user.is_authenticated %}
+                {# --- This part shows when user IS logged in --- #}
+                <div class="user-info" style="display: flex; align-items: center; gap: 15px;">
+                    {# Display Username - You can customize the look #}
+                    <span style="font-weight: bold;">{{ current_user.username }}</span>
+                    {# Example Logout Link - Style as needed #}
+                    <a href="{{ url_for('logout') }}" class="button" style="background-color:#dc3545; color: white; text-decoration: none; padding: 8px 12px; border-radius: 4px;">Logout</a>
+                </div>
+            {% else %}
+                {# --- This part shows when user IS NOT logged in --- #}
+                <div>
+                    <a href="{{ url_for('login') }}" class="button" style="background-color:#007bff; color: white; text-decoration: none; padding: 8px 15px; border-radius: 4px; margin-left: 10px;">Login</a>
+                    <a href="{{ url_for('show_register_page') }}" class="button" style="background-color:#28a745; color: white; text-decoration: none; padding: 8px 15px; border-radius: 4px; margin-left: 10px;">Sign Up</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div style="padding: 0 20px;"> {# Optional padding #}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category or 'info' }}" role="alert">
+            {{ message }}
+          </div>
+        {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+            
+    <!-- <div style="text-align:right; margin-bottom:20px;">
         <button onclick="window.location='/login'" style="background:#4CAF50;">Login</button>
         <button onclick="window.location='/register'" style="background:#2196F3;">Sign Up</button>
-      </div>
+      </div> -->
 
     <div class="container">
         <h2>Upload File</h2>
@@ -76,11 +108,23 @@
 
     <div class="container">
         <h2>Stored Files</h2>
-        <label for="list-username">Username to List Files:</label>
-        <input type="text" id="list-username" placeholder="Enter username to list files">
-        <button id="list-files-button">List Files</button>
+        <!-- <label for="list-username">Username to List Files:</label>
+        <input type="text" id="list-username" placeholder="Enter username to list files"> -->
+        {% if current_user.is_authenticated %}
+            <button id="list-files-button">List My Files</button> {# Changed text slightly #}
+        {% else %}
+            <p>Please log in to see your files.</p>
+        {% endif %}
         <ul id="file-list">
+            <!-- File list items will be generated here by JavaScript -->
         </ul>
+        <p id="list-status"></p> {# For errors during listing #}
+         {# ... download prep display (hidden) ... #}
+    </div>
+        
+        <!-- <button id="list-files-button">List Files</button>
+        <ul id="file-list">
+        </ul> -->
 
         <div id="download-details" style="display: none; margin-top: 15px; border: 1px solid #ccc; padding: 10px; border-radius: 5px; background-color: #f9f9f9;">
             <!-- Row 1: Filename and Progress Text -->

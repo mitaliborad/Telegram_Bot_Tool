@@ -8,12 +8,16 @@ import zipfile
 import tempfile
 import shutil
 import logging
+from bson import ObjectId
+from database import User
+from app_setup import app, login_manager
 from datetime import datetime, timezone
 from typing import Dict, Any, Tuple, Optional, List, Generator, Union
 from concurrent.futures import ThreadPoolExecutor, Future, as_completed
 from flask import ( Flask, request, render_template, flash, redirect, url_for,
     make_response, jsonify, send_file, Response, stream_with_context )
-from werkzeug.security import generate_password_hash
+from flask_login import login_user, logout_user, login_required, current_user
+from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timezone
 import re
 from dateutil import parser as dateutil_parser
@@ -30,6 +34,7 @@ from database import (
 from config import format_time
 from flask_cors import CORS  # Added for CORS support
 # --- Import necessary components ---
+from app_setup import app, login_manager
 from app_setup import app, upload_progress_data, download_prep_data
 from config import (
     TELEGRAM_CHAT_IDS, PRIMARY_TELEGRAM_CHAT_ID, CHUNK_SIZE,
@@ -50,6 +55,30 @@ ChunkDataResult = Tuple[int, Optional[bytes], Optional[str]]
 # --- Constants ---
 DEFAULT_CHUNK_READ_SIZE = 4 * 1024 * 1024; STREAM_CHUNK_SIZE = 65536
 
+# ----- STEP 1D Start: Define user_loader -----
+@login_manager.user_loader
+def load_user(user_id: str) -> Optional[User]:
+    """Flask-Login user loader callback."""
+    logging.debug(f"Attempting to load user with ID: {user_id}")
+    if not user_id:
+        return None
+    try:
+        # Convert the string ID back to ObjectId for MongoDB query
+        user_doc, error = database.find_user_by_id(ObjectId(user_id)) # <<< --- NEW DB FUNCTION NEEDED
+        if error:
+             logging.error(f"Error loading user by ID {user_id}: {error}")
+             return None
+        if user_doc:
+             # Create and return a User object
+             return User(user_doc)
+        else:
+             logging.warning(f"User ID {user_id} not found in database.")
+             return None
+    except Exception as e:
+         # Handle potential ObjectId conversion errors or other issues
+         logging.error(f"Exception loading user {user_id}: {e}", exc_info=True)
+         return None
+
 @app.route('/register', methods=['GET'])
 def show_register_page():
     """Displays the registration page."""
@@ -61,98 +90,154 @@ def show_register_page():
         return make_response("Error loading page.", 500)
 
 @app.route('/register', methods=['POST'])
-def register_user():
-    """Handles user registration with improved validation and error handling."""
-    logging.info("Received registration request.")
+def register_user(): # Keep the original function name if preferred
+    """Handles user registration submission with username."""
+    logging.info("Received POST request for /register")
 
+    # 1. --- Get Data ---
     try:
-        
-        data = request.get_json() # <-- Get data as JSON dictionary
+        data = request.get_json()
         if not data:
             logging.warning("Registration failed: No JSON data received.")
             return make_response(jsonify({"error": "Invalid request format. Expected JSON."}), 400)
-        logging.info(f"Received JSON data: {json.dumps(data)}")
-        
-        # Get form data with validation
-        firstName = data.get('firstName', '').strip()
-        lastName = data.get('lastName', '').strip()
-        email = data.get('email', '').strip().lower() # Keep lowercasing email
+
+        logging.info(f"Received registration data: {data}") # Be careful logging sensitive data
+
+        # Extract data using .get() for safety
+        username = data.get('username', '').strip() # <<< Get username
+        email = data.get('email', '').strip().lower()
         password = data.get('password', '')
-        confirmPassword = data.get('confirmPassword', '') # Get confirmation field
-        # Checkboxes likely sent as boolean true/false in JSON
+        confirmPassword = data.get('confirmPassword', '')
         agreeTerms = data.get('agreeTerms', False)
         understand_privacy = data.get('understandPrivacy', False)
 
-    except Exception as e: # Catch potential JSON parsing errors etc.
-        logging.error(f"Error parsing registration JSON data: {e}", exc_info=True)
-        # Return JSON error
-        return make_response(jsonify({"error": "Invalid request data."}), 400)
-    
-        # Validate required fields
-    if not all([firstName, lastName, email, password]):
-            return jsonify({"error": "All fields are required"}), 400
-
-        # Validate email format
-    if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
-            return jsonify({"error": "Invalid email format"}), 400
-
-    if password != confirmPassword:
-            return jsonify({"error": "Passwords do not match"}), 400
-
-    if not (agreeTerms and understand_privacy):
-            return jsonify({"error": "You must agree to all terms"}), 400
-
-        # Check existing user
-    existing_user, error = find_user_by_email(email)
-    if error:
-            logging.error(f"Database error: {error}")
-            return jsonify({"error": "Server error"}), 500
-    if existing_user:
-            return jsonify({"error": "Email already registered"}), 409
-
-        # Hash password
-    try:
-            hashed_pw = generate_password_hash(password, method='pbkdf2:sha256')
     except Exception as e:
-            logging.error(f"Password hashing failed: {e}")
-            return jsonify({"error": "Server error"}), 500
+        logging.error(f"Error parsing registration JSON data: {e}", exc_info=True)
+        return make_response(jsonify({"error": "Invalid request data received."}), 400)
 
-        # Create user record
-    new_user = {
-            "firstName": firstName,
-            "lastName": lastName,
-            "email": email,
-            "password_hash": hashed_pw,
-            "created_at": datetime.now(timezone.utc),
-            "agreed_terms": agreeTerms,
-            "understand_privacy": understand_privacy
-        }
+    # 2. --- Validation ---
+    # Required fields check
+    # <<< Updated check to include username and remove firstName/lastName >>>
+    if not all([username, email, password, confirmPassword]):
+        logging.warning("Registration failed: Missing required fields.")
+        return make_response(jsonify({"error": "Username, email, and passwords are required."}), 400)
 
-        # Save to database
-    success, message = save_user(new_user)
-    if not success:
-            logging.error(f"Save user failed: {message}")
-            return jsonify({"error": "Registration failed"}), 500
+    # Username format check (example: alphanumeric + underscore, min 3 chars)
+    if not re.match(r"^[a-zA-Z0-9_]{3,}$", username):
+        logging.warning(f"Registration failed: Invalid username format '{username}'.")
+        return make_response(jsonify({"error": "Invalid username format (letters, numbers, _, min 3 chars)."}), 400)
 
+    # Email format check
+    if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+        logging.warning(f"Registration failed: Invalid email format '{email}'.")
+        return make_response(jsonify({"error": "Invalid email format."}), 400)
+
+    # Password match check
+    if password != confirmPassword:
+        logging.warning("Registration failed: Passwords do not match.")
+        return make_response(jsonify({"error": "Passwords do not match."}), 400)
+
+    # Terms agreement check
+    if not (agreeTerms and understand_privacy):
+        logging.warning("Registration failed: Terms not agreed.")
+        return make_response(jsonify({"error": "You must agree to all terms and privacy conditions."}), 400)
+
+    # 3. --- Check Uniqueness ---
+    # Check Username (Requires find_user_by_username in database.py)
+    try:
+        # <<< Using the specific database function >>>
+        existing_user_by_username, db_error_uname = database.find_user_by_username(username)
+        if db_error_uname:
+            raise Exception(db_error_uname) # Treat DB errors seriously
+        if existing_user_by_username:
+            logging.warning(f"Registration failed: Username '{username}' already exists.")
+            return make_response(jsonify({"error": "Username is already taken."}), 409) # 409 Conflict
+    except Exception as e:
+        logging.error(f"Database error checking username '{username}': {e}", exc_info=True)
+        return make_response(jsonify({"error": "Server error during registration check (username)."}), 500)
+
+    # Check Email
+    try:
+        # <<< Using the specific database function >>>
+        existing_user_by_email, db_error_email = database.find_user_by_email(email)
+        if db_error_email:
+            raise Exception(db_error_email)
+        if existing_user_by_email:
+            logging.warning(f"Registration failed: Email '{email}' already exists.")
+            return make_response(jsonify({"error": "An account with this email address already exists."}), 409) # 409 Conflict
+    except Exception as e:
+         logging.error(f"Database error checking email '{email}': {e}", exc_info=True)
+         return make_response(jsonify({"error": "Server error during registration check (email)."}), 500)
+
+    # 4. --- Hash Password ---
+    try:
+        hashed_pw = generate_password_hash(password, method='pbkdf2:sha256')
+    except Exception as e:
+        logging.error(f"Password hashing failed: {e}", exc_info=True)
+        return make_response(jsonify({"error": "Server error during registration processing."}), 500)
+
+    # 5. --- Prepare User Document ---
+    # <<< Updated document structure >>>
+    new_user_data = {
+        "username": username,
+        "email": email,
+        "password_hash": hashed_pw,
+        "created_at": datetime.now(timezone.utc),
+        "agreed_terms": agreeTerms,
+        "understand_privacy": understand_privacy
+    }
+
+    # 6. --- Save User to Database ---
+    try:
+        # <<< Using the specific database function >>>
+        save_success, save_msg = database.save_user(new_user_data)
+
+        if not save_success:
+            logging.error(f"Failed to save new user '{username}' / '{email}': {save_msg}")
+            # Enhanced duplicate key checking
+            if "duplicate key error" in save_msg.lower():
+                 if "username_1" in save_msg: # Check for username index name
+                     return make_response(jsonify({"error": "Username is already taken."}), 409)
+                 elif "email_1" in save_msg: # Check for email index name
+                     return make_response(jsonify({"error": "An account with this email address already exists."}), 409)
+                 else: # Fallback if index name unknown
+                      return make_response(jsonify({"error": "Username or Email already exists."}), 409)
+            else:
+                 return make_response(jsonify({"error": "Server error saving registration. Please try again."}), 500)
+
+    except Exception as e:
+        logging.error(f"Unexpected error during database save for user '{username}': {e}", exc_info=True)
+        return make_response(jsonify({"error": "Critical server error during final registration step."}), 500)
+
+    # 7. --- Success Response ---
+    logging.info(f"User '{username}' registered successfully.")
     return make_response(jsonify({
         "message": "Registration successful!",
-        "user": {"email": email, "firstName": firstName}
-    }), 201)
+        # <<< Return username >>>
+        "user": {"username": username, "email": email}
+    }), 201) # 201 Created
 
     
 # --- Flask Routes ---
 @app.route('/')
 def index() -> str:
     logging.info("Serving index page.")
-    try: return render_template('index.html')
-    except Exception as e: logging.error(f"Error rendering index.html: {e}", exc_info=True); return make_response("Error loading page.", 500)
-
+    try:
+        # Pass current_user to the template so it knows if someone is logged in
+        return render_template('index.html', current_user=current_user)
+    except Exception as e:
+        logging.error(f"Error rendering index.html: {e}", exc_info=True)
+        return make_response("Error loading page.", 500)
+    
 @app.route('/initiate-upload', methods=['POST'])
 def initiate_upload() -> Response:
     logging.info("Request initiate upload.")
     if 'file' not in request.files: return jsonify({"error": "No file part"}), 400
-    username = "admin"
-    if not username: return jsonify({"error": "Username required"}), 400
+    # username = "admin"
+    # if not username: return jsonify({"error": "Username required"}), 400
+    user_identifier = current_user.email
+    logging.info(f"Upload initiated by user: {user_identifier}")
+    
     file = request.files['file']
     if not file or file.filename == '': return jsonify({"error": "No file selected"}), 400
     original_filename = file.filename; upload_id = str(uuid.uuid4())
@@ -161,7 +246,7 @@ def initiate_upload() -> Response:
     try:
         os.makedirs(UPLOADS_TEMP_DIR, exist_ok=True); file.save(temp_file_path)
         logging.info(f"[{upload_id}] Temp saved: '{original_filename}'.")
-        upload_progress_data[upload_id] = { "status": "initiated", "original_filename": original_filename, "temp_file_path": temp_file_path, "username": username, "error": None, "start_time": time.time() }
+        upload_progress_data[upload_id] = { "status": "initiated", "original_filename": original_filename, "temp_file_path": temp_file_path, "username": current_user.username,"user_email": user_identifier, "error": None, "start_time": time.time() }
         logging.debug(f"[{upload_id}] Initial progress data stored.")
         return jsonify({"upload_id": upload_id, "filename": original_filename})
     except Exception as e:
@@ -952,10 +1037,70 @@ logging.info("Flask routes defined using configurable workers and linter fixes."
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    """Handles user login."""
     if request.method == 'POST':
-        # We'll add real authentication later
-        return redirect('/')
+        email = request.form.get('email', '').strip().lower()
+        password = request.form.get('password', '')
+
+        if not email or not password:
+            flash('Please enter both email and password.', 'warning')
+            return render_template('login.html')
+
+        logging.info(f"Login attempt for email: {email}")
+
+        # Find user by email
+        user_doc, db_error = database.find_user_by_email(email)
+
+        if db_error:
+            logging.error(f"Database error during login for {email}: {db_error}")
+            flash('An internal error occurred. Please try again later.', 'danger')
+            return render_template('login.html')
+
+        user_obj = None
+        if user_doc:
+             try:
+                # Create a User object if document found
+                user_obj = User(user_doc)
+             except ValueError as e:
+                 # Handle cases where user doc might be missing required fields
+                 logging.error(f"Failed to create User object for {email}: {e}", exc_info=True)
+                 flash('Login failed due to inconsistent user data. Please contact support.', 'danger')
+                 return render_template('login.html')
+
+        # Check if user exists AND password is correct
+        # Use the check_password method from the User object
+        if user_obj and user_obj.check_password(password):
+            # --- Login successful ---
+            # Use Flask-Login's login_user function
+            # Pass remember=True if you add a "Remember Me" checkbox
+            login_user(user_obj, remember=False)
+            logging.info(f"User '{user_obj.username}' ({email}) logged in successfully.")
+            flash(f'Welcome back, {user_obj.username}!', 'success')
+
+            # Redirect to the page the user was trying to access, or index
+            next_page = request.args.get('next')
+            # Basic security check for open redirect vulnerabilities
+            if next_page and not next_page.startswith('/'):
+                next_page = None # Ignore external redirects
+            return redirect(next_page or url_for('index'))
+        else:
+            # --- Login failed ---
+            logging.warning(f"Failed login attempt for email: {email}")
+            flash('Invalid email or password. Please try again.', 'danger')
+            return render_template('login.html')
+
+    # GET request: just show the login page
     return render_template('login.html')
+
+@app.route('/logout')
+@login_required # Make sure only logged-in users can log out
+def logout():
+    """Logs the current user out."""
+    user_email = current_user.email # Get email before logout for logging
+    logout_user() # Flask-Login function to clear the session
+    logging.info(f"User {user_email} logged out.")
+    flash('You have been successfully logged out.', 'success')
+    return redirect(url_for('login'))
 
 # --- User Registration Route ---
 @app.route('/register', methods=['GET', 'POST'])
@@ -981,8 +1126,7 @@ def register():
 
     # --- 1. Get Data from Request Form ---
     # Use .get() with default '' to avoid KeyError if field is missing
-    firstName = request.form.get('firstName', '').strip()
-    lastName = request.form.get('lastName', '').strip()
+    username = request.form.get('username', '').strip()
     email = request.form.get('email', '').strip()
     password = request.form.get('password', '') 
     confirmPassword = request.form.get('confirmPassword', '')
@@ -990,7 +1134,7 @@ def register():
     # agreeTerms = request.form.get('agreeTerms') == 'on' # Example
 
     # --- 2. Basic Validation ---
-    if not all([firstName, lastName, email, password, confirmPassword]):
+    if not all([username, email, password, confirmPassword]):
         logging.warning("Registration failed: Missing required fields.")
         return make_response(jsonify({"error": "Please fill in all required fields."}), 400)
 
@@ -1023,8 +1167,7 @@ def register():
 
     # --- 5. Prepare User Document for Database ---
     new_user_data = {
-        "firstName": firstName,
-        "lastName": lastName,
+        "username" : username,
         "email": email, # Will be lowercased in save_user function
         "password_hash": hashed_password,
         "created_at": datetime.now(timezone.utc) # Store registration timestamp

@@ -3,6 +3,7 @@ import logging
 from flask_cors import CORS 
 from typing import Dict, Any
 from config import format_bytes
+from flask_login import LoginManager
 
 # --- Flask Application Setup ---
 app = Flask(__name__, template_folder='.') 
@@ -16,9 +17,18 @@ logging.info("Custom Jinja filter 'format_bytes' registered.")
 allowed_origins = "*" 
 
 # Initialize CORS with the app and specific origins
-CORS(app, resources={r"/*": {"origins": allowed_origins}})
+#CORS(app, resources={r"/api/*": {"origins": "http://localhost:4200"}}, supports_credentials=True)
 logging.info(f"Flask-CORS initialized. Allowing origins: {allowed_origins}")
 logging.info("Flask application initialized.") 
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+# The route function name for your login page (we'll use 'login' from routes.py)
+login_manager.login_view = 'login'
+# Optional: Customize the message flashed when redirecting to login
+login_manager.login_message = u"Please log in to access this page."
+login_manager.login_message_category = "info" # Bootstrap category for styling
+logging.info("Flask-Login initialized.")
 
 # Stores progress data for ongoing uploads, keyed by upload_id
 upload_progress_data: Dict[str, Any] = {}

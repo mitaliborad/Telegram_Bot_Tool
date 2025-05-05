@@ -1,0 +1,44 @@
+2025-05-05 14:15:02,139 - INFO - [MainThread] [<module>] - ============================================================
+2025-05-05 14:15:02,139 - INFO - [MainThread] [<module>] - Logging configured. Level: INFO. Log file: Selenium-Logs\app_20250505_141502.log
+2025-05-05 14:15:02,140 - INFO - [MainThread] [<module>] - Primary Chat ID: -4603853425
+2025-05-05 14:15:02,140 - INFO - [MainThread] [<module>] - All Target Chat IDs: ['-4603853425', '-1002614397019', '-4641852757']
+2025-05-05 14:15:02,140 - INFO - [MainThread] [<module>] - Chunk Size: 20.0 MB (20971520 bytes)
+2025-05-05 14:15:02,141 - INFO - [MainThread] [<module>] - API Timeouts (Connect/Read): 10s / 60s
+2025-05-05 14:15:02,141 - INFO - [MainThread] [<module>] - API Retries: 3 attempts, 2s delay
+2025-05-05 14:15:02,142 - INFO - [MainThread] [<module>] - Max Upload Workers: 5
+2025-05-05 14:15:02,142 - INFO - [MainThread] [<module>] - Max Download Workers: 12
+2025-05-05 14:15:02,142 - INFO - [MainThread] [<module>] - ============================================================
+2025-05-05 14:15:02,143 - INFO - [MainThread] [<module>] - Configuration loaded successfully.
+2025-05-05 14:15:02,154 - INFO - [MainThread] [<module>] - Custom Jinja filter 'format_bytes' registered.
+2025-05-05 14:15:02,154 - INFO - [MainThread] [<module>] - Flask-CORS initialized. Allowing origins: *
+2025-05-05 14:15:02,154 - INFO - [MainThread] [<module>] - Flask application initialized.
+2025-05-05 14:15:02,154 - INFO - [MainThread] [<module>] - Flask-Login initialized.
+2025-05-05 14:15:02,155 - INFO - [MainThread] [<module>] - Global state variables initialized (upload_progress_data, download_prep_data).
+2025-05-05 14:15:02,158 - INFO - [MainThread] [<module>] - Custom Jinja filter 'format_bytes' registered.
+2025-05-05 14:15:02,158 - INFO - [MainThread] [<module>] - Flask-CORS initialized. Allowing origins: *
+2025-05-05 14:15:02,158 - INFO - [MainThread] [<module>] - Flask application initialized.
+2025-05-05 14:15:02,159 - INFO - [MainThread] [<module>] - Flask-Login initialized.
+2025-05-05 14:15:02,159 - INFO - [MainThread] [<module>] - Global state variables initialized (upload_progress_data, download_prep_data).
+2025-05-05 14:15:02,351 - INFO - [MainThread] [<module>] - Database module initialized.
+2025-05-05 14:15:02,815 - INFO - [MainThread] [<module>] - Initialized requests.Session for Telegram API calls.
+2025-05-05 14:15:02,815 - INFO - [MainThread] [<module>] - Telegram API functions defined with Session and Retries.
+2025-05-05 14:15:02,821 - INFO - [MainThread] [<module>] - Flask routes defined using configurable workers and linter fixes.
+2025-05-05 14:15:02,822 - INFO - [MainThread] [<module>] - Starting Flask development server...
+2025-05-05 14:15:02,835 - WARNING - [MainThread] [_log] -  * Debugger is active!
+2025-05-05 14:15:02,840 - INFO - [MainThread] [_log] -  * Debugger PIN: 107-410-311
+2025-05-05 14:16:34,292 - INFO - [Thread-2 (process_request_thread)] [index] - Serving index page.
+2025-05-05 14:16:34,304 - INFO - [Thread-2 (process_request_thread)] [_connect_to_db] - Attempting to connect to MongoDB Atlas host: telegrambot.6armfs2.mongodb.net...
+2025-05-05 14:16:35,390 - INFO - [Thread-2 (process_request_thread)] [_connect_to_db] - ✅ Successfully connected and pinged MongoDB Atlas!
+2025-05-05 14:16:35,391 - INFO - [Thread-2 (process_request_thread)] [get_db] - Accessed database: Telegrambot
+2025-05-05 14:16:35,392 - INFO - [Thread-2 (process_request_thread)] [get_userinfo_collection] - Accessed collection: userinfo
+2025-05-05 14:16:35,426 - INFO - [Thread-2 (process_request_thread)] [_log] - 127.0.0.1 - - [05/May/2025 14:16:35] "GET / HTTP/1.1" 200 -
+2025-05-05 14:16:37,041 - INFO - [Thread-4 (process_request_thread)] [index] - Serving index page.
+2025-05-05 14:16:37,043 - INFO - [Thread-4 (process_request_thread)] [_log] - 192.168.1.22 - - [05/May/2025 14:16:37] "GET / HTTP/1.1" 200 -
+2025-05-05 14:16:37,948 - INFO - [Thread-5 (process_request_thread)] [index] - Serving index page.
+2025-05-05 14:16:37,949 - INFO - [Thread-5 (process_request_thread)] [_log] - 192.168.1.22 - - [05/May/2025 14:16:37] "GET / HTTP/1.1" 200 -
+2025-05-05 14:16:38,124 - INFO - [Thread-6 (process_request_thread)] [index] - Serving index page.
+2025-05-05 14:16:38,126 - INFO - [Thread-6 (process_request_thread)] [_log] - 192.168.1.22 - - [05/May/2025 14:16:38] "GET / HTTP/1.1" 200 -
+2025-05-05 14:16:38,316 - INFO - [Thread-7 (process_request_thread)] [index] - Serving index page.
+2025-05-05 14:16:38,317 - INFO - [Thread-7 (process_request_thread)] [_log] - 192.168.1.22 - - [05/May/2025 14:16:38] "GET / HTTP/1.1" 200 -
+2025-05-05 14:16:41,939 - INFO - [Thread-8 (process_request_thread)] [initiate_upload] - Request initiate upload.
+2025-05-05 14:16:41,984 - INFO - [Thread-8 (process_request_thread)] [_log] - 192.168.1.22 - - [05/May/2025 14:16:41] "[35m[1mPOST /initiate-upload HTTP/1.1[0m" 500 -

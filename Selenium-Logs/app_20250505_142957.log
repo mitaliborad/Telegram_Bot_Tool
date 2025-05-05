@@ -1,0 +1,84 @@
+2025-05-05 14:29:57,153 - INFO - [MainThread] [<module>] - ============================================================
+2025-05-05 14:29:57,154 - INFO - [MainThread] [<module>] - Logging configured. Level: INFO. Log file: Selenium-Logs\app_20250505_142957.log
+2025-05-05 14:29:57,154 - INFO - [MainThread] [<module>] - Primary Chat ID: -4603853425
+2025-05-05 14:29:57,155 - INFO - [MainThread] [<module>] - All Target Chat IDs: ['-4603853425', '-1002614397019', '-4641852757']
+2025-05-05 14:29:57,155 - INFO - [MainThread] [<module>] - Chunk Size: 20.0 MB (20971520 bytes)
+2025-05-05 14:29:57,155 - INFO - [MainThread] [<module>] - API Timeouts (Connect/Read): 10s / 60s
+2025-05-05 14:29:57,155 - INFO - [MainThread] [<module>] - API Retries: 3 attempts, 2s delay
+2025-05-05 14:29:57,156 - INFO - [MainThread] [<module>] - Max Upload Workers: 5
+2025-05-05 14:29:57,157 - INFO - [MainThread] [<module>] - Max Download Workers: 12
+2025-05-05 14:29:57,157 - INFO - [MainThread] [<module>] - ============================================================
+2025-05-05 14:29:57,157 - INFO - [MainThread] [<module>] - Configuration loaded successfully.
+2025-05-05 14:29:57,166 - INFO - [MainThread] [<module>] - Custom Jinja filter 'format_bytes' registered.
+2025-05-05 14:29:57,167 - INFO - [MainThread] [<module>] - Flask-CORS initialized. Allowing origins: *
+2025-05-05 14:29:57,167 - INFO - [MainThread] [<module>] - Flask application initialized.
+2025-05-05 14:29:57,167 - INFO - [MainThread] [<module>] - Flask-Login initialized.
+2025-05-05 14:29:57,168 - INFO - [MainThread] [<module>] - Global state variables initialized (upload_progress_data, download_prep_data).
+2025-05-05 14:29:57,170 - INFO - [MainThread] [<module>] - Custom Jinja filter 'format_bytes' registered.
+2025-05-05 14:29:57,170 - INFO - [MainThread] [<module>] - Flask-CORS initialized. Allowing origins: *
+2025-05-05 14:29:57,170 - INFO - [MainThread] [<module>] - Flask application initialized.
+2025-05-05 14:29:57,171 - INFO - [MainThread] [<module>] - Flask-Login initialized.
+2025-05-05 14:29:57,171 - INFO - [MainThread] [<module>] - Global state variables initialized (upload_progress_data, download_prep_data).
+2025-05-05 14:29:57,325 - INFO - [MainThread] [<module>] - Database module initialized.
+2025-05-05 14:29:57,775 - INFO - [MainThread] [<module>] - Initialized requests.Session for Telegram API calls.
+2025-05-05 14:29:57,775 - INFO - [MainThread] [<module>] - Telegram API functions defined with Session and Retries.
+2025-05-05 14:29:57,780 - INFO - [MainThread] [<module>] - Flask routes defined using configurable workers and linter fixes.
+2025-05-05 14:29:57,781 - INFO - [MainThread] [<module>] - Starting Flask development server...
+2025-05-05 14:29:57,794 - WARNING - [MainThread] [_log] -  * Debugger is active!
+2025-05-05 14:29:57,799 - INFO - [MainThread] [_log] -  * Debugger PIN: 107-410-311
+2025-05-05 14:29:59,438 - INFO - [Thread-2 (process_request_thread)] [_log] - 192.168.1.20 - - [05/May/2025 14:29:59] "[33mOPTIONS /api/auth/login HTTP/1.1[0m" 404 -
+2025-05-05 14:30:05,877 - INFO - [Thread-3 (process_request_thread)] [_connect_to_db] - Attempting to connect to MongoDB Atlas host: telegrambot.6armfs2.mongodb.net...
+2025-05-05 14:30:06,790 - INFO - [Thread-3 (process_request_thread)] [_connect_to_db] - ✅ Successfully connected and pinged MongoDB Atlas!
+2025-05-05 14:30:06,791 - INFO - [Thread-3 (process_request_thread)] [get_db] - Accessed database: Telegrambot
+2025-05-05 14:30:06,791 - INFO - [Thread-3 (process_request_thread)] [get_userinfo_collection] - Accessed collection: userinfo
+2025-05-05 14:30:06,821 - INFO - [Thread-3 (process_request_thread)] [_log] - 127.0.0.1 - - [05/May/2025 14:30:06] "GET /login HTTP/1.1" 200 -
+2025-05-05 14:30:08,511 - INFO - [Thread-5 (process_request_thread)] [_log] - 192.168.1.20 - - [05/May/2025 14:30:08] "[33mOPTIONS /api/auth/login HTTP/1.1[0m" 404 -
+2025-05-05 14:30:13,503 - INFO - [Thread-4 (process_request_thread)] [login] - Login attempt for email: bray12@gmail.com
+2025-05-05 14:30:13,530 - INFO - [Thread-4 (process_request_thread)] [find_user_by_email] - Found user record for email: bray12@gmail.com
+2025-05-05 14:30:14,044 - WARNING - [Thread-4 (process_request_thread)] [login] - Failed login attempt for email: bray12@gmail.com
+2025-05-05 14:30:14,073 - INFO - [Thread-4 (process_request_thread)] [_log] - 127.0.0.1 - - [05/May/2025 14:30:14] "POST /login HTTP/1.1" 200 -
+2025-05-05 14:30:21,253 - INFO - [Thread-6 (process_request_thread)] [login] - Login attempt for email: bray12@gmail.com
+2025-05-05 14:30:21,282 - INFO - [Thread-6 (process_request_thread)] [find_user_by_email] - Found user record for email: bray12@gmail.com
+2025-05-05 14:30:21,799 - WARNING - [Thread-6 (process_request_thread)] [login] - Failed login attempt for email: bray12@gmail.com
+2025-05-05 14:30:21,828 - INFO - [Thread-6 (process_request_thread)] [_log] - 127.0.0.1 - - [05/May/2025 14:30:21] "POST /login HTTP/1.1" 200 -
+2025-05-05 14:30:39,635 - INFO - [Thread-8 (process_request_thread)] [_log] - 192.168.1.20 - - [05/May/2025 14:30:39] "OPTIONS /register HTTP/1.1" 200 -
+2025-05-05 14:30:39,640 - INFO - [Thread-9 (process_request_thread)] [register_user] - Received POST request for /register
+2025-05-05 14:30:39,640 - INFO - [Thread-9 (process_request_thread)] [register_user] - Received registration data: {'username': 'SiliconSassMaster', 'email': 'jvora@gmail.com', 'password': '12345678', 'confirmPassword': '12345678', 'agreeTerms': True, 'understandPrivacy': True}
+2025-05-05 14:30:39,669 - INFO - [Thread-9 (process_request_thread)] [find_user_by_username] - No user record found for username: SiliconSassMaster
+2025-05-05 14:30:39,697 - INFO - [Thread-9 (process_request_thread)] [find_user_by_email] - Found user record for email: jvora@gmail.com
+2025-05-05 14:30:39,698 - WARNING - [Thread-9 (process_request_thread)] [register_user] - Registration failed: Email 'jvora@gmail.com' already exists.
+2025-05-05 14:30:39,700 - INFO - [Thread-9 (process_request_thread)] [_log] - 192.168.1.20 - - [05/May/2025 14:30:39] "[31m[1mPOST /register HTTP/1.1[0m" 409 -
+2025-05-05 14:30:46,493 - INFO - [Thread-7 (process_request_thread)] [login] - Login attempt for email: your@email.com
+2025-05-05 14:30:46,521 - INFO - [Thread-7 (process_request_thread)] [find_user_by_email] - No user record found for email: your@email.com
+2025-05-05 14:30:46,523 - WARNING - [Thread-7 (process_request_thread)] [login] - Failed login attempt for email: your@email.com
+2025-05-05 14:30:46,553 - INFO - [Thread-7 (process_request_thread)] [_log] - 127.0.0.1 - - [05/May/2025 14:30:46] "POST /login HTTP/1.1" 200 -
+2025-05-05 14:30:52,804 - INFO - [Thread-11 (process_request_thread)] [_log] - 192.168.1.20 - - [05/May/2025 14:30:52] "OPTIONS /register HTTP/1.1" 200 -
+2025-05-05 14:30:52,811 - INFO - [Thread-12 (process_request_thread)] [register_user] - Received POST request for /register
+2025-05-05 14:30:52,813 - INFO - [Thread-12 (process_request_thread)] [register_user] - Received registration data: {'username': 'SiliconSassMaster', 'email': 'je@gmail.com', 'password': '12345678', 'confirmPassword': '12345678', 'agreeTerms': True, 'understandPrivacy': True}
+2025-05-05 14:30:52,844 - INFO - [Thread-12 (process_request_thread)] [find_user_by_username] - No user record found for username: SiliconSassMaster
+2025-05-05 14:30:52,872 - INFO - [Thread-12 (process_request_thread)] [find_user_by_email] - No user record found for email: je@gmail.com
+2025-05-05 14:30:53,410 - INFO - [Thread-12 (process_request_thread)] [save_user] - Successfully inserted new user with ID: 68187e4583e9b0afc61bad52
+2025-05-05 14:30:53,411 - INFO - [Thread-12 (process_request_thread)] [register_user] - User 'SiliconSassMaster' registered successfully.
+2025-05-05 14:30:53,412 - INFO - [Thread-12 (process_request_thread)] [_log] - 192.168.1.20 - - [05/May/2025 14:30:53] "[35m[1mPOST /register HTTP/1.1[0m" 201 -
+2025-05-05 14:31:01,670 - INFO - [Thread-10 (process_request_thread)] [login] - Login attempt for email: your@email.com
+2025-05-05 14:31:01,699 - INFO - [Thread-10 (process_request_thread)] [find_user_by_email] - No user record found for email: your@email.com
+2025-05-05 14:31:01,699 - WARNING - [Thread-10 (process_request_thread)] [login] - Failed login attempt for email: your@email.com
+2025-05-05 14:31:01,728 - INFO - [Thread-10 (process_request_thread)] [_log] - 127.0.0.1 - - [05/May/2025 14:31:01] "POST /login HTTP/1.1" 200 -
+2025-05-05 14:31:06,470 - INFO - [Thread-14 (process_request_thread)] [_log] - 192.168.1.20 - - [05/May/2025 14:31:06] "[33mOPTIONS /api/auth/login HTTP/1.1[0m" 404 -
+2025-05-05 14:31:56,182 - INFO - [Thread-13 (process_request_thread)] [login] - Login attempt for email: tes23@gmail.com
+2025-05-05 14:31:56,209 - INFO - [Thread-13 (process_request_thread)] [find_user_by_email] - Found user record for email: tes23@gmail.com
+2025-05-05 14:31:56,728 - INFO - [Thread-13 (process_request_thread)] [login] - User 'testt' (tes23@gmail.com) logged in successfully.
+2025-05-05 14:31:56,729 - INFO - [Thread-13 (process_request_thread)] [_log] - 127.0.0.1 - - [05/May/2025 14:31:56] "[32mPOST /login HTTP/1.1[0m" 302 -
+2025-05-05 14:31:56,732 - INFO - [Thread-15 (process_request_thread)] [index] - Serving index page.
+2025-05-05 14:31:56,770 - INFO - [Thread-15 (process_request_thread)] [_log] - 127.0.0.1 - - [05/May/2025 14:31:56] "GET / HTTP/1.1" 200 -
+2025-05-05 14:34:58,588 - INFO - [Thread-16 (process_request_thread)] [_log] - 192.168.1.20 - - [05/May/2025 14:34:58] "OPTIONS /register HTTP/1.1" 200 -
+2025-05-05 14:34:58,593 - INFO - [Thread-17 (process_request_thread)] [register_user] - Received POST request for /register
+2025-05-05 14:34:58,594 - INFO - [Thread-17 (process_request_thread)] [register_user] - Received registration data: {'username': 'LuminaryNavigator', 'email': 'jenali@gmail.com', 'password': '12345678', 'confirmPassword': '12345678', 'agreeTerms': True, 'understandPrivacy': True}
+2025-05-05 14:34:58,622 - INFO - [Thread-17 (process_request_thread)] [find_user_by_username] - No user record found for username: LuminaryNavigator
+2025-05-05 14:34:58,650 - INFO - [Thread-17 (process_request_thread)] [find_user_by_email] - No user record found for email: jenali@gmail.com
+2025-05-05 14:34:59,197 - INFO - [Thread-17 (process_request_thread)] [save_user] - Successfully inserted new user with ID: 68187f3b83e9b0afc61bad53
+2025-05-05 14:34:59,198 - INFO - [Thread-17 (process_request_thread)] [register_user] - User 'LuminaryNavigator' registered successfully.
+2025-05-05 14:34:59,198 - INFO - [Thread-17 (process_request_thread)] [_log] - 192.168.1.20 - - [05/May/2025 14:34:59] "[35m[1mPOST /register HTTP/1.1[0m" 201 -
+2025-05-05 14:35:11,739 - INFO - [Thread-18 (process_request_thread)] [_log] - 192.168.1.20 - - [05/May/2025 14:35:11] "OPTIONS /login HTTP/1.1" 200 -
+2025-05-05 14:35:11,750 - INFO - [Thread-19 (process_request_thread)] [_log] - 192.168.1.20 - - [05/May/2025 14:35:11] "POST /login HTTP/1.1" 200 -
+2025-05-05 14:35:32,693 - INFO - [Thread-20 (process_request_thread)] [_log] - 192.168.1.20 - - [05/May/2025 14:35:32] "[33mOPTIONS /api/auth/login HTTP/1.1[0m" 404 -

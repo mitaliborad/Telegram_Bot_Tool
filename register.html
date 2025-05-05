@@ -5,39 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up - Your Website</title>
     <style>
-        /* Basic Styling - Adjust as needed */
-        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #f4f4f4; }
-        .container { background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); width: 400px; }
-        h1 { text-align: center; color: #333; margin-bottom: 25px; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; color: #555; }
-        input[type="text"], input[type="email"], input[type="password"] {
-            width: calc(100% - 20px); /* Adjust for padding */
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 1em;
-        }
-        .name-group { display: flex; gap: 15px; }
-        .name-group .form-group { flex: 1; }
-        .checkbox-group label { display: flex; align-items: center; font-size: 0.9em; color: #666; }
-        .checkbox-group input[type="checkbox"] { margin-right: 8px; }
-        button {
-            width: 100%;
-            padding: 12px;
-            background-color: #e84970; /* Pinkish color like screenshot */
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 1.1em;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-        }
-        button:hover { background-color: #d13c5f; }
-        button:disabled { background-color: #cccccc; cursor: not-allowed; }
-        #message-area { margin-top: 15px; text-align: center; font-weight: bold; min-height: 1.5em; }
-        .success-message { color: green; }
-        .error-message { color: red; }
+       
     </style>
 </head>
 <body>
@@ -46,12 +14,9 @@
         <form id="register-form">
             <div class="name-group">
                 <div class="form-group">
-                    <label for="first-name">First name</label>
-                    <input type="text" id="first-name" name="firstName" required>
-                </div>
-                <div class="form-group">
-                    <label for="last-name">Last name</label>
-                    <input type="text" id="last-name" name="lastName" required>
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required minlength="3" pattern="^[a-zA-Z0-9_]+$" title="Username can only contain letters, numbers, and underscores.">
+                    <!-- Optional: Add pattern for allowed characters and minlength -->
                 </div>
             </div>
 
@@ -92,20 +57,17 @@
 
     <!-- JavaScript will go here in the next step -->
     <script>
-        // register.html (Inside the <script> tag)
-
         const registerForm = document.getElementById('register-form');
         const signupButton = document.getElementById('signup-button');
         const messageArea = document.getElementById('message-area');
 
-        // Input fields
-        const firstNameInput = document.getElementById('first-name');
-        const lastNameInput = document.getElementById('last-name');
+        // --- CORRECTED: Input fields ---
+        const usernameInput = document.getElementById('username'); // Get the username field
         const emailInput = document.getElementById('email');
         const passwordInput = document.getElementById('password');
         const repeatPasswordInput = document.getElementById('repeat-password');
         const agreeTermsCheckbox = document.getElementById('agree-terms');
-        const understandPrivacyCheckbox = document.getElementById('understand-privacy'); // Corrected ID reference if needed
+        const understandPrivacyCheckbox = document.getElementById('understand-privacy'); // Check ID in HTML if issues persist
 
         registerForm.addEventListener('submit', async (event) => {
             event.preventDefault(); // Prevent default page reload
@@ -136,45 +98,39 @@
                 return;
             }
 
-            // --- Prepare Data for Backend AS JSON ---
-            // Create a plain JavaScript object with the data
+            // --- CORRECTED: Prepare Data for Backend AS JSON ---
             const dataToSend = {
-                firstName: firstNameInput.value,
-                lastName: lastNameInput.value,
+                username: usernameInput.value, // Use usernameInput
                 email: emailInput.value,
-                password: password, // Use the variable already defined
-                confirmPassword: repeatPassword, // Use the variable already defined
-                // Ensure these keys match what the backend expects in data.get(...)
+                password: password,
+                confirmPassword: repeatPassword,
                 agreeTerms: agreeTermsCheckbox.checked,
                 understandPrivacy: understandPrivacyCheckbox.checked
+                // Removed firstName and lastName
             };
 
-            // Convert the object to a JSON string
             const jsonData = JSON.stringify(dataToSend);
 
-            // --- Send Data to Backend API ---
+            // --- Send Data to Backend API (Keep as is) ---
             try {
-                const apiUrl = 'http://localhost:5000/register';
+                const apiUrl = 'http://localhost:5000/register'; // Adjust if your URL is different
 
                 const response = await fetch(apiUrl, {
                     method: 'POST',
-                    // *** Set the Content-Type header to application/json ***
                     headers: {
                         'Content-Type': 'application/json',
-                        'Accept': 'application/json' // Keep this, good practice
+                        'Accept': 'application/json'
                     },
-                    // *** Send the JSON string as the body ***
                     body: jsonData
                 });
 
-                const result = await response.json(); // Expect JSON response
+                const result = await response.json();
 
                 if (response.ok) {
                     messageArea.textContent = result.message || 'Registration successful!';
                     messageArea.className = 'success-message';
                     registerForm.reset();
                 } else {
-                    // Backend error message (e.g., email exists, validation fails)
                     messageArea.textContent = result.error || `Registration failed (Status: ${response.status})`;
                     messageArea.className = 'error-message';
                 }

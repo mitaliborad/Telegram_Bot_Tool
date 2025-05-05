@@ -8,6 +8,9 @@ from pymongo.database import Database
 from pymongo.errors import ConnectionFailure, OperationFailure
 from dotenv import load_dotenv
 from typing import Optional, Dict, Any, List, Tuple
+from flask_login import UserMixin
+from werkzeug.security import check_password_hash
+from bson import ObjectId
 
 # --- Load Environment Variables ---
 load_dotenv()
@@ -101,6 +104,80 @@ def get_db() -> Tuple[Optional[Database], str]:
         return _db, ""
     except Exception as e:
         error_msg = f"Error accessing database '{DATABASE_NAME}': {e}"
+        logging.exception(error_msg)
+        return None, error_msg
+
+class User(UserMixin):
+    """Represents a user for Flask-Login."""
+    def __init__(self, user_data: Dict[str, Any]):
+        """
+        Initialize User object from database data.
+
+        Args:
+            user_data: Dictionary fetched from the 'userinfo' collection.
+                       Expected keys: '_id', 'username', 'email', 'password_hash'.
+        """
+        if not user_data:
+            raise ValueError("Cannot initialize User with empty data.")
+
+        # Store the essential data, ensuring _id is present
+        self.id = str(user_data.get('_id')) # Store ID as string, required by Flask-Login
+        self.username = user_data.get('username')
+        self.email = user_data.get('email')
+        self.password_hash = user_data.get('password_hash')
+        # Add any other user fields you might need access to via current_user
+        # self.created_at = user_data.get('created_at')
+
+        # --- Important: Validate essential fields ---
+        if not self.id or not self.username or not self.email or not self.password_hash:
+             logging.error(f"User data missing essential fields during User object creation: {user_data}")
+             # Decide how to handle this - raise error or create an invalid user?
+             # Raising an error is safer during development.
+             raise ValueError("User data from database is missing required fields (_id, username, email, password_hash).")
+
+
+    # Flask-Login requires get_id() to return the user's unique ID as a string
+    def get_id(self):
+        return self.id
+
+    def check_password(self, password_to_check: str) -> bool:
+        """Verifies the provided password against the stored hash."""
+        if not self.password_hash:
+             logging.error(f"User {self.username} has no password hash stored.")
+             return False
+        return check_password_hash(self.password_hash, password_to_check)
+
+def find_user_by_id(user_id: ObjectId) -> Tuple[Optional[Dict[str, Any]], str]:
+    """
+    Finds a single user record by their MongoDB ObjectId.
+
+    Args:
+        user_id: The ObjectId of the user.
+
+    Returns:
+        A tuple (user_document or None, error_message)
+    """
+    collection, error = get_userinfo_collection()
+    if error or collection is None:
+        logging.error(f"Failed to get userinfo collection for ID check: {error}")
+        return None, f"Failed to get userinfo collection: {error}"
+
+    if not isinstance(user_id, ObjectId):
+        # Basic type check, ObjectId conversion happens in user_loader
+        logging.error(f"Invalid type passed to find_user_by_id: {type(user_id)}")
+        return None, "Invalid user ID format."
+
+    try:
+        user = collection.find_one({"_id": user_id})
+        if user:
+            logging.debug(f"Found user record for ID: {user_id}")
+            return user, "" # Return the user document
+        else:
+            logging.debug(f"No user record found for ID: {user_id}")
+            return None, "" # Not found isn't an error here
+
+    except Exception as e:
+        error_msg = f"Unexpected error finding user by ID '{user_id}': {e}"
         logging.exception(error_msg)
         return None, error_msg
 
@@ -394,3 +471,35 @@ def save_user(user_data: Dict[str, Any]) -> Tuple[bool, str]:
         error_msg = f"Unexpected error saving user: {e}"
         logging.exception(error_msg)
         return False, error_msg
+    
+def find_user_by_username(username: str) -> Tuple[Optional[Dict[str, Any]], str]:
+    # ... (keep the implementation from the previous step) ...
+    """
+    Finds a single user record by their username.
+
+    Args:
+        username: The username to search for (case-sensitive by default).
+
+    Returns:
+        A tuple (user_document or None, error_message)
+    """
+    collection, error = get_userinfo_collection() # Assumes you have this function
+    if error or collection is None:
+        logging.error(f"Failed to get userinfo collection for username check: {error}")
+        return None, f"Failed to get userinfo collection: {error}"
+
+    try:
+        # Query the database for the username.
+        user = collection.find_one({"username": username})
+
+        if user:
+            logging.info(f"Found user record for username: {username}")
+            return user, "" # Return the user document and empty error string
+        else:
+            logging.info(f"No user record found for username: {username}")
+            return None, "" # Return None (not found), but no error message
+
+    except Exception as e:
+        error_msg = f"Unexpected error finding user by username '{username}': {e}"
+        logging.exception(error_msg) # Log the full traceback
+        return None, error_msg # Return None and the error message

@@ -16,6 +16,9 @@ Flask-CORS
 Flask-Login
 Flask-JWT-Extended
 
+# Database (for MongoDB BSON/ObjectId)
+pymongo
+
 requests
 python-dotenv
 python-dateutil

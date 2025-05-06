@@ -23,9 +23,14 @@ app.jinja_env.filters['format_bytes'] = format_bytes
 logging.info("Custom Jinja filter 'format_bytes' registered.")
 
 # --- Initialize CORS ---
-allowed_origins = "https://telegrambot-rosy-psi.vercel.app/home"
-CORS(app, origins=allowed_origins, supports_credentials=True)
+# allowed_origins = "https://telegrambot-rosy-psi.vercel.app/home"
+# CORS(app, origins=allowed_origins, supports_credentials=True)
+# logging.info(f"Flask-CORS initialized. Allowing origins: {allowed_origins}")
+
+allowed_origins = "https://telegrambot-rosy-psi.vercel.app"
+CORS(app, origins=allowed_origins, supports_credentials=True, methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
 logging.info(f"Flask-CORS initialized. Allowing origins: {allowed_origins}")
+
 
 # --- Initialize JWT ---
 jwt = JWTManager(app)

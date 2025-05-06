@@ -24,17 +24,12 @@ from dateutil import parser as dateutil_parser
 import threading
 import database
 from database import (
-    User,
-    find_user_by_id, # Needed by load_user
-    find_user_by_email,
-    find_user_by_username,
-    save_user,
     save_file_metadata,
-    find_metadata_by_email, # <<< ADDED
-    find_metadata_by_access_id,
     find_metadata_by_username,
-    delete_metadata_by_access_id # <<< ADDED
-    # delete_metadata_by_filename # Can remove this if no longer used
+    find_metadata_by_access_id,
+    delete_metadata_by_filename,
+    find_user_by_email,
+    save_user
 )
 from config import format_time
 from flask_cors import CORS  # Added for CORS support
@@ -47,6 +42,7 @@ from config import (
     format_bytes
 )
 from telegram_api import send_file_to_telegram, download_telegram_file_content
+from flask_jwt_extended import create_access_token
 
 # Initialize CORS for registration endpoint
 # CORS(app, resources={r"/register": {"origins": "http://127.0.0.1:5000"}})
@@ -94,11 +90,16 @@ def show_register_page():
         logging.error(f"Error rendering register.html: {e}", exc_info=True)
         return make_response("Error loading page.", 500)
 
-@app.route('/register', methods=['POST'])
+@app.route('/register', methods=['POST', 'OPTIONS'])
 def register_user(): # Keep the original function name if preferred
     """Handles user registration submission with username."""
     logging.info("Received POST request for /register")
 
+    if request.method == 'OPTIONS':
+        # If Flask-CORS is working, this part might not even be reached.
+        # Return a simple 204 No Content if manual handling were needed.
+        return make_response(), 204
+    
     # 1. --- Get Data ---
     try:
         data = request.get_json()
@@ -453,173 +454,190 @@ def _safe_remove_file(path: str, prefix: str, desc: str):
 def process_upload_and_generate_updates(upload_id: str) -> Generator[SseEvent, None, None]:
     logging.info(f"[{upload_id}] Starting processing generator...")
     upload_data = upload_progress_data.get(upload_id)
-    # --- Retrieve user details and anonymous flag ---
     if not upload_data or not upload_data.get('temp_file_path') or not os.path.exists(upload_data['temp_file_path']):
-        logging.error(f"[{upload_id}] Critical: Upload data/temp file missing.")
-        yield _yield_sse_event('error', {'message': 'Internal error: data missing.'})
-        return
+        logging.error(f"[{upload_id}] Critical: Upload data/temp file missing."); yield _yield_sse_event('error', {'message': 'Internal error: data missing.'}); return
 
-    temp_file_path = upload_data['temp_file_path']
-    original_filename = upload_data['original_filename']
-    # Get user info stored during initiation
-    username_for_record = upload_data.get('username', 'unknown')
-    user_email_for_record = upload_data.get('user_email') # This will be None for anonymous
-    is_anonymous = upload_data.get('is_anonymous', True) # Default to True if somehow missing
-
-    # --- Check if saving is required ---
-    # Decide if we should even attempt to save metadata permanently
-    should_save_permanently = not is_anonymous
-
-    if should_save_permanently and not user_email_for_record:
-         # This indicates a problem if an authenticated user lost their email somehow
-         logging.error(f"[{upload_id}] CRITICAL: Authenticated user ({username_for_record}) missing email. Cannot save metadata.")
-         yield _yield_sse_event('error', {'message': 'Internal server error: User identity lost.'})
-         # Update status to reflect the error
-         upload_data['status'] = 'error'
-         upload_data['error'] = 'User email missing for authenticated upload'
-         # Cleanup temp file before returning
-         _safe_remove_file(temp_file_path, upload_id, "original temp on auth error")
-         return
-
-    logging.info(f"[{upload_id}] Processing: User Email='{user_email_for_record or 'Anonymous'}', Display Name='{username_for_record}', File='{original_filename}', Anonymous={is_anonymous}")
+    temp_file_path = upload_data['temp_file_path']; original_filename = upload_data['original_filename']
+    username = upload_data['username']; logging.info(f"[{upload_id}] Processing: User='{username}', File='{original_filename}'")
     upload_data['status'] = 'processing'
-    # ... (Rest of the setup: access_id, executor, etc.) ...
-    temp_compressed_zip_filepath: Optional[str] = None
-    access_id = uuid.uuid4().hex[:10]; upload_data['access_id'] = access_id; # Generate access ID for all uploads
-    logging.info(f"[{upload_id}] Access ID: {access_id}")
-    # ... (executor setup) ...
+    temp_compressed_zip_filepath: Optional[str] = None; overall_start_time = upload_data.get('start_time', time.time())
+    access_id: Optional[str] = None; total_size = 0
+    executor: Optional[ThreadPoolExecutor] = None
+    if len(TELEGRAM_CHAT_IDS) > 1:
+        executor = ThreadPoolExecutor(max_workers=MAX_UPLOAD_WORKERS, thread_name_prefix=f'Upload_{upload_id[:4]}')
+        logging.info(f"[{upload_id}] Initialized Upload Executor (max={MAX_UPLOAD_WORKERS})")
 
     try:
-        total_size = os.path.getsize(temp_file_path)
-        if total_size == 0: raise ValueError("Uploaded file is empty.")
+        total_size = os.path.getsize(temp_file_path);
+        if total_size == 0: raise ValueError("Uploaded file empty.")
         yield _yield_sse_event('start', {'filename': original_filename, 'totalSize': total_size})
+        access_id = uuid.uuid4().hex[:10]; upload_data['access_id'] = access_id; logging.info(f"[{upload_id}] Access ID: {access_id}")
 
         if total_size <= CHUNK_SIZE:
-            # === Single File Workflow ===
-            logging.info(f"[{upload_id}] Single file workflow.")
-            # ... (Compression logic remains the same) ...
-            zip_buffer = io.BytesIO(); # ... compress to zip_buffer ...
-            comp_size = zip_buffer.tell(); comp_filename = f"{os.path.splitext(original_filename)[0]}.zip";
-            file_bytes_content = zip_buffer.getvalue(); zip_buffer.close()
+            logging.info(f"[{upload_id}] Single file workflow."); yield _yield_sse_event('status', {'message': 'Compressing...'})
+            zip_buffer = io.BytesIO();
+            with open(temp_file_path, 'rb') as f_in, zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zf: zf.writestr(original_filename, f_in.read())
+            comp_size = zip_buffer.tell(); comp_filename = f"{os.path.splitext(original_filename)[0]}.zip"; logging.info(f"[{upload_id}] Compressed size: {comp_size}")
+            file_bytes_content = zip_buffer.getvalue()
+            zip_buffer.close()
             yield _yield_sse_event('progress', {'bytesSent': 0, 'totalBytes': comp_size}); yield _yield_sse_event('status', {'message': f'Sending...'})
-
-            # ... (Multi-chat send logic remains the same - using _send_single_file_task) ...
-            start_send = time.time(); # ... send to all chats, collect results in send_res ...
+            start_send = time.time(); futures: Dict[Future, str] = {}; results: Dict[str, ApiResult] = {}
+            if executor:
+                for chat_id in TELEGRAM_CHAT_IDS: cid = str(chat_id); fut = executor.submit(_send_single_file_task, file_bytes_content, comp_filename, cid, upload_id); futures[fut] = cid
+                logging.info(f"[{upload_id}] Submitted {len(futures)} single-file tasks.")
+            else: cid = str(TELEGRAM_CHAT_IDS[0]); _, res = _send_single_file_task(file_bytes_content, comp_filename, cid, upload_id); results[cid] = res
+            primary_fut: Optional[Future] = None
+            if executor:
+                primary_cid = str(PRIMARY_TELEGRAM_CHAT_ID);
+                for fut, cid in futures.items():
+                    if cid == primary_cid: primary_fut = fut; break
+                if primary_fut:
+                     logging.info(f"[{upload_id}] Wait primary ({primary_cid})..."); cid_res, res = primary_fut.result(); results[cid_res] = res; logging.info(f"[{upload_id}] Primary done. OK:{res[0]}");
+                     if not res[0]: raise IOError(f"Primary send fail: {res[1]}")
+                else: logging.warning(f"[{upload_id}] Primary fut {primary_cid} not found.")
+                logging.info(f"[{upload_id}] Wait backups...");
+                for fut in as_completed(futures):
+                    cid_res, res = fut.result();
+                    if cid_res not in results: results[cid_res] = res; logging.debug(f"[{upload_id}] Done backup {cid_res}. OK:{res[0]}")
             duration = time.time() - start_send; logging.info(f"[{upload_id}] Single sends done in {duration:.2f}s.")
-            send_res = [{"chat_id": cid, "success": r[0], "message": r[1], "tg_response": r[2]} for cid, r in results.items()] # Example placeholder
+            send_res = [{"chat_id": cid, "success": r[0], "message": r[1], "tg_response": r[2]} for cid, r in results.items()]
             primary_res = results.get(str(PRIMARY_TELEGRAM_CHAT_ID)); success = primary_res is not None and primary_res[0]
-
-            # --- Check primary send success ---
-            if not success:
-                 primary_error = results.get(str(PRIMARY_TELEGRAM_CHAT_ID), (False, "Primary send result missing", None))[1]
-                 raise IOError(f"Primary send failed: {primary_error}")
-
-            # --- Primary send OK, yield progress ---
-            num_ok = sum(1 for r in send_res if r['success']); logging.info(f"[{upload_id}] Success: {num_ok}/{len(TELEGRAM_CHAT_IDS)}")
-            speed = (comp_size/(1024*1024)/duration) if duration > 0 else 0
-            yield _yield_sse_event('progress', {'bytesSent': comp_size, 'totalBytes': comp_size, 'percentage': 100, 'speedMBps': speed, 'etaFormatted': '00:00'})
-
-            # --- Prepare Metadata Record ---
+            if success:
+                num_ok = sum(1 for r in send_res if r['success']); logging.info(f"[{upload_id}] Success: {num_ok}/{len(TELEGRAM_CHAT_IDS)}")
+                speed = (comp_size/(1024*1024)/duration) if duration > 0 else 0
+                yield _yield_sse_event('progress', {'bytesSent': comp_size, 'totalBytes': comp_size, 'percentage': 100, 'speedMBps': speed, 'etaFormatted': '00:00'})
+                # --- New block using database function ---
             ts = datetime.now(timezone.utc).isoformat()
             details = _parse_send_results(upload_id, send_res)
             record = {
                 "original_filename": original_filename,
-                "sent_filename": comp_filename, "is_split": False, "is_compressed": True,
-                "original_size": total_size, "compressed_size": comp_size,
-                "send_locations": details, "upload_timestamp": ts,
-                "username": username_for_record,       # Display name
-                "user_email": user_email_for_record,  # Linking email (or None)
+                "sent_filename": comp_filename,
+                "is_split": False,
+                "is_compressed": True,
+                "original_size": total_size,
+                "compressed_size": comp_size,
+                "send_locations": details,
+                "upload_timestamp": ts,
+                "username": username,
                 "upload_duration_seconds": round(duration, 2),
-                "access_id": access_id,
-                "is_anonymous": is_anonymous # Store the flag
+                "access_id": access_id # Make sure access_id is in the record
             }
+            logging.info(f"[{upload_id}] Attempting to save metadata to DB...")
+            save_success, save_msg = save_file_metadata(record) # Call the DB function
+            if not save_success:
+                # Log the error critically, yield a warning status to the user
+                logging.error(f"[{upload_id}] CRITICAL: Metadata save to DB failed: {save_msg}")
+                yield _yield_sse_event('status', {'message': 'Warning: Upload OK, but metadata save failed.'})
+                # Consider setting upload_data['status'] = 'completed_metadata_error'
+            else:
+                logging.info(f"[{upload_id}] Metadata successfully saved to DB. Msg: {save_msg}")
+            # --- End of new block ---
 
-            # --- Save Metadata ONLY if not anonymous ---
-            save_success = True # Default to success for anonymous
-            save_msg = "Skipped metadata save for anonymous upload."
-            if should_save_permanently:
-                 logging.info(f"[{upload_id}] Attempting to save metadata to DB for user {user_email_for_record}...")
-                 save_success, save_msg = save_file_metadata(record)
-                 if not save_success:
-                     logging.error(f"[{upload_id}] CRITICAL: Metadata save to DB failed: {save_msg}")
-                 else:
-                     logging.info(f"[{upload_id}] Metadata successfully saved to DB. Msg: {save_msg}")
-
-            # --- Yield Final Event (Conditional on Save Success) ---
-            if save_success:
+                # The rest (url = url_for..., yield _yield_sse_event('complete'...) stays the same
                 url = url_for('get_file_by_access_id', access_id=access_id, _external=True)
                 yield _yield_sse_event('complete', {'message': f'File {original_filename} uploaded!', 'download_url': url, 'filename': original_filename})
-                upload_data['status'] = 'completed'
-            else:
-                 # If saving failed for a logged-in user
-                 upload_data['status'] = 'completed_metadata_error'
-                 yield _yield_sse_event('error', {'message': f'Upload OK but failed to save file record: {save_msg}'})
-
-
+                upload_data['status'] = 'completed' # Set status even if meta save failed with warning
+           
         else:
-            # === Split File Workflow ===
-            logging.info(f"[{upload_id}] Large file workflow.")
-            # ... (Compress file to temp_compressed_zip_filepath) ...
-            # ... (Loop through chunks, send using _send_chunk_task, collect chunk_meta) ...
-            # ... (Check chunk count consistency) ...
-            if actual == expected:
-                ts = datetime.now(timezone.utc).isoformat()
-                record = {
-                    "original_filename": original_filename, "sent_filename": comp_filename,
-                    "is_split": True, "is_compressed": True, "original_size": total_size,
-                    "compressed_total_size": comp_size, "chunk_size": CHUNK_SIZE,
-                    "num_chunks": expected, "chunks": chunks_meta,
-                    "upload_timestamp": ts,
-                    "username": username_for_record,       # Display name
-                    "user_email": user_email_for_record,  # Linking email (or None)
-                    "total_upload_duration_seconds": round(total_send_dur, 2),
-                    "access_id": access_id,
-                    "is_anonymous": is_anonymous # Store the flag
-                }
+            logging.info(f"[{upload_id}] Large file workflow."); comp_filename = f"{os.path.splitext(original_filename)[0]}.zip"
+            yield _yield_sse_event('status', {'message': 'Compressing large file...'})
+            with tempfile.NamedTemporaryFile(prefix=f"{upload_id}_comp_", suffix=".zip", delete=False, dir=UPLOADS_TEMP_DIR) as tf: temp_compressed_zip_filepath = tf.name
+            start_comp = time.time()
+            try:
+                with open(temp_file_path, 'rb') as f_in, zipfile.ZipFile(temp_compressed_zip_filepath, 'w', zipfile.ZIP_DEFLATED) as zf:
+                    with zf.open(original_filename, 'w') as entry: shutil.copyfileobj(f_in, entry, length=DEFAULT_CHUNK_READ_SIZE)
+            except Exception as e:
+                 logging.error(f"[{upload_id}] Err large compress: {e}", exc_info=True);
+                 if temp_compressed_zip_filepath and os.path.exists(temp_compressed_zip_filepath): _safe_remove_file(temp_compressed_zip_filepath, upload_id, "partial large comp");
+                 temp_compressed_zip_filepath = None;
+                 raise e # Re-raise the original exception
+            comp_duration = time.time() - start_comp; comp_size = os.path.getsize(temp_compressed_zip_filepath); logging.info(f"[{upload_id}] Compressed to {comp_size} bytes in {comp_duration:.2f}s.")
+            yield _yield_sse_event('status', {'message': f'Starting chunk upload ({format_bytes(comp_size)})...'})
+            yield _yield_sse_event('start', {'filename': comp_filename, 'totalSize': comp_size})
+            chunk_num = 0; chunks_meta = []; read_bytes = 0; total_send_dur = 0.0; start_split = time.time(); sent_bytes = 0
+            try:
+                with open(temp_compressed_zip_filepath, 'rb') as f_comp:
+                    while True:
+                        chunk_num += 1; logging.debug(f"[{upload_id}] Reading chunk {chunk_num}...")
+                        chunk_data = f_comp.read(CHUNK_SIZE); chunk_size = len(chunk_data)
+                        if not chunk_data: logging.info(f"[{upload_id}] EOF reached."); break
+                        read_bytes += chunk_size; chunk_part_name = f"{comp_filename}.part_{str(chunk_num).zfill(3)}"; logging.info(f"[{upload_id}] Read chunk {chunk_num} ({chunk_size} bytes). Name: '{chunk_part_name}'")
+                        start_chunk_send = time.time(); chunk_futures: Dict[Future, str] = {}; chunk_results: Dict[str, ApiResult] = {}; primary_chunk_fut: Optional[Future] = None
+                        if executor:
+                            primary_cid = str(PRIMARY_TELEGRAM_CHAT_ID)
+                            for chat_id in TELEGRAM_CHAT_IDS:
+                                cid = str(chat_id); fut = executor.submit(_send_chunk_task, chunk_data, chunk_part_name, cid, upload_id, chunk_num); chunk_futures[fut] = cid;
+                                if cid == primary_cid: primary_chunk_fut = fut
+                            logging.debug(f"[{upload_id}] Submitted {len(chunk_futures)} tasks chunk {chunk_num}.")
+                        else:
+                            cid = str(TELEGRAM_CHAT_IDS[0]); _, res = _send_chunk_task(chunk_data, chunk_part_name, cid, upload_id, chunk_num); chunk_results[cid] = res;
+                            if cid == str(PRIMARY_TELEGRAM_CHAT_ID) and not res[0]: raise IOError(f"Primary fail chunk {chunk_num}: {res[1]}")
+                        if executor and primary_chunk_fut:
+                            logging.debug(f"[{upload_id}] Wait primary chunk {chunk_num}..."); cid_res, res = primary_chunk_fut.result(); chunk_results[cid_res] = res; logging.debug(f"[{upload_id}] Primary chunk {chunk_num} done. OK:{res[0]}");
+                            if not res[0]: raise IOError(f"Primary fail chunk {chunk_num}: {res[1]}")
+                        elif executor and not primary_chunk_fut: raise SystemError(f"Primary fut not found chunk {chunk_num}.")
+                        sent_bytes += chunk_size; progress = _calculate_progress(start_split, sent_bytes, comp_size); yield _yield_sse_event('progress', progress)
+                        if executor:
+                            logging.debug(f"[{upload_id}] Wait backups chunk {chunk_num}...");
+                            for fut in as_completed(chunk_futures):
+                                cid_res, res = fut.result();
+                                if cid_res not in chunk_results: chunk_results[cid_res] = res; logging.debug(f"[{upload_id}] Done backup chunk {chunk_num}, chat: {cid_res}. OK:{res[0]}")
+                        chunk_dur = time.time() - start_chunk_send; total_send_dur += chunk_dur
+                        chunk_send_res = [{"chat_id": cid, "success": r[0], "message": r[1], "tg_response": r[2]} for cid, r in chunk_results.items()]
+                        num_ok = sum(1 for r in chunk_send_res if r['success']); yield _yield_sse_event('status', {'message': f'Sent chunk {chunk_num} ({num_ok}/{len(TELEGRAM_CHAT_IDS)} OK)'})
+                        try:
+                            details = _parse_send_results(f"{upload_id}-c{chunk_num}", chunk_send_res);
+                            meta_entry = {"part_number": chunk_num, "chunk_filename": chunk_part_name, "send_locations": details, "chunk_upload_duration_seconds": round(chunk_dur, 2)};
+                            chunks_meta.append(meta_entry); logging.debug(f"[{upload_id}] Stored meta chunk {chunk_num}.")
+                        except Exception as e: raise ValueError(f"Err meta chunk {chunk_num}.") from e
+                logging.info(f"[{upload_id}] Finished chunk loop.")
+                expected = (comp_size + CHUNK_SIZE - 1)//CHUNK_SIZE if CHUNK_SIZE > 0 else (1 if comp_size > 0 else 0)
+                actual = len(chunks_meta)
+                if actual == expected:
+                    logging.info(f"[{upload_id}] All {expected} chunks OK. Saving meta.")
+                    # --- New block using database function for chunks ---
+                    ts = datetime.now(timezone.utc).isoformat()
+                    record = {
+                        "original_filename": original_filename,
+                        "sent_filename": comp_filename,
+                        "is_split": True,
+                        "is_compressed": True,
+                        "original_size": total_size,
+                        "compressed_total_size": comp_size,
+                        "chunk_size": CHUNK_SIZE,
+                        "num_chunks": expected,
+                        "chunks": chunks_meta, # Ensure chunks_meta is correctly populated
+                        "upload_timestamp": ts,
+                        "username": username,
+                        "total_upload_duration_seconds": round(total_send_dur, 2),
+                        "access_id": access_id # Make sure access_id is in the record
+                    }
+                    logging.info(f"[{upload_id}] Attempting to save chunked metadata to DB...")
+                    save_success, save_msg = save_file_metadata(record)
+                    if not save_success:
+                        logging.error(f"[{upload_id}] CRITICAL: Chunked metadata save to DB failed: {save_msg}")
+                        yield _yield_sse_event('status', {'message': 'Warning: Upload OK, but metadata save failed.'})
+                        # upload_data['status'] = 'completed_metadata_error' # Optional distinct status
+                    else:
+                        logging.info(f"[{upload_id}] Chunked metadata successfully saved to DB. Msg: {save_msg}")
+                    # --- End of new block ---
 
-                # --- Save Metadata ONLY if not anonymous ---
-                save_success = True # Default to success for anonymous
-                save_msg = "Skipped metadata save for anonymous upload."
-                if should_save_permanently:
-                     logging.info(f"[{upload_id}] Attempting to save chunked metadata to DB for user {user_email_for_record}...")
-                     save_success, save_msg = save_file_metadata(record)
-                     if not save_success:
-                         logging.error(f"[{upload_id}] CRITICAL: Chunked metadata save to DB failed: {save_msg}")
-                     else:
-                         logging.info(f"[{upload_id}] Chunked metadata successfully saved to DB. Msg: {save_msg}")
-
-                # --- Yield Final Event (Conditional on Save Success) ---
-                if save_success:
+                    # The rest (url = url_for..., yield _yield_sse_event('complete'...) stays the same
                     url = url_for('get_file_by_access_id', access_id=access_id, _external=True)
                     yield _yield_sse_event('complete', {'message': f'Large file {original_filename} uploaded!', 'download_url': url, 'filename': original_filename})
-                    upload_data['status'] = 'completed'
-                else:
-                    # If saving failed for a logged-in user
-                    upload_data['status'] = 'completed_metadata_error'
-                    yield _yield_sse_event('error', {'message': f'Upload chunks OK but failed to save file record: {save_msg}'})
+                    upload_data['status'] = 'completed' # Set status even if meta save failed with warning
+                else: raise SystemError(f"Chunk count mismatch. Exp:{expected}, Got:{actual}.")
+            finally:
+                if temp_compressed_zip_filepath and os.path.exists(temp_compressed_zip_filepath): _safe_remove_file(temp_compressed_zip_filepath, upload_id, "large compressed temp")
 
-            else: # Chunk count mismatch
-                 raise SystemError(f"Chunk count mismatch. Exp:{expected}, Got:{actual}.")
-
-    # --- General Error Handling ---
     except Exception as e:
-        error_message = f"Upload failed: {str(e) or type(e).__name__}"
-        logging.error(f"[{upload_id}] {error_message}", exc_info=True)
-        yield _yield_sse_event('error', {'message': error_message})
-        if upload_id in upload_progress_data:
-            upload_data['status'] = 'error'
-            upload_data['error'] = error_message
-
-    # --- Cleanup ---
+        error_message = f"Upload failed: {str(e) or type(e).__name__}"; logging.error(f"[{upload_id}] {error_message}", exc_info=True)
+        yield _yield_sse_event('error', {'message': error_message});
+        if upload_id in upload_progress_data: upload_data['status'] = 'error'; upload_data['error'] = error_message
     finally:
         logging.info(f"[{upload_id}] Upload generator cleanup.")
-        # ... (Executor shutdown) ...
-        # --- Cleanup original temp file ---
-        _safe_remove_file(temp_file_path, upload_id, "original temp")
-        # --- Cleanup compressed temp file (if created) ---
-        if temp_compressed_zip_filepath:
-            _safe_remove_file(temp_compressed_zip_filepath, upload_id, "large compressed temp")
-
+        if executor: executor.shutdown(wait=False); logging.info(f"[{upload_id}] Upload executor shutdown.")
+        if temp_file_path and os.path.exists(temp_file_path): _safe_remove_file(temp_file_path, upload_id, "original temp")
         final_status = upload_progress_data.get(upload_id, {}).get('status', 'unknown')
         logging.info(f"[{upload_id}] Upload generator finished. Status: {final_status}")
 
@@ -968,33 +986,144 @@ def serve_temp_file(temp_id: str, filename: str) -> Response:
 
     return response
 
-@app.route('/files', methods=['GET'])
-@login_required # Protect this route
-def list_files() -> Response:
-    """Lists files associated with the currently logged-in user."""
-    user_email = current_user.email # Get email from session
-    logging.info(f"List files request for logged-in user: '{user_email}'")
+# --- API Login Route ---
+@app.route('/api/auth/login', methods=['POST', 'OPTIONS'])
+def api_login():
+    """
+    Handles API login requests.
+    Authenticates user with email/password and returns a JWT upon success.
+    """
+    # --- Handle OPTIONS preflight request ---
+    if request.method == 'OPTIONS':
+        # Flask-CORS (configured globally in app_setup.py) should automatically handle
+        # adding the necessary headers to this response.
+        # We just need to provide an endpoint that returns an OK status (204 is good).
+        logging.debug("Handling OPTIONS request for /api/auth/login")
+        response = make_response()
+        # Note: You generally *don't* need to manually add CORS headers here
+        # if Flask-CORS is properly configured globally. It intercepts the response.
+        return response, 204 # 204 No Content indicates success for OPTIONS
 
-    # Use the new DB function to find files by email
-    user_files, error_msg = database.find_metadata_by_email(user_email)
+    # --- Handle POST request ---
+    if request.method == 'POST':
+        logging.info("Received POST request for /api/auth/login")
+        # 1. Get Data from JSON Body
+        try:
+            data = request.get_json()
+            if not data:
+                logging.warning("API Login failed: No JSON data received.")
+                return make_response(jsonify({"error": "Invalid request format. Expected JSON."}), 400)
+
+            email = data.get('email', '').strip().lower()
+            password = data.get('password', '')
+            remember = data.get('remember', False) # Optional: Get remember flag
+
+        except Exception as e:
+            logging.error(f"Error parsing API login JSON data: {e}", exc_info=True)
+            return make_response(jsonify({"error": "Invalid request data received."}), 400)
+
+        # 2. Basic Validation
+        if not email or not password:
+            logging.warning("API Login failed: Missing email or password.")
+            return make_response(jsonify({"error": "Email and password are required."}), 400)
+
+        logging.info(f"API Login attempt for email: {email}")
+
+        # 3. Find User in Database
+        user_doc, db_error = find_user_by_email(email)
+
+        if db_error:
+            logging.error(f"Database error during API login for {email}: {db_error}")
+            # Don't expose detailed DB errors to the client
+            return make_response(jsonify({"error": "Internal server error during login."}), 500)
+
+        # 4. Validate User and Password
+        user_obj = None
+        if user_doc:
+            try:
+                # Attempt to create the User object (catches potential data inconsistencies)
+                user_obj = User(user_doc)
+            except ValueError as e:
+                # Log the specific error for debugging
+                logging.error(f"Failed to create User object for {email} from doc {user_doc}: {e}", exc_info=True)
+                # Return a generic error to the client
+                return make_response(jsonify({"error": "Login failed due to inconsistent user data."}), 500)
+
+        # Check if user object was created AND password matches
+        if user_obj and user_obj.check_password(password):
+            # --- Login Successful - Create JWT ---
+            try:
+                # Use the user's unique database ID (as a string) as the identity for the token
+                identity = user_obj.get_id()
+                if not identity:
+                     # This should ideally not happen if User object creation is robust
+                     logging.error(f"User object for {email} is missing an ID.")
+                     return make_response(jsonify({"error": "Internal server error - user identity missing."}), 500)
+
+                # Create the JWT access token
+                access_token = create_access_token(identity=identity) # Add `expires_delta` if needed
+
+                logging.info(f"User '{user_obj.username}' ({email}) logged in successfully via API. Token created.")
+
+                # Return success response including the token and user details
+                return make_response(jsonify({
+                    "message": "Login successful!",
+                    "user": {
+                        "username": user_obj.username,
+                        "email": user_obj.email,
+                        "id": identity  # Include user ID
+                        # Add any other non-sensitive user details the frontend needs
+                    },
+                    "token": access_token  # The crucial token field
+                }), 200) # 200 OK
+
+            except Exception as e:
+                 # Handle potential errors during token creation
+                 logging.error(f"Error creating JWT for user {email}: {e}", exc_info=True)
+                 return make_response(jsonify({"error": "Internal server error during token generation."}), 500)
+
+        else:
+            # --- Login Failed (Invalid Email or Password) ---
+            logging.warning(f"Failed API login attempt for email: {email} (Invalid credentials or user not found)")
+            return make_response(jsonify({"error": "Invalid email or password."}), 401) # 401 Unauthorized is appropriate
+
+    # Fallback for methods other than POST/OPTIONS (shouldn't be reached with current route config)
+    logging.warning(f"Received unexpected method {request.method} for /api/auth/login")
+    return make_response(jsonify({"error": "Method Not Allowed"}), 405)
+
+@app.route('/files/<username>', methods=['GET'])
+def list_user_files(username: str) -> Response:
+    logging.info(f"List files request for: '{username}'")
+    logging.info(f"Fetching files for user '{username}' from DB...")
+    user_files, error_msg = find_metadata_by_username(username)
 
     if error_msg:
-        logging.error(f"DB Error listing files for '{user_email}': {error_msg}")
+        logging.error(f"DB Error listing files for '{username}': {error_msg}")
         return jsonify({"error": "Server error retrieving file list."}), 500
 
     if user_files is None:
          user_files = []
 
-    logging.info(f"Found {len(user_files)} records for '{user_email}'.")
+    logging.info(f"Found {len(user_files)} records for '{username}'.")
 
-    # Serialize ObjectId before returning
+    # --- NEW: Convert ObjectId to string before returning ---
     serializable_files = []
     for file_record in user_files:
-        if '_id' in file_record and isinstance(file_record['_id'], ObjectId):
-             file_record['_id'] = str(file_record['_id'])
-        serializable_files.append(file_record)
+        # Convert the '_id' field if it exists and is an ObjectId
+        if '_id' in file_record and hasattr(file_record['_id'], 'binary'): # Check it's likely an ObjectId
+             file_record['_id'] = str(file_record['_id']) # Convert ObjectId to string
 
-    return jsonify(serializable_files)
+        # --- Optional: Convert datetime objects too if needed ---
+        # You might also have datetime objects from 'upload_timestamp'
+        # If jsonify has issues with those later, add conversion here:
+        # if 'upload_timestamp' in file_record and isinstance(file_record['upload_timestamp'], datetime):
+        #     file_record['upload_timestamp'] = file_record['upload_timestamp'].isoformat()
+
+        serializable_files.append(file_record)
+    # --- End of NEW block ---
+
+    # Return the modified list
+    return jsonify(serializable_files) # Return the list with converted IDs
 
 @app.route('/get/<access_id>')
 def get_file_by_access_id(access_id: str) -> Union[str, Response]:
@@ -1027,48 +1156,29 @@ def get_file_by_access_id(access_id: str) -> Union[str, Response]:
     logging.info(f"Rendering dl page for '{orig_name}' (id: {access_id}).")
     return render_template('download_page.html', filename=orig_name, filesize=size if size is not None else 0, upload_date=date_str, username=username, access_id=access_id)
 
-@app.route('/delete-file/<access_id>', methods=['DELETE']) # <<< CHANGED URL parameter
-@login_required # Protect this route
-def delete_file_record(access_id: str) -> Response:
-    """Deletes a file record by its access_id, ensuring ownership."""
-    logging.info(f"DELETE request for access_id='{access_id}' by user '{current_user.email}'")
-
-    # 1. Find the file metadata by access_id
-    file_info, error_msg = database.find_metadata_by_access_id(access_id)
-
-    if error_msg:
-        logging.error(f"DB Error finding file for deletion (access_id={access_id}): {error_msg}")
-        return jsonify({"error": "Server error finding file record."}), 500
-    if not file_info:
-        logging.warning(f"File record not found for deletion (access_id={access_id}).")
-        return jsonify({"error": "File record not found."}), 404
-
-    # 2. **** Authorization Check ****
-    record_owner_email = file_info.get('user_email') # Check the correct field name used during save
-    if not record_owner_email:
-         logging.error(f"File record '{access_id}' is missing owner email. Deletion denied.")
-         return jsonify({"error": "Cannot verify file ownership."}), 500 # Internal error potentially
-    if record_owner_email != current_user.email:
-        logging.warning(f"Unauthorized DELETE attempt: User '{current_user.email}' tried to delete file '{access_id}' owned by '{record_owner_email}'.")
-        return jsonify({"error": "Forbidden - You do not own this file."}), 403 # 403 Forbidden
-
-    # 3. Delete the file record using the new DB function
-    deleted_count, error_msg = database.delete_metadata_by_access_id(access_id)
+@app.route('/delete-file/<username>/<path:filename>', methods=['DELETE'])
+def delete_file_record(username: str, filename: str) -> Response:
+    logging.info(f"DELETE request user='{username}', file='{filename}'")
+    logging.info(f"Attempting delete from DB: User='{username}', File='{filename}'")
+    # Using original_filename for deletion as per previous logic.
+    # Consider changing frontend/backend to use access_id for guaranteed uniqueness if needed.
+    deleted_count, error_msg = delete_metadata_by_filename(username, filename) # Call DB function
 
     if error_msg:
-        logging.error(f"DB Error deleting file record for access_id='{access_id}': {error_msg}")
-        return jsonify({"error": "Server error during deletion."}), 500
+        logging.error(f"DB Error deleting file record for '{username}/{filename}': {error_msg}")
+        # Provide a generic server error message to the user
+        return jsonify({"error": "Server error during deletion. Please try again later."}), 500
 
     if deleted_count == 0:
-        logging.warning(f"File record found but failed to delete (access_id={access_id}).")
-        return jsonify({"error": "File record found but could not be deleted."}), 500
+        logging.warning(f"No file record found to delete for '{username}/{filename}'.")
+        return jsonify({"error": f"File '{filename}' not found for user '{username}'."}), 404
     else:
-        display_name = file_info.get('original_filename', access_id) # Get filename for message
-        logging.info(f"Successfully deleted record for file '{display_name}' (access_id='{access_id}').")
-        return jsonify({"message": f"Record for '{display_name}' deleted successfully."}), 200
+        # It's possible multiple records were deleted if names weren't unique
+        logging.info(f"Successfully deleted {deleted_count} record(s) for '{username}/{filename}' from DB.")
+        return jsonify({"message": f"Record for '{filename}' deleted successfully."}), 200
+logging.info("Flask routes defined using configurable workers and linter fixes.")
 
 
-# routes.py (Add this new route function)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -1136,4 +1246,3 @@ def logout():
     logging.info(f"User {user_email} logged out.")
     flash('You have been successfully logged out.', 'success')
     return redirect(url_for('login'))
-

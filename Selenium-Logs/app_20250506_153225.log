@@ -1,0 +1,28 @@
+2025-05-06 15:32:25,813 - INFO - [MainThread] [<module>] - ============================================================
+2025-05-06 15:32:25,813 - INFO - [MainThread] [<module>] - Logging configured. Level: INFO. Log file: Selenium-Logs\app_20250506_153225.log
+2025-05-06 15:32:25,814 - INFO - [MainThread] [<module>] - Primary Chat ID: -4603853425
+2025-05-06 15:32:25,814 - INFO - [MainThread] [<module>] - All Target Chat IDs: ['-4603853425', '-1002614397019', '-4641852757']
+2025-05-06 15:32:25,815 - INFO - [MainThread] [<module>] - Chunk Size: 20.0 MB (20971520 bytes)
+2025-05-06 15:32:25,817 - INFO - [MainThread] [<module>] - API Timeouts (Connect/Read): 10s / 60s
+2025-05-06 15:32:25,818 - INFO - [MainThread] [<module>] - API Retries: 3 attempts, 2s delay
+2025-05-06 15:32:25,819 - INFO - [MainThread] [<module>] - Max Upload Workers: 5
+2025-05-06 15:32:25,819 - INFO - [MainThread] [<module>] - Max Download Workers: 12
+2025-05-06 15:32:25,820 - INFO - [MainThread] [<module>] - ============================================================
+2025-05-06 15:32:25,820 - INFO - [MainThread] [<module>] - Configuration loaded successfully.
+2025-05-06 15:32:25,859 - INFO - [MainThread] [<module>] - Custom Jinja filter 'format_bytes' registered.
+2025-05-06 15:32:25,859 - INFO - [MainThread] [<module>] - Flask-CORS initialized. Allowing origins: http://localhost:4200
+2025-05-06 15:32:25,859 - INFO - [MainThread] [<module>] - Flask-JWT-Extended initialized.
+2025-05-06 15:32:25,859 - INFO - [MainThread] [<module>] - Flask-Login initialized.
+2025-05-06 15:32:25,859 - INFO - [MainThread] [<module>] - Global state variables initialized (upload_progress_data, download_prep_data).
+2025-05-06 15:32:25,864 - INFO - [MainThread] [<module>] - Custom Jinja filter 'format_bytes' registered.
+2025-05-06 15:32:25,864 - INFO - [MainThread] [<module>] - Flask-CORS initialized. Allowing origins: http://localhost:4200
+2025-05-06 15:32:25,868 - INFO - [MainThread] [<module>] - Flask-JWT-Extended initialized.
+2025-05-06 15:32:25,868 - INFO - [MainThread] [<module>] - Flask-Login initialized.
+2025-05-06 15:32:25,868 - INFO - [MainThread] [<module>] - Global state variables initialized (upload_progress_data, download_prep_data).
+2025-05-06 15:32:26,174 - INFO - [MainThread] [<module>] - Database module initialized.
+2025-05-06 15:32:26,820 - INFO - [MainThread] [<module>] - Initialized requests.Session for Telegram API calls.
+2025-05-06 15:32:26,820 - INFO - [MainThread] [<module>] - Telegram API functions defined with Session and Retries.
+2025-05-06 15:32:26,824 - INFO - [MainThread] [<module>] - Flask routes defined using configurable workers and linter fixes.
+2025-05-06 15:32:26,829 - INFO - [MainThread] [<module>] - Starting Flask development server...
+2025-05-06 15:32:26,862 - WARNING - [MainThread] [_log] -  * Debugger is active!
+2025-05-06 15:32:26,864 - INFO - [MainThread] [_log] -  * Debugger PIN: 106-277-236

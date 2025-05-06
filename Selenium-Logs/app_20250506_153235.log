@@ -1,0 +1,88 @@
+2025-05-06 15:32:35,224 - INFO - [MainThread] [<module>] - ============================================================
+2025-05-06 15:32:35,224 - INFO - [MainThread] [<module>] - Logging configured. Level: INFO. Log file: Selenium-Logs\app_20250506_153235.log
+2025-05-06 15:32:35,224 - INFO - [MainThread] [<module>] - Primary Chat ID: -4603853425
+2025-05-06 15:32:35,224 - INFO - [MainThread] [<module>] - All Target Chat IDs: ['-4603853425', '-1002614397019', '-4641852757']
+2025-05-06 15:32:35,224 - INFO - [MainThread] [<module>] - Chunk Size: 20.0 MB (20971520 bytes)
+2025-05-06 15:32:35,233 - INFO - [MainThread] [<module>] - API Timeouts (Connect/Read): 10s / 60s
+2025-05-06 15:32:35,233 - INFO - [MainThread] [<module>] - API Retries: 3 attempts, 2s delay
+2025-05-06 15:32:35,234 - INFO - [MainThread] [<module>] - Max Upload Workers: 5
+2025-05-06 15:32:35,234 - INFO - [MainThread] [<module>] - Max Download Workers: 12
+2025-05-06 15:32:35,234 - INFO - [MainThread] [<module>] - ============================================================
+2025-05-06 15:32:35,235 - INFO - [MainThread] [<module>] - Configuration loaded successfully.
+2025-05-06 15:32:35,323 - INFO - [MainThread] [<module>] - Custom Jinja filter 'format_bytes' registered.
+2025-05-06 15:32:35,323 - INFO - [MainThread] [<module>] - Flask-CORS initialized. Allowing origins: http://localhost:4200
+2025-05-06 15:32:35,324 - INFO - [MainThread] [<module>] - Flask-JWT-Extended initialized.
+2025-05-06 15:32:35,324 - INFO - [MainThread] [<module>] - Flask-Login initialized.
+2025-05-06 15:32:35,324 - INFO - [MainThread] [<module>] - Global state variables initialized (upload_progress_data, download_prep_data).
+2025-05-06 15:32:35,326 - INFO - [MainThread] [<module>] - Custom Jinja filter 'format_bytes' registered.
+2025-05-06 15:32:35,326 - INFO - [MainThread] [<module>] - Flask-CORS initialized. Allowing origins: http://localhost:4200
+2025-05-06 15:32:35,326 - INFO - [MainThread] [<module>] - Flask-JWT-Extended initialized.
+2025-05-06 15:32:35,327 - INFO - [MainThread] [<module>] - Flask-Login initialized.
+2025-05-06 15:32:35,327 - INFO - [MainThread] [<module>] - Global state variables initialized (upload_progress_data, download_prep_data).
+2025-05-06 15:32:35,496 - INFO - [MainThread] [<module>] - Database module initialized.
+2025-05-06 15:32:35,999 - INFO - [MainThread] [<module>] - Initialized requests.Session for Telegram API calls.
+2025-05-06 15:32:35,999 - INFO - [MainThread] [<module>] - Telegram API functions defined with Session and Retries.
+2025-05-06 15:32:36,004 - INFO - [MainThread] [<module>] - Flask routes defined using configurable workers and linter fixes.
+2025-05-06 15:32:36,004 - INFO - [MainThread] [<module>] - Starting Flask development server...
+2025-05-06 15:32:36,014 - WARNING - [MainThread] [_log] -  * Debugger is active!
+2025-05-06 15:32:36,024 - INFO - [MainThread] [_log] -  * Debugger PIN: 106-277-236
+2025-05-06 15:32:47,677 - INFO - [Thread-2 (process_request_thread)] [show_register_page] - Serving registration page.
+2025-05-06 15:32:47,684 - INFO - [Thread-2 (process_request_thread)] [_log] - 127.0.0.1 - - [06/May/2025 15:32:47] "GET /register HTTP/1.1" 200 -
+2025-05-06 15:32:48,717 - INFO - [Thread-3 (process_request_thread)] [show_register_page] - Serving registration page.
+2025-05-06 15:32:48,719 - INFO - [Thread-3 (process_request_thread)] [_log] - 127.0.0.1 - - [06/May/2025 15:32:48] "GET /register HTTP/1.1" 200 -
+2025-05-06 15:33:22,122 - INFO - [Thread-4 (process_request_thread)] [register_user] - Received POST request for /register
+2025-05-06 15:33:22,123 - INFO - [Thread-4 (process_request_thread)] [register_user] - Received registration data: {'username': 'kkkk', 'email': 'k@gmail.com', 'password': '123456', 'confirmPassword': '123456', 'agreeTerms': True, 'understandPrivacy': True}
+2025-05-06 15:33:22,125 - INFO - [Thread-4 (process_request_thread)] [_connect_to_db] - Attempting to connect to MongoDB Atlas host: telegrambot.6armfs2.mongodb.net...
+2025-05-06 15:33:24,234 - INFO - [Thread-4 (process_request_thread)] [_connect_to_db] - ✅ Successfully connected and pinged MongoDB Atlas!
+2025-05-06 15:33:24,234 - INFO - [Thread-4 (process_request_thread)] [get_db] - Accessed database: Telegrambot
+2025-05-06 15:33:24,234 - INFO - [Thread-4 (process_request_thread)] [get_userinfo_collection] - Accessed collection: userinfo
+2025-05-06 15:33:24,275 - INFO - [Thread-4 (process_request_thread)] [find_user_by_username] - No user record found for username: kkkk
+2025-05-06 15:33:24,314 - INFO - [Thread-4 (process_request_thread)] [find_user_by_email] - No user record found for email: k@gmail.com
+2025-05-06 15:33:24,899 - INFO - [Thread-4 (process_request_thread)] [save_user] - Successfully inserted new user with ID: 6819de6c72845b8cea52a208
+2025-05-06 15:33:24,899 - INFO - [Thread-4 (process_request_thread)] [register_user] - User 'kkkk' registered successfully.
+2025-05-06 15:33:24,899 - INFO - [Thread-4 (process_request_thread)] [_log] - 127.0.0.1 - - [06/May/2025 15:33:24] "[35m[1mPOST /register HTTP/1.1[0m" 201 -
+2025-05-06 15:34:04,769 - INFO - [Thread-6 (process_request_thread)] [initiate_upload] - Request initiate upload.
+2025-05-06 15:34:04,774 - INFO - [Thread-6 (process_request_thread)] [initiate_upload] - [9ab7991a-e28c-4a8b-835d-4f67734172c8] Anonymous upload initiated.
+2025-05-06 15:34:04,774 - INFO - [Thread-6 (process_request_thread)] [initiate_upload] - [9ab7991a-e28c-4a8b-835d-4f67734172c8] Temp storage path: uploads_temp\9ab7991a-e28c-4a8b-835d-4f67734172c8_blog9.jpg
+2025-05-06 15:34:04,779 - INFO - [Thread-6 (process_request_thread)] [initiate_upload] - [9ab7991a-e28c-4a8b-835d-4f67734172c8] Temp file saved: 'blog9.jpg'.
+2025-05-06 15:34:04,779 - INFO - [Thread-6 (process_request_thread)] [_log] - 192.168.1.20 - - [06/May/2025 15:34:04] "POST /initiate-upload HTTP/1.1" 200 -
+2025-05-06 15:34:04,804 - INFO - [Thread-7 (process_request_thread)] [stream_progress] - SSE connect request for upload_id: 9ab7991a-e28c-4a8b-835d-4f67734172c8
+2025-05-06 15:34:04,809 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [9ab7991a-e28c-4a8b-835d-4f67734172c8] Starting processing generator...
+2025-05-06 15:34:04,809 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [9ab7991a-e28c-4a8b-835d-4f67734172c8] Processing: User='anonymous', File='blog9.jpg'
+2025-05-06 15:34:04,809 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [9ab7991a-e28c-4a8b-835d-4f67734172c8] Initialized Upload Executor (max=5)
+2025-05-06 15:34:04,816 - INFO - [Thread-7 (process_request_thread)] [_log] - 192.168.1.20 - - [06/May/2025 15:34:04] "GET /stream-progress/9ab7991a-e28c-4a8b-835d-4f67734172c8 HTTP/1.1" 200 -
+2025-05-06 15:34:04,824 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [9ab7991a-e28c-4a8b-835d-4f67734172c8] Access ID: 5b3521632b
+2025-05-06 15:34:04,824 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [9ab7991a-e28c-4a8b-835d-4f67734172c8] Single file workflow.
+2025-05-06 15:34:04,839 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [9ab7991a-e28c-4a8b-835d-4f67734172c8] Compressed size: 102419
+2025-05-06 15:34:04,848 - INFO - [Upload_9ab7_0] [_send_single_file_task] - [9ab7991a-e28c-4a8b-835d-4f67734172c8] T> Sending 'blog9.zip' (102419b) to -4603853425
+2025-05-06 15:34:04,849 - INFO - [Upload_9ab7_0] [send_file_to_telegram] - [ChatID -4603853425, File 'blog9.zip'] Attempting send.
+2025-05-06 15:34:04,849 - INFO - [Upload_9ab7_1] [_send_single_file_task] - [9ab7991a-e28c-4a8b-835d-4f67734172c8] T> Sending 'blog9.zip' (102419b) to -1002614397019
+2025-05-06 15:34:04,849 - INFO - [Upload_9ab7_1] [send_file_to_telegram] - [ChatID -1002614397019, File 'blog9.zip'] Attempting send.
+2025-05-06 15:34:04,854 - INFO - [Upload_9ab7_2] [_send_single_file_task] - [9ab7991a-e28c-4a8b-835d-4f67734172c8] T> Sending 'blog9.zip' (102419b) to -4641852757
+2025-05-06 15:34:04,854 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [9ab7991a-e28c-4a8b-835d-4f67734172c8] Submitted 3 single-file tasks.
+2025-05-06 15:34:04,854 - INFO - [Upload_9ab7_2] [send_file_to_telegram] - [ChatID -4641852757, File 'blog9.zip'] Attempting send.
+2025-05-06 15:34:04,859 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [9ab7991a-e28c-4a8b-835d-4f67734172c8] Wait primary (-4603853425)...
+2025-05-06 15:34:06,844 - INFO - [Upload_9ab7_2] [send_file_to_telegram] - [ChatID -4641852757, File 'blog9.zip'] API success (Attempt 1).
+2025-05-06 15:34:06,844 - INFO - [Upload_9ab7_2] [_send_single_file_task] - [9ab7991a-e28c-4a8b-835d-4f67734172c8] T> Sent 'blog9.zip' to -4641852757. Success: True
+2025-05-06 15:34:06,883 - INFO - [Upload_9ab7_1] [send_file_to_telegram] - [ChatID -1002614397019, File 'blog9.zip'] API success (Attempt 1).
+2025-05-06 15:34:06,883 - INFO - [Upload_9ab7_1] [_send_single_file_task] - [9ab7991a-e28c-4a8b-835d-4f67734172c8] T> Sent 'blog9.zip' to -1002614397019. Success: True
+2025-05-06 15:34:07,094 - INFO - [Upload_9ab7_0] [send_file_to_telegram] - [ChatID -4603853425, File 'blog9.zip'] API success (Attempt 1).
+2025-05-06 15:34:07,098 - INFO - [Upload_9ab7_0] [_send_single_file_task] - [9ab7991a-e28c-4a8b-835d-4f67734172c8] T> Sent 'blog9.zip' to -4603853425. Success: True
+2025-05-06 15:34:07,099 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [9ab7991a-e28c-4a8b-835d-4f67734172c8] Primary done. OK:True
+2025-05-06 15:34:07,099 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [9ab7991a-e28c-4a8b-835d-4f67734172c8] Wait backups...
+2025-05-06 15:34:07,100 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [9ab7991a-e28c-4a8b-835d-4f67734172c8] Single sends done in 2.26s.
+2025-05-06 15:34:07,100 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [9ab7991a-e28c-4a8b-835d-4f67734172c8] Success: 3/3
+2025-05-06 15:34:07,101 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [9ab7991a-e28c-4a8b-835d-4f67734172c8] Attempting to save metadata to DB...
+2025-05-06 15:34:07,101 - INFO - [Thread-7 (process_request_thread)] [get_metadata_collection] - Accessed collection: user_files
+2025-05-06 15:34:07,164 - INFO - [Thread-7 (process_request_thread)] [save_file_metadata] - Successfully inserted metadata for access_id: 5b3521632b
+2025-05-06 15:34:07,164 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [9ab7991a-e28c-4a8b-835d-4f67734172c8] Metadata successfully saved to DB. Msg: Metadata inserted (ID: 6819de971969d4a304aed20c).
+2025-05-06 15:34:07,165 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [9ab7991a-e28c-4a8b-835d-4f67734172c8] Upload generator cleanup.
+2025-05-06 15:34:07,165 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [9ab7991a-e28c-4a8b-835d-4f67734172c8] Upload executor shutdown.
+2025-05-06 15:34:07,166 - INFO - [Thread-7 (process_request_thread)] [_safe_remove_file] - [9ab7991a-e28c-4a8b-835d-4f67734172c8] Cleaned up original temp: uploads_temp\9ab7991a-e28c-4a8b-835d-4f67734172c8_blog9.jpg
+2025-05-06 15:34:07,166 - INFO - [Thread-7 (process_request_thread)] [process_upload_and_generate_updates] - [9ab7991a-e28c-4a8b-835d-4f67734172c8] Upload generator finished. Status: completed
+2025-05-06 15:34:54,027 - INFO - [Thread-8 (process_request_thread)] [get_file_by_access_id] - Request dl page via access_id: 5b3521632b
+2025-05-06 15:34:54,027 - INFO - [Thread-8 (process_request_thread)] [get_file_by_access_id] - Looking up access_id '5b3521632b' in DB...
+2025-05-06 15:34:54,069 - INFO - [Thread-8 (process_request_thread)] [find_metadata_by_access_id] - Found metadata record for access_id: 5b3521632b
+2025-05-06 15:34:54,075 - INFO - [Thread-8 (process_request_thread)] [get_file_by_access_id] - Rendering dl page for 'blog9.jpg' (id: 5b3521632b).
+2025-05-06 15:34:54,132 - INFO - [Thread-8 (process_request_thread)] [_log] - 192.168.1.20 - - [06/May/2025 15:34:54] "GET /get/5b3521632b HTTP/1.1" 200 -
+2025-05-06 15:34:54,291 - INFO - [Thread-9 (process_request_thread)] [_log] - 192.168.1.20 - - [06/May/2025 15:34:54] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -

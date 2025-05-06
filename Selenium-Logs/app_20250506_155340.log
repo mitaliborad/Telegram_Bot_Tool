@@ -1,0 +1,112 @@
+2025-05-06 15:53:40,815 - INFO - [MainThread] [<module>] - ============================================================
+2025-05-06 15:53:40,815 - INFO - [MainThread] [<module>] - Logging configured. Level: INFO. Log file: Selenium-Logs\app_20250506_155340.log
+2025-05-06 15:53:40,815 - INFO - [MainThread] [<module>] - Primary Chat ID: -4603853425
+2025-05-06 15:53:40,815 - INFO - [MainThread] [<module>] - All Target Chat IDs: ['-4603853425', '-1002614397019', '-4641852757']
+2025-05-06 15:53:40,815 - INFO - [MainThread] [<module>] - Chunk Size: 20.0 MB (20971520 bytes)
+2025-05-06 15:53:40,815 - INFO - [MainThread] [<module>] - API Timeouts (Connect/Read): 10s / 60s
+2025-05-06 15:53:40,815 - INFO - [MainThread] [<module>] - API Retries: 3 attempts, 2s delay
+2025-05-06 15:53:40,820 - INFO - [MainThread] [<module>] - Max Upload Workers: 5
+2025-05-06 15:53:40,820 - INFO - [MainThread] [<module>] - Max Download Workers: 12
+2025-05-06 15:53:40,820 - INFO - [MainThread] [<module>] - ============================================================
+2025-05-06 15:53:40,820 - INFO - [MainThread] [<module>] - Configuration loaded successfully.
+2025-05-06 15:53:40,861 - INFO - [MainThread] [<module>] - Custom Jinja filter 'format_bytes' registered.
+2025-05-06 15:53:40,861 - INFO - [MainThread] [<module>] - Flask-CORS initialized. Allowing origins: http://localhost:4200
+2025-05-06 15:53:40,862 - INFO - [MainThread] [<module>] - Flask-JWT-Extended initialized.
+2025-05-06 15:53:40,862 - INFO - [MainThread] [<module>] - Flask-Login initialized.
+2025-05-06 15:53:40,863 - INFO - [MainThread] [<module>] - Global state variables initialized (upload_progress_data, download_prep_data).
+2025-05-06 15:53:40,865 - INFO - [MainThread] [<module>] - Custom Jinja filter 'format_bytes' registered.
+2025-05-06 15:53:40,865 - INFO - [MainThread] [<module>] - Flask-CORS initialized. Allowing origins: http://localhost:4200
+2025-05-06 15:53:40,866 - INFO - [MainThread] [<module>] - Flask-JWT-Extended initialized.
+2025-05-06 15:53:40,867 - INFO - [MainThread] [<module>] - Flask-Login initialized.
+2025-05-06 15:53:40,867 - INFO - [MainThread] [<module>] - Global state variables initialized (upload_progress_data, download_prep_data).
+2025-05-06 15:53:41,040 - INFO - [MainThread] [<module>] - Database module initialized.
+2025-05-06 15:53:41,538 - INFO - [MainThread] [<module>] - Initialized requests.Session for Telegram API calls.
+2025-05-06 15:53:41,539 - INFO - [MainThread] [<module>] - Telegram API functions defined with Session and Retries.
+2025-05-06 15:53:41,548 - INFO - [MainThread] [<module>] - Flask routes defined using configurable workers and linter fixes.
+2025-05-06 15:53:41,550 - INFO - [MainThread] [<module>] - Starting Flask development server...
+2025-05-06 15:53:41,562 - WARNING - [MainThread] [_log] -  * Debugger is active!
+2025-05-06 15:53:41,565 - INFO - [MainThread] [_log] -  * Debugger PIN: 106-277-236
+2025-05-06 15:55:47,370 - INFO - [Thread-2 (process_request_thread)] [_log] - 192.168.1.20 - - [06/May/2025 15:55:47] "OPTIONS /register HTTP/1.1" 200 -
+2025-05-06 15:55:47,370 - INFO - [Thread-3 (process_request_thread)] [register_user] - Received POST request for /register
+2025-05-06 15:55:47,370 - INFO - [Thread-3 (process_request_thread)] [register_user] - Received registration data: {'username': 'LuminaryNavigator', 'email': 'jvora@gmail.com', 'password': '12345678', 'confirmPassword': '12345678', 'agreeTerms': True, 'understandPrivacy': True}
+2025-05-06 15:55:47,370 - INFO - [Thread-3 (process_request_thread)] [_connect_to_db] - Attempting to connect to MongoDB Atlas host: telegrambot.6armfs2.mongodb.net...
+2025-05-06 15:55:49,019 - INFO - [Thread-3 (process_request_thread)] [_connect_to_db] - ✅ Successfully connected and pinged MongoDB Atlas!
+2025-05-06 15:55:49,020 - INFO - [Thread-3 (process_request_thread)] [get_db] - Accessed database: Telegrambot
+2025-05-06 15:55:49,021 - INFO - [Thread-3 (process_request_thread)] [get_userinfo_collection] - Accessed collection: userinfo
+2025-05-06 15:55:49,051 - INFO - [Thread-3 (process_request_thread)] [find_user_by_username] - Found user record for username: LuminaryNavigator
+2025-05-06 15:55:49,052 - WARNING - [Thread-3 (process_request_thread)] [register_user] - Registration failed: Username 'LuminaryNavigator' already exists.
+2025-05-06 15:55:49,053 - INFO - [Thread-3 (process_request_thread)] [_log] - 192.168.1.20 - - [06/May/2025 15:55:49] "[31m[1mPOST /register HTTP/1.1[0m" 409 -
+2025-05-06 15:55:56,919 - INFO - [Thread-4 (process_request_thread)] [_log] - 192.168.1.20 - - [06/May/2025 15:55:56] "OPTIONS /register HTTP/1.1" 200 -
+2025-05-06 15:55:56,923 - INFO - [Thread-5 (process_request_thread)] [register_user] - Received POST request for /register
+2025-05-06 15:55:56,925 - INFO - [Thread-5 (process_request_thread)] [register_user] - Received registration data: {'username': 'jnasjkd', 'email': 'jvora@gmail.com', 'password': '12345678', 'confirmPassword': '12345678', 'agreeTerms': True, 'understandPrivacy': True}
+2025-05-06 15:55:56,957 - INFO - [Thread-5 (process_request_thread)] [find_user_by_username] - No user record found for username: jnasjkd
+2025-05-06 15:55:56,992 - INFO - [Thread-5 (process_request_thread)] [find_user_by_email] - Found user record for email: jvora@gmail.com
+2025-05-06 15:55:56,993 - WARNING - [Thread-5 (process_request_thread)] [register_user] - Registration failed: Email 'jvora@gmail.com' already exists.
+2025-05-06 15:55:56,994 - INFO - [Thread-5 (process_request_thread)] [_log] - 192.168.1.20 - - [06/May/2025 15:55:56] "[31m[1mPOST /register HTTP/1.1[0m" 409 -
+2025-05-06 15:56:05,284 - INFO - [Thread-6 (process_request_thread)] [_log] - 192.168.1.20 - - [06/May/2025 15:56:05] "OPTIONS /register HTTP/1.1" 200 -
+2025-05-06 15:56:05,301 - INFO - [Thread-7 (process_request_thread)] [register_user] - Received POST request for /register
+2025-05-06 15:56:05,301 - INFO - [Thread-7 (process_request_thread)] [register_user] - Received registration data: {'username': 'jnasjkd', 'email': 'jn@gmail.com', 'password': '12345678', 'confirmPassword': '12345678', 'agreeTerms': True, 'understandPrivacy': True}
+2025-05-06 15:56:05,334 - INFO - [Thread-7 (process_request_thread)] [find_user_by_username] - No user record found for username: jnasjkd
+2025-05-06 15:56:05,359 - INFO - [Thread-7 (process_request_thread)] [find_user_by_email] - No user record found for email: jn@gmail.com
+2025-05-06 15:56:05,920 - INFO - [Thread-7 (process_request_thread)] [save_user] - Successfully inserted new user with ID: 6819e3bd68c3ff95e025167d
+2025-05-06 15:56:05,920 - INFO - [Thread-7 (process_request_thread)] [register_user] - User 'jnasjkd' registered successfully.
+2025-05-06 15:56:05,920 - INFO - [Thread-7 (process_request_thread)] [_log] - 192.168.1.20 - - [06/May/2025 15:56:05] "[35m[1mPOST /register HTTP/1.1[0m" 201 -
+2025-05-06 15:56:14,167 - INFO - [Thread-8 (process_request_thread)] [_log] - 192.168.1.20 - - [06/May/2025 15:56:14] "[35m[1mOPTIONS /api/auth/login HTTP/1.1[0m" 204 -
+2025-05-06 15:56:14,167 - INFO - [Thread-9 (process_request_thread)] [api_login] - Received POST request for /api/auth/login
+2025-05-06 15:56:14,167 - INFO - [Thread-9 (process_request_thread)] [api_login] - API Login attempt for email: jn@gmail.com
+2025-05-06 15:56:14,215 - INFO - [Thread-9 (process_request_thread)] [find_user_by_email] - Found user record for email: jn@gmail.com
+2025-05-06 15:56:14,807 - INFO - [Thread-9 (process_request_thread)] [api_login] - User 'jnasjkd' (jn@gmail.com) logged in successfully via API. Token created.
+2025-05-06 15:56:14,808 - INFO - [Thread-9 (process_request_thread)] [_log] - 192.168.1.20 - - [06/May/2025 15:56:14] "POST /api/auth/login HTTP/1.1" 200 -
+2025-05-06 15:56:26,603 - INFO - [Thread-10 (process_request_thread)] [initiate_upload] - Request initiate upload.
+2025-05-06 15:56:26,625 - INFO - [Thread-10 (process_request_thread)] [initiate_upload] - [bae642ab-1366-43fe-ac2a-079bb3313e85] Anonymous upload initiated.
+2025-05-06 15:56:26,626 - INFO - [Thread-10 (process_request_thread)] [initiate_upload] - [bae642ab-1366-43fe-ac2a-079bb3313e85] Temp storage path: uploads_temp\bae642ab-1366-43fe-ac2a-079bb3313e85_screencapture-localhost-4200-blog-send-audio-files-2025-05-05-17_54_37.pdf
+2025-05-06 15:56:26,630 - INFO - [Thread-10 (process_request_thread)] [initiate_upload] - [bae642ab-1366-43fe-ac2a-079bb3313e85] Temp file saved: 'screencapture-localhost-4200-blog-send-audio-files-2025-05-05-17_54_37.pdf'.
+2025-05-06 15:56:26,630 - INFO - [Thread-10 (process_request_thread)] [_log] - 192.168.1.20 - - [06/May/2025 15:56:26] "POST /initiate-upload HTTP/1.1" 200 -
+2025-05-06 15:56:26,656 - INFO - [Thread-11 (process_request_thread)] [stream_progress] - SSE connect request for upload_id: bae642ab-1366-43fe-ac2a-079bb3313e85
+2025-05-06 15:56:26,657 - INFO - [Thread-11 (process_request_thread)] [process_upload_and_generate_updates] - [bae642ab-1366-43fe-ac2a-079bb3313e85] Starting processing generator...
+2025-05-06 15:56:26,657 - INFO - [Thread-11 (process_request_thread)] [process_upload_and_generate_updates] - [bae642ab-1366-43fe-ac2a-079bb3313e85] Processing: User='anonymous', File='screencapture-localhost-4200-blog-send-audio-files-2025-05-05-17_54_37.pdf'
+2025-05-06 15:56:26,657 - INFO - [Thread-11 (process_request_thread)] [process_upload_and_generate_updates] - [bae642ab-1366-43fe-ac2a-079bb3313e85] Initialized Upload Executor (max=5)
+2025-05-06 15:56:26,658 - INFO - [Thread-11 (process_request_thread)] [_log] - 192.168.1.20 - - [06/May/2025 15:56:26] "GET /stream-progress/bae642ab-1366-43fe-ac2a-079bb3313e85 HTTP/1.1" 200 -
+2025-05-06 15:56:26,660 - INFO - [Thread-11 (process_request_thread)] [process_upload_and_generate_updates] - [bae642ab-1366-43fe-ac2a-079bb3313e85] Access ID: af8d038926
+2025-05-06 15:56:26,663 - INFO - [Thread-11 (process_request_thread)] [process_upload_and_generate_updates] - [bae642ab-1366-43fe-ac2a-079bb3313e85] Single file workflow.
+2025-05-06 15:56:26,736 - INFO - [Thread-11 (process_request_thread)] [process_upload_and_generate_updates] - [bae642ab-1366-43fe-ac2a-079bb3313e85] Compressed size: 1127234
+2025-05-06 15:56:26,737 - INFO - [Upload_bae6_0] [_send_single_file_task] - [bae642ab-1366-43fe-ac2a-079bb3313e85] T> Sending 'screencapture-localhost-4200-blog-send-audio-files-2025-05-05-17_54_37.zip' (1127234b) to -4603853425
+2025-05-06 15:56:26,737 - INFO - [Upload_bae6_0] [send_file_to_telegram] - [ChatID -4603853425, File 'screencapture-localhost-4200-blog-send-audio-files-2025-05-05-17_54_37.zip'] Attempting send.
+2025-05-06 15:56:26,737 - INFO - [Upload_bae6_1] [_send_single_file_task] - [bae642ab-1366-43fe-ac2a-079bb3313e85] T> Sending 'screencapture-localhost-4200-blog-send-audio-files-2025-05-05-17_54_37.zip' (1127234b) to -1002614397019
+2025-05-06 15:56:26,738 - INFO - [Upload_bae6_2] [_send_single_file_task] - [bae642ab-1366-43fe-ac2a-079bb3313e85] T> Sending 'screencapture-localhost-4200-blog-send-audio-files-2025-05-05-17_54_37.zip' (1127234b) to -4641852757
+2025-05-06 15:56:26,738 - INFO - [Thread-11 (process_request_thread)] [process_upload_and_generate_updates] - [bae642ab-1366-43fe-ac2a-079bb3313e85] Submitted 3 single-file tasks.
+2025-05-06 15:56:26,738 - INFO - [Upload_bae6_1] [send_file_to_telegram] - [ChatID -1002614397019, File 'screencapture-localhost-4200-blog-send-audio-files-2025-05-05-17_54_37.zip'] Attempting send.
+2025-05-06 15:56:26,739 - INFO - [Upload_bae6_2] [send_file_to_telegram] - [ChatID -4641852757, File 'screencapture-localhost-4200-blog-send-audio-files-2025-05-05-17_54_37.zip'] Attempting send.
+2025-05-06 15:56:26,739 - INFO - [Thread-11 (process_request_thread)] [process_upload_and_generate_updates] - [bae642ab-1366-43fe-ac2a-079bb3313e85] Wait primary (-4603853425)...
+2025-05-06 15:56:29,663 - INFO - [Upload_bae6_2] [send_file_to_telegram] - [ChatID -4641852757, File 'screencapture-localhost-4200-blog-send-audio-files-2025-05-05-17_54_37.zip'] API success (Attempt 1).
+2025-05-06 15:56:29,664 - INFO - [Upload_bae6_2] [_send_single_file_task] - [bae642ab-1366-43fe-ac2a-079bb3313e85] T> Sent 'screencapture-localhost-4200-blog-send-audio-files-2025-05-05-17_54_37.zip' to -4641852757. Success: True
+2025-05-06 15:56:29,714 - INFO - [Upload_bae6_1] [send_file_to_telegram] - [ChatID -1002614397019, File 'screencapture-localhost-4200-blog-send-audio-files-2025-05-05-17_54_37.zip'] API success (Attempt 1).
+2025-05-06 15:56:29,714 - INFO - [Upload_bae6_1] [_send_single_file_task] - [bae642ab-1366-43fe-ac2a-079bb3313e85] T> Sent 'screencapture-localhost-4200-blog-send-audio-files-2025-05-05-17_54_37.zip' to -1002614397019. Success: True
+2025-05-06 15:56:32,205 - INFO - [Upload_bae6_0] [send_file_to_telegram] - [ChatID -4603853425, File 'screencapture-localhost-4200-blog-send-audio-files-2025-05-05-17_54_37.zip'] API success (Attempt 1).
+2025-05-06 15:56:32,205 - INFO - [Upload_bae6_0] [_send_single_file_task] - [bae642ab-1366-43fe-ac2a-079bb3313e85] T> Sent 'screencapture-localhost-4200-blog-send-audio-files-2025-05-05-17_54_37.zip' to -4603853425. Success: True
+2025-05-06 15:56:32,206 - INFO - [Thread-11 (process_request_thread)] [process_upload_and_generate_updates] - [bae642ab-1366-43fe-ac2a-079bb3313e85] Primary done. OK:True
+2025-05-06 15:56:32,206 - INFO - [Thread-11 (process_request_thread)] [process_upload_and_generate_updates] - [bae642ab-1366-43fe-ac2a-079bb3313e85] Wait backups...
+2025-05-06 15:56:32,207 - INFO - [Thread-11 (process_request_thread)] [process_upload_and_generate_updates] - [bae642ab-1366-43fe-ac2a-079bb3313e85] Single sends done in 5.47s.
+2025-05-06 15:56:32,208 - INFO - [Thread-11 (process_request_thread)] [process_upload_and_generate_updates] - [bae642ab-1366-43fe-ac2a-079bb3313e85] Success: 3/3
+2025-05-06 15:56:32,208 - INFO - [Thread-11 (process_request_thread)] [process_upload_and_generate_updates] - [bae642ab-1366-43fe-ac2a-079bb3313e85] Attempting to save metadata to DB...
+2025-05-06 15:56:32,209 - INFO - [Thread-11 (process_request_thread)] [get_metadata_collection] - Accessed collection: user_files
+2025-05-06 15:56:32,240 - INFO - [Thread-11 (process_request_thread)] [save_file_metadata] - Successfully inserted metadata for access_id: af8d038926
+2025-05-06 15:56:32,240 - INFO - [Thread-11 (process_request_thread)] [process_upload_and_generate_updates] - [bae642ab-1366-43fe-ac2a-079bb3313e85] Metadata successfully saved to DB. Msg: Metadata inserted (ID: 6819e3d81969d4a304aed20e).
+2025-05-06 15:56:32,241 - INFO - [Thread-11 (process_request_thread)] [process_upload_and_generate_updates] - [bae642ab-1366-43fe-ac2a-079bb3313e85] Upload generator cleanup.
+2025-05-06 15:56:32,241 - INFO - [Thread-11 (process_request_thread)] [process_upload_and_generate_updates] - [bae642ab-1366-43fe-ac2a-079bb3313e85] Upload executor shutdown.
+2025-05-06 15:56:32,242 - INFO - [Thread-11 (process_request_thread)] [_safe_remove_file] - [bae642ab-1366-43fe-ac2a-079bb3313e85] Cleaned up original temp: uploads_temp\bae642ab-1366-43fe-ac2a-079bb3313e85_screencapture-localhost-4200-blog-send-audio-files-2025-05-05-17_54_37.pdf
+2025-05-06 15:56:32,243 - INFO - [Thread-11 (process_request_thread)] [process_upload_and_generate_updates] - [bae642ab-1366-43fe-ac2a-079bb3313e85] Upload generator finished. Status: completed
+2025-05-06 15:57:11,315 - INFO - [Thread-12 (process_request_thread)] [get_file_by_access_id] - Request dl page via access_id: af8d038926
+2025-05-06 15:57:11,316 - INFO - [Thread-12 (process_request_thread)] [get_file_by_access_id] - Looking up access_id 'af8d038926' in DB...
+2025-05-06 15:57:11,345 - INFO - [Thread-12 (process_request_thread)] [find_metadata_by_access_id] - Found metadata record for access_id: af8d038926
+2025-05-06 15:57:11,346 - INFO - [Thread-12 (process_request_thread)] [get_file_by_access_id] - Rendering dl page for 'screencapture-localhost-4200-blog-send-audio-files-2025-05-05-17_54_37.pdf' (id: af8d038926).
+2025-05-06 15:57:11,358 - INFO - [Thread-12 (process_request_thread)] [_log] - 192.168.1.20 - - [06/May/2025 15:57:11] "GET /get/af8d038926 HTTP/1.1" 200 -
+2025-05-06 15:57:11,661 - INFO - [Thread-13 (process_request_thread)] [_log] - 192.168.1.20 - - [06/May/2025 15:57:11] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-05-06 15:59:59,839 - INFO - [Thread-14 (process_request_thread)] [_log] - 127.0.0.1 - - [06/May/2025 15:59:59] "GET /login HTTP/1.1" 200 -
+2025-05-06 16:00:00,071 - INFO - [Thread-15 (process_request_thread)] [_log] - 127.0.0.1 - - [06/May/2025 16:00:00] "GET /login HTTP/1.1" 200 -
+2025-05-06 16:00:08,939 - INFO - [Thread-16 (process_request_thread)] [login] - Login attempt for email: mbo@gmail.com
+2025-05-06 16:00:08,971 - INFO - [Thread-16 (process_request_thread)] [find_user_by_email] - Found user record for email: mbo@gmail.com
+2025-05-06 16:00:09,502 - INFO - [Thread-16 (process_request_thread)] [login] - User 'mitali' (mbo@gmail.com) logged in successfully.
+2025-05-06 16:00:09,504 - INFO - [Thread-16 (process_request_thread)] [_log] - 127.0.0.1 - - [06/May/2025 16:00:09] "[32mPOST /login HTTP/1.1[0m" 302 -
+2025-05-06 16:00:09,512 - INFO - [Thread-17 (process_request_thread)] [index] - Serving index page.
+2025-05-06 16:00:09,630 - INFO - [Thread-17 (process_request_thread)] [_log] - 127.0.0.1 - - [06/May/2025 16:00:09] "GET / HTTP/1.1" 200 -

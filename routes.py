@@ -239,6 +239,7 @@ def index() -> str:
 # In routes.py
 
 @app.route('/initiate-upload', methods=['POST'])
+@jwt_required()
 def initiate_upload() -> Response:
     upload_id = str(uuid.uuid4())
     log_prefix = f"[{upload_id}]"

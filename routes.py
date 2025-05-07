@@ -21,6 +21,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timezone
 import re
 from dateutil import parser as dateutil_parser
+
+from flask_jwt_extended import jwt_required, get_jwt_identity
 import threading
 import database
 from database import (
@@ -237,7 +239,6 @@ def index() -> str:
 # In routes.py
 
 @app.route('/initiate-upload', methods=['POST'])
-@login_required # Keep this if your frontend ensures login before upload
 def initiate_upload() -> Response:
     upload_id = str(uuid.uuid4())
     log_prefix = f"[{upload_id}]"
@@ -1609,6 +1610,7 @@ def api_login():
     return make_response(jsonify({"error": "Method Not Allowed"}), 405)
 
 @app.route('/files/<username>', methods=['GET'])
+@jwt_required()
 def list_user_files(username: str) -> Response:
     logging.info(f"List files request for: '{username}'")
     logging.info(f"Fetching files for user '{username}' from DB...")

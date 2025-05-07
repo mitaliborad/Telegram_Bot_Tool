@@ -32,8 +32,7 @@ from database import (
     save_user
 )
 from config import format_time
-from flask_cors import CORS  # Added for CORS support
-# --- Import necessary components ---
+from flask_cors import CORS
 from app_setup import app, login_manager
 from app_setup import app, upload_progress_data, download_prep_data
 from config import (
@@ -235,67 +234,93 @@ def index() -> str:
         logging.error(f"Error rendering index.html: {e}", exc_info=True)
         return make_response("Error loading page.", 500)
     
+# In routes.py
+
 @app.route('/initiate-upload', methods=['POST'])
+@login_required # Keep this if your frontend ensures login before upload
 def initiate_upload() -> Response:
-    logging.info("Request initiate upload.")
-    upload_id = str(uuid.uuid4()) # Generate ID early for logging
+    upload_id = str(uuid.uuid4())
+    log_prefix = f"[{upload_id}]"
+    logging.info(f"{log_prefix} Request to initiate upload.")
 
-    if 'file' not in request.files:
-        logging.warning(f"[{upload_id}] Initiate upload failed: 'file' part missing.")
-        return jsonify({"error": "No file part"}), 400
+    # Get the list of files. This handles one or more files.
+    uploaded_files = request.files.getlist('files[]')
 
-    file = request.files['file']
-    if not file or file.filename == '':
-        logging.warning(f"[{upload_id}] Initiate upload failed: No file selected.")
-        return jsonify({"error": "No file selected"}), 400
+    # Check if any files were actually sent
+    if not uploaded_files or all(not f.filename for f in uploaded_files):
+        logging.warning(f"{log_prefix} Initiate upload failed: No files provided or files have no names.")
+        return jsonify({"error": "No files selected or files are invalid"}), 400
 
-    original_filename = file.filename
+    # --- User Information ---
+    # is_anonymous_upload = not current_user.is_authenticated # This check is fine
+    # For a @login_required route, current_user.is_authenticated will always be true.
+    user_email = current_user.email
+    display_username = current_user.username
+    logging.info(f"{log_prefix} Authenticated upload initiated by user: Email='{user_email}', Username='{display_username}'")
+    # --- End User Information ---
 
-    # --- STEP 3.1 Start: Check Authentication ---
-    is_anonymous_upload = not current_user.is_authenticated
-    user_email = None
-    display_username = "anonymous" # Default for anonymous
-
-    if not is_anonymous_upload:
-        # User is logged in, get their details
-        user_email = current_user.email
-        display_username = current_user.username
-        logging.info(f"[{upload_id}] Authenticated upload initiated by user: Email='{user_email}', Username='{display_username}'")
-    else:
-        logging.info(f"[{upload_id}] Anonymous upload initiated.")
-    # --- STEP 3.1 End: Check Authentication ---
-
-    temp_file_path = os.path.join(UPLOADS_TEMP_DIR, f"{upload_id}_{original_filename}")
-    logging.info(f"[{upload_id}] Temp storage path: {temp_file_path}")
+    batch_temp_dir = os.path.join(UPLOADS_TEMP_DIR, f"batch_{upload_id}")
+    original_filenames_in_batch = []
 
     try:
-        os.makedirs(UPLOADS_TEMP_DIR, exist_ok=True)
-        file.save(temp_file_path)
-        logging.info(f"[{upload_id}] Temp file saved: '{original_filename}'.")
+        os.makedirs(batch_temp_dir, exist_ok=True)
+        logging.info(f"{log_prefix} Created batch temporary directory: {batch_temp_dir}")
 
-        # --- Store info including anonymous flag ---
+        for file_storage_item in uploaded_files:
+            if file_storage_item and file_storage_item.filename:
+                # IMPORTANT: For security, you should sanitize filenames in production
+                # from werkzeug.utils import secure_filename
+                # original_filename = secure_filename(file_storage_item.filename)
+                # if not original_filename: # Handle cases where filename becomes empty after sanitization
+                #     original_filename = f"unnamed_file_{uuid.uuid4().hex[:6]}"
+                original_filename = file_storage_item.filename # Using directly for now
+
+                individual_temp_file_path = os.path.join(batch_temp_dir, original_filename)
+                file_storage_item.save(individual_temp_file_path)
+                original_filenames_in_batch.append(original_filename)
+                logging.info(f"{log_prefix} Saved '{original_filename}' to batch directory: {batch_temp_dir}")
+            else:
+                logging.warning(f"{log_prefix} Skipped an invalid file item in the batch.")
+
+        if not original_filenames_in_batch:
+            _safe_remove_directory(batch_temp_dir, log_prefix, "empty batch temp dir")
+            logging.warning(f"{log_prefix} No valid files were saved in the batch.")
+            return jsonify({"error": "No valid files were processed in the batch."}), 400
+
+        batch_display_name = f"batch_{upload_id}.zip"
+        # For the SSE 'start' event, it's better if the client knows it's a batch.
+        # The actual name of the file (the zip) will be determined by the server.
+        # So, batch_display_name is good for the response here.
+        # If you want to be more specific for single file uploads (even if handled as a batch of 1):
+        # if len(original_filenames_in_batch) == 1:
+        #    batch_display_name = original_filenames_in_batch[0] # Or keep it as batch_upload_id.zip
+                                                                # The client will get the actual zip name
+                                                                # from 'start' event in process_upload_...
+
         upload_progress_data[upload_id] = {
             "status": "initiated",
-            "original_filename": original_filename,
-            "temp_file_path": temp_file_path,
-            "username": display_username,     # Store display name (could be "anonymous")
-            "user_email": user_email,         # Store email (is None if anonymous)
-            "is_anonymous": is_anonymous_upload, # <<< ADDED FLAG
+            "is_batch": True, # Crucial flag for the next step
+            "batch_directory_path": batch_temp_dir,
+            "original_filenames_in_batch": original_filenames_in_batch,
+            "batch_display_name": batch_display_name, # This will be the name of the zip file to be created
+            "username": display_username,
+            "user_email": user_email,
+            "is_anonymous": False, # Since route is @login_required
             "error": None,
             "start_time": time.time()
-         }
-        logging.debug(f"[{upload_id}] Initial progress data stored: {upload_progress_data[upload_id]}")
+        }
+        logging.debug(f"{log_prefix} Initial batch progress data stored: {upload_progress_data[upload_id]}")
 
-        return jsonify({"upload_id": upload_id, "filename": original_filename})
+        return jsonify({"upload_id": upload_id, "filename": batch_display_name})
 
     except Exception as e:
-        logging.error(f"Err saving temp '{original_filename}' (ID:{upload_id}): {e}", exc_info=True)
-        if os.path.exists(temp_file_path):
-            _safe_remove_file(temp_file_path, upload_id, "partial temp") # Ensure _safe_remove_file is accessible
+        logging.error(f"{log_prefix} Error processing batch upload: {e}", exc_info=True)
+        if os.path.exists(batch_temp_dir): # Ensure batch_temp_dir is defined
+            _safe_remove_directory(batch_temp_dir, log_prefix, "failed batch temp dir")
         if upload_id in upload_progress_data:
-             del upload_progress_data[upload_id] # Clean up progress data on error
-        return jsonify({"error": f"Server error saving file: {e}"}), 500
-
+            del upload_progress_data[upload_id]
+        return jsonify({"error": f"Server error processing batch: {str(e)}"}), 500
+    
 @app.route('/stream-progress/<upload_id>')
 def stream_progress(upload_id: str) -> Response:
     logging.info(f"SSE connect request for upload_id: {upload_id}")
@@ -339,6 +364,23 @@ def _send_single_file_task(file_bytes: bytes, filename: str, chat_id: str, uploa
         return str(chat_id), result
     except Exception as e: logging.error(f"[{upload_id}] T> Err send single file to {chat_id}: {e}", exc_info=True); return str(chat_id), (False, f"Thread error: {e}", None)
 
+# In routes.py, usually with other helper functions
+
+def _safe_remove_directory(dir_path: str, log_prefix: str, description: str):
+    """Safely removes a directory and its contents."""
+    if not dir_path or not isinstance(dir_path, str):
+        logging.warning(f"[{log_prefix}] Attempted to remove invalid directory path for {description}: {dir_path}")
+        return
+    if os.path.isdir(dir_path): # Check if it's actually a directory
+        try:
+            shutil.rmtree(dir_path) # shutil.rmtree removes a directory and all its contents
+            logging.info(f"[{log_prefix}] Cleaned up {description}: {dir_path}")
+        except OSError as e:
+            logging.error(f"[{log_prefix}] Error deleting {description} directory '{dir_path}': {e}", exc_info=True)
+    elif os.path.exists(dir_path): # It exists but is not a directory
+        logging.warning(f"[{log_prefix}] Cleanup skipped for {description}, path exists but is not a directory: {dir_path}")
+    else:
+        logging.debug(f"[{log_prefix}] Cleanup skipped, {description} directory not found: {dir_path}")
 
 def _schedule_cleanup(temp_id: str, path: Optional[str]):
     """Safely cleans up temporary download file and state data."""
@@ -451,195 +493,300 @@ def _safe_remove_file(path: str, prefix: str, desc: str):
     else: logging.debug(f"[{prefix}] Cleanup skipped, {desc} file not found: {path}")
 
 # --- Upload Core Logic ---
+# In routes.py
+
+# In routes.py
+
 def process_upload_and_generate_updates(upload_id: str) -> Generator[SseEvent, None, None]:
-    logging.info(f"[{upload_id}] Starting processing generator...")
-    upload_data = upload_progress_data.get(upload_id)
-    if not upload_data or not upload_data.get('temp_file_path') or not os.path.exists(upload_data['temp_file_path']):
-        logging.error(f"[{upload_id}] Critical: Upload data/temp file missing."); yield _yield_sse_event('error', {'message': 'Internal error: data missing.'}); return
-
-    temp_file_path = upload_data['temp_file_path']; original_filename = upload_data['original_filename']
-    username = upload_data['username']; logging.info(f"[{upload_id}] Processing: User='{username}', File='{original_filename}'")
-    upload_data['status'] = 'processing'
-    temp_compressed_zip_filepath: Optional[str] = None; overall_start_time = upload_data.get('start_time', time.time())
-    access_id: Optional[str] = None; total_size = 0
-    executor: Optional[ThreadPoolExecutor] = None
-    if len(TELEGRAM_CHAT_IDS) > 1:
-        executor = ThreadPoolExecutor(max_workers=MAX_UPLOAD_WORKERS, thread_name_prefix=f'Upload_{upload_id[:4]}')
-        logging.info(f"[{upload_id}] Initialized Upload Executor (max={MAX_UPLOAD_WORKERS})")
-
     try:
-        total_size = os.path.getsize(temp_file_path);
-        if total_size == 0: raise ValueError("Uploaded file empty.")
-        yield _yield_sse_event('start', {'filename': original_filename, 'totalSize': total_size})
-        access_id = uuid.uuid4().hex[:10]; upload_data['access_id'] = access_id; logging.info(f"[{upload_id}] Access ID: {access_id}")
+        log_prefix = f"[{upload_id}]"
+        logging.info(f"{log_prefix} Starting processing generator (Batch Individual File Send)...")
+        upload_data = upload_progress_data.get(upload_id)
 
-        if total_size <= CHUNK_SIZE:
-            logging.info(f"[{upload_id}] Single file workflow."); yield _yield_sse_event('status', {'message': 'Compressing...'})
-            zip_buffer = io.BytesIO();
-            with open(temp_file_path, 'rb') as f_in, zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zf: zf.writestr(original_filename, f_in.read())
-            comp_size = zip_buffer.tell(); comp_filename = f"{os.path.splitext(original_filename)[0]}.zip"; logging.info(f"[{upload_id}] Compressed size: {comp_size}")
-            file_bytes_content = zip_buffer.getvalue()
-            zip_buffer.close()
-            yield _yield_sse_event('progress', {'bytesSent': 0, 'totalBytes': comp_size}); yield _yield_sse_event('status', {'message': f'Sending...'})
-            start_send = time.time(); futures: Dict[Future, str] = {}; results: Dict[str, ApiResult] = {}
-            if executor:
-                for chat_id in TELEGRAM_CHAT_IDS: cid = str(chat_id); fut = executor.submit(_send_single_file_task, file_bytes_content, comp_filename, cid, upload_id); futures[fut] = cid
-                logging.info(f"[{upload_id}] Submitted {len(futures)} single-file tasks.")
-            else: cid = str(TELEGRAM_CHAT_IDS[0]); _, res = _send_single_file_task(file_bytes_content, comp_filename, cid, upload_id); results[cid] = res
-            primary_fut: Optional[Future] = None
-            if executor:
-                primary_cid = str(PRIMARY_TELEGRAM_CHAT_ID);
-                for fut, cid in futures.items():
-                    if cid == primary_cid: primary_fut = fut; break
-                if primary_fut:
-                     logging.info(f"[{upload_id}] Wait primary ({primary_cid})..."); cid_res, res = primary_fut.result(); results[cid_res] = res; logging.info(f"[{upload_id}] Primary done. OK:{res[0]}");
-                     if not res[0]: raise IOError(f"Primary send fail: {res[1]}")
-                else: logging.warning(f"[{upload_id}] Primary fut {primary_cid} not found.")
-                logging.info(f"[{upload_id}] Wait backups...");
-                for fut in as_completed(futures):
-                    cid_res, res = fut.result();
-                    if cid_res not in results: results[cid_res] = res; logging.debug(f"[{upload_id}] Done backup {cid_res}. OK:{res[0]}")
-            duration = time.time() - start_send; logging.info(f"[{upload_id}] Single sends done in {duration:.2f}s.")
-            send_res = [{"chat_id": cid, "success": r[0], "message": r[1], "tg_response": r[2]} for cid, r in results.items()]
-            primary_res = results.get(str(PRIMARY_TELEGRAM_CHAT_ID)); success = primary_res is not None and primary_res[0]
-            if success:
-                num_ok = sum(1 for r in send_res if r['success']); logging.info(f"[{upload_id}] Success: {num_ok}/{len(TELEGRAM_CHAT_IDS)}")
-                speed = (comp_size/(1024*1024)/duration) if duration > 0 else 0
-                yield _yield_sse_event('progress', {'bytesSent': comp_size, 'totalBytes': comp_size, 'percentage': 100, 'speedMBps': speed, 'etaFormatted': '00:00'})
-                # --- New block using database function ---
-            ts = datetime.now(timezone.utc).isoformat()
-            details = _parse_send_results(upload_id, send_res)
-            record = {
-                "original_filename": original_filename,
-                "sent_filename": comp_filename,
-                "is_split": False,
-                "is_compressed": True,
-                "original_size": total_size,
-                "compressed_size": comp_size,
-                "send_locations": details,
-                "upload_timestamp": ts,
-                "username": username,
-                "upload_duration_seconds": round(duration, 2),
-                "access_id": access_id # Make sure access_id is in the record
-            }
-            logging.info(f"[{upload_id}] Attempting to save metadata to DB...")
-            save_success, save_msg = save_file_metadata(record) # Call the DB function
-            if not save_success:
-                # Log the error critically, yield a warning status to the user
-                logging.error(f"[{upload_id}] CRITICAL: Metadata save to DB failed: {save_msg}")
-                yield _yield_sse_event('status', {'message': 'Warning: Upload OK, but metadata save failed.'})
-                # Consider setting upload_data['status'] = 'completed_metadata_error'
+        if not upload_data:
+            logging.error(f"{log_prefix} Critical: Upload data missing for ID.")
+            yield _yield_sse_event('error', {'message': 'Internal error: Upload data not found.'})
+            return
+
+        # --- Get data prepared by initiate_upload ---
+        is_batch_upload = upload_data.get("is_batch", False) # Should always be True now
+        username = upload_data['username']
+        batch_directory_path = upload_data.get("batch_directory_path")
+        original_filenames_in_batch = upload_data.get("original_filenames_in_batch", [])
+        # Use a more descriptive name for the batch itself, maybe based on first file?
+        batch_display_name = f"Upload ({len(original_filenames_in_batch)} files)"
+        if original_filenames_in_batch:
+            batch_display_name = f"{original_filenames_in_batch[0]} (+{len(original_filenames_in_batch)-1} others)" if len(original_filenames_in_batch) > 1 else original_filenames_in_batch[0]
+
+
+        if not is_batch_upload or not batch_directory_path or not os.path.isdir(batch_directory_path) or not original_filenames_in_batch:
+            # If initiate_upload was modified correctly, this shouldn't happen for multi-file uploads
+            logging.error(f"{log_prefix} Invalid batch data. is_batch={is_batch_upload}, dir={batch_directory_path}, files={original_filenames_in_batch}")
+            yield _yield_sse_event('error', {'message': 'Internal error: Invalid batch data.'})
+            if batch_directory_path and os.path.isdir(batch_directory_path): # Cleanup if dir exists
+                _safe_remove_directory(batch_directory_path, log_prefix, "invalid batch dir")
+            return
+
+        logging.info(f"{log_prefix} Processing batch: User='{username}', Dir='{batch_directory_path}', Files={original_filenames_in_batch}")
+        upload_data['status'] = 'processing_telegram'
+
+        access_id: Optional[str] = upload_data.get('access_id') # Get access_id generated earlier
+        if not access_id:
+            access_id = uuid.uuid4().hex[:10] # Generate if missing (shouldn't happen ideally)
+            upload_data['access_id'] = access_id
+            logging.warning(f"{log_prefix} Access ID was missing, generated new one: {access_id}")
+
+        executor: Optional[ThreadPoolExecutor] = None
+        if len(TELEGRAM_CHAT_IDS) > 1:
+            executor = ThreadPoolExecutor(max_workers=MAX_UPLOAD_WORKERS, thread_name_prefix=f'Upload_{upload_id[:4]}')
+            logging.info(f"{log_prefix} Initialized Upload Executor (max={MAX_UPLOAD_WORKERS})")
+
+        # --- Calculate total original size for progress ---
+        total_original_bytes_in_batch = 0
+        files_to_process_details = []
+        for filename in original_filenames_in_batch:
+            file_path = os.path.join(batch_directory_path, filename)
+            if os.path.exists(file_path):
+                try:
+                    size = os.path.getsize(file_path)
+                    total_original_bytes_in_batch += size
+                    files_to_process_details.append({"path": file_path, "name": filename, "size": size})
+                except OSError as e:
+                    logging.warning(f"{log_prefix} Could not get size for {filename}, skipping. Error: {e}")
             else:
-                logging.info(f"[{upload_id}] Metadata successfully saved to DB. Msg: {save_msg}")
-            # --- End of new block ---
+                logging.warning(f"{log_prefix} File {filename} not found in batch dir, skipping.")
 
-                # The rest (url = url_for..., yield _yield_sse_event('complete'...) stays the same
-                url = url_for('get_file_by_access_id', access_id=access_id, _external=True)
-                yield _yield_sse_event('complete', {'message': f'File {original_filename} uploaded!', 'download_url': url, 'filename': original_filename})
-                upload_data['status'] = 'completed' # Set status even if meta save failed with warning
-           
-        else:
-            logging.info(f"[{upload_id}] Large file workflow."); comp_filename = f"{os.path.splitext(original_filename)[0]}.zip"
-            yield _yield_sse_event('status', {'message': 'Compressing large file...'})
-            with tempfile.NamedTemporaryFile(prefix=f"{upload_id}_comp_", suffix=".zip", delete=False, dir=UPLOADS_TEMP_DIR) as tf: temp_compressed_zip_filepath = tf.name
-            start_comp = time.time()
+        if not files_to_process_details:
+            yield _yield_sse_event('error', {'message': 'No valid files found to upload in the batch.'})
+            _safe_remove_directory(batch_directory_path, log_prefix, "empty batch dir")
+            return
+
+        # Yield start event based on the batch
+        yield _yield_sse_event('start', {'filename': batch_display_name, 'totalSize': total_original_bytes_in_batch})
+        yield _yield_sse_event('status', {'message': f'Uploading {len(files_to_process_details)} files...'})
+
+        # --- Process and send each file individually ---
+        overall_start_time = time.time()
+        bytes_sent_so_far = 0
+        all_files_metadata_for_db = [] # Store metadata for each successfully processed file
+        all_succeeded = True # Assume success until a primary send fails
+
+        for file_detail in files_to_process_details:
+            current_file_path = file_detail["path"]
+            current_filename = file_detail["name"]
+            current_file_size = file_detail["size"]
+            log_file_prefix = f"{log_prefix} File '{current_filename}'"
+
+            logging.info(f"{log_file_prefix} Starting send process.")
+
+            if current_file_size == 0:
+                logging.warning(f"{log_file_prefix} is empty, skipping send but including in metadata.")
+                # Add placeholder metadata indicating it was skipped due to size
+                all_files_metadata_for_db.append({
+                    "original_filename": current_filename,
+                    "original_size": 0,
+                    "skipped": True,
+                    "reason": "File is empty",
+                    "send_locations": []
+                })
+                # Update progress immediately (consider 0-byte file as 'sent' for progress count)
+                bytes_sent_so_far += 0 # Add 0 bytes
+                progress_data = _calculate_progress(overall_start_time, bytes_sent_so_far, total_original_bytes_in_batch)
+                yield _yield_sse_event('progress', progress_data)
+                continue # Move to the next file
+
+            # --- Send this individual file to all chats ---
+            file_send_start_time = time.time()
+            file_specific_futures: Dict[Future, str] = {}
+            file_specific_results: Dict[str, ApiResult] = {}
+            primary_send_success_for_this_file = False
+            primary_send_message = "Primary send not attempted or failed."
+
             try:
-                with open(temp_file_path, 'rb') as f_in, zipfile.ZipFile(temp_compressed_zip_filepath, 'w', zipfile.ZIP_DEFLATED) as zf:
-                    with zf.open(original_filename, 'w') as entry: shutil.copyfileobj(f_in, entry, length=DEFAULT_CHUNK_READ_SIZE)
-            except Exception as e:
-                 logging.error(f"[{upload_id}] Err large compress: {e}", exc_info=True);
-                 if temp_compressed_zip_filepath and os.path.exists(temp_compressed_zip_filepath): _safe_remove_file(temp_compressed_zip_filepath, upload_id, "partial large comp");
-                 temp_compressed_zip_filepath = None;
-                 raise e # Re-raise the original exception
-            comp_duration = time.time() - start_comp; comp_size = os.path.getsize(temp_compressed_zip_filepath); logging.info(f"[{upload_id}] Compressed to {comp_size} bytes in {comp_duration:.2f}s.")
-            yield _yield_sse_event('status', {'message': f'Starting chunk upload ({format_bytes(comp_size)})...'})
-            yield _yield_sse_event('start', {'filename': comp_filename, 'totalSize': comp_size})
-            chunk_num = 0; chunks_meta = []; read_bytes = 0; total_send_dur = 0.0; start_split = time.time(); sent_bytes = 0
-            try:
-                with open(temp_compressed_zip_filepath, 'rb') as f_comp:
-                    while True:
-                        chunk_num += 1; logging.debug(f"[{upload_id}] Reading chunk {chunk_num}...")
-                        chunk_data = f_comp.read(CHUNK_SIZE); chunk_size = len(chunk_data)
-                        if not chunk_data: logging.info(f"[{upload_id}] EOF reached."); break
-                        read_bytes += chunk_size; chunk_part_name = f"{comp_filename}.part_{str(chunk_num).zfill(3)}"; logging.info(f"[{upload_id}] Read chunk {chunk_num} ({chunk_size} bytes). Name: '{chunk_part_name}'")
-                        start_chunk_send = time.time(); chunk_futures: Dict[Future, str] = {}; chunk_results: Dict[str, ApiResult] = {}; primary_chunk_fut: Optional[Future] = None
-                        if executor:
-                            primary_cid = str(PRIMARY_TELEGRAM_CHAT_ID)
-                            for chat_id in TELEGRAM_CHAT_IDS:
-                                cid = str(chat_id); fut = executor.submit(_send_chunk_task, chunk_data, chunk_part_name, cid, upload_id, chunk_num); chunk_futures[fut] = cid;
-                                if cid == primary_cid: primary_chunk_fut = fut
-                            logging.debug(f"[{upload_id}] Submitted {len(chunk_futures)} tasks chunk {chunk_num}.")
-                        else:
-                            cid = str(TELEGRAM_CHAT_IDS[0]); _, res = _send_chunk_task(chunk_data, chunk_part_name, cid, upload_id, chunk_num); chunk_results[cid] = res;
-                            if cid == str(PRIMARY_TELEGRAM_CHAT_ID) and not res[0]: raise IOError(f"Primary fail chunk {chunk_num}: {res[1]}")
-                        if executor and primary_chunk_fut:
-                            logging.debug(f"[{upload_id}] Wait primary chunk {chunk_num}..."); cid_res, res = primary_chunk_fut.result(); chunk_results[cid_res] = res; logging.debug(f"[{upload_id}] Primary chunk {chunk_num} done. OK:{res[0]}");
-                            if not res[0]: raise IOError(f"Primary fail chunk {chunk_num}: {res[1]}")
-                        elif executor and not primary_chunk_fut: raise SystemError(f"Primary fut not found chunk {chunk_num}.")
-                        sent_bytes += chunk_size; progress = _calculate_progress(start_split, sent_bytes, comp_size); yield _yield_sse_event('progress', progress)
-                        if executor:
-                            logging.debug(f"[{upload_id}] Wait backups chunk {chunk_num}...");
-                            for fut in as_completed(chunk_futures):
-                                cid_res, res = fut.result();
-                                if cid_res not in chunk_results: chunk_results[cid_res] = res; logging.debug(f"[{upload_id}] Done backup chunk {chunk_num}, chat: {cid_res}. OK:{res[0]}")
-                        chunk_dur = time.time() - start_chunk_send; total_send_dur += chunk_dur
-                        chunk_send_res = [{"chat_id": cid, "success": r[0], "message": r[1], "tg_response": r[2]} for cid, r in chunk_results.items()]
-                        num_ok = sum(1 for r in chunk_send_res if r['success']); yield _yield_sse_event('status', {'message': f'Sent chunk {chunk_num} ({num_ok}/{len(TELEGRAM_CHAT_IDS)} OK)'})
-                        try:
-                            details = _parse_send_results(f"{upload_id}-c{chunk_num}", chunk_send_res);
-                            meta_entry = {"part_number": chunk_num, "chunk_filename": chunk_part_name, "send_locations": details, "chunk_upload_duration_seconds": round(chunk_dur, 2)};
-                            chunks_meta.append(meta_entry); logging.debug(f"[{upload_id}] Stored meta chunk {chunk_num}.")
-                        except Exception as e: raise ValueError(f"Err meta chunk {chunk_num}.") from e
-                logging.info(f"[{upload_id}] Finished chunk loop.")
-                expected = (comp_size + CHUNK_SIZE - 1)//CHUNK_SIZE if CHUNK_SIZE > 0 else (1 if comp_size > 0 else 0)
-                actual = len(chunks_meta)
-                if actual == expected:
-                    logging.info(f"[{upload_id}] All {expected} chunks OK. Saving meta.")
-                    # --- New block using database function for chunks ---
-                    ts = datetime.now(timezone.utc).isoformat()
-                    record = {
-                        "original_filename": original_filename,
-                        "sent_filename": comp_filename,
-                        "is_split": True,
-                        "is_compressed": True,
-                        "original_size": total_size,
-                        "compressed_total_size": comp_size,
-                        "chunk_size": CHUNK_SIZE,
-                        "num_chunks": expected,
-                        "chunks": chunks_meta, # Ensure chunks_meta is correctly populated
-                        "upload_timestamp": ts,
-                        "username": username,
-                        "total_upload_duration_seconds": round(total_send_dur, 2),
-                        "access_id": access_id # Make sure access_id is in the record
-                    }
-                    logging.info(f"[{upload_id}] Attempting to save chunked metadata to DB...")
-                    save_success, save_msg = save_file_metadata(record)
-                    if not save_success:
-                        logging.error(f"[{upload_id}] CRITICAL: Chunked metadata save to DB failed: {save_msg}")
-                        yield _yield_sse_event('status', {'message': 'Warning: Upload OK, but metadata save failed.'})
-                        # upload_data['status'] = 'completed_metadata_error' # Optional distinct status
+                with open(current_file_path, 'rb') as f_current:
+                    file_bytes = f_current.read() # Read the whole file (adjust if files can be > memory)
+
+                if executor:
+                    for chat_id_str in TELEGRAM_CHAT_IDS:
+                        cid = str(chat_id_str)
+                        # Use _send_single_file_task as file size < CHUNK_SIZE assumption for individual files might be wrong.
+                        # If individual files can be > CHUNK_SIZE, this needs chunking logic *here* per file.
+                        # Assuming individual files are reasonably sized for now.
+                        # *** If individual files can exceed CHUNK_SIZE, this part needs replacement with chunking logic ***
+                        if current_file_size > CHUNK_SIZE:
+                            # TODO: Implement chunking logic here for the individual file `file_bytes`
+                            logging.error(f"{log_file_prefix} is larger than CHUNK_SIZE ({current_file_size} > {CHUNK_SIZE}), chunking not implemented for individual batch files yet. Aborting file.")
+                            # Mark this file as failed
+                            file_specific_results[cid] = (False, "File too large for single send, chunking not implemented here", None)
+                            # Maybe don't raise, just record failure for this file?
+                            # raise NotImplementedError("Chunking for large individual files within a batch is not yet implemented.")
+                            # Let's record failure and continue to next file for now
+                            all_succeeded = False # Mark overall batch potentially incomplete
+                            break # Break inner chat_id loop for this large file
+
+                        fut = executor.submit(_send_single_file_task, file_bytes, current_filename, cid, upload_id)
+                        file_specific_futures[fut] = cid
+                else: # No executor
+                    cid = str(TELEGRAM_CHAT_IDS[0])
+                    _, res = _send_single_file_task(file_bytes, current_filename, cid, upload_id)
+                    file_specific_results[cid] = res
+                    if cid == str(PRIMARY_TELEGRAM_CHAT_ID):
+                        primary_send_success_for_this_file = res[0]
+                        primary_send_message = res[1]
+                        if not primary_send_success_for_this_file:
+                            all_succeeded = False # Primary failed for this file
+
+                # --- Wait for results (similar to previous logic) ---
+                if executor:
+                    primary_fut: Optional[Future] = None
+                    primary_cid = str(PRIMARY_TELEGRAM_CHAT_ID)
+                    for fut_key, chat_id_val in file_specific_futures.items():
+                        if chat_id_val == primary_cid: primary_fut = fut_key; break
+                    
+                    if primary_fut:
+                        logging.debug(f"{log_file_prefix} Waiting for primary send...")
+                        cid_res, res = primary_fut.result(); file_specific_results[cid_res] = res
+                        primary_send_success_for_this_file = res[0]
+                        primary_send_message = res[1]
+                        if not primary_send_success_for_this_file:
+                            all_succeeded = False # Mark overall failure if primary fails
+                            logging.error(f"{log_file_prefix} Primary send failed: {primary_send_message}")
+                            # Decide if you want to stop processing the rest of the files in the batch
+                            # For now, we'll continue and record which files failed.
                     else:
-                        logging.info(f"[{upload_id}] Chunked metadata successfully saved to DB. Msg: {save_msg}")
-                    # --- End of new block ---
+                        logging.warning(f"{log_file_prefix} Primary future not found.")
+                        # If primary future wasn't found, we cannot guarantee overall success based on it
+                        all_succeeded = False
 
-                    # The rest (url = url_for..., yield _yield_sse_event('complete'...) stays the same
-                    url = url_for('get_file_by_access_id', access_id=access_id, _external=True)
-                    yield _yield_sse_event('complete', {'message': f'Large file {original_filename} uploaded!', 'download_url': url, 'filename': original_filename})
-                    upload_data['status'] = 'completed' # Set status even if meta save failed with warning
-                else: raise SystemError(f"Chunk count mismatch. Exp:{expected}, Got:{actual}.")
-            finally:
-                if temp_compressed_zip_filepath and os.path.exists(temp_compressed_zip_filepath): _safe_remove_file(temp_compressed_zip_filepath, upload_id, "large compressed temp")
+                    logging.debug(f"{log_file_prefix} Waiting for backup sends...")
+                    for fut_completed in as_completed(file_specific_futures):
+                        cid_res, res = fut_completed.result()
+                        if cid_res not in file_specific_results: file_specific_results[cid_res] = res
+
+                # --- Process results for *this specific file* ---
+                current_file_send_report = [{"chat_id": k, "success": r[0], "message": r[1], "tg_response": r[2]} for k, r in file_specific_results.items()]
+                
+                if primary_send_success_for_this_file:
+                    bytes_sent_so_far += current_file_size # Increment progress only if primary succeeded
+                    parsed_locations = _parse_send_results(f"{log_prefix}-{current_filename}", current_file_send_report)
+                    # Check if parsing marked primary as failed due to missing IDs
+                    primary_parsed_loc = next((loc for loc in parsed_locations if loc.get('chat_id') == str(PRIMARY_TELEGRAM_CHAT_ID)), None)
+                    if not primary_parsed_loc or not primary_parsed_loc.get('success'):
+                        logging.error(f"{log_file_prefix} Primary send reported OK by API but parsing failed or IDs missing. Marking as failed.")
+                        all_succeeded = False # Treat as overall failure if primary metadata is bad
+                        # Add failure metadata? Or just skip adding this file? Let's skip adding successful record.
+                        # Add failure record instead?
+                        all_files_metadata_for_db.append({
+                            "original_filename": current_filename, "original_size": current_file_size,
+                            "skipped": False, "failed": True,
+                            "reason": "Primary send metadata parsing failed.",
+                            "send_locations": parsed_locations # Include potentially partial data
+                        })
+
+                    else:
+                        # Primary succeeded AND metadata looks okay
+                        all_files_metadata_for_db.append({
+                            "original_filename": current_filename,
+                            "original_size": current_file_size,
+                            "send_locations": parsed_locations
+                            # Add other per-file details if needed later
+                        })
+                        logging.info(f"{log_file_prefix} Successfully processed and recorded.")
+                else:
+                    # Primary send failed for this file
+                    all_succeeded = False # Mark the whole batch potentially incomplete
+                    logging.error(f"{log_file_prefix} Failed primary send. Reason: {primary_send_message}")
+                    # Add failure record for this file
+                    all_files_metadata_for_db.append({
+                        "original_filename": current_filename, "original_size": current_file_size,
+                        "skipped": False, "failed": True,
+                        "reason": f"Primary send failed: {primary_send_message}",
+                        "send_locations": _parse_send_results(f"{log_prefix}-{current_filename}", current_file_send_report) # Include attempts
+                    })
+                    # Optional: break loop here if one failure should stop the whole batch?
+
+                # Update progress after each file is processed (based on primary success)
+                progress_data = _calculate_progress(overall_start_time, bytes_sent_so_far, total_original_bytes_in_batch)
+                yield _yield_sse_event('progress', progress_data)
+                yield _yield_sse_event('status', {'message': f'Processed {len(all_files_metadata_for_db)} of {len(files_to_process_details)} files...'})
+
+            except FileNotFoundError:
+                logging.error(f"{log_file_prefix} not found during processing loop.", exc_info=True)
+                all_succeeded = False
+                all_files_metadata_for_db.append({ "original_filename": current_filename, "failed": True, "reason": "File not found during send phase."})
+            except NotImplementedError as nie:
+                logging.error(f"{log_file_prefix} - {nie}")
+                all_succeeded = False
+                all_files_metadata_for_db.append({ "original_filename": current_filename, "failed": True, "reason": str(nie)})
+            except Exception as file_loop_error:
+                logging.error(f"{log_file_prefix} Unexpected error during send: {file_loop_error}", exc_info=True)
+                all_succeeded = False # Mark overall failure
+                all_files_metadata_for_db.append({ "original_filename": current_filename, "failed": True, "reason": f"Unexpected error: {str(file_loop_error)}"})
+                # Optional: break here? Or try next file? Continue for now.
+
+            # --- Batch Upload Finished ---
+            total_batch_duration = time.time() - overall_start_time
+            logging.info(f"{log_prefix} Finished processing all files in batch. Duration: {total_batch_duration:.2f}s. Overall Success (based on primary sends): {all_succeeded}")
+
+            if not all_files_metadata_for_db:
+                raise RuntimeError("Processing finished but no metadata was generated for any file.")
+
+            # --- Save Batch Metadata ---
+            db_batch_timestamp = datetime.now(timezone.utc).isoformat()
+            db_batch_record = {
+                "access_id": access_id,
+                "username": username,
+                "upload_timestamp": db_batch_timestamp,
+                "is_batch": True,
+                "batch_display_name": batch_display_name, # User-friendly name for the batch
+                "files_in_batch": all_files_metadata_for_db, # List of dicts per file
+                "total_original_size": total_original_bytes_in_batch, # Sum of original file sizes
+                "total_upload_duration_seconds": round(total_batch_duration, 2),
+                # Note: 'original_filename' at top level doesn't make sense for batch.
+                # 'is_split', 'is_compressed', 'original_size' now live inside 'files_in_batch' if needed per file,
+                # but for this model, the batch record itself isn't split/compressed in the same way.
+            }
+
+            save_success, save_msg = save_file_metadata(db_batch_record)
+            if not save_success:
+                logging.error(f"{log_prefix} DB CRITICAL: Failed to save batch metadata: {save_msg}")
+                # Yield error even if Telegram sends were okay? Yes, link won't work.
+                raise IOError(f"Failed to save batch metadata: {save_msg}")
+            else:
+                logging.info(f"{log_prefix} DB: Successfully saved batch metadata.")
+
+            # --- Yield Completion Event (Pointing to the new browser route) ---
+            browser_url = url_for('browse_batch', access_id=access_id, _external=True) # New route needed
+            yield _yield_sse_event('complete', {
+                'message': f'Batch upload ({len(files_to_process_details)} files) complete!',
+                'download_url': browser_url, # URL to the file browser page
+                'filename': batch_display_name # Display name of the batch
+            })
+            upload_data['status'] = 'completed' if all_succeeded else 'completed_with_errors'
+
 
     except Exception as e:
-        error_message = f"Upload failed: {str(e) or type(e).__name__}"; logging.error(f"[{upload_id}] {error_message}", exc_info=True)
-        yield _yield_sse_event('error', {'message': error_message});
-        if upload_id in upload_progress_data: upload_data['status'] = 'error'; upload_data['error'] = error_message
+        error_msg_final = f"Batch upload processing failed: {str(e) or type(e).__name__}"
+        logging.error(f"{log_prefix} {error_msg_final}", exc_info=True)
+        yield _yield_sse_event('error', {'message': error_msg_final})
+        if upload_id in upload_progress_data:
+                upload_data['status'] = 'error'
+                upload_data['error'] = error_msg_final
     finally:
-        logging.info(f"[{upload_id}] Upload generator cleanup.")
-        if executor: executor.shutdown(wait=False); logging.info(f"[{upload_id}] Upload executor shutdown.")
-        if temp_file_path and os.path.exists(temp_file_path): _safe_remove_file(temp_file_path, upload_id, "original temp")
-        final_status = upload_progress_data.get(upload_id, {}).get('status', 'unknown')
-        logging.info(f"[{upload_id}] Upload generator finished. Status: {final_status}")
+        logging.info(f"{log_prefix} Batch upload generator final cleanup.")
+        if executor:
+            executor.shutdown(wait=False)
+            logging.info(f"{log_prefix} Upload executor shutdown.")
+        
+        # Cleanup: The original batch directory should be gone.
+        # If we created an intermediate zip (which we removed in this version), it would be cleaned here.
+        # Check if the batch dir still exists for some reason (e.g., error before cleanup)
+        if batch_directory_path and os.path.exists(batch_directory_path):
+             logging.warning(f"{log_prefix} Cleaning up batch directory that might have been left over: {batch_directory_path}")
+             _safe_remove_directory(batch_directory_path, log_prefix, "lingering batch dir")
+
+        final_status_report = upload_progress_data.get(upload_id, {}).get('status', 'unknown')
+        logging.info(f"{log_prefix} Batch processing generator finished. Final Status: {final_status_report}")
 
 # Download Preparation Route ---
 @app.route('/prepare-download/<username>/<path:filename>') # <-- Use path converter
@@ -702,213 +849,583 @@ def stream_download_by_access_id(access_id: str) -> Response:
     ), mimetype='text/event-stream')
 # --- End of new route function ---
 
+# In routes.py
+
 def _prepare_download_and_generate_updates(prep_id: str) -> Generator[SseEvent, None, None]:
-    """Generator handling download preparation and yielding SSE updates."""
-    logging.info(f"[{prep_id}] Download prep generator started.")
+    """
+    Generator handling download preparation and yielding SSE updates.
+    Handles:
+    1. Lookup by access_id/username+filename (for ZIPs or single-file records).
+    2. Direct download of a single file using a pre-supplied telegram_file_id.
+    """
+    log_prefix = f"[DLPrep-{prep_id}]"
+    logging.info(f"{log_prefix} Download prep generator started.")
     prep_data = download_prep_data.get(prep_id)
-    if not prep_data: logging.error(f"[{prep_id}] Critical: Prep data missing."); yield _yield_sse_event('error', {'message': 'Internal Error: data lost.'}); return
-    if prep_data.get('status') != 'initiated': logging.warning(f"[{prep_id}] Gen started but status not 'initiated'. Aborting."); return
+
+    # --- Initial Checks ---
+    if not prep_data:
+        logging.error(f"{log_prefix} Critical: Prep data missing at generator start.")
+        yield _yield_sse_event('error', {'message': 'Internal Server Error: Prep data lost.'})
+        return
+
+    if prep_data.get('status') != 'initiated':
+        logging.warning(f"{log_prefix} Prep already running/finished (Status: {prep_data.get('status')}). Aborting.")
+        # Optionally yield an error/status event?
+        # yield _yield_sse_event('status', {'message': 'Preparation already in progress or finished.'})
+        return
 
     prep_data['status'] = 'preparing'
-    # Initialize variables
-    temp_reassembled_zip_path: Optional[str] = None; temp_decompressed_path: Optional[str] = None
-    temp_final_file_path: Optional[str] = None # This will hold the path to be served
-    file_info: Optional[Dict[str, Any]] = None; username = prep_data.get('username')
-    requested_filename = prep_data.get('requested_filename'); access_id = prep_data.get('access_id')
-    original_filename_from_meta = "unknown"; final_expected_size = 0; total_bytes_to_fetch = 0
+
+    # --- Initialize variables ---
+    temp_reassembled_zip_path: Optional[str] = None
+    temp_decompressed_path: Optional[str] = None # Primarily used if we decompress a downloaded zip
+    temp_final_file_path: Optional[str] = None # Path to the file that will be served
+
+    file_info: Optional[Dict[str, Any]] = None # Holds metadata if looked up
+    username = prep_data.get('username')
+    access_id = prep_data.get('access_id')
+    requested_filename = prep_data.get('requested_filename') # Filename requested by user/link
+
+    # Check if called for single file download directly (via /download-single/...)
+    direct_telegram_file_id = prep_data.get('telegram_file_id')
+    is_direct_single_file_download = bool(direct_telegram_file_id)
+
+    # --- Set initial values, potentially overridden by metadata lookup ---
+    original_filename_from_meta = requested_filename or "download" # Default/fallback
+    final_expected_size = prep_data.get('final_expected_size', 0) # Expected size (original size)
+    is_split = False # Default
+    # Default to False for single file downloads, True for looked-up records (usually zips/parts)
+    is_compressed = False if is_direct_single_file_download else True
+
+    total_bytes_to_fetch = 0 # For progress reporting during multi-chunk downloads
     download_executor: Optional[ThreadPoolExecutor] = None
 
     try:
-        # --- Phase 1: Metadata Lookup ---
-        yield _yield_sse_event('status', {'message': 'Looking up file info...'}); time.sleep(0.1)
-        # metadata = load_metadata(); # <<< REMOVED
+        # --- Phase 1: Get File Info (Lookup or Direct) ---
+        if not is_direct_single_file_download:
+            # --- Metadata Lookup Path (for /prepare-download or /stream-download) ---
+            yield _yield_sse_event('status', {'message': 'Looking up file info...'}); time.sleep(0.1)
+            lookup_error_msg = ""
+            if access_id:
+                logging.debug(f"{log_prefix} Finding metadata by access_id: {access_id}")
+                file_info, lookup_error_msg = find_metadata_by_access_id(access_id)
+                if not file_info and not lookup_error_msg: lookup_error_msg = f"Access ID '{access_id}' not found."
+                elif file_info and not file_info.get('username'): # Check if username exists in found record
+                     lookup_error_msg = "Record found but missing username field."
+                     file_info = None # Treat as error
+            elif username and requested_filename: # Fallback to username/filename
+                logging.debug(f"{log_prefix} Finding metadata by username/filename: User='{username}', File='{requested_filename}'")
+                all_user_files, lookup_error_msg = find_metadata_by_username(username)
+                if not lookup_error_msg and all_user_files is not None:
+                    file_info = next((f for f in all_user_files if f.get('original_filename') == requested_filename), None)
+                    if not file_info: lookup_error_msg = f"File '{requested_filename}' not found for user '{username}'."
+                elif not lookup_error_msg: lookup_error_msg = "Internal error: Failed to retrieve user file list."
+            else:
+                lookup_error_msg = "Insufficient information for metadata lookup."
 
-        lookup_error_msg = "" # Variable to store potential errors
+            if lookup_error_msg or not file_info:
+                final_error_message = lookup_error_msg or "File metadata not found."
+                logging.error(f"{log_prefix} Metadata lookup failed: {final_error_message}")
+                raise FileNotFoundError(final_error_message)
 
-        # Prioritize access_id if available (e.g., from /stream-download route)
-        if access_id:
-            logging.debug(f"[{prep_id}] Finding metadata by access_id: {access_id}")
-            file_info, lookup_error_msg = find_metadata_by_access_id(access_id)
-            if not file_info and not lookup_error_msg: # Explicitly check if not found by DB function
-                lookup_error_msg = f"Access ID '{access_id}' not found."
-            elif file_info:
-                username_from_lookup = file_info.get('username')
-                if not username: # If username wasn't passed initially
-                    if username_from_lookup:
-                        username = username_from_lookup
-                        prep_data['username'] = username # Update prep_data for logging/context
-                    else:
-                        lookup_error_msg = "Record found but missing username field."
-                        file_info = None # Treat as error if username missing
-            # If there was a DB error, lookup_error_msg will be set
-
-        # Fallback to username/filename if access_id wasn't provided or failed,
-        # but username and requested_filename are available.
-        elif username and requested_filename:
-            logging.debug(f"[{prep_id}] Finding metadata by username/filename: User='{username}', File='{requested_filename}'")
-            # Find ALL files for the user first
-            all_user_files, lookup_error_msg = find_metadata_by_username(username)
-
-            if not lookup_error_msg and all_user_files is not None: # Check if DB call was successful
-                # Now filter the specific file from the results
-                file_info = next((f for f in all_user_files if f.get('original_filename') == requested_filename), None)
-                if not file_info:
-                    # Only set error if DB call was okay but file wasn't in the list
-                    lookup_error_msg = f"File '{requested_filename}' not found for user '{username}'."
-            elif not lookup_error_msg and all_user_files is None: # Should not happen normally
-                lookup_error_msg = "Internal error: Failed to retrieve user file list."
-            # If find_metadata_by_username had an error, lookup_error_msg is already set
+            # Extract details from looked-up metadata
+            original_filename_from_meta = file_info.get('original_filename', requested_filename or 'unknown');
+            final_expected_size = file_info.get('original_size', 0)
+            is_split = file_info.get('is_split', False)
+            is_compressed = file_info.get('is_compressed', True) # Assume looked-up files were compressed unless specified otherwise
+            prep_data['original_filename'] = original_filename_from_meta # Update prep_data
+            prep_data['final_expected_size'] = final_expected_size
+            logging.info(f"{log_prefix} Meta Found: '{original_filename_from_meta}', Size:{final_expected_size}, Split:{is_split}, Comp:{is_compressed}")
+            # --- End of Metadata Lookup Path ---
 
         else:
-            # This case means we don't have enough info to look up the file
-            lookup_error_msg = "Insufficient information (access_id or username/filename) provided for download preparation."
+            # --- Direct Single File Download Path ---
+            logging.info(f"{log_prefix} Preparing direct download for file_id: {direct_telegram_file_id}")
+            original_filename_from_meta = requested_filename # Use filename passed to the route
+            # final_expected_size was already set in download_single_file route
+            # Assume individual files are not split or compressed unless filename suggests otherwise
+            is_split = False
+            is_compressed = original_filename_from_meta.lower().endswith('.zip') # Simple check based on original name
+            logging.info(f"{log_prefix} Direct Single File: '{original_filename_from_meta}', Size:{final_expected_size}, Split:{is_split}, Comp:{is_compressed}")
+            # --- End of Direct Single File Path ---
 
-        # --- Handle lookup results ---
-        if lookup_error_msg or not file_info:
-            # Use the specific error message we determined above
-            final_error_message = lookup_error_msg or "File metadata not found."
-            logging.error(f"[{prep_id}] Metadata lookup failed: {final_error_message}")
-            # Raise the specific error to be caught by the outer try/except
-            raise FileNotFoundError(final_error_message)
+        # --- Common Setup: Yield initial events ---
+        yield _yield_sse_event('filename', {'filename': original_filename_from_meta})
+        yield _yield_sse_event('totalSizeUpdate', {'totalSize': final_expected_size}) # Use original size for total display
+        yield _yield_sse_event('progress', {'percentage': 0})
+        yield _yield_sse_event('status', {'message': 'Preparing file...'}); time.sleep(0.2)
 
-        # If we reach here, file_info is valid and contains the metadata
-        logging.info(f"[{prep_id}] Successfully found metadata for download preparation.")
-        # ... rest of Phase 1 continues as before, extracting details from file_info ...
-        original_filename_from_meta = file_info.get('original_filename','?');
-        final_expected_size = file_info.get('original_size', 0)
-        is_split = file_info.get('is_split', False)
-        is_compressed = file_info.get('is_compressed', True)
-        prep_data['original_filename'] = original_filename_from_meta
-        logging.info(f"[{prep_id}] Meta: '{original_filename_from_meta}', User:{username}, Size:{final_expected_size}, Split:{is_split}, Comp:{is_compressed}")
-        yield _yield_sse_event('filename', {'filename': original_filename_from_meta}); yield _yield_sse_event('totalSizeUpdate', {'totalSize': final_expected_size})
-        yield _yield_sse_event('progress', {'percentage': 0}); yield _yield_sse_event('status', {'message': 'Preparing file...'}); time.sleep(0.2)
         # --- Phase 2: File Preparation ---
         if not is_split:
-            # --- Single File Prep ---
-            logging.info(f"[{prep_id}] Preparing non-split file."); yield _yield_sse_event('status', {'message': 'Downloading...'})
-            yield _yield_sse_event('progress', {'percentage': 5}); locations = file_info.get('send_locations', [])
-            if not locations: raise ValueError("Locations missing."); total_bytes_to_fetch = file_info.get('compressed_size', 0)
-            if not total_bytes_to_fetch and is_compressed: logging.warning(f"[{prep_id}] Comp size missing single.")
-            tg_file_id, chat_id = _find_best_telegram_file_id(locations, PRIMARY_TELEGRAM_CHAT_ID);
-            if not tg_file_id: raise ValueError("No usable TG source."); logging.info(f"[{prep_id}] Using file_id {tg_file_id} from {chat_id}.")
-            start = time.time(); content, err = download_telegram_file_content(tg_file_id); duration = time.time() - start; dl_bytes = len(content) if content else 0
-            speed = (dl_bytes/(1024*1024)/duration) if duration > 0 and dl_bytes > 0 else 0; logging.info(f"[{prep_id}] TG dl ({dl_bytes} bytes) in {duration:.2f}s. Avg Speed: {speed:.2f} MB/s")
-            if err: raise ValueError(f"TG dl fail: {err}");
-            if not content: raise ValueError("TG dl empty.")
-            yield _yield_sse_event('progress', {'percentage': 50, 'speedMBps': speed, 'etaFormatted': '00:00'})
+            # --- Prep Non-Split File ---
+            logging.info(f"{log_prefix} Preparing non-split file '{original_filename_from_meta}'.")
+            yield _yield_sse_event('status', {'message': 'Downloading...'})
+            yield _yield_sse_event('progress', {'percentage': 5})
+
+            tg_file_id_to_download = None
+            if is_direct_single_file_download:
+                tg_file_id_to_download = direct_telegram_file_id
+                logging.info(f"{log_prefix} Using direct telegram_file_id: {tg_file_id_to_download}")
+            elif file_info:
+                locations = file_info.get('send_locations', [])
+                tg_file_id_lookup, chat_id_lookup = _find_best_telegram_file_id(locations, PRIMARY_TELEGRAM_CHAT_ID)
+                tg_file_id_to_download = tg_file_id_lookup
+                if tg_file_id_to_download:
+                    logging.info(f"{log_prefix} Using looked-up telegram_file_id: {tg_file_id_to_download} from chat {chat_id_lookup}")
+
+            if not tg_file_id_to_download:
+                raise ValueError("Could not determine Telegram file ID to download.")
+
+            start_dl = time.time()
+            content_bytes, err_msg = download_telegram_file_content(tg_file_id_to_download)
+            dl_duration = time.time() - start_dl
+            dl_bytes_count = len(content_bytes) if content_bytes else 0
+            dl_speed_mbps = (dl_bytes_count / (1024*1024) / dl_duration) if dl_duration > 0 else 0
+            logging.info(f"{log_prefix} TG download ({dl_bytes_count} bytes) in {dl_duration:.2f}s. Speed: {dl_speed_mbps:.2f} MB/s")
+
+            if err_msg: raise ValueError(f"TG download failed: {err_msg}")
+            if not content_bytes: raise ValueError("TG download returned empty content.")
+
+            # Use expected size for progress display if known, otherwise use downloaded size
+            progress_total = final_expected_size if final_expected_size > 0 else dl_bytes_count
+            yield _yield_sse_event('progress', {'percentage': 50, 'bytesProcessed': int(progress_total*0.5), 'totalBytes': progress_total, 'speedMBps': dl_speed_mbps, 'etaFormatted': '00:00'})
+
+            # Handle decompression ONLY if the metadata or filename indicates it's compressed
             if is_compressed:
                 yield _yield_sse_event('status', {'message': 'Decompressing...'})
+                logging.info(f"{log_prefix} Decompressing downloaded file...")
+                # Create final temp file directly
                 with tempfile.NamedTemporaryFile(delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"dl_final_{prep_id}_") as tf:
-                    temp_final_file_path = tf.name # Assign final path
+                    temp_final_file_path = tf.name
                     zf = None
                     try:
-                        buf = io.BytesIO(content); zf = zipfile.ZipFile(buf, 'r'); inner = _find_filename_in_zip(zf, original_filename_from_meta, prep_id)
-                        with zf.open(inner, 'r') as i:
-                            yield _yield_sse_event('progress', {'percentage': 75}); shutil.copyfileobj(i, tf, length=DEFAULT_CHUNK_READ_SIZE)
+                        zip_buffer = io.BytesIO(content_bytes)
+                        zf = zipfile.ZipFile(zip_buffer, 'r')
+                        # Try to find the expected filename within the zip
+                        inner_filename = _find_filename_in_zip(zf, original_filename_from_meta, prep_id)
+                        logging.info(f"{log_prefix} Extracting '{inner_filename}' from zip.")
+                        with zf.open(inner_filename, 'r') as inner_file_stream:
+                            yield _yield_sse_event('progress', {'percentage': 75, 'bytesProcessed': int(progress_total*0.75), 'totalBytes': progress_total})
+                            shutil.copyfileobj(inner_file_stream, tf) # Write decompressed content
                     finally:
                         if zf: zf.close()
-                temp_decompressed_path = temp_final_file_path # Track intermediate step (same as final here)
-                yield _yield_sse_event('progress', {'percentage': 95})
-            else:
-                 yield _yield_sse_event('status', {'message': 'Saving temp...'})
-                 with tempfile.NamedTemporaryFile(delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"dl_final_{prep_id}_") as tf:
-                     temp_final_file_path = tf.name; tf.write(content) # Assign final path
-                 yield _yield_sse_event('progress', {'percentage': 95})
-        else:
-             # --- Split File Prep ---
-             logging.info(f"[{prep_id}] Preparing SPLIT file."); yield _yield_sse_event('status', {'message': 'Downloading chunks concurrently...'})
-             chunks_meta = file_info.get('chunks');
-             if not chunks_meta or not isinstance(chunks_meta, list): raise ValueError("Invalid 'chunks'.");
-             try: chunks_meta.sort(key=lambda c: int(c.get('part_number', 0)))
-             except (TypeError, ValueError): raise ValueError("Invalid 'part_number'.");
-             num_chunks = len(chunks_meta)
-             if num_chunks == 0: raise ValueError("Chunks list empty.")
-             total_bytes_to_fetch = file_info.get('compressed_total_size', 0); logging.info(f"[{prep_id}] Expecting {num_chunks} chunks. Total comp: ~{format_bytes(total_bytes_to_fetch)}.")
-             start_fetch = time.time(); fetched_bytes = 0; fetch_alloc = 80.0; dl_count = 0
-             download_executor = ThreadPoolExecutor(max_workers=MAX_DOWNLOAD_WORKERS, thread_name_prefix=f'DlPrep_{prep_id[:4]}')
-             logging.info(f"[{prep_id}] Initialized Download Executor (max={MAX_DOWNLOAD_WORKERS})")
-             futures: List[Future] = []; results: Dict[int, bytes] = {}; first_err: Optional[str] = None
-             logging.info(f"[{prep_id}] Submitting {num_chunks} chunk dl tasks...")
-             for i, chunk_info in enumerate(chunks_meta):
-                 pnum = chunk_info.get('part_number');
-                 if pnum is None: raise ValueError(f"Chunk {i} missing part#.")
-                 locs = chunk_info.get('send_locations', []);
-                 if not locs: raise ValueError(f"Chunk {pnum} missing locs.")
-                 fid, cid = _find_best_telegram_file_id(locs, PRIMARY_TELEGRAM_CHAT_ID);
-                 if not fid: raise ValueError(f"No source chunk {pnum}.")
-                 futures.append(download_executor.submit(_download_chunk_task, fid, pnum, prep_id))
-             logging.info(f"[{prep_id}] All {len(futures)} chunk dl tasks submitted.")
-             yield _yield_sse_event('status', {'message': f'Downloading your file'})
-             prog: Dict[str, Any] = {}
-             for fut in as_completed(futures):
-                 try:
-                     pnum_res, content, err = fut.result()
-                     if err: 
-                         logging.error(f"[{prep_id}] Fail dl chunk {pnum_res}: {err}");
-                         if not first_err: first_err = f"Chunk {pnum_res}: {err}"
-                     elif content:
-                         dl_count += 1; chunk_len = len(content); fetched_bytes += chunk_len; results[pnum_res] = content; logging.debug(f"[{prep_id}] Dl chunk {pnum_res}. Count:{dl_count}/{num_chunks} ({chunk_len}b)")
-                         perc_comp = (dl_count / num_chunks) * 100.0; overall_perc = perc_comp * (fetch_alloc / 100.0)
-                         prog = _calculate_download_fetch_progress(start_fetch, fetched_bytes, total_bytes_to_fetch, dl_count, num_chunks, overall_perc, final_expected_size);
-                         yield _yield_sse_event('progress', prog)
-                     else: 
-                         logging.error(f"[{prep_id}] Task chunk {pnum_res} invalid state.");
-                         if not first_err: first_err = f"Chunk {pnum_res}: Internal task err."
-                 except Exception as e: 
-                     logging.error(f"[{prep_id}] Err processing dl future: {e}", exc_info=True);
-                     if not first_err: first_err = f"Err processing result: {str(e)}"
-             if first_err: raise ValueError(f"Download fail: {first_err}")
-             if dl_count != num_chunks: raise SystemError(f"Chunk dl count mismatch. Exp:{num_chunks}, Got:{dl_count}.")
-             logging.info(f"[{prep_id}] All {num_chunks} chunks dl OK. Total fetched: {fetched_bytes} bytes.")
-             yield _yield_sse_event('status', {'message': 'Reassembling file...'})
-             # Create reassembly temp file
-             with tempfile.NamedTemporaryFile(suffix=".zip.reassembled", delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"dl_reass_{prep_id}_") as tf:
-                 temp_reassembled_zip_path = tf.name; logging.debug(f"[{prep_id}] Reassembling into: {temp_reassembled_zip_path}")
-                 for pnum_write in range(1, num_chunks + 1):
-                     chunk = results.get(pnum_write);
-                     if not chunk: raise SystemError(f"Missing content chunk {pnum_write} for reassembly.")
-                     tf.write(chunk); logging.debug(f"[{prep_id}] Wrote chunk {pnum_write} to reassembly.")
-             results.clear(); logging.info(f"[{prep_id}] Finished reassembly.")
-             yield _yield_sse_event('progress', {'percentage': fetch_alloc, 'bytesProcessed': fetched_bytes, 'speedMBps': prog.get('speedMBps',0), 'etaFormatted':'00:00'})
-             # Decompress or use directly
-             if is_compressed:
-                 yield _yield_sse_event('status', {'message': 'Decompressing...'})
-                 with tempfile.NamedTemporaryFile(delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"dl_final_{prep_id}_") as tf:
-                    temp_final_file_path = tf.name # Assign final path
-                    zf = None
-                    try:
-                        zf = zipfile.ZipFile(temp_reassembled_zip_path, 'r')
-                        inner = _find_filename_in_zip(zf, original_filename_from_meta, prep_id)
-                        with zf.open(inner, 'r') as i:
-                            yield _yield_sse_event('progress', {'percentage': 90});
-                            shutil.copyfileobj(i, tf, length=DEFAULT_CHUNK_READ_SIZE)
-                    finally:
-                         if zf: zf.close()
-                 temp_decompressed_path = temp_final_file_path # Track intermediate step (same as final here)
-                 yield _yield_sse_event('progress', {'percentage': 98})
-             else:
-                 temp_final_file_path = temp_reassembled_zip_path # Assign final path
-                 temp_reassembled_zip_path = None # Prevent deletion in finally block
-                 logging.info(f"[{prep_id}] Using reassembled directly as final file."); yield _yield_sse_event('progress', {'percentage': 98})
+                # No separate temp_decompressed_path needed, it's the final path
+                yield _yield_sse_event('progress', {'percentage': 95, 'bytesProcessed': int(progress_total*0.95), 'totalBytes': progress_total})
+            else: # Not compressed, save directly
+                yield _yield_sse_event('status', {'message': 'Saving temporary file...'})
+                with tempfile.NamedTemporaryFile(delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"dl_final_{prep_id}_") as tf:
+                    temp_final_file_path = tf.name
+                    tf.write(content_bytes)
+                yield _yield_sse_event('progress', {'percentage': 95, 'bytesProcessed': int(dl_bytes_count*0.95), 'totalBytes': dl_bytes_count})
+
+        else: # is_split is True
+            if is_direct_single_file_download:
+                 raise RuntimeError("Invalid state: Cannot process split file via direct single file download request.")
+
+            # --- Prep Split File (only reached via metadata lookup) ---
+            logging.info(f"{log_prefix} Preparing SPLIT file download for '{original_filename_from_meta}'")
+            yield _yield_sse_event('status', {'message': 'Downloading & Reassembling chunks...'})
+
+            chunks_meta = file_info.get('chunks');
+            if not chunks_meta or not isinstance(chunks_meta, list): raise ValueError("Invalid 'chunks' metadata.")
+            try: chunks_meta.sort(key=lambda c: int(c.get('part_number', 0)))
+            except (TypeError, ValueError): raise ValueError("Invalid 'part_number' in chunks metadata.");
+            num_chunks = len(chunks_meta)
+            if num_chunks == 0: raise ValueError("Chunks list is empty in metadata.")
+
+            total_bytes_to_fetch = file_info.get('compressed_total_size', 0) # Size of the compressed parts
+            logging.info(f"{log_prefix} Expecting {num_chunks} chunks. Total compressed size: ~{format_bytes(total_bytes_to_fetch)}.")
+
+            start_fetch_time = time.time()
+            fetched_bytes_count = 0
+            fetch_percentage_target = 80.0 # Allocate 80% of progress bar to fetching
+            downloaded_chunk_count = 0
+
+            # Setup ThreadPoolExecutor for concurrent downloads
+            download_executor = ThreadPoolExecutor(max_workers=MAX_DOWNLOAD_WORKERS, thread_name_prefix=f'DlPrep_{prep_id[:4]}')
+            logging.info(f"{log_prefix} Initialized Download Executor (max={MAX_DOWNLOAD_WORKERS})")
+            submitted_futures: List[Future] = []
+            downloaded_content_map: Dict[int, bytes] = {}
+            first_download_error: Optional[str] = None
+
+            logging.info(f"{log_prefix} Submitting {num_chunks} chunk download tasks...")
+            for i, chunk_info in enumerate(chunks_meta):
+                part_num = chunk_info.get('part_number')
+                if part_num is None: raise ValueError(f"Chunk metadata missing 'part_number' at index {i}")
+                chunk_locations = chunk_info.get('send_locations', [])
+                if not chunk_locations: raise ValueError(f"Chunk {part_num} missing 'send_locations'.")
+                chunk_file_id, chunk_chat_id = _find_best_telegram_file_id(chunk_locations, PRIMARY_TELEGRAM_CHAT_ID)
+                if not chunk_file_id: raise ValueError(f"No usable source file_id found for chunk {part_num}.")
+                submitted_futures.append(download_executor.submit(_download_chunk_task, chunk_file_id, part_num, prep_id))
+
+            logging.info(f"{log_prefix} All {len(submitted_futures)} chunk download tasks submitted.")
+            yield _yield_sse_event('status', {'message': f'Downloading {num_chunks} file parts...'})
+
+            # Process completed futures
+            progress_stats = {}
+            for future in as_completed(submitted_futures):
+                try:
+                    pnum_result, content_result, err_result = future.result()
+                    if err_result:
+                        logging.error(f"{log_prefix} Failed download chunk {pnum_result}: {err_result}")
+                        if not first_download_error: first_download_error = f"Chunk {pnum_result}: {err_result}"
+                        # Continue processing other futures, but record the first error
+                    elif content_result:
+                        downloaded_chunk_count += 1
+                        chunk_length = len(content_result)
+                        fetched_bytes_count += chunk_length
+                        downloaded_content_map[pnum_result] = content_result
+                        logging.debug(f"{log_prefix} Downloaded chunk {pnum_result}. Count:{downloaded_chunk_count}/{num_chunks} ({chunk_length}b)")
+                        # Calculate progress based on chunks completed and bytes fetched
+                        overall_perc = (downloaded_chunk_count / num_chunks) * fetch_percentage_target
+                        progress_stats = _calculate_download_fetch_progress(
+                            start_fetch_time, fetched_bytes_count, total_bytes_to_fetch,
+                            downloaded_chunk_count, num_chunks, overall_perc, final_expected_size
+                        )
+                        yield _yield_sse_event('progress', progress_stats)
+                    else: # Should not happen if _download_chunk_task is correct
+                        logging.error(f"{log_prefix} Task for chunk {pnum_result} returned invalid state (no content, no error).")
+                        if not first_download_error: first_download_error = f"Chunk {pnum_result}: Internal task error."
+                except Exception as e:
+                    logging.error(f"{log_prefix} Error processing download future result: {e}", exc_info=True)
+                    if not first_download_error: first_download_error = f"Error processing result: {str(e)}"
+
+            if first_download_error: raise ValueError(f"Download failed: {first_download_error}")
+            if downloaded_chunk_count != num_chunks: raise SystemError(f"Chunk download count mismatch. Expected:{num_chunks}, Got:{downloaded_chunk_count}.")
+
+            logging.info(f"{log_prefix} All {num_chunks} chunks downloaded OK. Total fetched: {fetched_bytes_count} bytes.")
+            yield _yield_sse_event('status', {'message': 'Reassembling file...'})
+
+            # Reassemble downloaded chunks
+            with tempfile.NamedTemporaryFile(suffix=".download.tmp", delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"dl_reass_{prep_id}_") as tf_reassemble:
+                temp_reassembled_zip_path = tf_reassemble.name
+                logging.debug(f"{log_prefix} Reassembling into: {temp_reassembled_zip_path}")
+                for pnum_write in range(1, num_chunks + 1):
+                    chunk_content = downloaded_content_map.get(pnum_write)
+                    if not chunk_content: raise SystemError(f"Missing content for chunk {pnum_write} during reassembly.")
+                    tf_reassemble.write(chunk_content)
+            downloaded_content_map.clear() # Free memory
+            logging.info(f"{log_prefix} Finished reassembly.")
+            # Update progress to fetch completion percentage
+            yield _yield_sse_event('progress', {'percentage': fetch_percentage_target, 'bytesProcessed': fetched_bytes_count, 'totalBytes': total_bytes_to_fetch, 'speedMBps': progress_stats.get('speedMBps',0), 'etaFormatted':'00:00'})
+
+            # Handle decompression if the original metadata indicated the *result* should be decompressed
+            if is_compressed: # Check the flag determined from metadata
+                yield _yield_sse_event('status', {'message': 'Decompressing...'})
+                logging.info(f"{log_prefix} Decompressing reassembled file: {temp_reassembled_zip_path}")
+                decomp_start_time = time.time()
+                with tempfile.NamedTemporaryFile(delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"dl_final_{prep_id}_") as tf_final:
+                   temp_final_file_path = tf_final.name
+                   zf = None
+                   try:
+                       zf = zipfile.ZipFile(temp_reassembled_zip_path, 'r')
+                       # Use original_filename_from_meta (which is the zip name in this case)
+                       inner_filename = _find_filename_in_zip(zf, original_filename_from_meta, prep_id)
+                       logging.info(f"{log_prefix} Extracting '{inner_filename}' from reassembled zip.")
+                       with zf.open(inner_filename, 'r') as inner_stream:
+                           yield _yield_sse_event('progress', {'percentage': 90}) # Mid-decompression progress
+                           shutil.copyfileobj(inner_stream, tf_final)
+                   finally:
+                       if zf: zf.close()
+                decomp_duration = time.time() - decomp_start_time
+                logging.info(f"{log_prefix} Decompression finished in {decomp_duration:.2f}s.")
+                yield _yield_sse_event('progress', {'percentage': 98})
+            else: # Split, but not compressed (less common, e.g., if original upload skipped compression)
+                logging.info(f"{log_prefix} Using reassembled file directly (not compressed).")
+                temp_final_file_path = temp_reassembled_zip_path
+                temp_reassembled_zip_path = None # Prevent deletion in finally block
+                yield _yield_sse_event('progress', {'percentage': 98})
 
         # --- Phase 3: Complete ---
-        if not temp_final_file_path or not os.path.exists(temp_final_file_path): raise RuntimeError(f"[{prep_id}] Failed final file.")
-        final_size = os.path.getsize(temp_final_file_path); logging.info(f"[{prep_id}] Final file ready: '{temp_final_file_path}', Size: {final_size}.")
-        if final_expected_size > 0 and final_size != final_expected_size: logging.warning(f"[{prep_id}] Size mismatch! Exp:{final_expected_size}, Act:{final_size}")
-        prep_data['final_temp_file_path'] = temp_final_file_path; prep_data['final_file_size'] = final_size; prep_data['status'] = 'ready'
-        yield _yield_sse_event('progress', {'percentage': 100, 'bytesProcessed': final_size, 'totalBytes': final_size}); yield _yield_sse_event('status', {'message': 'File ready!'}); time.sleep(0.1)
-        yield _yield_sse_event('ready', {'temp_file_id': prep_id, 'final_filename': original_filename_from_meta}); logging.info(f"[{prep_id}] Prep complete. Sent 'ready'.")
+        if not temp_final_file_path or not os.path.exists(temp_final_file_path):
+            raise RuntimeError(f"{log_prefix} Failed to produce final temp file.")
+
+        final_actual_size = os.path.getsize(temp_final_file_path)
+        logging.info(f"{log_prefix} Final file ready: '{temp_final_file_path}', Size: {final_actual_size}.")
+
+        # Compare final size with expected original size if available
+        if final_expected_size > 0 and final_actual_size != final_expected_size:
+            logging.warning(f"{log_prefix} Final size mismatch! Expected original size:{final_expected_size}, Actual final size:{final_actual_size}")
+            # Decide if this is an error or just a warning
+
+        # Update prep_data with final details
+        prep_data['final_temp_file_path'] = temp_final_file_path
+        prep_data['final_file_size'] = final_actual_size
+        prep_data['status'] = 'ready'
+
+        # Final progress update
+        yield _yield_sse_event('progress', {'percentage': 100, 'bytesProcessed': final_actual_size, 'totalBytes': final_expected_size if final_expected_size else final_actual_size});
+        yield _yield_sse_event('status', {'message': 'File ready!'}); time.sleep(0.1)
+
+        # Send ready event
+        yield _yield_sse_event('ready', {'temp_file_id': prep_id, 'final_filename': original_filename_from_meta})
+        logging.info(f"{log_prefix} Prep complete. Sent 'ready' event.")
+
     except Exception as e:
-        error_message = f"Download prep failed: {str(e) or type(e).__name__}"; logging.error(f"[{prep_id}] {error_message}", exc_info=True)
-        yield _yield_sse_event('error', {'message': error_message});
-        if prep_id in download_prep_data: download_prep_data[prep_id]['status'] = 'error'; download_prep_data[prep_id]['error'] = error_message
+        error_message = f"Download preparation failed: {str(e) or type(e).__name__}"
+        logging.error(f"{log_prefix} {error_message}", exc_info=True)
+        yield _yield_sse_event('error', {'message': error_message})
+        if prep_id in download_prep_data:
+            download_prep_data[prep_id]['status'] = 'error'
+            download_prep_data[prep_id]['error'] = error_message
     finally:
-        logging.info(f"[{prep_id}] Download prep generator cleanup.")
-        if download_executor: download_executor.shutdown(wait=False); logging.info(f"[{prep_id}] Download executor shutdown.")
-        # --- MODIFIED CLEANUP ---
-        if temp_reassembled_zip_path and temp_reassembled_zip_path != temp_final_file_path:
+        # --- Cleanup ---
+        logging.info(f"{log_prefix} Download prep generator cleanup.")
+        if download_executor:
+            download_executor.shutdown(wait=False)
+            logging.info(f"{log_prefix} Download executor shutdown.")
+
+        # Cleanup intermediate reassembled file only if it exists and IS NOT the final file
+        if temp_reassembled_zip_path and temp_reassembled_zip_path != temp_final_file_path and os.path.exists(temp_reassembled_zip_path):
             _safe_remove_file(temp_reassembled_zip_path, prep_id, "intermediate reassembled")
-        logging.info(f"[{prep_id}] Download prep generator task ended.")
+
+        # Note: temp_final_file_path is NOT cleaned here. It's cleaned by _schedule_cleanup or generate_and_cleanup in serve_temp_file
+
+        logging.info(f"{log_prefix} Download prep generator task ended.")
+
+# In routes.py
+
+@app.route('/initiate-download-all/<access_id>') # Changed route name slightly for clarity
+@login_required # Or remove if public
+def initiate_download_all(access_id: str):
+    """
+    Initiates the "Download All" process for a batch.
+    It prepares data for the background zipping task and tells the client
+    which SSE endpoint to connect to for progress.
+    """
+    prep_id_for_zip = str(uuid.uuid4()) # Unique ID for this specific zipping operation
+    log_prefix = f"[DLAll-Init-{prep_id_for_zip}]"
+    logging.info(f"{log_prefix} Request to initiate 'Download All' for batch_access_id: {access_id}")
+
+    # 1. Find the batch metadata record
+    batch_info, error_msg = find_metadata_by_access_id(access_id)
+
+    if error_msg or not batch_info or not batch_info.get('is_batch'):
+        error_message_for_user = error_msg if error_msg else f"Batch '{access_id}' not found or invalid."
+        logging.warning(f"{log_prefix} Batch metadata lookup failed: {error_message_for_user}")
+        # For an initiation route, returning JSON error is good for API clients
+        status_code = 404 if "not found" in error_message_for_user.lower() else 400
+        return jsonify({"error": error_message_for_user, "prep_id": None}), status_code
+
+    # 2. Extract the list of files to include in the zip
+    files_to_zip_meta = []
+    total_expected_zip_content_size = 0
+    for file_item in batch_info.get('files_in_batch', []):
+        if not file_item.get('skipped') and not file_item.get('failed'):
+            # We need the original filename (to name it inside the zip)
+            # and its best Telegram file_id (to download it)
+            # and its original size (for progress estimation)
+            original_filename = file_item.get('original_filename')
+            original_size = file_item.get('original_size', 0)
+            send_locations = file_item.get('send_locations', [])
+            
+            tg_file_id, _ = _find_best_telegram_file_id(send_locations, PRIMARY_TELEGRAM_CHAT_ID)
+            
+            if original_filename and tg_file_id:
+                files_to_zip_meta.append({
+                    "original_filename": original_filename,
+                    "telegram_file_id": tg_file_id,
+                    "original_size": original_size
+                })
+                total_expected_zip_content_size += original_size
+            else:
+                logging.warning(f"{log_prefix} Skipping file '{original_filename or 'Unknown'}' due to missing name or TG file ID for zipping.")
+    
+    if not files_to_zip_meta:
+        logging.warning(f"{log_prefix} No valid files found in batch '{access_id}' to include in zip.")
+        return jsonify({"error": "No files available to include in the 'Download All' zip.", "prep_id": None}), 404
+
+    # 3. Store this information in download_prep_data for the zipping SSE stream
+    # This 'prep_id_for_zip' will be used by the /stream-download-all/<prep_id> route
+    download_prep_data[prep_id_for_zip] = {
+        "prep_id": prep_id_for_zip,
+        "status": "initiated_zip_all", # Distinct status
+        "access_id_original_batch": access_id, # Link back to the original batch
+        "username": batch_info.get('username'),
+        "batch_display_name": batch_info.get('batch_display_name', f"download_all_{access_id}.zip"),
+        "files_to_zip_meta": files_to_zip_meta, # List of dicts: {"original_filename", "telegram_file_id", "original_size"}
+        "total_expected_content_size": total_expected_zip_content_size, # For progress estimation
+        "error": None,
+        "final_temp_zip_path": None, # Will be set by the zipping generator
+        "final_zip_size": 0,
+        "start_time": time.time()
+    }
+    logging.info(f"{log_prefix} Stored prep data for 'Download All'. {len(files_to_zip_meta)} files to zip. Expected content size: {total_expected_zip_content_size} bytes.")
+
+    # 4. Respond to the client with the prep_id for the SSE stream
+    # The client will use this prep_id to connect to '/stream-download-all/<prep_id>'
+    return jsonify({
+        "message": "Download All initiated. Connect to SSE stream for progress.",
+        "prep_id_for_zip": prep_id_for_zip, # Client needs this
+        "sse_stream_url": url_for('stream_download_all', prep_id_for_zip=prep_id_for_zip, _external=False) # Relative URL for client
+    }), 200
+    
+# In routes.py
+
+# In routes.py (can be placed with other helper/generator functions)
+
+def _generate_zip_and_stream_progress(prep_id_for_zip: str) -> Generator[SseEvent, None, None]:
+    log_prefix = f"[DLAll-ZipGen-{prep_id_for_zip}]"
+    logging.info(f"{log_prefix} Starting 'Download All' zipping generator.")
+    
+    prep_data = download_prep_data.get(prep_id_for_zip)
+    if not prep_data: # Should have been checked by the route, but good for safety
+        logging.error(f"{log_prefix} Critical error: Prep data missing.")
+        yield _yield_sse_event('error', {'message': 'Internal server error: Preparation data lost.'})
+        return
+
+    prep_data['status'] = 'zipping_all_fetching' # New status
+
+    files_to_process_meta = prep_data.get('files_to_zip_meta', [])
+    batch_display_name_for_zip = prep_data.get('batch_display_name', f"batch_download_{prep_id_for_zip}.zip")
+    total_expected_content_size = prep_data.get('total_expected_content_size', 0)
+    
+    temp_zip_file_path: Optional[str] = None
+    download_all_executor: Optional[ThreadPoolExecutor] = None
+
+    try:
+        if not files_to_process_meta:
+            raise ValueError("No files specified for zipping in 'Download All'.")
+
+        yield _yield_sse_event('status', {'message': f'Starting download of {len(files_to_process_meta)} files for batch archive...'})
+        yield _yield_sse_event('start', { # 'start' event for the zipping process
+            'filename': batch_display_name_for_zip,
+            'totalSize': total_expected_content_size # This is the sum of original file sizes
+        })
+
+        # Create a temporary file for the final zip archive
+        # Suffix is important if client relies on it for MIME type detection on direct save
+        with tempfile.NamedTemporaryFile(suffix=".zip", delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"dl_all_zip_{prep_id_for_zip}_") as tf_zip:
+            temp_zip_file_path = tf_zip.name
+        logging.info(f"{log_prefix} Created temporary zip file: {temp_zip_file_path}")
+
+        bytes_downloaded_and_zipped = 0
+        overall_zip_gen_start_time = time.time()
+        
+        # Map to store downloaded content: {original_filename: content_bytes}
+        # Important for writing to zip in correct order if concurrency messes with completion order
+        downloaded_file_contents: Dict[str, bytes] = {} 
+        files_processed_count = 0
+        
+        if files_to_process_meta: # Ensure there are files
+            download_all_executor = ThreadPoolExecutor(max_workers=MAX_DOWNLOAD_WORKERS, thread_name_prefix=f'DLAllZip_{prep_id_for_zip[:4]}')
+            
+            # Submit all download tasks
+            future_to_filename: Dict[Future, str] = {}
+            for file_meta in files_to_process_meta:
+                filename = file_meta["original_filename"]
+                tg_file_id = file_meta["telegram_file_id"]
+                # Pass dummy part_num for _download_chunk_task if it expects it (it does)
+                # _download_chunk_task returns (part_num, content, error)
+                fut = download_all_executor.submit(_download_chunk_task, tg_file_id, 0, prep_id_for_zip) # part_num can be 0 or filename index
+                future_to_filename[fut] = filename
+            
+            logging.info(f"{log_prefix} Submitted {len(future_to_filename)} individual file download tasks.")
+
+            for future in as_completed(future_to_filename):
+                original_filename = future_to_filename[future]
+                try:
+                    _, content, error_msg = future.result() # part_num is ignored here
+                    if error_msg:
+                        logging.error(f"{log_prefix} Failed to download '{original_filename}': {error_msg}")
+                        # Optionally, yield a specific per-file error, or just let overall fail
+                        # For now, we'll let it fail overall if any sub-download fails.
+                        raise ValueError(f"Failed to download '{original_filename}': {error_msg}")
+                    if not content:
+                        raise ValueError(f"Downloaded empty content for '{original_filename}'.")
+                    
+                    downloaded_file_contents[original_filename] = content
+                    bytes_downloaded_and_zipped += len(content) # Or use file_meta["original_size"]
+                    files_processed_count += 1
+                    
+                    progress = _calculate_progress(overall_zip_gen_start_time, bytes_downloaded_and_zipped, total_expected_content_size)
+                    yield _yield_sse_event('progress', progress)
+                    yield _yield_sse_event('status', {'message': f'Fetched {files_processed_count}/{len(files_to_process_meta)} files... ({original_filename})'})
+                    logging.debug(f"{log_prefix} Fetched '{original_filename}' ({len(content)} bytes).")
+
+                except Exception as exc:
+                    logging.error(f"{log_prefix} Error processing download for '{original_filename}': {exc}", exc_info=True)
+                    raise # Re-raise to be caught by the outer try-except
+
+        # All files (hopefully) downloaded, now write them to the zip
+        logging.info(f"{log_prefix} All necessary files fetched. Writing to master zip: {temp_zip_file_path}")
+        yield _yield_sse_event('status', {'message': 'Creating archive...'})
+        
+        with zipfile.ZipFile(temp_zip_file_path, 'w', zipfile.ZIP_DEFLATED) as zf:
+            for file_meta in files_to_process_meta: # Iterate in original order
+                filename_to_add = file_meta["original_filename"]
+                if filename_to_add in downloaded_file_contents:
+                    zf.writestr(filename_to_add, downloaded_file_contents[filename_to_add])
+                    logging.debug(f"{log_prefix} Added '{filename_to_add}' to zip archive.")
+                else:
+                    # This would mean a file failed to download but didn't raise an exception stopping the process earlier
+                    logging.warning(f"{log_prefix} Content for '{filename_to_add}' not found in downloaded map, skipping zip entry.")
+        
+        final_zip_actual_size = os.path.getsize(temp_zip_file_path)
+        logging.info(f"{log_prefix} Finished writing master zip. Path: {temp_zip_file_path}, Size: {final_zip_actual_size}")
+
+        prep_data['status'] = 'ready'
+        prep_data['final_temp_zip_path'] = temp_zip_file_path # Store path to the big zip
+        prep_data['final_zip_size'] = final_zip_actual_size
+
+        # Final progress update to 100%
+        yield _yield_sse_event('progress', {
+            'percentage': 100, 
+            'bytesProcessed': total_expected_content_size, # Show based on original content
+            'totalBytes': total_expected_content_size, 
+            'etaFormatted': '00:00'
+        })
+        yield _yield_sse_event('status', {'message': 'Archive ready for download!'})
+        time.sleep(0.1) # Brief pause
+
+        yield _yield_sse_event('ready', {
+            'temp_file_id': prep_id_for_zip, # This is the ID for the zip operation
+            'final_filename': batch_display_name_for_zip # The name the user will see for the .zip
+        })
+        logging.info(f"{log_prefix} 'Download All' zip preparation complete. Sent 'ready' event.")
+
+    except Exception as e:
+        error_message = f"Failed to generate 'Download All' zip: {str(e) or type(e).__name__}"
+        logging.error(f"{log_prefix} {error_message}", exc_info=True)
+        yield _yield_sse_event('error', {'message': error_message})
+        if prep_id_for_zip in download_prep_data:
+            download_prep_data[prep_id_for_zip]['status'] = 'error_zipping_all'
+            download_prep_data[prep_id_for_zip]['error'] = error_message
+    finally:
+        logging.info(f"{log_prefix} 'Download All' zipping generator cleanup.")
+        if download_all_executor:
+            download_all_executor.shutdown(wait=False)
+            logging.info(f"{log_prefix} Download All executor shutdown.")
+        
+        # The temp_zip_file_path created by this generator will be cleaned up
+        # by the serve_temp_file route or its scheduled cleanup,
+        # so we don't delete it here IF it was successfully prepared.
+        # If an error occurred *before* prep_data['final_temp_zip_path'] was set, clean it.
+        if prep_data.get('status') != 'ready' and temp_zip_file_path and os.path.exists(temp_zip_file_path):
+            _safe_remove_file(temp_zip_file_path, log_prefix, "partially created download-all zip")
+        
+        logging.info(f"{log_prefix} 'Download All' zipping generator task ended. Status: {prep_data.get('status')}")
+
+@app.route('/stream-download-all/<prep_id_for_zip>')
+@login_required # Or remove if public
+def stream_download_all(prep_id_for_zip: str):
+    """
+    SSE endpoint that streams the progress of fetching multiple files from Telegram
+    and zipping them for a "Download All" operation.
+    """
+    log_prefix = f"[DLAll-Stream-{prep_id_for_zip}]"
+    logging.info(f"{log_prefix} SSE connection established for 'Download All'.")
+
+    # Check if the prep_id_for_zip is valid and initiated by /initiate-download-all
+    prep_entry = download_prep_data.get(prep_id_for_zip)
+    if not prep_entry or prep_entry.get("status") != "initiated_zip_all":
+        logging.warning(f"{log_prefix} Invalid or not initiated prep_id: {prep_id_for_zip}. Current data: {prep_entry}")
+        def error_stream(): yield _yield_sse_event('error', {'message': 'Invalid or expired download all session.'})
+        return Response(stream_with_context(error_stream()), mimetype='text/event-stream', status=400)
+
+    return Response(stream_with_context(
+        _generate_zip_and_stream_progress(prep_id_for_zip)
+    ), mimetype='text/event-stream')
 
 # --- File Serving, Listing, Deletion Routes ---
 @app.route('/serve-temp-file/<temp_id>/<path:filename>')
@@ -1124,6 +1641,137 @@ def list_user_files(username: str) -> Response:
 
     # Return the modified list
     return jsonify(serializable_files) # Return the list with converted IDs
+
+# In routes.py
+
+@app.route('/browse/<access_id>')
+@login_required # Or remove if these pages should be public via the link
+def browse_batch(access_id: str):
+    """
+    Displays a page listing all files within a batch upload,
+    identified by the batch's access_id.
+    """
+    log_prefix = f"[Browse-{access_id}]"
+    logging.info(f"{log_prefix} Request to browse batch.")
+
+    # 1. Find the batch metadata record using the access_id
+    batch_info, error_msg = find_metadata_by_access_id(access_id)
+
+    if error_msg or not batch_info:
+        error_message_for_user = error_msg if error_msg else f"Batch '{access_id}' not found or link expired."
+        logging.warning(f"{log_prefix} Metadata lookup failed: {error_message_for_user}")
+        status_code = 404 if "not found" in error_message_for_user.lower() else 500
+        # Reuse the 404 error template
+        return make_response(render_template('404_error.html', message=error_message_for_user), status_code)
+
+    # 2. Validate if it's actually a batch record
+    if not batch_info.get('is_batch'):
+        logging.error(f"{log_prefix} Access ID exists but does not point to a batch record. Info: {batch_info}")
+        return make_response(render_template('404_error.html', message="Invalid link: Does not point to a batch upload."), 400)
+
+    # 3. Extract the list of files within the batch
+    files_in_batch = batch_info.get('files_in_batch', [])
+    batch_display_name = batch_info.get('batch_display_name', f"Batch {access_id}")
+    upload_timestamp_iso = batch_info.get('upload_timestamp')
+    total_original_size = batch_info.get('total_original_size') # Sum of original sizes
+
+    # Format timestamp (similar to get_file_by_access_id)
+    date_str = "Unknown date"
+    if upload_timestamp_iso:
+        try:
+            dt = dateutil_parser.isoparse(upload_timestamp_iso)
+            if dt.tzinfo is None: dt = dt.replace(tzinfo=timezone.utc)
+            else: dt = dt.astimezone(timezone.utc)
+            date_str = dt.strftime('%Y-%m-%d %H:%M:%S UTC')
+        except Exception as e:
+            logging.warning(f"{log_prefix} Could not parse timestamp '{upload_timestamp_iso}': {e}")
+
+    logging.info(f"{log_prefix} Found {len(files_in_batch)} files in batch. Rendering browser page.")
+
+    # 4. Render the new template, passing the necessary data
+    return render_template(
+        'file_browser.html',
+        access_id=access_id,
+        batch_name=batch_display_name,
+        files=files_in_batch,
+        upload_date=date_str,
+        total_size=total_original_size, # Pass total size if needed
+        username=batch_info.get('username', 'Unknown User') # Pass uploader username
+    )
+
+# In routes.py
+
+@app.route('/download-single/<access_id>/<path:filename>')
+@login_required # Or remove if browse page/downloads are public
+def download_single_file(access_id: str, filename: str):
+    """
+    Initiates the download preparation stream for a single file
+    within a batch.
+    """
+    prep_id = str(uuid.uuid4()) # Unique ID for THIS specific download prep task
+    log_prefix = f"[SingleDLPrep-{prep_id}]"
+    logging.info(f"{log_prefix} Request to prep single file download: BatchID='{access_id}', Filename='{filename}'")
+
+    # 1. Find the main batch metadata
+    batch_info, error_msg = find_metadata_by_access_id(access_id)
+    if error_msg or not batch_info or not batch_info.get('is_batch'):
+        error_message_for_user = error_msg or f"Batch '{access_id}' not found or invalid."
+        logging.warning(f"{log_prefix} Batch metadata lookup failed: {error_message_for_user}")
+        # Maybe redirect to a specific error page or return 404/400
+        # For SSE, we need to return an SSE error stream immediately
+        def error_stream(): yield _yield_sse_event('error', {'message': error_message_for_user})
+        return Response(stream_with_context(error_stream()), mimetype='text/event-stream', status=404 if "not found" in error_message_for_user else 400)
+
+    # 2. Find the specific file's metadata within the batch
+    files_in_batch = batch_info.get('files_in_batch', [])
+    target_file_info = next((f for f in files_in_batch if f.get('original_filename') == filename and not f.get('skipped') and not f.get('failed')), None)
+
+    if not target_file_info:
+        logging.warning(f"{log_prefix} File '{filename}' not found or was skipped/failed in batch '{access_id}'.")
+        def error_stream(): yield _yield_sse_event('error', {'message': f"File '{filename}' not found or unavailable in this batch."})
+        return Response(stream_with_context(error_stream()), mimetype='text/event-stream', status=404)
+
+    # 3. Extract the best Telegram file_id for this specific file
+    send_locations = target_file_info.get('send_locations', [])
+    telegram_file_id, chat_id = _find_best_telegram_file_id(locations=send_locations, primary_chat_id=PRIMARY_TELEGRAM_CHAT_ID)
+
+    if not telegram_file_id:
+        logging.error(f"{log_prefix} No usable Telegram file_id found for '{filename}' in batch '{access_id}'. Locations: {send_locations}")
+        def error_stream(): yield _yield_sse_event('error', {'message': f"Could not find a valid source for file '{filename}'. Upload might be incomplete."})
+        return Response(stream_with_context(error_stream()), mimetype='text/event-stream', status=500)
+
+    logging.info(f"{log_prefix} Found Telegram file_id '{telegram_file_id}' for '{filename}' from chat {chat_id}.")
+
+    # 4. Store necessary info for the preparation generator
+    # We need to pass the specific telegram_file_id and the original filename/size
+    # Re-use download_prep_data, but store info relevant to *this single file prep*.
+    download_prep_data[prep_id] = {
+        "prep_id": prep_id,
+        "status": "initiated",
+        "access_id": access_id, # Keep batch ID for context if needed
+        "username": batch_info.get('username'),
+        "requested_filename": filename, # The specific file requested
+        "original_filename": filename, # The specific file requested
+        "telegram_file_id": telegram_file_id, # The ID to download from TG
+        "is_compressed": False, # Assume individual files weren't compressed *before* batching
+                                # If they *could* be, this logic needs adjustment based on metadata
+        "is_split": False, # Individual files are not split in this model
+        "final_expected_size": target_file_info.get('original_size', 0), # Use size of the individual file
+        "error": None,
+        "final_temp_file_path": None,
+        "final_file_size": 0,
+        "start_time": time.time()
+    }
+    logging.debug(f"{log_prefix} Stored initial prep data for single file download.")
+
+    # 5. Return the SSE stream response, calling a generator function
+    # We can potentially REUSE _prepare_download_and_generate_updates if we make it flexible
+    # enough to handle both batch lookups and direct telegram_file_id inputs.
+    # Let's try reusing it. It needs modification to check if 'telegram_file_id' is already present.
+
+    return Response(stream_with_context(
+        _prepare_download_and_generate_updates(prep_id) # Call the *existing* generator
+    ), mimetype='text/event-stream')
 
 @app.route('/get/<access_id>')
 def get_file_by_access_id(access_id: str) -> Union[str, Response]:

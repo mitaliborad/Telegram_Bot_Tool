@@ -248,18 +248,40 @@ def initiate_upload() -> Response:
     # Get the list of files. This handles one or more files.
     uploaded_files = request.files.getlist('files[]')
 
-    # Check if any files were actually sent
+    current_user_jwt_identity = get_jwt_identity()
+    logging.info(f"{log_prefix} JWT Identity: {current_user_jwt_identity}")
+    
+    user_doc, error = database.find_user_by_id(ObjectId(current_user_jwt_identity))
+    if error or not user_doc:
+        logging.error(f"{log_prefix} Could not find user for JWT identity '{current_user_jwt_identity}'. Error: {error}")
+        return jsonify({"error": "Invalid user token or user not found"}), 401
+    
+    # # Check if any files were actually sent
+    # if not uploaded_files or all(not f.filename for f in uploaded_files):
+    #     logging.warning(f"{log_prefix} Initiate upload failed: No files provided or files have no names.")
+    #     return jsonify({"error": "No files selected or files are invalid"}), 400
+    try:
+        # Create the User object (from your database.py User class)
+        user_object_from_jwt = User(user_doc)
+        display_username = user_object_from_jwt.username
+        user_email = user_object_from_jwt.email # If needed
+    except ValueError as ve:
+        logging.error(f"{log_prefix} Failed to instantiate User object for JWT identity '{current_user_jwt_identity}':{ve}")
+        return jsonify({"error": "User data inconsistency"}), 500
+    logging.info(f"{log_prefix} Authenticated upload initiated by user (via JWT): Username='{display_username}'")
+
+    uploaded_files = request.files.getlist('files[]')
     if not uploaded_files or all(not f.filename for f in uploaded_files):
         logging.warning(f"{log_prefix} Initiate upload failed: No files provided or files have no names.")
         return jsonify({"error": "No files selected or files are invalid"}), 400
-
-    # --- User Information ---
-    # is_anonymous_upload = not current_user.is_authenticated # This check is fine
-    # For a @login_required route, current_user.is_authenticated will always be true.
-    user_email = current_user.email
-    display_username = current_user.username
-    logging.info(f"{log_prefix} Authenticated upload initiated by user: Email='{user_email}', Username='{display_username}'")
-    # --- End User Information ---
+    
+    # # --- User Information ---
+    # # is_anonymous_upload = not current_user.is_authenticated # This check is fine
+    # # For a @login_required route, current_user.is_authenticated will always be true.
+    # user_email = current_user.email
+    # display_username = current_user.username
+    # logging.info(f"{log_prefix} Authenticated upload initiated by user: Email='{user_email}', Username='{display_username}'")
+    # # --- End User Information ---
 
     batch_temp_dir = os.path.join(UPLOADS_TEMP_DIR, f"batch_{upload_id}")
     original_filenames_in_batch = []

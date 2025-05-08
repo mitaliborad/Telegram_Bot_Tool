@@ -669,8 +669,8 @@ def process_upload_and_generate_updates(upload_id: str) -> Generator[SseEvent, N
             primary_send_message = "Primary send not attempted or failed."
 
             try:
-                with open(current_file_path, 'rb') as f_current:
-                    file_bytes = f_current.read() # Read the whole file (adjust if files can be > memory)
+                # with open(current_file_path, 'rb') as f_current:
+                #     file_bytes = f_current.read() # Read the whole file (adjust if files can be > memory)
 
                 if executor:
                     for chat_id_str in TELEGRAM_CHAT_IDS:
@@ -694,13 +694,34 @@ def process_upload_and_generate_updates(upload_id: str) -> Generator[SseEvent, N
                         file_specific_futures[fut] = cid
                 else: # No executor
                     cid = str(TELEGRAM_CHAT_IDS[0])
-                    _, res = _send_single_file_task(file_bytes, current_filename, cid, upload_id)
-                    file_specific_results[cid] = res
-                    if cid == str(PRIMARY_TELEGRAM_CHAT_ID):
-                        primary_send_success_for_this_file = res[0]
-                        primary_send_message = res[1]
+                    # _, res = _send_single_file_task(file_bytes, current_filename, cid, upload_id)
+                    # file_specific_results[cid] = res
+                    if current_file_size > (2 * 1024 * 1024 * 1024):
+                        logging.error(f"{log_file_prefix} is larger than 2GB, chunking not implemented for individual batch files yet. Aborting file.")
+                        res_tuple_no_exec = (False, "File exceeds size limit (2GB)", None)
+                        file_specific_results[cid] = res_tuple_no_exec
+                        all_succeeded = False
+                        # It's good practice to also create a file_meta_entry for the failure here
+                        file_meta_entry = {
+                            "original_filename": current_filename,
+                            "original_size": current_file_size, "skipped": False, "failed": True,
+                            "reason": "File exceeds size limit (2GB) in non-executor path.", "send_locations": []
+                        }
+                        all_files_metadata_for_db.append(file_meta_entry)
+                        primary_send_success_for_this_file = res_tuple_no_exec[0]
+                        primary_send_message = res_tuple_no_exec[1]
+                    else:
+                        _, res = _send_single_file_task(current_file_path, current_filename, cid, upload_id) # Get result into 'res'
+                        file_specific_results[cid] = res_tuple_no_exec
+                        primary_send_success_for_this_file = res_tuple_no_exec[0]
+                        primary_send_message = res_tuple_no_exec[1]
                         if not primary_send_success_for_this_file:
-                            all_succeeded = False # Primary failed for this file
+                            all_succeeded = False
+                    # if cid == str(PRIMARY_TELEGRAM_CHAT_ID):
+                    #     primary_send_success_for_this_file = res[0]
+                    #     primary_send_message = res[1]
+                    #     if not primary_send_success_for_this_file:
+                    #         all_succeeded = False # Primary failed for this file
 
                 # --- Wait for results (similar to previous logic) ---
                 if executor:
@@ -1766,23 +1787,25 @@ def browse_batch(access_id: str):
         error_message_for_user = error_msg if error_msg else f"Batch '{access_id}' not found or link expired."
         logging.warning(f"{log_prefix} Metadata lookup failed: {error_message_for_user}")
         status_code = 404 if "not found" in error_message_for_user.lower() else 500
-        # Reuse the 404 error template
         return make_response(render_template('404_error.html', message=error_message_for_user), status_code)
 
-    processed_files_in_batch = []
-    for f_meta in files_in_batch:
-        new_meta = f_meta.copy()
-        if 'original_size' in new_meta:
-            new_meta['filesize'] = new_meta['original_size']
-        processed_files_in_batch.append(new_meta)
-    
     # 2. Validate if it's actually a batch record
     if not batch_info.get('is_batch'):
         logging.error(f"{log_prefix} Access ID exists but does not point to a batch record. Info: {batch_info}")
         return make_response(render_template('404_error.html', message="Invalid link: Does not point to a batch upload."), 400)
 
-    # 3. Extract the list of files within the batch
-    files_in_batch = batch_info.get('files_in_batch', [])
+    # 3. Extract the list of files within the batch and process for template
+    files_in_batch_original = batch_info.get('files_in_batch', [])
+    processed_files_for_template = []
+    for f_meta in files_in_batch_original: # Process the list *after* getting it
+        new_meta = f_meta.copy()
+        if 'original_size' in new_meta:
+            new_meta['filesize'] = new_meta['original_size'] # Add the 'filesize' key
+        else:
+            new_meta['filesize'] = 0 # Default if original_size is missing
+        processed_files_for_template.append(new_meta)
+
+    # Extract other info
     batch_display_name = batch_info.get('batch_display_name', f"Batch {access_id}")
     upload_timestamp_iso = batch_info.get('upload_timestamp')
     total_original_size = batch_info.get('total_original_size') # Sum of original sizes
@@ -1798,19 +1821,18 @@ def browse_batch(access_id: str):
         except Exception as e:
             logging.warning(f"{log_prefix} Could not parse timestamp '{upload_timestamp_iso}': {e}")
 
-    logging.info(f"{log_prefix} Found {len(files_in_batch)} files in batch. Rendering browser page.")
+    logging.info(f"{log_prefix} Found {len(files_in_batch_original)} files in batch. Rendering browser page.") # Log original count is fine
 
-    # 4. Render the new template, passing the necessary data
+    # 4. Render the new template, passing the PROCESSED data
     return render_template(
         'download_page.html',
         access_id=access_id,
         batch_name=batch_display_name,
-        files=files_in_batch,
+        files=processed_files_for_template, # <<< Pass the CORRECT list
         upload_date=date_str,
-        total_size=total_original_size, # Pass total size if needed
-        username=batch_info.get('username', 'Unknown User') # Pass uploader username
+        total_size=total_original_size,
+        username=batch_info.get('username', 'Unknown User')
     )
-
 # In routes.py
 
 @app.route('/download-single/<access_id>/<path:filename>')

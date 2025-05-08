@@ -404,16 +404,29 @@ def stream_progress(upload_id: str) -> Response:
 def _yield_sse_event(event_type: str, data: Dict[str, Any]) -> SseEvent:
     json_data = json.dumps(data); return f"event: {event_type}\ndata: {json_data}\n\n"
 
-def _send_single_file_task(file_bytes: bytes, filename: str, chat_id: str, upload_id: str) -> Tuple[str, ApiResult]:
-    try:
-        buffer = io.BytesIO(file_bytes)
-        logging.info(f"[{upload_id}] T> Sending '{filename}' ({len(file_bytes)}b) to {chat_id}")
-        result = send_file_to_telegram(buffer, filename, chat_id)
-        buffer.close()
-        logging.info(f"[{upload_id}] T> Sent '{filename}' to {chat_id}. Success: {result[0]}")
-        return str(chat_id), result
-    except Exception as e: logging.error(f"[{upload_id}] T> Err send single file to {chat_id}: {e}", exc_info=True); return str(chat_id), (False, f"Thread error: {e}", None)
+# routes.py
 
+# Change signature: accept file_path instead of file_bytes
+def _send_single_file_task(file_path: str, filename: str, chat_id: str, upload_id: str) -> Tuple[str, ApiResult]:
+    """Opens a file and streams it to Telegram via send_file_to_telegram."""
+    log_prefix = f"[{upload_id}] Task for '{filename}' to {chat_id}"
+    try:
+        # Open the file in binary read mode
+        with open(file_path, 'rb') as f_handle:
+            file_size = os.path.getsize(file_path) # Get size for logging
+            logging.info(f"{log_prefix} Sending file ({format_bytes(file_size)}) from path: {file_path}")
+            # Call the modified send_file_to_telegram with the file handle
+            result = send_file_to_telegram(f_handle, filename, chat_id)
+            # f_handle is automatically closed by the 'with' statement
+
+        logging.info(f"{log_prefix} Send result: Success={result[0]}")
+        return str(chat_id), result
+    except FileNotFoundError:
+         logging.error(f"{log_prefix} File not found at path: {file_path}")
+         return str(chat_id), (False, f"File not found: {filename}", None)
+    except Exception as e:
+        logging.error(f"{log_prefix} Unexpected error opening/sending file: {e}", exc_info=True)
+        return str(chat_id), (False, f"Thread error processing file: {e}", None)
 # In routes.py, usually with other helper functions
 
 def _safe_remove_directory(dir_path: str, log_prefix: str, description: str):
@@ -632,13 +645,16 @@ def process_upload_and_generate_updates(upload_id: str) -> Generator[SseEvent, N
             if current_file_size == 0:
                 logging.warning(f"{log_file_prefix} is empty, skipping send but including in metadata.")
                 # Add placeholder metadata indicating it was skipped due to size
-                all_files_metadata_for_db.append({
-                    "original_filename": current_filename,
-                    "original_size": 0,
-                    "skipped": True,
-                    "reason": "File is empty",
-                    "send_locations": []
-                })
+                file_meta_entry = {
+                "original_filename": current_filename,
+                "original_size": 0,
+                "skipped": True,
+                "failed": False, # Explicitly not a failure, just skipped
+                "reason": "File is empty",
+                "send_locations": []
+                }
+                all_files_metadata_for_db.append(file_meta_entry)
+                logging.debug(f"Saving file meta (empty): {file_meta_entry}")
                 # Update progress immediately (consider 0-byte file as 'sent' for progress count)
                 bytes_sent_so_far += 0 # Add 0 bytes
                 progress_data = _calculate_progress(overall_start_time, bytes_sent_so_far, total_original_bytes_in_batch)
@@ -663,18 +679,18 @@ def process_upload_and_generate_updates(upload_id: str) -> Generator[SseEvent, N
                         # If individual files can be > CHUNK_SIZE, this needs chunking logic *here* per file.
                         # Assuming individual files are reasonably sized for now.
                         # *** If individual files can exceed CHUNK_SIZE, this part needs replacement with chunking logic ***
-                        if current_file_size > CHUNK_SIZE:
+                        if current_file_size > (2 * 1024 * 1024 * 1024):
                             # TODO: Implement chunking logic here for the individual file `file_bytes`
                             logging.error(f"{log_file_prefix} is larger than CHUNK_SIZE ({current_file_size} > {CHUNK_SIZE}), chunking not implemented for individual batch files yet. Aborting file.")
                             # Mark this file as failed
-                            file_specific_results[cid] = (False, "File too large for single send, chunking not implemented here", None)
+                            file_specific_results[cid] = (False, "File exceeds size limit", None)
                             # Maybe don't raise, just record failure for this file?
                             # raise NotImplementedError("Chunking for large individual files within a batch is not yet implemented.")
                             # Let's record failure and continue to next file for now
                             all_succeeded = False # Mark overall batch potentially incomplete
-                            break # Break inner chat_id loop for this large file
+                            continue # Break inner chat_id loop for this large file
 
-                        fut = executor.submit(_send_single_file_task, file_bytes, current_filename, cid, upload_id)
+                        fut = executor.submit(_send_single_file_task, current_file_path, current_filename, cid, upload_id)
                         file_specific_futures[fut] = cid
                 else: # No executor
                     cid = str(TELEGRAM_CHAT_IDS[0])
@@ -726,33 +742,45 @@ def process_upload_and_generate_updates(upload_id: str) -> Generator[SseEvent, N
                         all_succeeded = False # Treat as overall failure if primary metadata is bad
                         # Add failure metadata? Or just skip adding this file? Let's skip adding successful record.
                         # Add failure record instead?
-                        all_files_metadata_for_db.append({
-                            "original_filename": current_filename, "original_size": current_file_size,
-                            "skipped": False, "failed": True,
+                        file_meta_entry = {
+                            "original_filename": current_filename,
+                            "original_size": current_file_size,
+                            "skipped": False, # Explicitly not skipped
+                            "failed": True,
                             "reason": "Primary send metadata parsing failed.",
                             "send_locations": parsed_locations # Include potentially partial data
-                        })
+                        }
+                        all_files_metadata_for_db.append(file_meta_entry)
+                        logging.debug(f"Saving file meta (parse fail): {file_meta_entry}")
 
                     else:
                         # Primary succeeded AND metadata looks okay
-                        all_files_metadata_for_db.append({
+                        file_meta_entry = {
                             "original_filename": current_filename,
                             "original_size": current_file_size,
+                            "skipped": False,
+                            "failed": False,
+                            "reason": None, # Or ""
                             "send_locations": parsed_locations
-                            # Add other per-file details if needed later
-                        })
+                        }
+                        all_files_metadata_for_db.append(file_meta_entry)
+                        logging.debug(f"Saving file meta (success): {file_meta_entry}")
                         logging.info(f"{log_file_prefix} Successfully processed and recorded.")
                 else:
                     # Primary send failed for this file
                     all_succeeded = False # Mark the whole batch potentially incomplete
                     logging.error(f"{log_file_prefix} Failed primary send. Reason: {primary_send_message}")
                     # Add failure record for this file
-                    all_files_metadata_for_db.append({
-                        "original_filename": current_filename, "original_size": current_file_size,
-                        "skipped": False, "failed": True,
+                    file_meta_entry = {
+                        "original_filename": current_filename,
+                        "original_size": current_file_size,
+                        "skipped": False, # Explicitly not skipped
+                        "failed": True,
                         "reason": f"Primary send failed: {primary_send_message}",
                         "send_locations": _parse_send_results(f"{log_prefix}-{current_filename}", current_file_send_report) # Include attempts
-                    })
+                    }
+                    all_files_metadata_for_db.append(file_meta_entry)
+                    logging.debug(f"Saving file meta (primary fail): {file_meta_entry}")
                     # Optional: break loop here if one failure should stop the whole batch?
 
                 # Update progress after each file is processed (based on primary success)
@@ -763,16 +791,42 @@ def process_upload_and_generate_updates(upload_id: str) -> Generator[SseEvent, N
             except FileNotFoundError:
                 logging.error(f"{log_file_prefix} not found during processing loop.", exc_info=True)
                 all_succeeded = False
-                all_files_metadata_for_db.append({ "original_filename": current_filename, "failed": True, "reason": "File not found during send phase."})
+                file_meta_entry = {
+                    "original_filename": current_filename,
+                    "original_size": file_detail.get("size", 0), # Use size from loop if available, else 0
+                    "skipped": False,
+                    "failed": True,
+                    "reason": "File not found during send phase.",
+                    "send_locations": []
+                }
+                all_files_metadata_for_db.append(file_meta_entry)
+                logging.debug(f"Saving file meta (FileNotFound): {file_meta_entry}")
             except NotImplementedError as nie:
                 logging.error(f"{log_file_prefix} - {nie}")
                 all_succeeded = False
-                all_files_metadata_for_db.append({ "original_filename": current_filename, "failed": True, "reason": str(nie)})
+                file_meta_entry = {
+                    "original_filename": current_filename,
+                    "original_size": file_detail.get("size", 0), # Use size from loop if available, else 0
+                    "skipped": False,
+                    "failed": True,
+                    "reason": str(nie),
+                    "send_locations": []
+                }
+                all_files_metadata_for_db.append(file_meta_entry)
+                logging.debug(f"Saving file meta (NotImplemented): {file_meta_entry}")
             except Exception as file_loop_error:
                 logging.error(f"{log_file_prefix} Unexpected error during send: {file_loop_error}", exc_info=True)
                 all_succeeded = False # Mark overall failure
-                all_files_metadata_for_db.append({ "original_filename": current_filename, "failed": True, "reason": f"Unexpected error: {str(file_loop_error)}"})
-                # Optional: break here? Or try next file? Continue for now.
+                file_meta_entry = {
+                    "original_filename": current_filename,
+                    "original_size": file_detail.get("size", 0), # Use size from loop if available, else 0
+                    "skipped": False,
+                    "failed": True,
+                    "reason": f"Unexpected error: {str(file_loop_error)}",
+                    "send_locations": []
+                }
+                all_files_metadata_for_db.append(file_meta_entry)
+                logging.debug(f"Saving file meta (Exception): {file_meta_entry}")
 
             # --- Batch Upload Finished ---
             total_batch_duration = time.time() - overall_start_time
@@ -784,18 +838,21 @@ def process_upload_and_generate_updates(upload_id: str) -> Generator[SseEvent, N
             # --- Save Batch Metadata ---
             db_batch_timestamp = datetime.now(timezone.utc).isoformat()
             db_batch_record = {
-                "access_id": access_id,
-                "username": username,
-                "upload_timestamp": db_batch_timestamp,
-                "is_batch": True,
-                "batch_display_name": batch_display_name, # User-friendly name for the batch
-                "files_in_batch": all_files_metadata_for_db, # List of dicts per file
-                "total_original_size": total_original_bytes_in_batch, # Sum of original file sizes
-                "total_upload_duration_seconds": round(total_batch_duration, 2),
-                # Note: 'original_filename' at top level doesn't make sense for batch.
-                # 'is_split', 'is_compressed', 'original_size' now live inside 'files_in_batch' if needed per file,
-                # but for this model, the batch record itself isn't split/compressed in the same way.
+            "access_id": access_id,
+            "username": upload_data['username'], # Use username from upload_data (real or anon placeholder)
+            "is_anonymous": upload_data.get('is_anonymous', False), # Get flag from upload_data
+            "anonymous_id": upload_data.get('anonymous_id'), # Get anon_id if present in upload_data
+            "upload_timestamp": db_batch_timestamp,
+            "is_batch": True,
+            "batch_display_name": batch_display_name,
+            "files_in_batch": all_files_metadata_for_db, # List should now be consistent
+            "total_original_size": total_original_bytes_in_batch,
+            "total_upload_duration_seconds": round(total_batch_duration, 2),
             }
+            
+            if db_batch_record["anonymous_id"] is None:
+                del db_batch_record["anonymous_id"]
+            logging.debug(f"Attempting to save batch metadata: {json.dumps(db_batch_record, indent=2)}")
 
             save_success, save_msg = save_file_metadata(db_batch_record)
             if not save_success:
@@ -1712,6 +1769,13 @@ def browse_batch(access_id: str):
         # Reuse the 404 error template
         return make_response(render_template('404_error.html', message=error_message_for_user), status_code)
 
+    processed_files_in_batch = []
+    for f_meta in files_in_batch:
+        new_meta = f_meta.copy()
+        if 'original_size' in new_meta:
+            new_meta['filesize'] = new_meta['original_size']
+        processed_files_in_batch.append(new_meta)
+    
     # 2. Validate if it's actually a batch record
     if not batch_info.get('is_batch'):
         logging.error(f"{log_prefix} Access ID exists but does not point to a batch record. Info: {batch_info}")
@@ -1873,7 +1937,61 @@ def delete_file_record(username: str, filename: str) -> Response:
         return jsonify({"message": f"Record for '{filename}' deleted successfully."}), 200
 logging.info("Flask routes defined using configurable workers and linter fixes.")
 
+@app.route('/delete-batch/<access_id>', methods=['DELETE'])
+@jwt_required() # Make sure only logged-in users can delete their stuff
+def delete_batch_record(access_id: str) -> Response:
+    log_prefix = f"[Delete-{access_id}]"
+    logging.info(f"{log_prefix} DELETE request for access_id='{access_id}'")
 
+    # --- Verify Ownership ---
+    current_user_jwt_identity = get_jwt_identity()
+    user_doc, error = database.find_user_by_id(ObjectId(current_user_jwt_identity))
+    if error or not user_doc:
+        logging.error(f"{log_prefix} Could not find user for JWT identity '{current_user_jwt_identity}'. Error: {error}")
+        return jsonify({"error": "User not found or token invalid."}), 401
+
+    try:
+         # Check if user_doc is None or does not contain 'username'
+         if user_doc is None or 'username' not in user_doc:
+             logging.error(f"{log_prefix} User document is invalid or missing username for identity '{current_user_jwt_identity}'.")
+             return jsonify({"error": "User identity error."}), 500
+         current_username = user_doc.get('username')
+    except Exception as e:
+     # Catch any unexpected error during user data access
+         logging.error(f"{log_prefix} Error accessing user data for identity '{current_user_jwt_identity}': {e}", exc_info=True)
+         return jsonify({"error": "Server error processing user data."}), 500
+         
+    # Find the record first to check ownership
+    record_to_delete, find_err = find_metadata_by_access_id(access_id)
+    if find_err:
+        logging.error(f"{log_prefix} DB Error finding record: {find_err}")
+        return jsonify({"error": "Server error checking record ownership."}), 500
+    if not record_to_delete:
+        logging.warning(f"{log_prefix} Record not found.")
+        return jsonify({"error": f"Record '{access_id}' not found."}), 404
+
+    # Check if the username from the token matches the username in the record
+    record_owner = record_to_delete.get('username')
+    if record_owner != current_username:
+        # Add check for anonymous uploads potentially linked to the anonymous_id if you implement that later
+        logging.warning(f"{log_prefix} Permission denied: User '{current_username}' attempted to delete record owned by '{record_owner}'.")
+        return jsonify({"error": "Permission denied to delete this record."}), 403 # Forbidden
+
+    # --- Ownership Confirmed - Proceed with Deletion ---
+    logging.info(f"{log_prefix} Attempting delete from DB: AccessID='{access_id}', Owner='{current_username}'")
+    deleted_count, error_msg = database.delete_metadata_by_access_id(access_id) # Use the new function
+
+    if error_msg:
+        logging.error(f"{log_prefix} DB Error deleting record: {error_msg}")
+        return jsonify({"error": "Server error during deletion."}), 500
+
+    if deleted_count == 0:
+        # Should not happen if we found it above, but handle defensively
+        logging.warning(f"{log_prefix} Record found but deletion failed (deleted_count=0).")
+        return jsonify({"error": f"Failed to delete record '{access_id}'."}), 500
+    else:
+        logging.info(f"{log_prefix} Successfully deleted record.")
+        return jsonify({"message": f"Record '{access_id}' deleted successfully."}), 200
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

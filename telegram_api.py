@@ -21,7 +21,8 @@ logging.info("Initialized requests.Session for Telegram API calls.")
 
 # --- Telegram API Interaction ---
 def send_file_to_telegram(
-    file_object: Union[IO[bytes], bytes],
+    file_handle: IO[bytes],
+    #file_object: Union[IO[bytes], bytes],
     filename: str,
     target_chat_id: Union[str, int]
 ) -> ApiResult:
@@ -38,7 +39,7 @@ def send_file_to_telegram(
         A tuple: (success: bool, message: str, response_json: Optional[dict])
     """
     api_url = f'https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendDocument'
-    files_payload = {'document': (filename, file_object)}
+    files_payload = {'document': (filename, file_handle)}
     data_payload = {'chat_id': str(target_chat_id)} 
     log_prefix = f"ChatID {target_chat_id}, File '{filename}'"
     logging.info(f"[{log_prefix}] Attempting send.")
@@ -48,6 +49,13 @@ def send_file_to_telegram(
     for attempt in range(API_RETRY_ATTEMPTS + 1):
         response = None 
         try:
+            if attempt > 0:
+                try:
+                    file_handle.seek(0)
+                    logging.debug(f"[{log_prefix}] Reset file handle position for retry {attempt+1}.")
+                except Exception as seek_err:
+                    logging.error(f"[{log_prefix}] Failed reset file pos for retry: {seek_err}")
+                    return False, f"Error resetting file stream: {seek_err}", None
             response = session.post(
                 api_url,
                 data=data_payload,
@@ -98,6 +106,7 @@ def send_file_to_telegram(
              logging.info(f"[{log_prefix}] Retrying in {API_RETRY_DELAY}s...")
              time.sleep(API_RETRY_DELAY)
              last_exception = None 
+             continue
              # Reset file-like object stream position if applicable
              if hasattr(file_object, 'seek') and callable(file_object.seek):
                  try:
@@ -105,7 +114,7 @@ def send_file_to_telegram(
                  except Exception as seek_err:
                      logging.error(f"[{log_prefix}] Failed reset file pos for retry: {seek_err}")
                      return False, f"Error resetting file stream: {seek_err}", None
-             continue 
+              
         elif last_exception: 
              logging.error(f"[{log_prefix}] Send failed after {attempt+1} attempts.", exc_info=last_exception)
              return False, f"Failed after multiple attempts: {last_exception}", None

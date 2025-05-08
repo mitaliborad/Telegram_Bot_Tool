@@ -244,6 +244,8 @@ def initiate_upload() -> Response:
     upload_id = str(uuid.uuid4())
     log_prefix = f"[{upload_id}]"
     logging.info(f"{log_prefix} Request to initiate upload.")
+    logging.info(f"{log_prefix} request.files: {request.files}")
+    logging.info(f"{log_prefix} request.form: {request.form}")
 
     # Get the list of files. This handles one or more files.
     uploaded_files = request.files.getlist('files[]')
@@ -1210,7 +1212,6 @@ def _prepare_download_and_generate_updates(prep_id: str) -> Generator[SseEvent, 
 # In routes.py
 
 @app.route('/initiate-download-all/<access_id>') # Changed route name slightly for clarity
-@login_required # Or remove if public
 def initiate_download_all(access_id: str):
     """
     Initiates the "Download All" process for a batch.
@@ -1431,7 +1432,6 @@ def _generate_zip_and_stream_progress(prep_id_for_zip: str) -> Generator[SseEven
         logging.info(f"{log_prefix} 'Download All' zipping generator task ended. Status: {prep_data.get('status')}")
 
 @app.route('/stream-download-all/<prep_id_for_zip>')
-@login_required # Or remove if public
 def stream_download_all(prep_id_for_zip: str):
     """
     SSE endpoint that streams the progress of fetching multiple files from Telegram
@@ -1670,7 +1670,6 @@ def list_user_files(username: str) -> Response:
 # In routes.py
 
 @app.route('/browse/<access_id>')
-@login_required # Or remove if these pages should be public via the link
 def browse_batch(access_id: str):
     """
     Displays a page listing all files within a batch upload,
@@ -1715,7 +1714,7 @@ def browse_batch(access_id: str):
 
     # 4. Render the new template, passing the necessary data
     return render_template(
-        'file_browser.html',
+        'download_page.html',
         access_id=access_id,
         batch_name=batch_display_name,
         files=files_in_batch,
@@ -1727,7 +1726,6 @@ def browse_batch(access_id: str):
 # In routes.py
 
 @app.route('/download-single/<access_id>/<path:filename>')
-@login_required # Or remove if browse page/downloads are public
 def download_single_file(access_id: str, filename: str):
     """
     Initiates the download preparation stream for a single file

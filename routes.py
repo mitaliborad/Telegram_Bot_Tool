@@ -239,7 +239,7 @@ def index() -> str:
 # In routes.py
 
 @app.route('/initiate-upload', methods=['POST'])
-@jwt_required()
+@jwt_required(optional=True)
 def initiate_upload() -> Response:
     upload_id = str(uuid.uuid4())
     log_prefix = f"[{upload_id}]"
@@ -247,43 +247,74 @@ def initiate_upload() -> Response:
     logging.info(f"{log_prefix} request.files: {request.files}")
     logging.info(f"{log_prefix} request.form: {request.form}")
 
-    # Get the list of files. This handles one or more files.
-    uploaded_files = request.files.getlist('files[]')
-
+    
     current_user_jwt_identity = get_jwt_identity()
-    logging.info(f"{log_prefix} JWT Identity: {current_user_jwt_identity}")
     
-    user_doc, error = database.find_user_by_id(ObjectId(current_user_jwt_identity))
-    if error or not user_doc:
-        logging.error(f"{log_prefix} Could not find user for JWT identity '{current_user_jwt_identity}'. Error: {error}")
-        return jsonify({"error": "Invalid user token or user not found"}), 401
+    display_username: Optional[str] = None
+    user_email: Optional[str] = None
+    is_anonymous: bool = False
+    anonymous_id: Optional[str] = None
     
-    # # Check if any files were actually sent
-    # if not uploaded_files or all(not f.filename for f in uploaded_files):
-    #     logging.warning(f"{log_prefix} Initiate upload failed: No files provided or files have no names.")
-    #     return jsonify({"error": "No files selected or files are invalid"}), 400
-    try:
-        # Create the User object (from your database.py User class)
-        user_object_from_jwt = User(user_doc)
-        display_username = user_object_from_jwt.username
-        user_email = user_object_from_jwt.email # If needed
-    except ValueError as ve:
-        logging.error(f"{log_prefix} Failed to instantiate User object for JWT identity '{current_user_jwt_identity}':{ve}")
-        return jsonify({"error": "User data inconsistency"}), 500
-    logging.info(f"{log_prefix} Authenticated upload initiated by user (via JWT): Username='{display_username}'")
+    if current_user_jwt_identity:
+        # --- User is Logged In (JWT provided) ---
+        logging.info(f"{log_prefix} Authenticated upload attempt. JWT Identity: {current_user_jwt_identity}")
+        is_anonymous = False
+        try:
+            user_doc, error = database.find_user_by_id(ObjectId(current_user_jwt_identity))
+            if error or not user_doc:
+                logging.error(f"{log_prefix} Could not find user for JWT identity '{current_user_jwt_identity}'. Error: {error}")
+                # Even though optional, if a token is provided but invalid, it's an error.
+                return jsonify({"error": "Invalid user token or user not found"}), 401 # Use 401 for bad tokens
 
+            user_object_from_jwt = User(user_doc)
+            display_username = user_object_from_jwt.username
+            user_email = user_object_from_jwt.email
+            logging.info(f"{log_prefix} User identified via JWT: Username='{display_username}'")
+
+        except ValueError as ve: # Error creating User object
+            logging.error(f"{log_prefix} Failed to instantiate User object for JWT identity '{current_user_jwt_identity}':{ve}")
+            return jsonify({"error": "User data inconsistency"}), 500
+        except Exception as e: # Catch ObjectId errors or other unexpected issues
+            logging.error(f"{log_prefix} Error processing JWT identity '{current_user_jwt_identity}': {e}", exc_info=True)
+            return jsonify({"error": "Server error processing authentication"}), 500
+    else:
+        # --- User is Anonymous (No valid JWT) ---
+        logging.info(f"{log_prefix} Anonymous upload attempt.")
+        is_anonymous = True
+        # Frontend MUST send 'anonymous_upload_id' in the form data for anonymous uploads
+        anonymous_id = request.form.get('anonymous_upload_id')
+        if not anonymous_id:
+            logging.warning(f"{log_prefix} Anonymous upload failed: Missing 'anonymous_upload_id' in form data.")
+            return jsonify({"error": "Missing required anonymous identifier for anonymous upload."}), 400
+    
+    
+        display_username = f"AnonymousUser-{anonymous_id[:6]}" # Example display name
+        user_email = None # No email for anonymous
+        logging.info(f"{log_prefix} Anonymous upload identified by temp ID: {anonymous_id}")
+    
+    if display_username is None:
+        logging.error(f"{log_prefix} Internal state error: display_username is None after auth check.")
+        return jsonify({"error": "Internal server error processing user identity."}), 500
+    
+    # Get the list of files. This handles one or more files.
     uploaded_files = request.files.getlist('files[]')
     if not uploaded_files or all(not f.filename for f in uploaded_files):
         logging.warning(f"{log_prefix} Initiate upload failed: No files provided or files have no names.")
         return jsonify({"error": "No files selected or files are invalid"}), 400
+
+    # current_user_jwt_identity = get_jwt_identity()
+    # logging.info(f"{log_prefix} JWT Identity: {current_user_jwt_identity}")
     
-    # # --- User Information ---
-    # # is_anonymous_upload = not current_user.is_authenticated # This check is fine
-    # # For a @login_required route, current_user.is_authenticated will always be true.
-    # user_email = current_user.email
-    # display_username = current_user.username
-    # logging.info(f"{log_prefix} Authenticated upload initiated by user: Email='{user_email}', Username='{display_username}'")
-    # # --- End User Information ---
+    # user_doc, error = database.find_user_by_id(ObjectId(current_user_jwt_identity))
+    # if error or not user_doc:
+    #     logging.error(f"{log_prefix} Could not find user for JWT identity '{current_user_jwt_identity}'. Error: {error}")
+    #     return jsonify({"error": "Invalid user token or user not found"}), 401
+    
+
+    # user_object_from_jwt = User(user_doc)
+    # display_username = user_object_from_jwt.username
+    # user_email = user_object_from_jwt.email # If needed
+
 
     batch_temp_dir = os.path.join(UPLOADS_TEMP_DIR, f"batch_{upload_id}")
     original_filenames_in_batch = []
@@ -294,13 +325,7 @@ def initiate_upload() -> Response:
 
         for file_storage_item in uploaded_files:
             if file_storage_item and file_storage_item.filename:
-                # IMPORTANT: For security, you should sanitize filenames in production
-                # from werkzeug.utils import secure_filename
-                # original_filename = secure_filename(file_storage_item.filename)
-                # if not original_filename: # Handle cases where filename becomes empty after sanitization
-                #     original_filename = f"unnamed_file_{uuid.uuid4().hex[:6]}"
-                original_filename = file_storage_item.filename # Using directly for now
-
+                original_filename = file_storage_item.filename 
                 individual_temp_file_path = os.path.join(batch_temp_dir, original_filename)
                 file_storage_item.save(individual_temp_file_path)
                 original_filenames_in_batch.append(original_filename)
@@ -314,34 +339,33 @@ def initiate_upload() -> Response:
             return jsonify({"error": "No valid files were processed in the batch."}), 400
 
         batch_display_name = f"batch_{upload_id}.zip"
-        # For the SSE 'start' event, it's better if the client knows it's a batch.
-        # The actual name of the file (the zip) will be determined by the server.
-        # So, batch_display_name is good for the response here.
-        # If you want to be more specific for single file uploads (even if handled as a batch of 1):
-        # if len(original_filenames_in_batch) == 1:
-        #    batch_display_name = original_filenames_in_batch[0] # Or keep it as batch_upload_id.zip
-                                                                # The client will get the actual zip name
-                                                                # from 'start' event in process_upload_...
-
-        upload_progress_data[upload_id] = {
+        if len(original_filenames_in_batch) == 1:
+           batch_display_name = original_filenames_in_batch[0]
+        elif original_filenames_in_batch:
+            batch_display_name = f"{original_filenames_in_batch[0]} (+{len(original_filenames_in_batch)-1} others)"
+            
+        progress_entry = {
             "status": "initiated",
-            "is_batch": True, # Crucial flag for the next step
+            "is_batch": True,
             "batch_directory_path": batch_temp_dir,
             "original_filenames_in_batch": original_filenames_in_batch,
-            "batch_display_name": batch_display_name, # This will be the name of the zip file to be created
-            "username": display_username,
-            "user_email": user_email,
-            "is_anonymous": False, # Since route is @login_required
+            "batch_display_name": batch_display_name, # Name for UI during upload
+            "username": display_username, # Real username or Anonymous identifier
+            "user_email": user_email,     # Real email or None
+            "is_anonymous": is_anonymous, # Boolean flag
             "error": None,
             "start_time": time.time()
         }
-        logging.debug(f"{log_prefix} Initial batch progress data stored: {upload_progress_data[upload_id]}")
-
+        if is_anonymous and anonymous_id:
+            progress_entry["anonymous_id"] = anonymous_id
+            
+        upload_progress_data[upload_id] = progress_entry
+        logging.debug(f"{log_prefix} Initial progress data stored: {upload_progress_data[upload_id]}")
         return jsonify({"upload_id": upload_id, "filename": batch_display_name})
 
     except Exception as e:
         logging.error(f"{log_prefix} Error processing batch upload: {e}", exc_info=True)
-        if os.path.exists(batch_temp_dir): # Ensure batch_temp_dir is defined
+        if os.path.exists(batch_temp_dir):
             _safe_remove_directory(batch_temp_dir, log_prefix, "failed batch temp dir")
         if upload_id in upload_progress_data:
             del upload_progress_data[upload_id]

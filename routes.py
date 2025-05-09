@@ -7,6 +7,7 @@ import json
 import zipfile
 import tempfile
 import shutil
+from flask import send_from_directory
 import logging
 from bson import ObjectId
 from database import User
@@ -80,6 +81,7 @@ def load_user(user_id: str) -> Optional[User]:
          # Handle potential ObjectId conversion errors or other issues
          logging.error(f"Exception loading user {user_id}: {e}", exc_info=True)
          return None
+
 
 @app.route('/register', methods=['GET'])
 def show_register_page():
@@ -226,17 +228,17 @@ def register_user(): # Keep the original function name if preferred
 
     
 # --- Flask Routes ---
-@app.route('/')
-def index() -> str:
-    logging.info("Serving index page.")
-    try:
-        # Pass current_user to the template so it knows if someone is logged in
-        return render_template('index.html', current_user=current_user)
-    except Exception as e:
-        logging.error(f"Error rendering index.html: {e}", exc_info=True)
-        return make_response("Error loading page.", 500)
+# @app.route('/')
+# def index() -> str:
+#     logging.info("Serving index page.")
+#     try:
+#         # Pass current_user to the template so it knows if someone is logged in
+#         return render_template('index.html', current_user=current_user)
+#     except Exception as e:
+#         logging.error(f"Error rendering index.html: {e}", exc_info=True)
+#         return make_response("Error loading page.", 500)
     
-# In routes.py
+# # In routes.py
 
 @app.route('/initiate-upload', methods=['POST'])
 @jwt_required(optional=True)
@@ -560,6 +562,7 @@ def _safe_remove_file(path: str, prefix: str, desc: str):
 
 # In routes.py
 
+
 def process_upload_and_generate_updates(upload_id: str) -> Generator[SseEvent, None, None]:
     try:
         log_prefix = f"[{upload_id}]"
@@ -571,40 +574,39 @@ def process_upload_and_generate_updates(upload_id: str) -> Generator[SseEvent, N
             yield _yield_sse_event('error', {'message': 'Internal error: Upload data not found.'})
             return
 
-        # --- Get data prepared by initiate_upload ---
-        is_batch_upload = upload_data.get("is_batch", False) # Should always be True now
+        is_batch_upload = upload_data.get("is_batch", False)
         username = upload_data['username']
         batch_directory_path = upload_data.get("batch_directory_path")
         original_filenames_in_batch = upload_data.get("original_filenames_in_batch", [])
-        # Use a more descriptive name for the batch itself, maybe based on first file?
+        
         batch_display_name = f"Upload ({len(original_filenames_in_batch)} files)"
         if original_filenames_in_batch:
             batch_display_name = f"{original_filenames_in_batch[0]} (+{len(original_filenames_in_batch)-1} others)" if len(original_filenames_in_batch) > 1 else original_filenames_in_batch[0]
 
-
         if not is_batch_upload or not batch_directory_path or not os.path.isdir(batch_directory_path) or not original_filenames_in_batch:
-            # If initiate_upload was modified correctly, this shouldn't happen for multi-file uploads
             logging.error(f"{log_prefix} Invalid batch data. is_batch={is_batch_upload}, dir={batch_directory_path}, files={original_filenames_in_batch}")
             yield _yield_sse_event('error', {'message': 'Internal error: Invalid batch data.'})
-            if batch_directory_path and os.path.isdir(batch_directory_path): # Cleanup if dir exists
+            if batch_directory_path and os.path.isdir(batch_directory_path):
                 _safe_remove_directory(batch_directory_path, log_prefix, "invalid batch dir")
             return
 
         logging.info(f"{log_prefix} Processing batch: User='{username}', Dir='{batch_directory_path}', Files={original_filenames_in_batch}")
         upload_data['status'] = 'processing_telegram'
 
-        access_id: Optional[str] = upload_data.get('access_id') # Get access_id generated earlier
-        if not access_id:
-            access_id = uuid.uuid4().hex[:10] # Generate if missing (shouldn't happen ideally)
-            upload_data['access_id'] = access_id
-            logging.warning(f"{log_prefix} Access ID was missing, generated new one: {access_id}")
+        access_id: Optional[str] = upload_data.get('access_id') 
+        if not access_id: # This will be true for new uploads
+            access_id = uuid.uuid4().hex[:10] 
+            upload_data['access_id'] = access_id # Store it back in upload_data
+            logging.info(f"{log_prefix} Generated new access_id for batch: {access_id}") # Changed log level for visibility
+        else:
+            logging.info(f"{log_prefix} Using existing access_id for batch: {access_id}")
+
 
         executor: Optional[ThreadPoolExecutor] = None
         if len(TELEGRAM_CHAT_IDS) > 1:
             executor = ThreadPoolExecutor(max_workers=MAX_UPLOAD_WORKERS, thread_name_prefix=f'Upload_{upload_id[:4]}')
             logging.info(f"{log_prefix} Initialized Upload Executor (max={MAX_UPLOAD_WORKERS})")
 
-        # --- Calculate total original size for progress ---
         total_original_bytes_in_batch = 0
         files_to_process_details = []
         for filename in original_filenames_in_batch:
@@ -624,17 +626,17 @@ def process_upload_and_generate_updates(upload_id: str) -> Generator[SseEvent, N
             _safe_remove_directory(batch_directory_path, log_prefix, "empty batch dir")
             return
 
-        # Yield start event based on the batch
         yield _yield_sse_event('start', {'filename': batch_display_name, 'totalSize': total_original_bytes_in_batch})
         yield _yield_sse_event('status', {'message': f'Uploading {len(files_to_process_details)} files...'})
 
-        # --- Process and send each file individually ---
         overall_start_time = time.time()
         bytes_sent_so_far = 0
-        all_files_metadata_for_db = [] # Store metadata for each successfully processed file
-        all_succeeded = True # Assume success until a primary send fails
+        all_files_metadata_for_db = [] 
+        all_succeeded = True 
 
         for file_detail in files_to_process_details:
+            # ... (inner loop for processing each file - assumed to be largely correct for this issue) ...
+            # ... This loop populates all_files_metadata_for_db ...
             current_file_path = file_detail["path"]
             current_filename = file_detail["name"]
             current_file_size = file_detail["size"]
@@ -644,271 +646,186 @@ def process_upload_and_generate_updates(upload_id: str) -> Generator[SseEvent, N
 
             if current_file_size == 0:
                 logging.warning(f"{log_file_prefix} is empty, skipping send but including in metadata.")
-                # Add placeholder metadata indicating it was skipped due to size
                 file_meta_entry = {
-                "original_filename": current_filename,
-                "original_size": 0,
-                "skipped": True,
-                "failed": False, # Explicitly not a failure, just skipped
-                "reason": "File is empty",
-                "send_locations": []
+                "original_filename": current_filename, "original_size": 0, "skipped": True, "failed": False, 
+                "reason": "File is empty", "send_locations": []
                 }
                 all_files_metadata_for_db.append(file_meta_entry)
-                logging.debug(f"Saving file meta (empty): {file_meta_entry}")
-                # Update progress immediately (consider 0-byte file as 'sent' for progress count)
-                bytes_sent_so_far += 0 # Add 0 bytes
+                bytes_sent_so_far += 0 
                 progress_data = _calculate_progress(overall_start_time, bytes_sent_so_far, total_original_bytes_in_batch)
                 yield _yield_sse_event('progress', progress_data)
-                continue # Move to the next file
+                continue 
 
-            # --- Send this individual file to all chats ---
-            file_send_start_time = time.time()
             file_specific_futures: Dict[Future, str] = {}
             file_specific_results: Dict[str, ApiResult] = {}
             primary_send_success_for_this_file = False
             primary_send_message = "Primary send not attempted or failed."
 
             try:
-                # with open(current_file_path, 'rb') as f_current:
-                #     file_bytes = f_current.read() # Read the whole file (adjust if files can be > memory)
-
                 if executor:
                     for chat_id_str in TELEGRAM_CHAT_IDS:
                         cid = str(chat_id_str)
-                        # Use _send_single_file_task as file size < CHUNK_SIZE assumption for individual files might be wrong.
-                        # If individual files can be > CHUNK_SIZE, this needs chunking logic *here* per file.
-                        # Assuming individual files are reasonably sized for now.
-                        # *** If individual files can exceed CHUNK_SIZE, this part needs replacement with chunking logic ***
-                        if current_file_size > (2 * 1024 * 1024 * 1024):
-                            # TODO: Implement chunking logic here for the individual file `file_bytes`
-                            logging.error(f"{log_file_prefix} is larger than CHUNK_SIZE ({current_file_size} > {CHUNK_SIZE}), chunking not implemented for individual batch files yet. Aborting file.")
-                            # Mark this file as failed
-                            file_specific_results[cid] = (False, "File exceeds size limit", None)
-                            # Maybe don't raise, just record failure for this file?
-                            # raise NotImplementedError("Chunking for large individual files within a batch is not yet implemented.")
-                            # Let's record failure and continue to next file for now
-                            all_succeeded = False # Mark overall batch potentially incomplete
-                            continue # Break inner chat_id loop for this large file
-
+                        if current_file_size > (2 * 1024 * 1024 * 1024): # 2GB limit
+                            logging.error(f"{log_file_prefix} is larger than 2GB, chunking not implemented. Skipping file.")
+                            file_specific_results[cid] = (False, "File exceeds 2GB size limit", None)
+                            all_succeeded = False
+                            # Create a failure metadata entry
+                            file_meta_entry = {"original_filename": current_filename, "original_size": current_file_size, "skipped": False, "failed": True, "reason": "File exceeds 2GB size limit.", "send_locations": []}
+                            all_files_metadata_for_db.append(file_meta_entry)
+                            primary_send_success_for_this_file = False # Mark as failed for this file
+                            primary_send_message = "File exceeds 2GB size limit."
+                            break # Break from chat_id loop for this file
                         fut = executor.submit(_send_single_file_task, current_file_path, current_filename, cid, upload_id)
                         file_specific_futures[fut] = cid
-                else: # No executor
+                    if not primary_send_success_for_this_file and "File exceeds" in primary_send_message: # If already marked as failed due to size
+                         pass # Skip to result processing for this file
+                else: # No executor (single chat ID)
                     cid = str(TELEGRAM_CHAT_IDS[0])
-                    # _, res = _send_single_file_task(file_bytes, current_filename, cid, upload_id)
-                    # file_specific_results[cid] = res
-                    if current_file_size > (2 * 1024 * 1024 * 1024):
-                        logging.error(f"{log_file_prefix} is larger than 2GB, chunking not implemented for individual batch files yet. Aborting file.")
-                        res_tuple_no_exec = (False, "File exceeds size limit (2GB)", None)
-                        file_specific_results[cid] = res_tuple_no_exec
+                    if current_file_size > (2 * 1024 * 1024 * 1024): # 2GB limit
+                        logging.error(f"{log_file_prefix} is larger than 2GB, chunking not implemented. Skipping file.")
+                        res_tuple_no_exec = (False, "File exceeds 2GB size limit", None)
                         all_succeeded = False
-                        # It's good practice to also create a file_meta_entry for the failure here
-                        file_meta_entry = {
-                            "original_filename": current_filename,
-                            "original_size": current_file_size, "skipped": False, "failed": True,
-                            "reason": "File exceeds size limit (2GB) in non-executor path.", "send_locations": []
-                        }
+                        file_meta_entry = {"original_filename": current_filename, "original_size": current_file_size, "skipped": False, "failed": True, "reason": "File exceeds 2GB size limit.", "send_locations": []}
                         all_files_metadata_for_db.append(file_meta_entry)
-                        primary_send_success_for_this_file = res_tuple_no_exec[0]
-                        primary_send_message = res_tuple_no_exec[1]
                     else:
-                        _, res = _send_single_file_task(current_file_path, current_filename, cid, upload_id) # Get result into 'res'
-                        file_specific_results[cid] = res_tuple_no_exec
-                        primary_send_success_for_this_file = res_tuple_no_exec[0]
-                        primary_send_message = res_tuple_no_exec[1]
-                        if not primary_send_success_for_this_file:
-                            all_succeeded = False
-                    # if cid == str(PRIMARY_TELEGRAM_CHAT_ID):
-                    #     primary_send_success_for_this_file = res[0]
-                    #     primary_send_message = res[1]
-                    #     if not primary_send_success_for_this_file:
-                    #         all_succeeded = False # Primary failed for this file
-
-                # --- Wait for results (similar to previous logic) ---
-                if executor:
+                        _, res_tuple_no_exec = _send_single_file_task(current_file_path, current_filename, cid, upload_id)
+                    file_specific_results[cid] = res_tuple_no_exec
+                    primary_send_success_for_this_file = res_tuple_no_exec[0]
+                    primary_send_message = res_tuple_no_exec[1]
+                    if not primary_send_success_for_this_file:
+                        all_succeeded = False
+                
+                if file_specific_futures: # If executor was used and futures were submitted
                     primary_fut: Optional[Future] = None
-                    primary_cid = str(PRIMARY_TELEGRAM_CHAT_ID)
+                    primary_cid_str = str(PRIMARY_TELEGRAM_CHAT_ID)
                     for fut_key, chat_id_val in file_specific_futures.items():
-                        if chat_id_val == primary_cid: primary_fut = fut_key; break
+                        if chat_id_val == primary_cid_str: primary_fut = fut_key; break
                     
                     if primary_fut:
                         logging.debug(f"{log_file_prefix} Waiting for primary send...")
-                        cid_res, res = primary_fut.result(); file_specific_results[cid_res] = res
+                        cid_res, res = primary_fut.result()
+                        file_specific_results[cid_res] = res
                         primary_send_success_for_this_file = res[0]
                         primary_send_message = res[1]
                         if not primary_send_success_for_this_file:
-                            all_succeeded = False # Mark overall failure if primary fails
+                            all_succeeded = False
                             logging.error(f"{log_file_prefix} Primary send failed: {primary_send_message}")
-                            # Decide if you want to stop processing the rest of the files in the batch
-                            # For now, we'll continue and record which files failed.
-                    else:
-                        logging.warning(f"{log_file_prefix} Primary future not found.")
-                        # If primary future wasn't found, we cannot guarantee overall success based on it
+                    else: # Should not happen if primary chat ID is in TELEGRAM_CHAT_IDS
+                        logging.warning(f"{log_file_prefix} Primary future not found (CID: {primary_cid_str}). Assuming failure for safety.")
+                        primary_send_success_for_this_file = False
+                        primary_send_message = "Primary Telegram chat not configured or send task failed to initialize."
                         all_succeeded = False
 
                     logging.debug(f"{log_file_prefix} Waiting for backup sends...")
                     for fut_completed in as_completed(file_specific_futures):
                         cid_res, res = fut_completed.result()
                         if cid_res not in file_specific_results: file_specific_results[cid_res] = res
-
+                
                 # --- Process results for *this specific file* ---
                 current_file_send_report = [{"chat_id": k, "success": r[0], "message": r[1], "tg_response": r[2]} for k, r in file_specific_results.items()]
-                
+                parsed_locations_for_this_file = _parse_send_results(f"{log_prefix}-{current_filename}", current_file_send_report)
+
                 if primary_send_success_for_this_file:
-                    bytes_sent_so_far += current_file_size # Increment progress only if primary succeeded
-                    parsed_locations = _parse_send_results(f"{log_prefix}-{current_filename}", current_file_send_report)
-                    # Check if parsing marked primary as failed due to missing IDs
-                    primary_parsed_loc = next((loc for loc in parsed_locations if loc.get('chat_id') == str(PRIMARY_TELEGRAM_CHAT_ID)), None)
+                    bytes_sent_so_far += current_file_size 
+                    primary_parsed_loc = next((loc for loc in parsed_locations_for_this_file if loc.get('chat_id') == str(PRIMARY_TELEGRAM_CHAT_ID)), None)
                     if not primary_parsed_loc or not primary_parsed_loc.get('success'):
                         logging.error(f"{log_file_prefix} Primary send reported OK by API but parsing failed or IDs missing. Marking as failed.")
-                        all_succeeded = False # Treat as overall failure if primary metadata is bad
-                        # Add failure metadata? Or just skip adding this file? Let's skip adding successful record.
-                        # Add failure record instead?
-                        file_meta_entry = {
-                            "original_filename": current_filename,
-                            "original_size": current_file_size,
-                            "skipped": False, # Explicitly not skipped
-                            "failed": True,
-                            "reason": "Primary send metadata parsing failed.",
-                            "send_locations": parsed_locations # Include potentially partial data
-                        }
+                        all_succeeded = False 
+                        file_meta_entry = {"original_filename": current_filename, "original_size": current_file_size, "skipped": False, "failed": True, "reason": "Primary send metadata parsing failed.", "send_locations": parsed_locations_for_this_file}
                         all_files_metadata_for_db.append(file_meta_entry)
-                        logging.debug(f"Saving file meta (parse fail): {file_meta_entry}")
-
                     else:
-                        # Primary succeeded AND metadata looks okay
-                        file_meta_entry = {
-                            "original_filename": current_filename,
-                            "original_size": current_file_size,
-                            "skipped": False,
-                            "failed": False,
-                            "reason": None, # Or ""
-                            "send_locations": parsed_locations
-                        }
+                        file_meta_entry = {"original_filename": current_filename, "original_size": current_file_size, "skipped": False, "failed": False, "reason": None, "send_locations": parsed_locations_for_this_file}
                         all_files_metadata_for_db.append(file_meta_entry)
-                        logging.debug(f"Saving file meta (success): {file_meta_entry}")
                         logging.info(f"{log_file_prefix} Successfully processed and recorded.")
-                else:
-                    # Primary send failed for this file
-                    all_succeeded = False # Mark the whole batch potentially incomplete
+                elif not any(fm for fm in all_files_metadata_for_db if fm['original_filename'] == current_filename and fm['failed']): # Only add if not already added as failed (e.g. size limit)
+                    all_succeeded = False
                     logging.error(f"{log_file_prefix} Failed primary send. Reason: {primary_send_message}")
-                    # Add failure record for this file
-                    file_meta_entry = {
-                        "original_filename": current_filename,
-                        "original_size": current_file_size,
-                        "skipped": False, # Explicitly not skipped
-                        "failed": True,
-                        "reason": f"Primary send failed: {primary_send_message}",
-                        "send_locations": _parse_send_results(f"{log_prefix}-{current_filename}", current_file_send_report) # Include attempts
-                    }
+                    file_meta_entry = {"original_filename": current_filename, "original_size": current_file_size, "skipped": False, "failed": True, "reason": f"Primary send failed: {primary_send_message}", "send_locations": parsed_locations_for_this_file}
                     all_files_metadata_for_db.append(file_meta_entry)
-                    logging.debug(f"Saving file meta (primary fail): {file_meta_entry}")
-                    # Optional: break loop here if one failure should stop the whole batch?
 
-                # Update progress after each file is processed (based on primary success)
-                progress_data = _calculate_progress(overall_start_time, bytes_sent_so_far, total_original_bytes_in_batch)
-                yield _yield_sse_event('progress', progress_data)
-                yield _yield_sse_event('status', {'message': f'Processed {len(all_files_metadata_for_db)} of {len(files_to_process_details)} files...'})
-
-            except FileNotFoundError:
-                logging.error(f"{log_file_prefix} not found during processing loop.", exc_info=True)
-                all_succeeded = False
-                file_meta_entry = {
-                    "original_filename": current_filename,
-                    "original_size": file_detail.get("size", 0), # Use size from loop if available, else 0
-                    "skipped": False,
-                    "failed": True,
-                    "reason": "File not found during send phase.",
-                    "send_locations": []
-                }
-                all_files_metadata_for_db.append(file_meta_entry)
-                logging.debug(f"Saving file meta (FileNotFound): {file_meta_entry}")
-            except NotImplementedError as nie:
-                logging.error(f"{log_file_prefix} - {nie}")
-                all_succeeded = False
-                file_meta_entry = {
-                    "original_filename": current_filename,
-                    "original_size": file_detail.get("size", 0), # Use size from loop if available, else 0
-                    "skipped": False,
-                    "failed": True,
-                    "reason": str(nie),
-                    "send_locations": []
-                }
-                all_files_metadata_for_db.append(file_meta_entry)
-                logging.debug(f"Saving file meta (NotImplemented): {file_meta_entry}")
-            except Exception as file_loop_error:
+            except Exception as file_loop_error: # Catch errors within the file processing loop
                 logging.error(f"{log_file_prefix} Unexpected error during send: {file_loop_error}", exc_info=True)
-                all_succeeded = False # Mark overall failure
-                file_meta_entry = {
-                    "original_filename": current_filename,
-                    "original_size": file_detail.get("size", 0), # Use size from loop if available, else 0
-                    "skipped": False,
-                    "failed": True,
-                    "reason": f"Unexpected error: {str(file_loop_error)}",
-                    "send_locations": []
-                }
-                all_files_metadata_for_db.append(file_meta_entry)
-                logging.debug(f"Saving file meta (Exception): {file_meta_entry}")
+                all_succeeded = False
+                if not any(fm for fm in all_files_metadata_for_db if fm['original_filename'] == current_filename and fm['failed']):
+                    file_meta_entry = {"original_filename": current_filename, "original_size": file_detail.get("size", 0), "skipped": False, "failed": True, "reason": f"Unexpected error: {str(file_loop_error)}", "send_locations": [] }
+                    all_files_metadata_for_db.append(file_meta_entry)
 
-            # --- Batch Upload Finished ---
-            total_batch_duration = time.time() - overall_start_time
-            logging.info(f"{log_prefix} Finished processing all files in batch. Duration: {total_batch_duration:.2f}s. Overall Success (based on primary sends): {all_succeeded}")
+            progress_data = _calculate_progress(overall_start_time, bytes_sent_so_far, total_original_bytes_in_batch)
+            yield _yield_sse_event('progress', progress_data)
+            yield _yield_sse_event('status', {'message': f'Processed {len(all_files_metadata_for_db)} of {len(files_to_process_details)} files...'})
+        # --- End of for file_detail loop ---
 
-            if not all_files_metadata_for_db:
-                raise RuntimeError("Processing finished but no metadata was generated for any file.")
+        total_batch_duration = time.time() - overall_start_time
+        logging.info(f"{log_prefix} Finished processing all files in batch. Duration: {total_batch_duration:.2f}s. Overall Primary Success: {all_succeeded}")
 
-            # --- Save Batch Metadata ---
-            db_batch_timestamp = datetime.now(timezone.utc).isoformat()
-            db_batch_record = {
-            "access_id": access_id,
-            "username": upload_data['username'], # Use username from upload_data (real or anon placeholder)
-            "is_anonymous": upload_data.get('is_anonymous', False), # Get flag from upload_data
-            "anonymous_id": upload_data.get('anonymous_id'), # Get anon_id if present in upload_data
+        if not all_files_metadata_for_db: # Should be populated even if files failed/skipped
+            logging.error(f"{log_prefix} Critical: No metadata was generated for any file after processing loop.")
+            raise RuntimeError("Processing finished but no metadata was generated for any file.")
+
+        db_batch_timestamp = datetime.now(timezone.utc).isoformat()
+        db_batch_record = {
+            "access_id": access_id, # This is the batch access_id
+            "username": upload_data['username'],
+            "is_anonymous": upload_data.get('is_anonymous', False),
+            "anonymous_id": upload_data.get('anonymous_id'),
             "upload_timestamp": db_batch_timestamp,
             "is_batch": True,
             "batch_display_name": batch_display_name,
-            "files_in_batch": all_files_metadata_for_db, # List should now be consistent
+            "files_in_batch": all_files_metadata_for_db,
             "total_original_size": total_original_bytes_in_batch,
             "total_upload_duration_seconds": round(total_batch_duration, 2),
-            }
-            
-            if db_batch_record["anonymous_id"] is None:
-                del db_batch_record["anonymous_id"]
-            logging.debug(f"Attempting to save batch metadata: {json.dumps(db_batch_record, indent=2)}")
+        }
+        if db_batch_record["anonymous_id"] is None:
+            del db_batch_record["anonymous_id"]
+        
+        logging.debug(f"Attempting to save batch metadata: {json.dumps(db_batch_record, indent=2, default=str)}")
 
-            save_success, save_msg = save_file_metadata(db_batch_record)
-            if not save_success:
-                logging.error(f"{log_prefix} DB CRITICAL: Failed to save batch metadata: {save_msg}")
-                # Yield error even if Telegram sends were okay? Yes, link won't work.
-                raise IOError(f"Failed to save batch metadata: {save_msg}")
-            else:
-                logging.info(f"{log_prefix} DB: Successfully saved batch metadata.")
+        save_success, save_msg = save_file_metadata(db_batch_record)
+        if not save_success:
+            logging.error(f"{log_prefix} DB CRITICAL: Failed to save batch metadata: {save_msg}")
+            raise IOError(f"Failed to save batch metadata: {save_msg}")
+        else:
+            logging.info(f"{log_prefix} DB: Successfully saved batch metadata.")
+        
+        base_url = request.host_url.rstrip('/')
+        browser_url_path = f"/browse/{access_id}"
+        browser_url = f"{base_url}{browser_url_path}"
+        
+        # --- ADDED LOGGING and check for access_id ---
+        if not access_id or not isinstance(access_id, str) or len(access_id.strip()) == 0:
+            logging.error(f"{log_prefix} CRITICAL: access_id is invalid ('{access_id}') before yielding 'complete' event. This should not happen.")
+            # Fallback or error yield if access_id is bad
+            yield _yield_sse_event('error', {'message': 'Internal server error: Failed to generate a valid batch identifier.'})
+            upload_data['status'] = 'error'
+            upload_data['error'] = 'Invalid batch identifier generated'
+            return # Prevent yielding 'complete' with bad access_id
 
-            # --- Yield Completion Event (Pointing to the new browser route) ---
-            browser_url = url_for('browse_batch', access_id=access_id, _external=True) # New route needed
-            yield _yield_sse_event('complete', {
-                'message': f'Batch upload ({len(files_to_process_details)} files) complete!',
-                'download_url': browser_url, # URL to the file browser page
-                'filename': batch_display_name # Display name of the batch
-            })
-            upload_data['status'] = 'completed' if all_succeeded else 'completed_with_errors'
-
+        complete_payload = {
+            'message': f'Batch upload ({len(files_to_process_details)} files) complete!',
+            'download_url': browser_url,
+            'filename': batch_display_name,
+            'batch_access_id': access_id # This should be the valid batch access_id
+        }
+        logging.info(f"{log_prefix} Preparing to yield 'complete' event. Access ID: '{access_id}', Payload: {json.dumps(complete_payload)}")
+        yield _yield_sse_event('complete', complete_payload)
+        # --- END OF ADDED LOGGING ---
+        
+        upload_data['status'] = 'completed' if all_succeeded else 'completed_with_errors'
 
     except Exception as e:
+        logging.error(f"{log_prefix} An exception occurred during batch upload processing:", exc_info=True)
         error_msg_final = f"Batch upload processing failed: {str(e) or type(e).__name__}"
-        logging.error(f"{log_prefix} {error_msg_final}", exc_info=True)
+        logging.error(f"{log_prefix} Sending SSE error to client: {error_msg_final}")
         yield _yield_sse_event('error', {'message': error_msg_final})
         if upload_id in upload_progress_data:
-                upload_data['status'] = 'error'
-                upload_data['error'] = error_msg_final
+            upload_data['status'] = 'error'
+            upload_data['error'] = error_msg_final
     finally:
         logging.info(f"{log_prefix} Batch upload generator final cleanup.")
         if executor:
             executor.shutdown(wait=False)
             logging.info(f"{log_prefix} Upload executor shutdown.")
         
-        # Cleanup: The original batch directory should be gone.
-        # If we created an intermediate zip (which we removed in this version), it would be cleaned here.
-        # Check if the batch dir still exists for some reason (e.g., error before cleanup)
         if batch_directory_path and os.path.exists(batch_directory_path):
              logging.warning(f"{log_prefix} Cleaning up batch directory that might have been left over: {batch_directory_path}")
              _safe_remove_directory(batch_directory_path, log_prefix, "lingering batch dir")
@@ -1095,6 +1012,19 @@ def _prepare_download_and_generate_updates(prep_id: str) -> Generator[SseEvent, 
                 tg_file_id_to_download = direct_telegram_file_id
                 logging.info(f"{log_prefix} Using direct telegram_file_id: {tg_file_id_to_download}")
             elif file_info:
+                if file_info.get('is_batch', False):
+                    logging.error(
+                        f"{log_prefix} Attempt to download a batch record (access_id: {access_id}) "
+                        f"as if it were a single file. This typically means the download "
+                        f"button on the batch browse page is misconfigured to call "
+                        f"/stream-download/ instead of /download-single/ for an item "
+                        f"or /initiate-download-all/ for the entire batch."
+                    )
+                    raise ValueError(
+                        "This link refers to a batch of files. "
+                        "To download all files, use the 'Download All' option. "
+                        "To download a specific file, click its individual download button from the list."
+                    )
                 locations = file_info.get('send_locations', [])
                 tg_file_id_lookup, chat_id_lookup = _find_best_telegram_file_id(locations, PRIMARY_TELEGRAM_CHAT_ID)
                 tg_file_id_to_download = tg_file_id_lookup
@@ -1314,40 +1244,32 @@ def _prepare_download_and_generate_updates(prep_id: str) -> Generator[SseEvent, 
 # In routes.py
 
 @app.route('/initiate-download-all/<access_id>') # Changed route name slightly for clarity
+# routes.py
+# ...
+
+@app.route('/initiate-download-all/<access_id>') # Changed route name slightly for clarity
 def initiate_download_all(access_id: str):
-    """
-    Initiates the "Download All" process for a batch.
-    It prepares data for the background zipping task and tells the client
-    which SSE endpoint to connect to for progress.
-    """
-    prep_id_for_zip = str(uuid.uuid4()) # Unique ID for this specific zipping operation
+    # ... (existing code to lookup batch_info and files_to_zip_meta) ...
+    prep_id_for_zip = str(uuid.uuid4()) 
     log_prefix = f"[DLAll-Init-{prep_id_for_zip}]"
     logging.info(f"{log_prefix} Request to initiate 'Download All' for batch_access_id: {access_id}")
 
-    # 1. Find the batch metadata record
     batch_info, error_msg = find_metadata_by_access_id(access_id)
 
     if error_msg or not batch_info or not batch_info.get('is_batch'):
         error_message_for_user = error_msg if error_msg else f"Batch '{access_id}' not found or invalid."
         logging.warning(f"{log_prefix} Batch metadata lookup failed: {error_message_for_user}")
-        # For an initiation route, returning JSON error is good for API clients
         status_code = 404 if "not found" in error_message_for_user.lower() else 400
         return jsonify({"error": error_message_for_user, "prep_id": None}), status_code
-
-    # 2. Extract the list of files to include in the zip
+    
     files_to_zip_meta = []
     total_expected_zip_content_size = 0
     for file_item in batch_info.get('files_in_batch', []):
         if not file_item.get('skipped') and not file_item.get('failed'):
-            # We need the original filename (to name it inside the zip)
-            # and its best Telegram file_id (to download it)
-            # and its original size (for progress estimation)
             original_filename = file_item.get('original_filename')
             original_size = file_item.get('original_size', 0)
             send_locations = file_item.get('send_locations', [])
-            
             tg_file_id, _ = _find_best_telegram_file_id(send_locations, PRIMARY_TELEGRAM_CHAT_ID)
-            
             if original_filename and tg_file_id:
                 files_to_zip_meta.append({
                     "original_filename": original_filename,
@@ -1362,31 +1284,35 @@ def initiate_download_all(access_id: str):
         logging.warning(f"{log_prefix} No valid files found in batch '{access_id}' to include in zip.")
         return jsonify({"error": "No files available to include in the 'Download All' zip.", "prep_id": None}), 404
 
-    # 3. Store this information in download_prep_data for the zipping SSE stream
-    # This 'prep_id_for_zip' will be used by the /stream-download-all/<prep_id> route
+    batch_display_name_for_zip = batch_info.get('batch_display_name', f"download_all_{access_id}.zip")
+    # Ensure the .zip extension if it's a generic name
+    if not batch_display_name_for_zip.lower().endswith(".zip"):
+        batch_display_name_for_zip += ".zip"
+
+
     download_prep_data[prep_id_for_zip] = {
         "prep_id": prep_id_for_zip,
-        "status": "initiated_zip_all", # Distinct status
-        "access_id_original_batch": access_id, # Link back to the original batch
+        "status": "initiated_zip_all", 
+        "access_id_original_batch": access_id, 
         "username": batch_info.get('username'),
-        "batch_display_name": batch_info.get('batch_display_name', f"download_all_{access_id}.zip"),
-        "files_to_zip_meta": files_to_zip_meta, # List of dicts: {"original_filename", "telegram_file_id", "original_size"}
-        "total_expected_content_size": total_expected_zip_content_size, # For progress estimation
+        "batch_display_name": batch_display_name_for_zip, # Used by _generate_zip_and_stream_progress
+        "original_filename": batch_display_name_for_zip, # ADDED/MODIFIED: For serve_temp_file consistency
+        "files_to_zip_meta": files_to_zip_meta, 
+        "total_expected_content_size": total_expected_zip_content_size, 
         "error": None,
-        "final_temp_zip_path": None, # Will be set by the zipping generator
-        "final_zip_size": 0,
+        "final_temp_file_path": None, # Will be set by the zipping generator using this standardized key
+        "final_file_size": 0,         # Will be set by the zipping generator using this standardized key
         "start_time": time.time()
     }
-    logging.info(f"{log_prefix} Stored prep data for 'Download All'. {len(files_to_zip_meta)} files to zip. Expected content size: {total_expected_zip_content_size} bytes.")
+    logging.info(f"{log_prefix} Stored prep data for 'Download All'. {len(files_to_zip_meta)} files to zip. Expected content size: {total_expected_zip_content_size} bytes. Zip name: {batch_display_name_for_zip}")
 
-    # 4. Respond to the client with the prep_id for the SSE stream
-    # The client will use this prep_id to connect to '/stream-download-all/<prep_id>'
     return jsonify({
         "message": "Download All initiated. Connect to SSE stream for progress.",
-        "prep_id_for_zip": prep_id_for_zip, # Client needs this
-        "sse_stream_url": url_for('stream_download_all', prep_id_for_zip=prep_id_for_zip, _external=False) # Relative URL for client
+        "prep_id_for_zip": prep_id_for_zip, 
+        "sse_stream_url": url_for('stream_download_all', prep_id_for_zip=prep_id_for_zip, _external=False) 
     }), 200
-    
+
+ 
 # In routes.py
 
 # In routes.py (can be placed with other helper/generator functions)
@@ -1405,6 +1331,7 @@ def _generate_zip_and_stream_progress(prep_id_for_zip: str) -> Generator[SseEven
 
     files_to_process_meta = prep_data.get('files_to_zip_meta', [])
     batch_display_name_for_zip = prep_data.get('batch_display_name', f"batch_download_{prep_id_for_zip}.zip")
+    prep_data['original_filename'] = batch_display_name_for_zip
     total_expected_content_size = prep_data.get('total_expected_content_size', 0)
     
     temp_zip_file_path: Optional[str] = None
@@ -1429,8 +1356,6 @@ def _generate_zip_and_stream_progress(prep_id_for_zip: str) -> Generator[SseEven
         bytes_downloaded_and_zipped = 0
         overall_zip_gen_start_time = time.time()
         
-        # Map to store downloaded content: {original_filename: content_bytes}
-        # Important for writing to zip in correct order if concurrency messes with completion order
         downloaded_file_contents: Dict[str, bytes] = {} 
         files_processed_count = 0
         
@@ -1442,27 +1367,22 @@ def _generate_zip_and_stream_progress(prep_id_for_zip: str) -> Generator[SseEven
             for file_meta in files_to_process_meta:
                 filename = file_meta["original_filename"]
                 tg_file_id = file_meta["telegram_file_id"]
-                # Pass dummy part_num for _download_chunk_task if it expects it (it does)
-                # _download_chunk_task returns (part_num, content, error)
-                fut = download_all_executor.submit(_download_chunk_task, tg_file_id, 0, prep_id_for_zip) # part_num can be 0 or filename index
+                fut = download_all_executor.submit(_download_chunk_task, tg_file_id, 0, prep_id_for_zip) 
                 future_to_filename[fut] = filename
             
             logging.info(f"{log_prefix} Submitted {len(future_to_filename)} individual file download tasks.")
-
             for future in as_completed(future_to_filename):
                 original_filename = future_to_filename[future]
                 try:
-                    _, content, error_msg = future.result() # part_num is ignored here
+                    _, content, error_msg = future.result() 
                     if error_msg:
                         logging.error(f"{log_prefix} Failed to download '{original_filename}': {error_msg}")
-                        # Optionally, yield a specific per-file error, or just let overall fail
-                        # For now, we'll let it fail overall if any sub-download fails.
                         raise ValueError(f"Failed to download '{original_filename}': {error_msg}")
                     if not content:
                         raise ValueError(f"Downloaded empty content for '{original_filename}'.")
                     
                     downloaded_file_contents[original_filename] = content
-                    bytes_downloaded_and_zipped += len(content) # Or use file_meta["original_size"]
+                    bytes_downloaded_and_zipped += len(content) 
                     files_processed_count += 1
                     
                     progress = _calculate_progress(overall_zip_gen_start_time, bytes_downloaded_and_zipped, total_expected_content_size)
@@ -1472,42 +1392,42 @@ def _generate_zip_and_stream_progress(prep_id_for_zip: str) -> Generator[SseEven
 
                 except Exception as exc:
                     logging.error(f"{log_prefix} Error processing download for '{original_filename}': {exc}", exc_info=True)
-                    raise # Re-raise to be caught by the outer try-except
+                    raise 
 
         # All files (hopefully) downloaded, now write them to the zip
         logging.info(f"{log_prefix} All necessary files fetched. Writing to master zip: {temp_zip_file_path}")
         yield _yield_sse_event('status', {'message': 'Creating archive...'})
         
         with zipfile.ZipFile(temp_zip_file_path, 'w', zipfile.ZIP_DEFLATED) as zf:
-            for file_meta in files_to_process_meta: # Iterate in original order
+            for file_meta in files_to_process_meta: 
                 filename_to_add = file_meta["original_filename"]
                 if filename_to_add in downloaded_file_contents:
                     zf.writestr(filename_to_add, downloaded_file_contents[filename_to_add])
                     logging.debug(f"{log_prefix} Added '{filename_to_add}' to zip archive.")
                 else:
-                    # This would mean a file failed to download but didn't raise an exception stopping the process earlier
                     logging.warning(f"{log_prefix} Content for '{filename_to_add}' not found in downloaded map, skipping zip entry.")
         
         final_zip_actual_size = os.path.getsize(temp_zip_file_path)
         logging.info(f"{log_prefix} Finished writing master zip. Path: {temp_zip_file_path}, Size: {final_zip_actual_size}")
 
         prep_data['status'] = 'ready'
-        prep_data['final_temp_zip_path'] = temp_zip_file_path # Store path to the big zip
-        prep_data['final_zip_size'] = final_zip_actual_size
+        # MODIFIED LINES: Standardize keys for serve_temp_file
+        prep_data['final_temp_file_path'] = temp_zip_file_path 
+        prep_data['final_file_size'] = final_zip_actual_size
 
         # Final progress update to 100%
         yield _yield_sse_event('progress', {
             'percentage': 100, 
-            'bytesProcessed': total_expected_content_size, # Show based on original content
+            'bytesProcessed': total_expected_content_size, 
             'totalBytes': total_expected_content_size, 
             'etaFormatted': '00:00'
         })
         yield _yield_sse_event('status', {'message': 'Archive ready for download!'})
-        time.sleep(0.1) # Brief pause
-
+        time.sleep(0.1)
+        
         yield _yield_sse_event('ready', {
-            'temp_file_id': prep_id_for_zip, # This is the ID for the zip operation
-            'final_filename': batch_display_name_for_zip # The name the user will see for the .zip
+            'temp_file_id': prep_id_for_zip, 
+            'final_filename': batch_display_name_for_zip 
         })
         logging.info(f"{log_prefix} 'Download All' zip preparation complete. Sent 'ready' event.")
 
@@ -1524,14 +1444,16 @@ def _generate_zip_and_stream_progress(prep_id_for_zip: str) -> Generator[SseEven
             download_all_executor.shutdown(wait=False)
             logging.info(f"{log_prefix} Download All executor shutdown.")
         
-        # The temp_zip_file_path created by this generator will be cleaned up
-        # by the serve_temp_file route or its scheduled cleanup,
-        # so we don't delete it here IF it was successfully prepared.
-        # If an error occurred *before* prep_data['final_temp_zip_path'] was set, clean it.
         if prep_data.get('status') != 'ready' and temp_zip_file_path and os.path.exists(temp_zip_file_path):
             _safe_remove_file(temp_zip_file_path, log_prefix, "partially created download-all zip")
         
         logging.info(f"{log_prefix} 'Download All' zipping generator task ended. Status: {prep_data.get('status')}")
+        
+        # The temp_zip_file_path created by this generator will be cleaned up
+        # by the serve_temp_file route or its scheduled cleanup,
+        # so we don't delete it here IF it was successfully prepared.
+        # If an error occurred *before* prep_data['final_temp_zip_path'] was set, clean it.
+        
 
 @app.route('/stream-download-all/<prep_id_for_zip>')
 def stream_download_all(prep_id_for_zip: str):
@@ -1769,71 +1691,105 @@ def list_user_files(username: str) -> Response:
     # Return the modified list
     return jsonify(serializable_files) # Return the list with converted IDs
 
+
+
+# @app.route('/browse/<access_id>')
+# # def serve_angular():
+# #     return send_file('path_to_angular_build/index.html')
+# def browse_batch_page(access_id: str):
+#     """
+#     Displays a page listing all files within a batch upload,
+#     identified by the batch's access_id.
+#     """
+#     log_prefix = f"[Browse-{access_id}]"
+#     logging.info(f"{log_prefix} Request to browse batch.")
+
+#     # 1. Find the batch metadata record using the access_id
+#     batch_info, error_msg = find_metadata_by_access_id(access_id)
+
+#     if error_msg or not batch_info:
+#         error_message_for_user = error_msg if error_msg else f"Batch '{access_id}' not found or link expired."
+#         logging.warning(f"{log_prefix} Metadata lookup failed: {error_message_for_user}")
+#         status_code = 404 if "not found" in error_message_for_user.lower() else 500
+#         return make_response(render_template('404_error.html', message=error_message_for_user), status_code)
+
+#     # 2. Validate if it's actually a batch record
+#     if not batch_info.get('is_batch'):
+#         logging.error(f"{log_prefix} Access ID exists but does not point to a batch record. Info: {batch_info}")
+#         return make_response(render_template('404_error.html', message="Invalid link: Does not point to a batch upload."), 400)
+
+#     # 3. Extract the list of files within the batch and process for template
+#     files_in_batch_original = batch_info.get('files_in_batch', [])
+#     processed_files_for_template = []
+#     for f_meta in files_in_batch_original: # Process the list *after* getting it
+#         new_meta = f_meta.copy()
+#         if 'original_filename' not in new_meta: # Ensure filename for display
+#             new_meta['original_filename'] = "Unknown File"
+#         if 'original_size' in new_meta:
+#             new_meta['filesize'] = new_meta['original_size'] # Add the 'filesize' key for items in the list
+#         else:
+#             new_meta['filesize'] = 0 # Default if original_size is missing
+#         processed_files_for_template.append(new_meta)
+
+#     # Extract other info
+#     batch_display_name = batch_info.get('batch_display_name', f"Batch {access_id}")
+#     upload_timestamp_iso = batch_info.get('upload_timestamp')
+#     total_original_size = batch_info.get('total_original_size') # Sum of original sizes
+
+#     # Format timestamp (similar to get_file_by_access_id)
+#     date_str = "Unknown date"
+#     if upload_timestamp_iso:
+#         try:
+#             dt = dateutil_parser.isoparse(upload_timestamp_iso)
+#             if dt.tzinfo is None: dt = dt.replace(tzinfo=timezone.utc)
+#             else: dt = dt.astimezone(timezone.utc)
+#             date_str = dt.strftime('%Y-%m-%d %H:%M:%S UTC')
+#         except Exception as e:
+#             logging.warning(f"{log_prefix} Could not parse timestamp '{upload_timestamp_iso}': {e}")
+
+#     logging.info(f"{log_prefix} Found {len(processed_files_for_template)} files in batch. Rendering browser page.")
+
+#     # 4. Render the new template, passing the PROCESSED data
+#     return render_template(
+#         'batch-file-browser.component.html',
+#         access_id=access_id,
+#         batch_name=batch_display_name,
+#         files=processed_files_for_template, 
+#         upload_date=date_str,
+#         total_size=total_original_size,
+#         username=batch_info.get('username', 'Unknown User'),
+#         filename=None,  # <--- ADD THIS LINE
+#         filesize=None   # <--- ADD THIS LINE
+#     )
+    
+# In routes.py, modify the browse_batch function:
+
 # In routes.py
 
-@app.route('/browse/<access_id>')
-def browse_batch(access_id: str):
-    """
-    Displays a page listing all files within a batch upload,
-    identified by the batch's access_id.
-    """
-    log_prefix = f"[Browse-{access_id}]"
-    logging.info(f"{log_prefix} Request to browse batch.")
+# @app.route('/browse/<access_id>')
+# def browse_batch_page(access_id: str): # Renamed for clarity
+#     """
+#     Serves the main Angular application page.
+#     Angular's router will then take over and display the
+#     BatchFileBrowserComponent for the '/browse/:accessId' route.
+#     """
+#     log_prefix = f"[BrowseShell-{access_id}]"
+#     logging.info(f"{log_prefix} Serving Angular application shell for batch browsing.")
+#     try:
+#         # This 'index.html' should be the main entry point of your compiled Angular application,
+#         # containing <app-root></app-root> and script tags for Angular bundles.
+#         # Make sure it's in your Flask 'templates' folder or served as a static file correctly.
+#         return render_template('index.html')
+#     except Exception as e:
+#         logging.error(f"{log_prefix} Error rendering Angular shell (index.html): {e}", exc_info=True)
+#         return make_response("Error loading application page.", 500)
 
-    # 1. Find the batch metadata record using the access_id
-    batch_info, error_msg = find_metadata_by_access_id(access_id)
 
-    if error_msg or not batch_info:
-        error_message_for_user = error_msg if error_msg else f"Batch '{access_id}' not found or link expired."
-        logging.warning(f"{log_prefix} Metadata lookup failed: {error_message_for_user}")
-        status_code = 404 if "not found" in error_message_for_user.lower() else 500
-        return make_response(render_template('404_error.html', message=error_message_for_user), status_code)
 
-    # 2. Validate if it's actually a batch record
-    if not batch_info.get('is_batch'):
-        logging.error(f"{log_prefix} Access ID exists but does not point to a batch record. Info: {batch_info}")
-        return make_response(render_template('404_error.html', message="Invalid link: Does not point to a batch upload."), 400)
+# REMOVE the filename=None, filesize=None that might have been added previously
+# to the render_template call in the original browse_batch function.
+# The old browse_batch function should be replaced by the one above.
 
-    # 3. Extract the list of files within the batch and process for template
-    files_in_batch_original = batch_info.get('files_in_batch', [])
-    processed_files_for_template = []
-    for f_meta in files_in_batch_original: # Process the list *after* getting it
-        new_meta = f_meta.copy()
-        if 'original_size' in new_meta:
-            new_meta['filesize'] = new_meta['original_size'] # Add the 'filesize' key
-        else:
-            new_meta['filesize'] = 0 # Default if original_size is missing
-        processed_files_for_template.append(new_meta)
-
-    # Extract other info
-    batch_display_name = batch_info.get('batch_display_name', f"Batch {access_id}")
-    upload_timestamp_iso = batch_info.get('upload_timestamp')
-    total_original_size = batch_info.get('total_original_size') # Sum of original sizes
-
-    # Format timestamp (similar to get_file_by_access_id)
-    date_str = "Unknown date"
-    if upload_timestamp_iso:
-        try:
-            dt = dateutil_parser.isoparse(upload_timestamp_iso)
-            if dt.tzinfo is None: dt = dt.replace(tzinfo=timezone.utc)
-            else: dt = dt.astimezone(timezone.utc)
-            date_str = dt.strftime('%Y-%m-%d %H:%M:%S UTC')
-        except Exception as e:
-            logging.warning(f"{log_prefix} Could not parse timestamp '{upload_timestamp_iso}': {e}")
-
-    logging.info(f"{log_prefix} Found {len(files_in_batch_original)} files in batch. Rendering browser page.") # Log original count is fine
-
-    # 4. Render the new template, passing the PROCESSED data
-    return render_template(
-        'download_page.html',
-        access_id=access_id,
-        batch_name=batch_display_name,
-        files=processed_files_for_template, # <<< Pass the CORRECT list
-        upload_date=date_str,
-        total_size=total_original_size,
-        username=batch_info.get('username', 'Unknown User')
-    )
-# In routes.py
 
 @app.route('/download-single/<access_id>/<path:filename>')
 def download_single_file(access_id: str, filename: str):
@@ -1906,58 +1862,179 @@ def download_single_file(access_id: str, filename: str):
         _prepare_download_and_generate_updates(prep_id) # Call the *existing* generator
     ), mimetype='text/event-stream')
 
-@app.route('/get/<access_id>')
-def get_file_by_access_id(access_id: str) -> Union[str, Response]:
-    logging.info(f"Request dl page via access_id: {access_id}")
-    logging.info(f"Looking up access_id '{access_id}' in DB...")
-    file_info, error_msg = find_metadata_by_access_id(access_id)
-    if error_msg or not file_info:
-        error_message_for_user = error_msg if error_msg else f"Link '{access_id}' not found or expired."
-        logging.warning(f"Failed lookup for access_id '{access_id}': {error_message_for_user}")
-    # Distinguish "not found" from server errors for status code
-        status_code = 404 if "not found" in error_message_for_user.lower() else 500
-        return make_response(render_template('404_error.html', message=error_message_for_user), status_code)
+# @app.route('/get/<access_id>')
+# def get_file_by_access_id(access_id: str) -> Union[str, Response]:
+#     logging.info(f"Request dl page via access_id: {access_id}")
+#     logging.info(f"Looking up access_id '{access_id}' in DB...")
+#     file_info, error_msg = find_metadata_by_access_id(access_id)
+#     if error_msg or not file_info:
+#         error_message_for_user = error_msg if error_msg else f"Link '{access_id}' not found or expired."
+#         logging.warning(f"Failed lookup for access_id '{access_id}': {error_message_for_user}")
+#     # Distinguish "not found" from server errors for status code
+#         status_code = 404 if "not found" in error_message_for_user.lower() else 500
+#         return make_response(render_template('404_error.html', message=error_message_for_user), status_code)
     
-    username = file_info.get('username')
-    if not username:    
-     # This shouldn't happen if records are saved correctly, but handle defensively
-        logging.error(f"Record found for access_id '{access_id}' but missing username field.")
-        message = "File record found but is incomplete (missing user info)."
-        return make_response(render_template('404_error.html', message=message), 500)
+#     username = file_info.get('username')
+#     if not username:    
+#      # This shouldn't happen if records are saved correctly, but handle defensively
+#         logging.error(f"Record found for access_id '{access_id}' but missing username field.")
+#         message = "File record found but is incomplete (missing user info)."
+#         return make_response(render_template('404_error.html', message=message), 500)
 
-    orig_name = file_info.get('original_filename', 'Unknown'); size = file_info.get('original_size')
-    ts_iso = file_info.get('upload_timestamp'); date_str = "Unknown date"
-    if ts_iso:
-        try:
-            dt = dateutil_parser.isoparse(ts_iso);
-            if dt.tzinfo is None: dt = dt.replace(tzinfo=timezone.utc)
-            else: dt = dt.astimezone(timezone.utc)
-            date_str = dt.strftime('%Y-%m-%d %H:%M:%S UTC')
-        except Exception as e: logging.warning(f"Could not parse ts '{ts_iso}': {e}")
-    logging.info(f"Rendering dl page for '{orig_name}' (id: {access_id}).")
-    return render_template('download_page.html', filename=orig_name, filesize=size if size is not None else 0, upload_date=date_str, username=username, access_id=access_id)
+#     orig_name = file_info.get('original_filename', 'Unknown'); size = file_info.get('original_size')
+#     ts_iso = file_info.get('upload_timestamp'); date_str = "Unknown date"
+#     if ts_iso:
+#         try:
+#             dt = dateutil_parser.isoparse(ts_iso);
+#             if dt.tzinfo is None: dt = dt.replace(tzinfo=timezone.utc)
+#             else: dt = dt.astimezone(timezone.utc)
+#             date_str = dt.strftime('%Y-%m-%d %H:%M:%S UTC')
+#         except Exception as e: logging.warning(f"Could not parse ts '{ts_iso}': {e}")
+#     logging.info(f"Rendering dl page for '{orig_name}' (id: {access_id}).")
+#     return render_template('batch-file-browser.component.html', filename=orig_name, filesize=size if size is not None else 0, upload_date=date_str, username=username, access_id=access_id)
 
-@app.route('/delete-file/<username>/<path:filename>', methods=['DELETE'])
-def delete_file_record(username: str, filename: str) -> Response:
-    logging.info(f"DELETE request user='{username}', file='{filename}'")
-    logging.info(f"Attempting delete from DB: User='{username}', File='{filename}'")
-    # Using original_filename for deletion as per previous logic.
-    # Consider changing frontend/backend to use access_id for guaranteed uniqueness if needed.
-    deleted_count, error_msg = delete_metadata_by_filename(username, filename) # Call DB function
+# In routes.py, modify get_file_by_access_id:
+
+@app.route('/api/file-details/<access_id>', methods=['GET'])
+def api_get_single_file_details(access_id: str):
+    log_prefix = f"[API-SingleFileDetails-{access_id}]"
+    logging.info(f"{log_prefix} API request for single file details.")
+
+    file_info, error_msg = find_metadata_by_access_id(access_id)
 
     if error_msg:
-        logging.error(f"DB Error deleting file record for '{username}/{filename}': {error_msg}")
-        # Provide a generic server error message to the user
-        return jsonify({"error": "Server error during deletion. Please try again later."}), 500
+        logging.warning(f"{log_prefix} DB error finding file: {error_msg}")
+        return jsonify({"error": "Server error retrieving file information."}), 500
+
+    if not file_info:
+        logging.warning(f"{log_prefix} File not found.")
+        return jsonify({"error": f"File with ID '{access_id}' not found."}), 404
+
+    # If it's a batch record, this API shouldn't be called for it,
+    # but as a safeguard, you could return an error or different structure.
+    if file_info.get('is_batch'):
+        logging.warning(f"{log_prefix} Attempted to get batch info via single file API.")
+        return jsonify({"error": "This ID refers to a batch, not a single file."}), 400
+
+    # Prepare the JSON response for the single file
+    # Customize this based on what your SingleFileViewComponent needs to display
+    response_data = {
+        "access_id": access_id,
+        "original_filename": file_info.get('original_filename', 'Unknown'),
+        "original_size": file_info.get('original_size', 0),
+        "upload_timestamp": file_info.get('upload_timestamp'),
+        "username": file_info.get('username', 'N/A'),
+        "is_compressed": file_info.get('is_compressed', False), # Example additional field
+        "is_split": file_info.get('is_split', False),         # Example additional field
+        # Add any other relevant metadata for a single file
+    }
+    logging.info(f"{log_prefix} Successfully retrieved single file details.")
+    return jsonify(response_data)
+
+# @app.route('/delete-file/<username>/<path:filename>', methods=['DELETE'])
+# def delete_file_record(username: str, filename: str) -> Response:
+#     logging.info(f"DELETE request user='{username}', file='{filename}'")
+#     logging.info(f"Attempting delete from DB: User='{username}', File='{filename}'")
+#     # Using original_filename for deletion as per previous logic.
+#     # Consider changing frontend/backend to use access_id for guaranteed uniqueness if needed.
+#     deleted_count, error_msg = delete_metadata_by_filename(username, filename) # Call DB function
+
+#     if error_msg:
+#         logging.error(f"DB Error deleting file record for '{username}/{filename}': {error_msg}")
+#         # Provide a generic server error message to the user
+#         return jsonify({"error": "Server error during deletion. Please try again later."}), 500
+
+#     if deleted_count == 0:
+#         logging.warning(f"No file record found to delete for '{username}/{filename}'.")
+#         return jsonify({"error": f"File '{filename}' not found for user '{username}'."}), 404
+#     else:
+#         # It's possible multiple records were deleted if names weren't unique
+#         logging.info(f"Successfully deleted {deleted_count} record(s) for '{username}/{filename}' from DB.")
+#         return jsonify({"message": f"Record for '{filename}' deleted successfully."}), 200
+# logging.info("Flask routes defined using configurable workers and linter fixes.")
+
+# routes.py
+
+# ... (other imports and functions) ...
+
+# MODIFIED delete_file_record function
+@app.route('/delete-file/<username>/<path:access_id_from_path>', methods=['DELETE'])
+@jwt_required() # Ensure only authenticated users can attempt deletion
+def delete_file_record(username: str, access_id_from_path: str) -> Response:
+    # username from path is mostly for URL structure, actual auth comes from JWT
+    log_prefix = f"[DeleteFile-{access_id_from_path}]"
+    logging.info(f"{log_prefix} DELETE request for username='{username}', access_id_from_path='{access_id_from_path}'")
+
+    # 1. --- Get Requesting User's Identity from JWT ---
+    current_user_jwt_identity = get_jwt_identity()
+    if not current_user_jwt_identity: # Should be caught by @jwt_required but defensive check
+        logging.warning(f"{log_prefix} JWT identity missing.")
+        return jsonify({"error": "Authentication token is invalid or missing."}), 401
+
+    user_doc, error = database.find_user_by_id(ObjectId(current_user_jwt_identity))
+    if error or not user_doc:
+        logging.error(f"{log_prefix} Could not find user for JWT identity '{current_user_jwt_identity}'. Error: {error}")
+        return jsonify({"error": "User not found or token invalid."}), 401
+
+    requesting_username = user_doc.get('username')
+    if not requesting_username:
+        logging.error(f"{log_prefix} User document for JWT identity '{current_user_jwt_identity}' missing username.")
+        return jsonify({"error": "User identity error."}), 500
+
+    logging.info(f"{log_prefix} Request initiated by user: '{requesting_username}'.")
+
+    # 2. --- Find the Record by access_id_from_path ---
+    record_to_delete, find_err = find_metadata_by_access_id(access_id_from_path)
+    if find_err:
+        logging.error(f"{log_prefix} DB Error finding record by access_id: {find_err}")
+        return jsonify({"error": "Server error checking record details."}), 500
+    if not record_to_delete:
+        logging.warning(f"{log_prefix} Record with access_id '{access_id_from_path}' not found.")
+        # This message is more accurate than what the old logic would produce
+        return jsonify({"error": f"Record with ID '{access_id_from_path}' not found."}), 404
+
+    # 3. --- Verify Ownership ---
+    record_owner_username = record_to_delete.get('username')
+    is_anonymous_record = record_to_delete.get('is_anonymous', False)
+    record_anonymous_id = record_to_delete.get('anonymous_id') # This would be for future anonymous deletion logic
+
+    # Ownership logic:
+    # - If the record has a username, it must match the requesting user's username.
+    # - (Future: If it's an anonymous record, different logic might apply, e.g., matching an anonymous session ID.
+    #   For now, we'll assume only named users can delete, or anonymous records aren't deletable this way).
+    
+    can_delete = False
+    if record_owner_username == requesting_username:
+        can_delete = True
+    # Add anonymous deletion logic here if required in the future:
+    # elif is_anonymous_record and record_anonymous_id and record_anonymous_id == some_identifier_from_requesting_anonymous_user:
+    #    can_delete = True
+
+
+    if not can_delete:
+        logging.warning(f"{log_prefix} Permission denied: User '{requesting_username}' (from JWT) attempted to delete record "
+                        f"with access_id '{access_id_from_path}' owned by '{record_owner_username}'. "
+                        f"Path username was '{username}'.")
+        return jsonify({"error": "Permission denied to delete this record."}), 403 # Forbidden
+
+    # 4. --- Ownership Confirmed - Proceed with Deletion by access_id ---
+    logging.info(f"{log_prefix} Ownership confirmed for user '{requesting_username}'. Attempting deletion by access_id '{access_id_from_path}'.")
+    
+    # Call the database function that deletes by access_id
+    deleted_count, db_error_msg = database.delete_metadata_by_access_id(access_id_from_path)
+
+    if db_error_msg:
+        logging.error(f"{log_prefix} DB Error during deletion by access_id: {db_error_msg}")
+        return jsonify({"error": "Server error during deletion."}), 500
 
     if deleted_count == 0:
-        logging.warning(f"No file record found to delete for '{username}/{filename}'.")
-        return jsonify({"error": f"File '{filename}' not found for user '{username}'."}), 404
+        # This case should be rare if we found the record just before, but handle defensively.
+        logging.warning(f"{log_prefix} Record with access_id '{access_id_from_path}' found but deletion resulted in 0 records removed.")
+        return jsonify({"error": f"Failed to delete record with ID '{access_id_from_path}'. It might have been deleted by another process."}), 404 # Or 500
     else:
-        # It's possible multiple records were deleted if names weren't unique
-        logging.info(f"Successfully deleted {deleted_count} record(s) for '{username}/{filename}' from DB.")
-        return jsonify({"message": f"Record for '{filename}' deleted successfully."}), 200
-logging.info("Flask routes defined using configurable workers and linter fixes.")
+        logging.info(f"{log_prefix} Successfully deleted record with access_id '{access_id_from_path}'. Count: {deleted_count}")
+        return jsonify({"message": f"Record for '{record_to_delete.get('batch_display_name', record_to_delete.get('original_filename', access_id_from_path))}' deleted successfully."}), 200
+
 
 @app.route('/delete-batch/<access_id>', methods=['DELETE'])
 @jwt_required() # Make sure only logged-in users can delete their stuff
@@ -2071,6 +2148,77 @@ def login():
 
     # GET request: just show the login page
     return render_template('login.html')
+
+
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def serve_angular_app(path: str):
+    """
+    Serves the Angular application's index.html for any route
+    not handled by other Flask routes (like API routes).
+    This allows Angular's client-side router to take over.
+    """
+    angular_index_path = os.path.join(app.static_folder, 'index.html')
+    if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
+        # If the path exists as a static file (e.g., main.js, an image), serve it.
+        return send_from_directory(app.static_folder, path)
+    elif os.path.exists(angular_index_path):
+        # Otherwise, for any other path, serve the Angular index.html.
+        # Angular router will handle the specific frontend route.
+        logging.info(f"Serving Angular index.html for path: /{path}")
+        return send_from_directory(app.static_folder, 'index.html')
+    else:
+        logging.error(f"Angular index.html not found at: {angular_index_path}")
+        return "Angular application not found.", 404
+
+
+
+# Add this to your routes.py file
+
+# In routes.py (add this new route)
+
+@app.route('/api/batch-details/<access_id>', methods=['GET'])
+def api_get_batch_details(access_id: str):
+    log_prefix = f"[API-BatchDetails-{access_id}]"
+    logging.info(f"{log_prefix} API request for batch details.")
+
+    batch_info, error_msg = find_metadata_by_access_id(access_id)
+
+    if error_msg:
+        logging.warning(f"{log_prefix} DB error finding batch: {error_msg}")
+        return jsonify({"error": "Failed to retrieve batch information due to a server error."}), 500
+
+    if not batch_info:
+        logging.warning(f"{log_prefix} Batch not found.")
+        return jsonify({"error": f"Batch with ID '{access_id}' not found."}), 404
+
+    # Ensure the structure matches what BatchDetails interface in Angular expects
+    response_data = {
+        "batch_name": batch_info.get('batch_display_name', f"Batch {access_id}"),
+        "username": batch_info.get('username', 'N/A'),
+        "upload_date": batch_info.get('upload_timestamp'), # Send as ISO string; Angular DatePipe will format it
+        "total_size": batch_info.get('total_original_size', 0),
+        "files": batch_info.get('files_in_batch', []), # This list should contain dicts compatible with FileInBatchInfo
+        "access_id": access_id
+    }
+
+    # Validate that 'files_in_batch' items have 'original_filename' and 'original_size'
+    processed_files = []
+    for f_item in response_data["files"]:
+        processed_f_item = f_item.copy()
+        if 'original_filename' not in processed_f_item:
+            processed_f_item['original_filename'] = "Unknown File"
+        if 'original_size' not in processed_f_item:
+            processed_f_item['original_size'] = 0
+        # Ensure other expected fields like 'skipped', 'failed', 'reason' are present or defaulted if necessary
+        processed_f_item.setdefault('skipped', False)
+        processed_f_item.setdefault('failed', False)
+        processed_f_item.setdefault('reason', None)
+        processed_files.append(processed_f_item)
+    response_data["files"] = processed_files
+
+    logging.info(f"{log_prefix} Successfully retrieved and processed batch details for API.")
+    return jsonify(response_data)
 
 @app.route('/logout')
 @login_required # Make sure only logged-in users can log out

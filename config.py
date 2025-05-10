@@ -10,13 +10,13 @@ import math
 # --- Configuration ---
 TELEGRAM_BOT_TOKEN = '7812479394:AAFrzOcHGKfc-1iOUbVEkptJkooaJrXHAxs' 
 TELEGRAM_CHAT_IDS = ['-4603853425','-1002614397019','-4641852757'] 
-#
 
 # --- Critical Check ---
 if not TELEGRAM_CHAT_IDS: raise ValueError("Config Error: TELEGRAM_CHAT_IDS empty.")
 if not TELEGRAM_BOT_TOKEN or 'YOUR_BOT_TOKEN' in TELEGRAM_BOT_TOKEN: raise ValueError("Config Error: TELEGRAM_BOT_TOKEN not set.")
 PRIMARY_TELEGRAM_CHAT_ID = str(TELEGRAM_CHAT_IDS[0]) if TELEGRAM_CHAT_IDS else None
 CHUNK_SIZE = 20 * 1024 * 1024
+TELEGRAM_MAX_CHUNK_SIZE_BYTES = 19 * 1024 * 1024
 
 # --- Telegram API Settings ---
 TELEGRAM_API_TIMEOUTS = { 'connect': 10, 'read': 60, 'send_document': 300, 'get_file': 30, 'download_file': 180 }

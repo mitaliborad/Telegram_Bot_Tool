@@ -2096,7 +2096,12 @@ def _prepare_download_and_generate_updates(prep_id: str) -> Generator[SseEvent, 
             yield _yield_sse_event('progress', {'percentage': fetch_percentage_target, 'bytesProcessed': fetched_bytes_count, 'totalBytes': total_bytes_to_fetch if total_bytes_to_fetch > 0 else fetched_bytes_count, 'speedMBps': progress_stats.get('speedMBps',0), 'etaFormatted':'00:00'})
             
             if is_compressed_final: 
-                yield _yield_sse_event('status', {'message': 'Decompressing...'})
+                logging.info(f"{log_prefix} Reassembled file is the target compressed file: {original_filename_final}")
+                temp_final_file_path = temp_reassembled_file_path
+                temp_reassembled_file_path = None
+                yield _yield_sse_event('status', {'message': 'File ready (was split, reassembled).'}) # Clarify status
+                yield _yield_sse_event('progress', {'percentage': 98})
+                
                 logging.info(f"{log_prefix} Decompressing reassembled file: {temp_reassembled_file_path}")
                 with tempfile.NamedTemporaryFile(delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"dl_final_{prep_id}_") as tf_final:
                    temp_final_file_path = tf_final.name 
@@ -2113,15 +2118,14 @@ def _prepare_download_and_generate_updates(prep_id: str) -> Generator[SseEvent, 
                 _safe_remove_file(temp_reassembled_file_path, prep_id, "intermediate reassembled file (was zip)") # Corrected description
                 temp_reassembled_file_path = None 
                 logging.info(f"{log_prefix} Decompression finished. Final file at {temp_final_file_path}")
-                yield _yield_sse_event('progress', {'percentage': 98})
             else: 
-                logging.info(f"{log_prefix} Using reassembled file directly (not compressed).")
+                logging.info(f"{log_prefix} Using reassembled file directly (was split, not originally compressed): {original_filename_final}")
                 temp_final_file_path = temp_reassembled_file_path
-                temp_reassembled_file_path = None 
+                temp_reassembled_file_path = None  
+                yield _yield_sse_event('status', {'message': 'File ready (was split, reassembled).'})
                 yield _yield_sse_event('progress', {'percentage': 98})
 
         else: # File is NOT split (is_split_final is False)
-            # ... (Non-split file download logic from previous answer - this part should be correct using telegram_file_id_final) ...
             logging.info(f"{log_prefix} Preparing non-split file '{original_filename_final}'.")
             if not telegram_file_id_final:
                 raise ValueError("Could not determine Telegram file ID for non-split download (Phase 2).")
@@ -2142,20 +2146,20 @@ def _prepare_download_and_generate_updates(prep_id: str) -> Generator[SseEvent, 
 
             if is_compressed_final:
                 yield _yield_sse_event('status', {'message': 'Decompressing...'})
-                logging.info(f"{log_prefix} Decompressing downloaded file...")
+                logging.info(f"{log_prefix} Decompressing downloaded single file: {original_filename_final}")
                 with tempfile.NamedTemporaryFile(delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"dl_final_{prep_id}_") as tf:
                     temp_final_file_path = tf.name
-                    zf = None
+                    zf_single_download = None
                     try:
                         zip_buffer = io.BytesIO(content_bytes)
-                        zf = zipfile.ZipFile(zip_buffer, 'r')
-                        inner_filename = _find_filename_in_zip(zf, original_filename_final, prep_id)
+                        zf_single_download = zipfile.ZipFile(zip_buffer, 'r')
+                        inner_filename = _find_filename_in_zip(zf_single_download, original_filename_final, prep_id)
                         logging.info(f"{log_prefix} Extracting '{inner_filename}' from zip.")
-                        with zf.open(inner_filename, 'r') as inner_file_stream:
+                        with zf_single_download.open(inner_filename, 'r') as inner_file_stream:
                             yield _yield_sse_event('progress', {'percentage': 75})
-                            shutil.copyfileobj(inner_file_stream, tf) 
+                            shutil.copyfileobj(inner_file_stream, tf)  
                     finally:
-                        if zf: zf.close()
+                        if zf_single_download: zf_single_download.close()
                 yield _yield_sse_event('progress', {'percentage': 95})
             else: 
                 yield _yield_sse_event('status', {'message': 'Saving temporary file...'})

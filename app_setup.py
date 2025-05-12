@@ -10,7 +10,7 @@ from datetime import timedelta # <<< CORRECTED IMPORT
 from dotenv import load_dotenv
 load_dotenv()
 
-static_folder_path = os.path.join(os.path.dirname(__file__), 'dist', 'telegrambot')
+# static_folder_path = os.path.join(os.path.dirname(__file__), 'dist', 'telegrambot')
 
 # --- Flask Application Setup ---
 app = Flask(__name__, template_folder='.')

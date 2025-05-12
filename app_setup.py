@@ -28,7 +28,8 @@ logging.info("Custom Jinja filter 'format_bytes' registered.")
 
 default_frontend_url = "http://localhost:4200"
 FRONTEND_URL_FROM_ENV = os.environ.get('FRONTEND_URL', default_frontend_url)
-allowed_origins = FRONTEND_URL_FROM_ENV
+#allowed_origins = FRONTEND_URL_FROM_ENV
+allowed_origins = "*"
 
 # --- Initialize CORS ---
 # allowed_origins = "https://telegrambot-rosy-psi.vercel.app/home"

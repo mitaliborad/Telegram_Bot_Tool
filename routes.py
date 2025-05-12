@@ -2202,23 +2202,71 @@ def initiate_download_all(access_id: str):
         status_code = 404 if "not found" in error_message_for_user.lower() else 400
         return jsonify({"error": error_message_for_user, "prep_id": None}), status_code
     
-    files_to_zip_meta = []
-    total_expected_zip_content_size = 0
-    for file_item in batch_info.get('files_in_batch', []):
-        if not file_item.get('skipped') and not file_item.get('failed'):
-            original_filename = file_item.get('original_filename')
-            original_size = file_item.get('original_size', 0)
-            send_locations = file_item.get('send_locations', [])
-            tg_file_id, _ = _find_best_telegram_file_id(send_locations, PRIMARY_TELEGRAM_CHAT_ID)
-            if original_filename and tg_file_id:
-                files_to_zip_meta.append({
-                    "original_filename": original_filename,
-                    "telegram_file_id": tg_file_id,
-                    "original_size": original_size
-                })
+    # files_to_zip_meta = []
+    # total_expected_zip_content_size = 0
+    # for file_item in batch_info.get('files_in_batch', []):
+    #     if not file_item.get('skipped') and not file_item.get('failed'):
+    #         original_filename = file_item.get('original_filename')
+    #         original_size = file_item.get('original_size', 0)
+    #         send_locations = file_item.get('send_locations', [])
+    #         tg_file_id, _ = _find_best_telegram_file_id(send_locations, PRIMARY_TELEGRAM_CHAT_ID)
+    #         if original_filename and tg_file_id:
+    #             files_to_zip_meta.append({
+    #                 "original_filename": original_filename,
+    #                 "telegram_file_id": tg_file_id,
+    #                 "original_size": original_size
+    #             })
+    #             total_expected_zip_content_size += original_size
+    #         else:
+    #             logging.warning(f"{log_prefix} Skipping file '{original_filename or 'Unknown'}' due to missing name or TG file ID for zipping.")
+    
+    files_to_zip_meta: list[dict] = []
+    total_expected_zip_content_size: int = 0
+
+    for file_item in batch_info.get("files_in_batch", []):
+# skip files the uploader marked as failed / skipped
+        if file_item.get("skipped") or file_item.get("failed"):
+            continue
+
+        original_filename = file_item.get("original_filename")
+        original_size = file_item.get("original_size", 0)
+
+# ── NEW: handle normal upload vs. chunked (is_split) upload ───────────────
+        tg_file_id = None
+
+        if file_item.get("is_split"):
+        # file was split into 18 MiB chunks; grab the TG file-id from the 1st chunk
+            chunks = file_item.get("chunks", [])
+            if chunks:
+                first_chunk_locations = chunks[0].get("send_locations", [])
+            if first_chunk_locations:
+                tg_file_id = first_chunk_locations[0].get("file_id")
+        else:
+        # regular ≤ 18 MiB upload – existing logic
+            send_locations = file_item.get("send_locations", [])
+            tg_file_id, _ = _find_best_telegram_file_id(
+            send_locations, PRIMARY_TELEGRAM_CHAT_ID
+        )
+
+        # ── add to the zip list if we found a TG file-id ──────────────────────────
+        if original_filename and tg_file_id:
+            meta_entry = {
+            "original_filename": original_filename,
+            "telegram_file_id" : tg_file_id,
+            "original_size" : original_size,
+            "is_split" : file_item.get("is_split", False),
+            }
+            # keep full chunk metadata so the zip-generator can re-assemble later
+            if file_item.get("is_split"):
+                meta_entry["chunks_meta"] = file_item.get("chunks", [])
+
+                files_to_zip_meta.append(meta_entry)
                 total_expected_zip_content_size += original_size
-            else:
-                logging.warning(f"{log_prefix} Skipping file '{original_filename or 'Unknown'}' due to missing name or TG file ID for zipping.")
+        else:
+            logging.warning(
+            f"{log_prefix} Skipping file '{original_filename or 'Unknown'}' "
+            f"due to missing name or TG file ID for zipping."
+            )
     
     if not files_to_zip_meta:
         logging.warning(f"{log_prefix} No valid files found in batch '{access_id}' to include in zip.")

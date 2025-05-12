@@ -2025,13 +2025,34 @@ def _prepare_download_and_generate_updates(prep_id: str) -> Generator[SseEvent, 
             file_too_big_errors_count = 0 # Counter for "file is too big" errors
 
             logging.info(f"{log_prefix} Submitting {num_chunks} chunk download tasks...")
+            # for i, chunk_info in enumerate(chunks_meta_final):
+            #     part_num = chunk_info.get('part_number')
+            #     chunk_send_locations = chunk_info.get('send_locations', [])
+            #     if not chunk_send_locations: raise ValueError(f"Chunk {part_num} missing 'send_locations'.")
+            #     chunk_telegram_file_id, _ = _find_best_telegram_file_id(chunk_send_locations, PRIMARY_TELEGRAM_CHAT_ID)
+            #     if not chunk_telegram_file_id: raise ValueError(f"No usable source file_id for chunk {part_num}.")
+            #     submitted_futures.append(download_executor.submit(_download_chunk_task, chunk_telegram_file_id, part_num, prep_id))
             for i, chunk_info in enumerate(chunks_meta_final):
-                part_num = chunk_info.get('part_number')
-                chunk_send_locations = chunk_info.get('send_locations', [])
-                if not chunk_send_locations: raise ValueError(f"Chunk {part_num} missing 'send_locations'.")
-                chunk_telegram_file_id, _ = _find_best_telegram_file_id(chunk_send_locations, PRIMARY_TELEGRAM_CHAT_ID)
-                if not chunk_telegram_file_id: raise ValueError(f"No usable source file_id for chunk {part_num}.")
-                submitted_futures.append(download_executor.submit(_download_chunk_task, chunk_telegram_file_id, part_num, prep_id))
+                part_num = chunk_info.get("part_number")
+                chunk_send_locations = chunk_info.get("send_locations", [])
+
+                # ── NEW: don’t abort the entire download if a single chunk is bad ──
+                if not chunk_send_locations:
+                    logging.warning(f"{log_prefix} Chunk {part_num} has no send_locations – skipping.")
+                    continue
+
+                chunk_telegram_file_id, _ = _find_best_telegram_file_id(
+                chunk_send_locations, PRIMARY_TELEGRAM_CHAT_ID
+                )
+                if not chunk_telegram_file_id:
+                    logging.warning(f"{log_prefix} Chunk {part_num} has no Telegram file_id – skipping.")
+                    continue
+
+                submitted_futures.append(
+                download_executor.submit(
+                _download_chunk_task, chunk_telegram_file_id, part_num, prep_id
+                )
+                )
             
             yield _yield_sse_event('status', {'message': f'Downloading {num_chunks} file parts...'})
             progress_stats = {}

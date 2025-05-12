@@ -26,8 +26,9 @@ app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1) # <<< This line shou
 app.jinja_env.filters['format_bytes'] = format_bytes
 logging.info("Custom Jinja filter 'format_bytes' registered.")
 
-default_frontend_url = "http://localhost:4200"
-FRONTEND_URL_FROM_ENV = os.environ.get('FRONTEND_URL', default_frontend_url)
+# default_frontend_url = "http://localhost:4200"
+FRONTEND_URL_FROM_ENV = os.environ.get('FRONTEND_URL')
+#, default_frontend_url
 #allowed_origins = FRONTEND_URL_FROM_ENV
 allowed_origins = "*"
 

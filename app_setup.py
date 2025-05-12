@@ -20,7 +20,7 @@ app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'default-flask-secret-key-ch
 # Use a separate strong secret key for JWT
 app.config["JWT_SECRET_KEY"] = os.environ.get('JWT_SECRET_KEY', 'default-jwt-secret-key-change-me!') # Change this default!
 # Configure token expiration
-app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1) # <<< This line should now work
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = False  
 
 # Register custom Jinja filters
 app.jinja_env.filters['format_bytes'] = format_bytes

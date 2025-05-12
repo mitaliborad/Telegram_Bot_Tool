@@ -2035,19 +2035,27 @@ def _prepare_download_and_generate_updates(prep_id: str) -> Generator[SseEvent, 
             
             yield _yield_sse_event('status', {'message': f'Downloading {num_chunks} file parts...'})
             progress_stats = {}
+            first_download_error: Optional[str] = None
+            file_too_big_errors_count = 0
             for future in as_completed(submitted_futures):
                 try:
                     pnum_result, content_result, err_result = future.result()
+                    logging.debug(f"{log_prefix} Future completed for chunk {pnum_result}. Error: {err_result is not None}")
                     if err_result:
                         logging.error(f"{log_prefix} Failed download chunk {pnum_result}: {err_result}")
                         if "file is too big" in err_result.lower(): file_too_big_errors_count += 1
-                        if not first_download_error: first_download_error = f"Chunk {pnum_result}: {err_result}"
+                        if not first_download_error:
+                            first_download_error = f"Chunk {pnum_result}: {err_result}"
+                            logging.info(f"{log_prefix} Stored first download error: {first_download_error}")
                     elif content_result:
                         downloaded_chunk_count += 1; chunk_length = len(content_result)
                         fetched_bytes_count += chunk_length; downloaded_content_map[pnum_result] = content_result
                         logging.debug(f"{log_prefix} Downloaded chunk {pnum_result}. Count:{downloaded_chunk_count}/{num_chunks} ({format_bytes(chunk_length)})")
                         overall_perc = (downloaded_chunk_count / num_chunks) * fetch_percentage_target
-                        progress_stats = _calculate_download_fetch_progress(start_fetch_time, fetched_bytes_count, total_bytes_to_fetch, downloaded_chunk_count, num_chunks, overall_perc, final_expected_size_final)
+                        progress_stats = _calculate_download_fetch_progress(
+                            start_fetch_time, fetched_bytes_count, total_bytes_to_fetch,
+                            downloaded_chunk_count, num_chunks, overall_perc, final_expected_size_final
+                        )
                         yield _yield_sse_event('progress', progress_stats)
                     else: 
                         logging.error(f"{log_prefix} Task for chunk {pnum_result} returned invalid state.");
@@ -2057,14 +2065,20 @@ def _prepare_download_and_generate_updates(prep_id: str) -> Generator[SseEvent, 
                     if not first_download_error: first_download_error = f"Processing future for chunk: {str(e)}"
 
             if first_download_error:
-                if file_too_big_errors_count > 1 and "file is too big" in first_download_error.lower():
-                     raise ValueError(f"Download failed: Multiple chunks reported 'file is too big'. First error: {first_download_error}")
-                raise ValueError(f"Download failed: {first_download_error}")
-            if downloaded_chunk_count != num_chunks:
-                 raise SystemError(f"Chunk download count mismatch. Expected:{num_chunks}, Got:{downloaded_chunk_count}. Error: {first_download_error}")
+                # Prioritize the "file too big" message if it occurred
+                if file_too_big_errors_count > 0:
+                     error_to_raise = "Download failed: One or more file parts were too large for Telegram to serve."
+                     logging.error(f"{log_prefix} Raising error due to 'file too big' count: {file_too_big_errors_count}. First specific error recorded was: {first_download_error}")
+                     raise ValueError(error_to_raise)
+                else:
+                     # Raise the first specific error encountered otherwise
+                     logging.error(f"{log_prefix} Raising first encountered download error: {first_download_error}")
+                     raise ValueError(f"Download failed: {first_download_error}")
 
-            logging.info(f"{log_prefix} All {num_chunks} chunks downloaded OK. Total fetched: {format_bytes(fetched_bytes_count)}.")
-            yield _yield_sse_event('status', {'message': 'Reassembling file...'})
+            if downloaded_chunk_count != num_chunks:
+                 # This check might be redundant if error handling above is robust, but keep as safety net
+                 logging.error(f"{log_prefix} Chunk download count mismatch! Expected:{num_chunks}, Got:{downloaded_chunk_count}. Raising SystemError.")
+                 raise SystemError(f"Chunk download count mismatch. Expected:{num_chunks}, Got:{downloaded_chunk_count}.")
             
             # Create the temporary file for reassembly
             # temp_reassembled_file_path MUST be defined before the 'if is_compressed_final' block for split files
@@ -2531,26 +2545,58 @@ def api_login():
 @app.route('/files/<username>', methods=['GET'])
 @jwt_required()
 def list_user_files(username: str) -> Response:
-    logging.info(f"List files request for: '{username}'")
-    logging.info(f"Fetching files for user '{username}' from DB...")
-    user_files, error_msg = find_metadata_by_username(username)
+    # --- Handle OPTIONS Preflight ---
+    if request.method == 'OPTIONS':
+        logging.debug(f"Handling OPTIONS request for /files/{username}")
+        response = make_response()
+        # Flask-CORS should automatically add the necessary headers based on app config
+        return response, 204
 
-    if error_msg:
-        logging.error(f"DB Error listing files for '{username}': {error_msg}")
-        return jsonify({"error": "Server error retrieving file list."}), 500
+    # --- Handle GET Request (Existing Logic) ---
+    if request.method == 'GET':
+        log_prefix = f"[ListFiles-{username}]" # Added for clarity
+        logging.info(f"{log_prefix} List files request received.")
 
-    if user_files is None:
-         user_files = []
+        # Verify JWT identity matches the requested username path
+        current_user_jwt_identity = get_jwt_identity()
+        user_doc, error = database.find_user_by_id(ObjectId(current_user_jwt_identity))
 
-    logging.info(f"Found {len(user_files)} records for '{username}'.")
-    serializable_files = []
-    for file_record in user_files:
-        if '_id' in file_record and hasattr(file_record['_id'], 'binary'): 
-             file_record['_id'] = str(file_record['_id']) 
-        serializable_files.append(file_record)
-    return jsonify(serializable_files) 
+        if error or not user_doc:
+            logging.error(f"{log_prefix} Could not find user for JWT identity '{current_user_jwt_identity}'. Error: {error}")
+            return jsonify({"error": "User not found or token invalid."}), 401
 
+        jwt_username = user_doc.get('username')
+        if not jwt_username:
+             logging.error(f"{log_prefix} User document for JWT identity missing username.")
+             return jsonify({"error": "User identity error."}), 500
 
+        if jwt_username != username:
+             logging.warning(f"{log_prefix} Authorization mismatch: JWT user '{jwt_username}' requested files for '{username}'.")
+             return jsonify({"error": "Forbidden: You can only list your own files."}), 403
+
+        logging.info(f"{log_prefix} Authorized. Fetching files for user '{username}' from DB...")
+        user_files, error_msg = find_metadata_by_username(username) # Use the verified username
+
+        if error_msg:
+            logging.error(f"{log_prefix} DB Error listing files: {error_msg}")
+            return jsonify({"error": "Server error retrieving file list."}), 500
+
+        if user_files is None:
+            user_files = []
+
+        logging.info(f"{log_prefix} Found {len(user_files)} records for '{username}'.")
+        serializable_files = []
+        for file_record in user_files:
+            # Ensure _id is stringified if it exists and is an ObjectId
+            if '_id' in file_record and isinstance(file_record['_id'], ObjectId):
+                file_record['_id'] = str(file_record['_id'])
+            serializable_files.append(file_record)
+
+        return jsonify(serializable_files)
+
+    # Should not be reached if methods are restricted to GET, OPTIONS
+    logging.error(f"Unexpected method {request.method} for /files/{username}")
+    return make_response(jsonify({"error": "Method Not Allowed"}), 405)
 # @app.route('/download-single/<access_id>/<path:filename>')
 # def download_single_file(access_id: str, filename: str):
 #     """

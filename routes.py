@@ -2122,8 +2122,11 @@ def _prepare_download_and_generate_updates(prep_id: str) -> Generator[SseEvent, 
                 logging.info(f"{log_prefix} Using reassembled file directly (was split, not originally compressed): {original_filename_final}")
                 temp_final_file_path = temp_reassembled_file_path
                 temp_reassembled_file_path = None  
-                yield _yield_sse_event('status', {'message': 'File ready (was split, reassembled).'})
-                yield _yield_sse_event('progress', {'percentage': 98})
+                if original_filename_final.lower().endswith('.zip'):
+                 yield _yield_sse_event('status', {'message': 'File ready (was split, reassembled ZIP).'})
+                else:
+                 yield _yield_sse_event('status', {'message': 'File ready (was split, reassembled).'})
+                 yield _yield_sse_event('progress', {'percentage': 98})
 
         else: # File is NOT split (is_split_final is False)
             logging.info(f"{log_prefix} Preparing non-split file '{original_filename_final}'.")
@@ -2136,7 +2139,7 @@ def _prepare_download_and_generate_updates(prep_id: str) -> Generator[SseEvent, 
             dl_duration = time.time() - start_dl
             dl_bytes_count = len(content_bytes) if content_bytes else 0
             dl_speed_mbps = (dl_bytes_count / (1024*1024) / dl_duration) if dl_duration > 0 else 0
-            logging.info(f"{log_prefix} TG download ({dl_bytes_count} bytes) in {dl_duration:.2f}s. Speed: {dl_speed_mbps:.2f} MB/s")
+            logging.info(f"{log_prefix} TG download ({format_bytes(dl_bytes_count)}) in {dl_duration:.2f}s. Speed: {dl_speed_mbps:.2f} MB/s")
 
             if err_msg: raise ValueError(f"TG download failed: {err_msg}")
             if not content_bytes: raise ValueError("TG download returned empty content.")
@@ -2153,11 +2156,15 @@ def _prepare_download_and_generate_updates(prep_id: str) -> Generator[SseEvent, 
                     try:
                         zip_buffer = io.BytesIO(content_bytes)
                         zf_single_download = zipfile.ZipFile(zip_buffer, 'r')
-                        inner_filename = _find_filename_in_zip(zf_single_download, original_filename_final, prep_id)
-                        logging.info(f"{log_prefix} Extracting '{inner_filename}' from zip.")
-                        with zf_single_download.open(inner_filename, 'r') as inner_file_stream:
-                            yield _yield_sse_event('progress', {'percentage': 75})
-                            shutil.copyfileobj(inner_file_stream, tf)  
+                        if original_filename_final.lower().endswith('.zip'):
+                            logging.info(f"{log_prefix} Downloaded single file is the target ZIP: {original_filename_final}. Saving directly.")
+                            tf.write(content_bytes)
+                        else: # Downloaded single file is a ZIP container for the original_filename_final
+                            logging.info(f"{log_prefix} Extracting '{original_filename_final}' from downloaded single zip.")
+                            inner_filename = _find_filename_in_zip(zf_single_download, original_filename_final, prep_id)
+                            with zf_single_download.open(inner_filename, 'r') as inner_file_stream:
+                                yield _yield_sse_event('progress', {'percentage': 75})
+                                shutil.copyfileobj(inner_file_stream, tf)  
                     finally:
                         if zf_single_download: zf_single_download.close()
                 yield _yield_sse_event('progress', {'percentage': 95})
@@ -2932,23 +2939,23 @@ def login():
     return render_template('login.html')
 
 
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def serve_angular_app(path: str):
-    """
-    Serves the Angular application's index.html for any route
-    not handled by other Flask routes (like API routes).
-    This allows Angular's client-side router to take over.
-    """
-    angular_index_path = os.path.join(app.static_folder, 'index.html')
-    if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
-        return send_from_directory(app.static_folder, path)
-    elif os.path.exists(angular_index_path):
-        logging.info(f"Serving Angular index.html for path: /{path}")
-        return send_from_directory(app.static_folder, 'index.html')
-    else:
-        logging.error(f"Angular index.html not found at: {angular_index_path}")
-        return "Angular application not found.", 404
+# @app.route('/', defaults={'path': ''})
+# @app.route('/<path:path>')
+# def serve_angular_app(path: str):
+#     """
+#     Serves the Angular application's index.html for any route
+#     not handled by other Flask routes (like API routes).
+#     This allows Angular's client-side router to take over.
+#     """
+#     angular_index_path = os.path.join(app.static_folder, 'index.html')
+#     if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
+#         return send_from_directory(app.static_folder, path)
+#     elif os.path.exists(angular_index_path):
+#         logging.info(f"Serving Angular index.html for path: /{path}")
+#         return send_from_directory(app.static_folder, 'index.html')
+#     else:
+#         logging.error(f"Angular index.html not found at: {angular_index_path}")
+#         return "Angular application not found.", 404
 
 @app.route('/api/batch-details/<access_id>', methods=['GET'])
 def api_get_batch_details(access_id: str):

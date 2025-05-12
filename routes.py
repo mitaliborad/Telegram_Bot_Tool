@@ -2268,30 +2268,30 @@ def initiate_download_all(access_id: str):
             f"due to missing name or TG file ID for zipping."
             )
     
-        if not files_to_zip_meta:
-            logging.warning(f"{log_prefix} No valid files found in batch '{access_id}' to include in zip.")
-            return jsonify({"error": "No files available to include in the 'Download All' zip.", "prep_id": None}), 404
+    if not files_to_zip_meta:
+        logging.warning(f"{log_prefix} No valid files found in batch '{access_id}' to include in zip.")
+        return jsonify({"error": "No files available to include in the 'Download All' zip.", "prep_id": None}), 404
 
-        batch_display_name_for_zip = batch_info.get('batch_display_name', f"download_all_{access_id}.zip")
-        if not batch_display_name_for_zip.lower().endswith(".zip"):
-            batch_display_name_for_zip += ".zip"
+    batch_display_name_for_zip = batch_info.get('batch_display_name', f"download_all_{access_id}.zip")
+    if not batch_display_name_for_zip.lower().endswith(".zip"):
+        batch_display_name_for_zip += ".zip"
 
 
-        download_prep_data[prep_id_for_zip] = {
-            "prep_id": prep_id_for_zip,
-            "status": "initiated_zip_all", 
-            "access_id_original_batch": access_id, 
-            "username": batch_info.get('username'),
-            "batch_display_name": batch_display_name_for_zip, 
-            "original_filename": batch_display_name_for_zip, 
-            "files_to_zip_meta": files_to_zip_meta, 
-            "total_expected_content_size": total_expected_zip_content_size, 
-            "error": None,
-            "final_temp_file_path": None, 
-            "final_file_size": 0,        
-            "start_time": time.time()
-        }
-        logging.info(f"{log_prefix} Stored prep data for 'Download All'. {len(files_to_zip_meta)} files to zip. Expected content size: {total_expected_zip_content_size} bytes. Zip name: {batch_display_name_for_zip}")
+    download_prep_data[prep_id_for_zip] = {
+        "prep_id": prep_id_for_zip,
+        "status": "initiated_zip_all", 
+        "access_id_original_batch": access_id, 
+        "username": batch_info.get('username'),
+        "batch_display_name": batch_display_name_for_zip, 
+        "original_filename": batch_display_name_for_zip, 
+        "files_to_zip_meta": files_to_zip_meta, 
+        "total_expected_content_size": total_expected_zip_content_size, 
+        "error": None,
+        "final_temp_file_path": None, 
+        "final_file_size": 0,        
+        "start_time": time.time()
+    }
+    logging.info(f"{log_prefix} Stored prep data for 'Download All'. {len(files_to_zip_meta)} files to zip. Expected content size: {total_expected_zip_content_size} bytes. Zip name: {batch_display_name_for_zip}")
 
     return jsonify({
         "message": "Download All initiated. Connect to SSE stream for progress.",

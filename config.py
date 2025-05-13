@@ -2,6 +2,11 @@ import os
 import logging
 from datetime import datetime
 import math
+from flask import Flask
+from flask_mail import Mail
+import urllib.parse
+from dotenv import load_dotenv # << ADD THIS AT THE TOP OF config.py
+load_dotenv()
 
 # TELEGRAM_MAX_SINGLE_FILE_UPLOAD_SIZE_BYTES = 1900 * 1024 * 1024
 # ANONYMOUS_UPLOAD_LIMIT_BYTES = 5 * 1024 * 1024 * 1024
@@ -30,6 +35,47 @@ MAX_DOWNLOAD_WORKERS = (os.cpu_count() or 1) * 2 + 4
 # --- Directory Settings ---
 LOG_DIR = "Selenium-Logs"
 UPLOADS_TEMP_DIR = "uploads_temp"
+
+ATLAS_USER = os.getenv("ATLAS_USER")
+ATLAS_PASSWORD = os.getenv("ATLAS_PASSWORD")
+ATLAS_CLUSTER_HOST = os.getenv("ATLAS_CLUSTER_HOST")
+encoded_user = urllib.parse.quote_plus(ATLAS_USER)
+encoded_password = urllib.parse.quote_plus(ATLAS_PASSWORD)
+cluster_host_for_uri = ATLAS_CLUSTER_HOST if ATLAS_CLUSTER_HOST else "your.default.cluster.host.for.error"
+
+
+app = Flask(__name__)
+
+app.config['SECRET_KEY'] = os.environ.get('FLASK_SECRET_KEY') or 'a-default-fallback-secret-key-for-dev-ONLY' # CHANGE THIS!
+MONGO_URI = f"mongodb+srv://{encoded_user}:{encoded_password}@{ATLAS_CLUSTER_HOST}/?retryWrites=true&w=majority&appName=Telegrambot"
+app.config['MONGO_URI'] = MONGO_URI 
+
+# --- Flask-Mail Configuration ---
+app.config['MAIL_SERVER'] = os.environ.get('MAIL_SERVER', 'smtp-relay.brevo.com')
+app.config['MAIL_PORT'] = int(os.environ.get('MAIL_PORT', 587)) # Use 587 for TLS
+app.config['MAIL_USE_TLS'] = os.environ.get('MAIL_USE_TLS', 'true').lower() in ['true', '1', 't'] # Should be True for port 587
+app.config['MAIL_USE_SSL'] = False # Explicitly set to False if using TLS on 587
+
+# This is usually your Brevo account email address
+app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME_BREVO') # Your Brevo login email
+
+# This is the SMTP Key you get from Brevo dashboard
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD_BREVO') # Your Brevo SMTP Key
+
+# The sender email address. This email MUST be validated/verified within your Brevo account.
+# Brevo will likely only let you send from addresses you've proven you own.
+app.config['MAIL_DEFAULT_SENDER'] = (
+    os.environ.get('MAIL_SENDER_NAME', 'Your App Name'), # e.g., "Telegram Bot Tool"
+    os.environ.get('MAIL_SENDER_EMAIL_BREVO')          # e.g., "no-reply@yourdomain.com" or your verified Brevo sender
+)
+
+# --- Initialize Flask-Mail ---
+mail = Mail(app) # Initialize Mail with your app instance
+
+# --- Password Reset Token Expiration (Optional, defaults below are reasonable) ---
+# Set the maximum age for the password reset token in seconds (e.g., 1 hour = 3600 seconds)
+app.config['PASSWORD_RESET_TOKEN_MAX_AGE'] = int(os.environ.get('PASSWORD_RESET_TOKEN_MAX_AGE', 3600))
+
 
 # --- Ensure Directories Exist ---
 for dir_path in [LOG_DIR, UPLOADS_TEMP_DIR]:

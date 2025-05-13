@@ -11,7 +11,6 @@ from flask import send_from_directory
 import logging
 from bson import ObjectId
 from database import User
-from app_setup import app, login_manager
 from datetime import datetime, timezone
 from typing import Dict, Any, Tuple, Optional, List, Generator, Union
 from concurrent.futures import ThreadPoolExecutor, Future, as_completed
@@ -36,8 +35,8 @@ from database import (
 )
 from config import format_time
 from flask_cors import CORS
-from app_setup import app, login_manager
-from app_setup import app, upload_progress_data, download_prep_data
+from config import app 
+from app_setup import login_manager, upload_progress_data, download_prep_data
 from config import (
     TELEGRAM_CHAT_IDS, PRIMARY_TELEGRAM_CHAT_ID, CHUNK_SIZE,
     UPLOADS_TEMP_DIR, MAX_UPLOAD_WORKERS, MAX_DOWNLOAD_WORKERS, TELEGRAM_MAX_CHUNK_SIZE_BYTES
@@ -58,26 +57,25 @@ DEFAULT_CHUNK_READ_SIZE = 4 * 1024 * 1024; STREAM_CHUNK_SIZE = 65536
 # ----- STEP 1D Start: Define user_loader -----
 @login_manager.user_loader
 def load_user(user_id: str) -> Optional[User]:
-    """Flask-Login user loader callback."""
     logging.debug(f"Attempting to load user with ID: {user_id}")
     if not user_id:
         return None
     try:
-        # Convert the string ID back to ObjectId for MongoDB query
-        user_doc, error = database.find_user_by_id(ObjectId(user_id)) # <<< --- NEW DB FUNCTION NEEDED
-        if error:
-             logging.error(f"Error loading user by ID {user_id}: {error}")
-             return None
-        if user_doc:
-             # Create and return a User object
-             return User(user_doc)
-        else:
-             logging.warning(f"User ID {user_id} not found in database.")
-             return None
-    except Exception as e:
-         # Handle potential ObjectId conversion errors or other issues
-         logging.error(f"Exception loading user {user_id}: {e}", exc_info=True)
+        user_obj_id = ObjectId(user_id) # Convert here
+    except Exception:
+        logging.error(f"Invalid ObjectId format for user_id: {user_id}")
+        return None
+    user_doc, error = database.find_user_by_id(user_obj_id)
+    if error:
+         logging.error(f"Error loading user by ID {user_id}: {error}")
          return None
+    if user_doc:
+         try:
+            return User(user_doc)
+         except ValueError as ve:
+            logging.error(f"Failed to instantiate User for ID {user_id}: {ve}")
+            return None
+    return None
 
 
 @app.route('/register', methods=['GET'])

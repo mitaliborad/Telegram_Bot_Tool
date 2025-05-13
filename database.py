@@ -9,12 +9,18 @@ from pymongo.errors import ConnectionFailure, OperationFailure
 from dotenv import load_dotenv
 from typing import Optional, Dict, Any, List, Tuple
 from flask_login import UserMixin
-from werkzeug.security import check_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 from bson import ObjectId
 from pymongo.collection import Collection
 from pymongo.database import Database
 from pymongo.errors import OperationFailure
+from pymongo import MongoClient
+from pymongo.errors import PyMongoError
+from config import MONGO_URI
 
+# client = MongoClient(MONGO_URI, 'mongodb://localhost:27017/')
+client = MongoClient(MONGO_URI)
+db = client['Telegrambot']
 # --- Load Environment Variables ---
 load_dotenv()
 
@@ -150,39 +156,60 @@ class User(UserMixin):
              return False
         return check_password_hash(self.password_hash, password_to_check)
 
-def find_user_by_id(user_id: ObjectId) -> Tuple[Optional[Dict[str, Any]], str]:
-    """
-    Finds a single user record by their MongoDB ObjectId.
+# def find_user_by_id(user_id: ObjectId) -> Tuple[Optional[Dict[str, Any]], str]:
+#     """
+#     Finds a single user record by their MongoDB ObjectId.
 
-    Args:
-        user_id: The ObjectId of the user.
+#     Args:
+#         user_id: The ObjectId of the user.
 
-    Returns:
-        A tuple (user_document or None, error_message)
-    """
+#     Returns:
+#         A tuple (user_document or None, error_message)
+#     """
+#     collection, error = get_userinfo_collection()
+#     if error or collection is None:
+#         logging.error(f"Failed to get userinfo collection for ID check: {error}")
+#         return None, f"Failed to get userinfo collection: {error}"
+
+#     if not isinstance(user_id, ObjectId):
+#         # Basic type check, ObjectId conversion happens in user_loader
+#         logging.error(f"Invalid type passed to find_user_by_id: {type(user_id)}")
+#         return None, "Invalid user ID format."
+
+#     try:
+#         user = collection.find_one({"_id": user_id})
+#         if user:
+#             logging.debug(f"Found user record for ID: {user_id}")
+#             return user, "" # Return the user document
+#         else:
+#             logging.debug(f"No user record found for ID: {user_id}")
+#             return None, "" # Not found isn't an error here
+
+#     except Exception as e:
+#         error_msg = f"Unexpected error finding user by ID '{user_id}': {e}"
+#         logging.exception(error_msg)
+#         return None, error_msg
+def find_user_by_id(user_id: ObjectId) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
+    """Finds a user document by its MongoDB ObjectId."""
     collection, error = get_userinfo_collection()
-    if error or collection is None:
-        logging.error(f"Failed to get userinfo collection for ID check: {error}")
-        return None, f"Failed to get userinfo collection: {error}"
-
     if not isinstance(user_id, ObjectId):
-        # Basic type check, ObjectId conversion happens in user_loader
-        logging.error(f"Invalid type passed to find_user_by_id: {type(user_id)}")
-        return None, "Invalid user ID format."
-
+         logging.error(f"Invalid type passed to find_user_by_id: {type(user_id)}")
+         # It's often better to let the ObjectId conversion happen *before* calling this
+         return None, "Invalid user ID format provided."
     try:
-        user = collection.find_one({"_id": user_id})
-        if user:
-            logging.debug(f"Found user record for ID: {user_id}")
-            return user, "" # Return the user document
+        user_doc = collection.find_one({"_id": user_id})
+        if user_doc:
+            logging.debug(f"Found user by ID: {user_id}")
+            return user_doc, None
         else:
-            logging.debug(f"No user record found for ID: {user_id}")
-            return None, "" # Not found isn't an error here
-
+            logging.debug(f"User not found by ID: {user_id}")
+            return None, None
+    except PyMongoError as e:
+        logging.error(f"Database error finding user by ID {user_id}: {e}", exc_info=True)
+        return None, f"Database error finding user: {e}"
     except Exception as e:
-        error_msg = f"Unexpected error finding user by ID '{user_id}': {e}"
-        logging.exception(error_msg)
-        return None, error_msg
+        logging.error(f"Error finding user by ID {user_id}: {e}", exc_info=True)
+        return None, f"Error finding user: {e}"
 
 def get_metadata_collection() -> Tuple[Optional[Collection], str]:
     """
@@ -255,6 +282,8 @@ def save_file_metadata(record: Dict[str, Any]) -> Tuple[bool, str]:
         error_msg = f"Unexpected error saving metadata: {e}"
         logging.exception(error_msg)
         return False, error_msg
+
+
 
 def find_metadata_by_username(username: str) -> Tuple[Optional[List[Dict[str, Any]]], str]:
     """
@@ -397,39 +426,56 @@ def get_userinfo_collection() -> Tuple[Optional[Collection], str]:
         logging.exception(error_msg)
         return None, error_msg
 
-def find_user_by_email(email: str) -> Tuple[Optional[Dict[str, Any]], str]:
-    """
-    Finds a single user record by their email address.
+# def find_user_by_email(email: str) -> Tuple[Optional[Dict[str, Any]], str]:
+#     """
+#     Finds a single user record by their email address.
 
-    Args:
-        email: The email address to search for.
+#     Args:
+#         email: The email address to search for.
 
-    Returns:
-        A tuple (user_document or None, error_message)
-    """
+#     Returns:
+#         A tuple (user_document or None, error_message)
+#     """
+#     collection, error = get_userinfo_collection()
+#     if error or collection is None:
+#         return None, f"Failed to get userinfo collection: {error}"
+
+#     try:
+#         # Convert email to lowercase for case-insensitive check
+#         email_lower = email.lower()
+#         user_doc = collection.find_one({"email": email_lower})
+#         if user_doc:
+#             logging.debug(f"Found user by email: {email}")
+#             return user_doc, None
+#         else:
+#             logging.debug(f"User not found by email: {email}")
+#             return None, None
+        
+#     except PyMongoError as e:
+#         logging.error(f"Database error finding user by email {email}: {e}", exc_info=True)
+#         return None, f"Database error finding user: {e}"
+#     except Exception as e:
+#         logging.error(f"Error finding user by email {email}: {e}", exc_info=True)
+#         return None, f"Error finding user: {e}"
+
+def find_user_by_email(email: str) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
+    """Finds a user document by email (case-insensitive search recommended)."""
     collection, error = get_userinfo_collection()
-    if error or collection is None:
-        return None, f"Failed to get userinfo collection: {error}"
-
     try:
-        # Convert email to lowercase for case-insensitive check
-        email_lower = email.lower()
-        user = collection.find_one({"email": email_lower})
-        if user:
-            logging.info(f"Found user record for email: {email_lower}")
-            return user, ""
+        # Use a case-insensitive regex or ensure emails are stored lowercase
+        user_doc = collection.find_one({"email": email.lower()}) # Assumes lowercase storage
+        if user_doc:
+            logging.debug(f"Found user by email: {email}")
+            return user_doc, None
         else:
-            logging.info(f"No user record found for email: {email_lower}")
-            return None, "" # Return None, but no error message if simply not found
-
-    except OperationFailure as of:
-        error_msg = f"Database operation failed finding user by email: {of}"
-        logging.exception(error_msg)
-        return None, error_msg
+            logging.debug(f"User not found by email: {email}")
+            return None, None
+    except PyMongoError as e:
+        logging.error(f"Database error finding user by email {email}: {e}", exc_info=True)
+        return None, f"Database error finding user: {e}"
     except Exception as e:
-        error_msg = f"Unexpected error finding user by email: {e}"
-        logging.exception(error_msg)
-        return None, error_msg
+        logging.error(f"Error finding user by email {email}: {e}", exc_info=True)
+        return None, f"Error finding user: {e}"
 
 def save_user(user_data: Dict[str, Any]) -> Tuple[bool, str]:
     """
@@ -554,3 +600,40 @@ def delete_metadata_by_access_id(access_id: str) -> Tuple[int, str]:
         error_msg = f"Unexpected error deleting metadata by access_id '{access_id}': {e}"
         logging.exception(error_msg)
         return 0, error_msg
+def update_user_password(user_id: ObjectId, new_password: str) -> Tuple[bool, str]:
+    """Updates the password hash for a given user ID."""
+    collection, error = get_userinfo_collection()
+    if error or collection is None: # Add this check
+        logging.error(f"Failed to get userinfo collection for password update: {error}")
+        return False, "Database error (collection unavailable)."
+    if not isinstance(user_id, ObjectId):
+         logging.error(f"Invalid type passed to update_user_password: {type(user_id)}")
+         return False, "Invalid user ID format provided."
+    try:
+        # Hash the new password before storing
+        hashed_pw = generate_password_hash(new_password, method='pbkdf2:sha256')
+
+        # Corrected line: removed .users
+        result = collection.update_one(
+            {"_id": user_id},
+            {"$set": {"password_hash": hashed_pw}}
+        )
+
+        if result.matched_count == 0:
+            logging.warning(f"Password update failed: User ID {user_id} not found.")
+            return False, "User not found."
+        if result.modified_count == 0:
+            # Could be the same password, consider this success or add specific handling
+            logging.warning(f"Password update for user ID {user_id} resulted in no changes (possibly same password).")
+            # Treat as success, user intends to use this password.
+            return True, "Password updated successfully (no change detected)."
+
+        logging.info(f"Successfully updated password for user ID {user_id}.")
+        return True, "Password updated successfully."
+
+    except PyMongoError as e:
+        logging.error(f"Database error updating password for user ID {user_id}: {e}", exc_info=True)
+        return False, "Database error during password update."
+    except Exception as e:
+        logging.error(f"Unexpected error updating password for user ID {user_id}: {e}", exc_info=True)
+        return False, "Server error during password update."

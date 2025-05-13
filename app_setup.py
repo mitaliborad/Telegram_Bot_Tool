@@ -95,7 +95,7 @@ app.jinja_env.filters['format_bytes'] = format_bytes
 # logging.info("Custom Jinja filter 'format_bytes' registered.") # Logging is set up in config.py
 
 env_frontend_url_setting = os.environ.get('FRONTEND_URL')
-allowed_origins = "*"
+
 if env_frontend_url_setting and env_frontend_url_setting.strip() == "*":
     allowed_origins_config = "*"
 elif env_frontend_url_setting:
@@ -114,7 +114,6 @@ CORS(app,
      supports_credentials=True, 
      methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
 logging.info(f"Flask-CORS initialized. Allowing origins: {allowed_origins_config}")
-logging.info(f"Flask-CORS initialized. Allowing origins: {allowed_origins}")
 
 jwt = JWTManager(app)
 logging.info("Flask-JWT-Extended initialized.")

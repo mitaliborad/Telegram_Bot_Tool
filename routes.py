@@ -61,19 +61,25 @@ def load_user(user_id: str) -> Optional[User]:
     if not user_id:
         return None
     try:
-        user_obj_id = ObjectId(user_id) # Convert here
+        user_obj_id = ObjectId(user_id) 
     except Exception:
         logging.error(f"Invalid ObjectId format for user_id: {user_id}")
         return None
+    
     user_doc, error = database.find_user_by_id(user_obj_id)
     if error:
          logging.error(f"Error loading user by ID {user_id}: {error}")
          return None
+    
     if user_doc:
-         try:
+        user_doc = _ensure_username_in_user_doc(user_doc) # MODIFIED: Add username if missing
+        if not user_doc or 'username' not in user_doc: # Double check if derivation failed badly
+            logging.error(f"Failed to ensure username for user_id {user_id}. User doc after attempt: {user_doc}")
+            return None
+        try:
             return User(user_doc)
-         except ValueError as ve:
-            logging.error(f"Failed to instantiate User for ID {user_id}: {ve}")
+        except ValueError as ve:
+            logging.error(f"Failed to instantiate User for ID {user_id}: {ve}. Document was: {user_doc}")
             return None
     return None
 
@@ -88,13 +94,10 @@ def show_register_page():
         logging.error(f"Error rendering register.html: {e}", exc_info=True)
         return make_response("Error loading page.", 500)
 
-@app.route('/register', methods=['POST', 'OPTIONS'])
+@app.route('/register', methods=['POST'])
 def register_user(): 
     """Handles user registration submission with username."""
     logging.info("Received POST request for /register")
-
-    if request.method == 'OPTIONS':
-        return make_response(), 204
     
     # 1. --- Get Data ---
     try:
@@ -481,6 +484,31 @@ def _calculate_download_fetch_progress(start: float, fetched: int, total_fetch: 
                 eta_seconds = remaining_chunks * time_per_chunk; prog['etaFormatted'] = format_time(eta_seconds)
             else: prog['etaFormatted'] = "00:00"
     return prog
+
+def _ensure_username_in_user_doc(user_doc: Optional[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
+    if user_doc and 'username' not in user_doc:
+        doc_id = user_doc.get('_id', 'N/A')
+        logging.warning(f"User document for _id {doc_id} is missing 'username'. Attempting to derive.")
+        if 'email' in user_doc and isinstance(user_doc['email'], str):
+            user_doc['username'] = user_doc['email'].split('@')[0]
+            logging.info(f"Derived username '{user_doc['username']}' from email for _id {doc_id}.")
+        elif 'firstName' in user_doc and 'lastName' in user_doc: # Fallback if email isn't suitable/present
+            derived_username = f"{user_doc.get('firstName', '')}{user_doc.get('lastName', '')}".replace(" ", "").lower()
+            if derived_username:
+                user_doc['username'] = derived_username
+                logging.info(f"Derived username '{user_doc['username']}' from firstName/lastName for _id {doc_id}.")
+            else:
+                # Last resort placeholder if derivation fails
+                user_doc['username'] = f"user_{str(doc_id)[-6:]}" if doc_id != 'N/A' else "unknown_user"
+                logging.warning(f"Could not derive a meaningful username for _id {doc_id}, using placeholder '{user_doc['username']}'.")
+        else:
+            # This is a critical situation if no username can be set.
+            # The User class will likely still fail.
+            logging.error(f"Cannot derive username for user document . User class instantiation will likely fail.")
+            # To prevent a crash if User class is extremely strict, you might return None or raise an error here.
+            # For now, we'll let it proceed, and the User class will raise its own error if it's still unhappy.
+    return user_doc
+
 
 def _safe_remove_file(path: str, prefix: str, desc: str):
     if not path or not isinstance(path, str):
@@ -2527,87 +2555,73 @@ def serve_temp_file(temp_id: str, filename: str) -> Response:
     return response
 
 # --- API Login Route ---
-@app.route('/api/auth/login', methods=['POST', 'OPTIONS'])
+@app.route('/api/auth/login', methods=['POST'])
 def api_login():
-    """
-    Handles API login requests.
-    Authenticates user with email/password and returns a JWT upon success.
-    """
+    logging.info("Received POST request for /api/auth/login")
+    try:
+        data = request.get_json()
+        if not data:
+            logging.warning("API Login failed: No JSON data received.")
+            return make_response(jsonify({"error": "Invalid request format. Expected JSON."}), 400)
 
-    if request.method == 'OPTIONS':
-        logging.debug("Handling OPTIONS request for /api/auth/login")
-        response = make_response()
-        return response, 204 
-    # --- Handle POST request ---
-    if request.method == 'POST':
-        logging.info("Received POST request for /api/auth/login")
-        # 1. Get Data from JSON Body
+        email = data.get('email', '').strip().lower()
+        password = data.get('password', '')
+    except Exception as e:
+        logging.error(f"Error parsing API login JSON data: {e}", exc_info=True)
+        return make_response(jsonify({"error": "Invalid request data received."}), 400)
+
+    if not email or not password:
+        logging.warning("API Login failed: Missing email or password.")
+        return make_response(jsonify({"error": "Email and password are required."}), 400)
+
+    logging.info(f"API Login attempt for email: {email}")
+    user_doc, db_error = find_user_by_email(email)
+
+    if db_error:
+        logging.error(f"Database error during API login for {email}: {db_error}")
+        return make_response(jsonify({"error": "Internal server error during login."}), 500)
+
+    user_obj = None
+    if user_doc:
+        user_doc = _ensure_username_in_user_doc(user_doc) # MODIFIED: Add username if missing
+        if not user_doc or 'username' not in user_doc: # Double check if derivation failed badly
+            logging.error(f"Failed to ensure username for login attempt (email: {email}). User doc after attempt: {user_doc}")
+            # This implies the User class is about to fail, so return an error preemptively.
+            return make_response(jsonify({"error": "Login failed due to inconsistent user data (username)."}), 500)
         try:
-            data = request.get_json()
-            if not data:
-                logging.warning("API Login failed: No JSON data received.")
-                return make_response(jsonify({"error": "Invalid request format. Expected JSON."}), 400)
+            user_obj = User(user_doc)
+        except ValueError as e:
+            # This log is more specific now if _ensure_username_in_user_doc was run
+            logging.error(f"Failed to create User object for {email} from doc {user_doc}: {e}", exc_info=True)
+            return make_response(jsonify({"error": "Login failed due to inconsistent user data."}), 500)
 
-            email = data.get('email', '').strip().lower()
-            password = data.get('password', '')
-            remember = data.get('remember', False) # Optional: Get remember flag
+    if user_obj and user_obj.check_password(password):
+        try:
+            identity = user_obj.get_id()
+            if not identity:
+                    logging.error(f"User object for {email} is missing an ID.")
+                    return make_response(jsonify({"error": "Internal server error - user identity missing."}), 500)
+            access_token = create_access_token(identity=identity) 
 
+            # Use the username from the User object, which should now be reliably set
+            response_username = user_obj.username
+
+            logging.info(f"User '{response_username}' ({email}) logged in successfully via API. Token created.")
+            return make_response(jsonify({
+                "message": "Login successful!",
+                "user": {
+                    "username": response_username,
+                    "email": user_obj.email,
+                    "id": identity 
+                },
+                "token": access_token  
+            }), 200) 
         except Exception as e:
-            logging.error(f"Error parsing API login JSON data: {e}", exc_info=True)
-            return make_response(jsonify({"error": "Invalid request data received."}), 400)
-
-        # 2. Basic Validation
-        if not email or not password:
-            logging.warning("API Login failed: Missing email or password.")
-            return make_response(jsonify({"error": "Email and password are required."}), 400)
-
-        logging.info(f"API Login attempt for email: {email}")
-
-        # 3. Find User in Database
-        user_doc, db_error = find_user_by_email(email)
-
-        if db_error:
-            logging.error(f"Database error during API login for {email}: {db_error}")
-            return make_response(jsonify({"error": "Internal server error during login."}), 500)
-
-        # 4. Validate User and Password
-        user_obj = None
-        if user_doc:
-            try:
-                user_obj = User(user_doc)
-            except ValueError as e:
-                logging.error(f"Failed to create User object for {email} from doc {user_doc}: {e}", exc_info=True)
-                return make_response(jsonify({"error": "Login failed due to inconsistent user data."}), 500)
-
-        # Check if user object was created AND password matches
-        if user_obj and user_obj.check_password(password):
-            try:
-                identity = user_obj.get_id()
-                if not identity:
-                     logging.error(f"User object for {email} is missing an ID.")
-                     return make_response(jsonify({"error": "Internal server error - user identity missing."}), 500)
-                access_token = create_access_token(identity=identity) 
-
-                logging.info(f"User '{user_obj.username}' ({email}) logged in successfully via API. Token created.")
-                return make_response(jsonify({
-                    "message": "Login successful!",
-                    "user": {
-                        "username": user_obj.username,
-                        "email": user_obj.email,
-                        "id": identity 
-                    },
-                    "token": access_token  
-                }), 200) 
-
-            except Exception as e:
-                 logging.error(f"Error creating JWT for user {email}: {e}", exc_info=True)
-                 return make_response(jsonify({"error": "Internal server error during token generation."}), 500)
-
-        else:
-            logging.warning(f"Failed API login attempt for email: {email} (Invalid credentials or user not found)")
-            return make_response(jsonify({"error": "Invalid email or password."}), 401)
-    logging.warning(f"Received unexpected method {request.method} for /api/auth/login")
-    return make_response(jsonify({"error": "Method Not Allowed"}), 405)
+                logging.error(f"Error creating JWT for user {email}: {e}", exc_info=True)
+                return make_response(jsonify({"error": "Internal server error during token generation."}), 500)
+    else:
+        logging.warning(f"Failed API login attempt for email: {email} (Invalid credentials or user not found)")
+        return make_response(jsonify({"error": "Invalid email or password."}), 401)
 
 @app.route('/files/<username>', methods=['GET'])
 @jwt_required()

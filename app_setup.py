@@ -94,11 +94,10 @@ from password_reset_routes import password_reset_bp
 app.jinja_env.filters['format_bytes'] = format_bytes
 # logging.info("Custom Jinja filter 'format_bytes' registered.") # Logging is set up in config.py
 
-FRONTEND_URL_FROM_ENV = os.environ.get('FRONTEND_URL', 'http://localhost:4200') # Get from .env or default
-# Update: Use the FRONTEND_URL from config.py if you defined it there
-# FRONTEND_URL_FROM_ENV = app.config.get('FRONTEND_URL', 'http://localhost:4200')
+FRONTEND_URL = "http://localhost:4200"
 
-allowed_origins = FRONTEND_URL_FROM_ENV if FRONTEND_URL_FROM_ENV != "*" else "*"
+FRONTEND_URL_FROM_ENV = os.environ.get('FRONTEND_URL')
+allowed_origins = "*"
 
 CORS(app, origins=allowed_origins, supports_credentials=True, methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
 logging.info(f"Flask-CORS initialized. Allowing origins: {allowed_origins}")

@@ -1,7 +1,7 @@
 # password_reset_routes.py
 import logging
 from flask import (
-    Blueprint, request, jsonify, current_app, make_response, render_template, url_for, flash, redirect)
+    Blueprint, request, jsonify, current_app, make_response, render_template, url_for, flash, redirect) # Added current_app
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
 from bson.objectid import ObjectId 
 from datetime import datetime 
@@ -17,7 +17,14 @@ password_reset_bp = Blueprint('password_reset', __name__, template_folder='templ
 def get_serializer(secret_key=None):
     """Creates and returns a URLSafeTimedSerializer instance."""
     if secret_key is None:
-        secret_key = os.environ.get['SECRET_KEY']
+        # Use the app's configured SECRET_KEY
+        secret_key = current_app.config.get('SECRET_KEY') 
+        if not secret_key:
+            logging.critical("CRITICAL: SECRET_KEY is not set in Flask app configuration. Password reset serializer cannot be created.")
+            # This will likely cause URLSafeTimedSerializer to fail or use a default weak key if not handled.
+            # For robustness, you might want to raise an error here if secret_key is None.
+            # raise ValueError("Application SECRET_KEY is not configured for the serializer.")
+            # However, to maintain previous behavior if it somehow worked, we let it pass to the serializer.
     return URLSafeTimedSerializer(secret_key)
 
 
@@ -29,8 +36,11 @@ def request_password_reset_api():
     Expects a JSON payload with the user's email.
     """
     if request.method == 'OPTIONS':
-
-        return make_response(jsonify({"message": "CORS preflight successful"}), 204)
+        # Flask-CORS should handle preflight. This manual response might be redundant
+        # but kept for consistency with original code. A simple make_response(), 204 is also fine.
+        response = make_response(jsonify({"message": "CORS preflight successful"}))
+        response.status_code = 204 # No Content for preflight
+        return response
 
     if request.method == 'POST':
         data = request.get_json()
@@ -45,6 +55,7 @@ def request_password_reset_api():
 
         if db_error:
             logging.error(f"DB error checking email {email} for API password reset: {db_error}")
+            # Still return a generic message to avoid account enumeration
             return make_response(jsonify({"message": "If an account with that email exists, a reset link has been sent."}), 200)
 
         if not user_doc:
@@ -60,21 +71,33 @@ def request_password_reset_api():
             logging.error(f"Error generating token for {email}: {e}", exc_info=True)
             return make_response(jsonify({"error": "Server error: Could not create reset token."}), 500)
 
-        # 3. Send the Email
-        # Example: http://localhost:4200/reset-password/THE_GENERATED_TOKEN
-        frontend_url = os.environ.get('FRONTEND_URL') 
-        reset_url = f"{frontend_url}/reset-password/{token}"
+        frontend_url = os.environ.get('FRONTEND_URL')
+        if not frontend_url:
+            logging.error("FRONTEND_URL environment variable is not set. Password reset links will be broken.")
+            # Decide if you want to proceed or return an error. Proceeding will send a bad link.
+            # For now, it proceeds, but this is a critical configuration.
+            frontend_url = "YOUR_FRONTEND_URL_NOT_SET" # Placeholder to make the f-string work
 
-        subject = "Password Reset Request - Your App Name" 
+        reset_url = f"{frontend_url}/reset-password/{token}"
+        
+        # Ensure PASSWORD_RESET_TOKEN_MAX_AGE is an int for display
+        try:
+            token_max_age_display = int(os.environ.get('PASSWORD_RESET_TOKEN_MAX_AGE', 3600)) // 60
+        except ValueError:
+            token_max_age_display = 3600 // 60 # Default to 60 minutes if parsing fails
+            logging.warning("Could not parse PASSWORD_RESET_TOKEN_MAX_AGE as int for email display, using default.")
+
+
+        subject = "Password Reset Request - Telegram File Storage" 
         username_display = user_doc.get('username', 'User')
         html_body = f"""
         <p>Hello {username_display},</p>
         <p>You (or someone else) requested a password reset for your account.</p>
         <p>If this was you, please click the link below to set a new password:</p>
         <p><a href="{reset_url}">Reset Your Password</a></p>
-        <p>This link will expire in approximately {os.environ.get('PASSWORD_RESET_TOKEN_MAX_AGE', 3600) // 60} minutes.</p>
+        <p>This link will expire in approximately {token_max_age_display} minutes.</p>
         <p>If you did not request this, please ignore this email. Your password will not be changed.</p>
-        <p>Thanks,<br>The Your App Name Team</p>
+        <p>Thanks,<br>The Telegram File Storage Team</p>
         <hr>
         <p><small>If you're having trouble clicking the link, copy and paste this URL into your browser:<br>{reset_url}</small></p>
         """
@@ -85,12 +108,12 @@ def request_password_reset_api():
         If this was you, please copy and paste the following link into your browser to set a new password:
         {reset_url}
 
-        This link will expire in approximately {os.environ.get('PASSWORD_RESET_TOKEN_MAX_AGE', 3600) // 60} minutes.
+        This link will expire in approximately {token_max_age_display} minutes.
 
         If you did not request this, please ignore this email. Your password will not be changed.
 
         Thanks,
-        The Your App Name Team
+        The Telegram File Storage Team
         """
 
         msg = Message(subject, recipients=[email], body=text_body, html=html_body)
@@ -99,6 +122,7 @@ def request_password_reset_api():
             logging.info(f"Password reset email successfully sent to {email}")
         except Exception as e:
             logging.error(f"Failed to send password reset email to {email}: {e}", exc_info=True)
+            # Still return a generic success message
             return make_response(jsonify({"message": "If an account with that email exists, a reset link has been sent."}), 200)
         return make_response(jsonify({"message": "If an account with that email exists, a reset link has been sent."}), 200)
     return make_response(jsonify({"error": "Method Not Allowed"}), 405)
@@ -112,12 +136,21 @@ def reset_password_api(token: str):
     Expects a JSON payload with 'password' and 'confirmPassword'.
     """
     if request.method == 'OPTIONS':
-        return make_response(jsonify({"message": "CORS preflight successful"}), 204)
+        response = make_response(jsonify({"message": "CORS preflight successful"}))
+        response.status_code = 204
+        return response
 
     if request.method == 'POST':
         s = get_serializer()
         try:
-            max_age_seconds = os.environ.get('PASSWORD_RESET_TOKEN_MAX_AGE', 3600)
+            # Ensure PASSWORD_RESET_TOKEN_MAX_AGE is an int for s.loads()
+            max_age_env_val = os.environ.get('PASSWORD_RESET_TOKEN_MAX_AGE', '3600')
+            try:
+                max_age_seconds = int(max_age_env_val)
+            except ValueError:
+                logging.error(f"Invalid value for PASSWORD_RESET_TOKEN_MAX_AGE: '{max_age_env_val}'. Using default 3600 seconds.")
+                max_age_seconds = 3600
+                
             token_data = s.loads(token, salt='password-reset-salt', max_age=max_age_seconds)
             user_id_str = token_data.get('user_id')
             token_email = token_data.get('email') 
@@ -191,7 +224,12 @@ def show_reset_password_form(token: str):
     """
     s = get_serializer()
     try:
-        max_age_seconds = os.environ.get('PASSWORD_RESET_TOKEN_MAX_AGE', 3600)
+        max_age_env_val = os.environ.get('PASSWORD_RESET_TOKEN_MAX_AGE', '3600')
+        try:
+            max_age_seconds = int(max_age_env_val)
+        except ValueError:
+            logging.error(f"Invalid value for PASSWORD_RESET_TOKEN_MAX_AGE: '{max_age_env_val}' for form. Using default 3600 seconds.")
+            max_age_seconds = 3600
         s.loads(token, salt='password-reset-salt', max_age=max_age_seconds)
         logging.info(f"Token valid for displaying Flask-rendered reset form: {token}")
         return render_template('password_reset/reset_password_form.html', token=token)

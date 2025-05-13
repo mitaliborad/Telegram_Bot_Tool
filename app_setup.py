@@ -94,10 +94,26 @@ from password_reset_routes import password_reset_bp
 app.jinja_env.filters['format_bytes'] = format_bytes
 # logging.info("Custom Jinja filter 'format_bytes' registered.") # Logging is set up in config.py
 
-FRONTEND_URL_FROM_ENV = os.environ.get('FRONTEND_URL')
+env_frontend_url_setting = os.environ.get('FRONTEND_URL')
 allowed_origins = "*"
+if env_frontend_url_setting and env_frontend_url_setting.strip() == "*":
+    allowed_origins_config = "*"
+elif env_frontend_url_setting:
+    allowed_origins_config = [url.strip() for url in env_frontend_url_setting.split(',')]
+else:
+    # Default to "*" if FRONTEND_URL is not set or empty,
+    # or provide a more restrictive default list if preferred for security.
+    # The user's provided file had `allowed_origins = "*"`.
+    allowed_origins_config = "*" 
+    logging.warning("FRONTEND_URL environment variable not set. Defaulting CORS to allow all origins ('*'). "
+                    "For production, it's recommended to set FRONTEND_URL to your specific frontend domain(s).")
 
-CORS(app, origins=allowed_origins, supports_credentials=True, methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
+
+CORS(app, 
+     origins=allowed_origins_config, 
+     supports_credentials=True, 
+     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
+logging.info(f"Flask-CORS initialized. Allowing origins: {allowed_origins_config}")
 logging.info(f"Flask-CORS initialized. Allowing origins: {allowed_origins}")
 
 jwt = JWTManager(app)

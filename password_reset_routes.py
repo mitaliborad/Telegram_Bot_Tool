@@ -8,14 +8,18 @@ from datetime import datetime
 import database
 from config import mail 
 from flask_mail import Message
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 password_reset_bp = Blueprint('password_reset', __name__, template_folder='templates')
 
 def get_serializer(secret_key=None):
     """Creates and returns a URLSafeTimedSerializer instance."""
     if secret_key is None:
-        secret_key = current_app.config['SECRET_KEY']
+        secret_key = os.environ.get['SECRET_KEY']
     return URLSafeTimedSerializer(secret_key)
+
 
 # --- Route to request a password reset link (API endpoint) ---
 @password_reset_bp.route('/api/auth/request-password-reset', methods=['POST', 'OPTIONS'])
@@ -58,7 +62,7 @@ def request_password_reset_api():
 
         # 3. Send the Email
         # Example: http://localhost:4200/reset-password/THE_GENERATED_TOKEN
-        frontend_url = current_app.config.get('FRONTEND_URL', 'http://localhost:4200') 
+        frontend_url = os.environ.get('FRONTEND_URL') 
         reset_url = f"{frontend_url}/reset-password/{token}"
 
         subject = "Password Reset Request - Your App Name" 
@@ -68,7 +72,7 @@ def request_password_reset_api():
         <p>You (or someone else) requested a password reset for your account.</p>
         <p>If this was you, please click the link below to set a new password:</p>
         <p><a href="{reset_url}">Reset Your Password</a></p>
-        <p>This link will expire in approximately {current_app.config.get('PASSWORD_RESET_TOKEN_MAX_AGE', 3600) // 60} minutes.</p>
+        <p>This link will expire in approximately {os.environ.get('PASSWORD_RESET_TOKEN_MAX_AGE', 3600) // 60} minutes.</p>
         <p>If you did not request this, please ignore this email. Your password will not be changed.</p>
         <p>Thanks,<br>The Your App Name Team</p>
         <hr>
@@ -81,7 +85,7 @@ def request_password_reset_api():
         If this was you, please copy and paste the following link into your browser to set a new password:
         {reset_url}
 
-        This link will expire in approximately {current_app.config.get('PASSWORD_RESET_TOKEN_MAX_AGE', 3600) // 60} minutes.
+        This link will expire in approximately {os.environ.get('PASSWORD_RESET_TOKEN_MAX_AGE', 3600) // 60} minutes.
 
         If you did not request this, please ignore this email. Your password will not be changed.
 
@@ -113,7 +117,7 @@ def reset_password_api(token: str):
     if request.method == 'POST':
         s = get_serializer()
         try:
-            max_age_seconds = current_app.config.get('PASSWORD_RESET_TOKEN_MAX_AGE', 3600)
+            max_age_seconds = os.environ.get('PASSWORD_RESET_TOKEN_MAX_AGE', 3600)
             token_data = s.loads(token, salt='password-reset-salt', max_age=max_age_seconds)
             user_id_str = token_data.get('user_id')
             token_email = token_data.get('email') 
@@ -187,7 +191,7 @@ def show_reset_password_form(token: str):
     """
     s = get_serializer()
     try:
-        max_age_seconds = current_app.config.get('PASSWORD_RESET_TOKEN_MAX_AGE', 3600)
+        max_age_seconds = os.environ.get('PASSWORD_RESET_TOKEN_MAX_AGE', 3600)
         s.loads(token, salt='password-reset-salt', max_age=max_age_seconds)
         logging.info(f"Token valid for displaying Flask-rendered reset form: {token}")
         return render_template('password_reset/reset_password_form.html', token=token)

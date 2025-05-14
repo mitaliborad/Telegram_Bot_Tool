@@ -143,6 +143,9 @@ def initiate_upload() -> Response:
             if file_storage_item and file_storage_item.filename:
                 original_filename = file_storage_item.filename 
                 individual_temp_file_path = os.path.join(batch_temp_dir, original_filename)
+                file_parent_dir = os.path.dirname(individual_temp_file_path)
+                if not os.path.exists(file_parent_dir):
+                    os.makedirs(file_parent_dir, exist_ok=True)
                 file_storage_item.save(individual_temp_file_path)
                 original_filenames_in_batch.append(original_filename)
         if not original_filenames_in_batch:

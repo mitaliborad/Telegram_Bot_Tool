@@ -419,18 +419,66 @@ def _download_chunk_task(file_id: str, part_num: int, prep_id: str) -> ChunkData
 def _parse_send_results(log_prefix: str, send_results: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     all_chat_details = []
     for res in send_results:
-        detail: Dict[str, Union[str, int, bool, None]] = {"chat_id": res["chat_id"], "success": res["success"]}
+        detail: Dict[str, Union[str, int, bool, None]] = {
+            "chat_id": res["chat_id"],
+            "success": res["success"], # This is r[0] - success of the HTTP request to Telegram
+            "api_message": res["message"] # This is r[1] - message from HTTP request
+        }
         if res["success"] and res["tg_response"]:
-            res_data = res["tg_response"].get('result', {})
-            msg_id = res_data.get('message_id'); doc_data = res_data.get('document', {})
-            f_id = doc_data.get('file_id'); f_uid = doc_data.get('file_unique_id'); f_size = doc_data.get('file_size')
-            if msg_id and f_id and f_uid:
-                detail["message_id"] = msg_id; detail["file_id"] = f_id; detail["file_unique_id"] = f_uid
-                if f_size is not None: detail["file_size"] = f_size
-            else: detail["success"] = False; detail["error"] = "Missing IDs in TG response"; logging.warning(f"[{log_prefix}] Missing IDs: {res['tg_response']}")
-        elif not res["success"]: detail["error"] = res["message"]
+            tg_result_data = res["tg_response"].get('result') # The 'result' object from Telegram
+            if tg_result_data:
+                msg_id = tg_result_data.get('message_id')
+                doc_data = tg_result_data.get('document')
+                if doc_data:
+                    f_id = doc_data.get('file_id')
+                    f_uid = doc_data.get('file_unique_id')
+                    f_size = doc_data.get('file_size')
+                    if msg_id and f_id and f_uid: # All essential IDs are present
+                        detail["message_id"] = msg_id
+                        detail["file_id"] = f_id
+                        detail["file_unique_id"] = f_uid
+                        if f_size is not None:
+                            detail["file_size"] = f_size
+                        # detail["success"] remains True (inherited from res["success"]) because API call + parsing OK
+                        detail["error"] = None 
+                    else:
+                        # API call was successful, but response content is bad
+                        detail["success"] = False # Downgrade success due to missing IDs
+                        missing_ids_msg = "Missing critical IDs in Telegram response."
+                        logging.warning(f"[{log_prefix}] Chat {res['chat_id']}: {missing_ids_msg} Response: {res['tg_response']}")
+                        detail["error"] = missing_ids_msg
+                        
+                else: # No 'document' field in Telegram result
+                    detail["success"] = False # Downgrade success
+                    no_doc_msg = "Telegram response missing 'document' field."
+                    logging.warning(f"[{log_prefix}] Chat {res['chat_id']}: {no_doc_msg} Response: {res['tg_response']}")
+                    detail["error"] = no_doc_msg
+            else: # No 'result' field in Telegram response
+                detail["success"] = False # Downgrade success
+                no_result_msg = "Telegram response missing 'result' field."
+                logging.warning(f"[{log_prefix}] Chat {res['chat_id']}: {no_result_msg} Response: {res['tg_response']}")
+                detail["error"] = no_result_msg
+        elif res["success"] and not res["tg_response"]: # API call success but no response body (should be rare)
+            detail["success"] = False # Downgrade success
+            no_body_msg = "Telegram API call succeeded but returned no response body."
+            logging.warning(f"[{log_prefix}] Chat {res['chat_id']}: {no_body_msg}")
+            detail["error"] = no_body_msg
+        elif not res["success"]: # API call itself failed (e.g., network error, TG server error)
+            detail["error"] = res["message"] # This was r[1], the error message from the API call
+            # detail["success"] is already False
+
         all_chat_details.append(detail)
     return all_chat_details
+    #         # res_data = res["tg_response"].get('result', {})
+    #         msg_id = res_data.get('message_id'); doc_data = res_data.get('document', {})
+    #         f_id = doc_data.get('file_id'); f_uid = doc_data.get('file_unique_id'); f_size = doc_data.get('file_size')
+    #         if msg_id and f_id and f_uid:
+    #             detail["message_id"] = msg_id; detail["file_id"] = f_id; detail["file_unique_id"] = f_uid
+    #             if f_size is not None: detail["file_size"] = f_size
+    #         else: detail["success"] = False; detail["error"] = "Missing IDs in TG response"; logging.warning(f"[{log_prefix}] Missing IDs: {res['tg_response']}")
+    #     elif not res["success"]: detail["error"] = res["message"]
+    #     all_chat_details.append(detail)
+    # return all_chat_details
 
 def _calculate_progress(start_time: float, bytes_done: int, total_bytes: int) -> Dict[str, Any]:
     progress = {"bytesSent": bytes_done, "totalBytes": total_bytes, "percentage": 0, "speedMBps": 0, "etaFormatted": "--:--", "etaSeconds": -1}
@@ -937,6 +985,9 @@ def process_upload_and_generate_updates(upload_id: str) -> Generator[SseEvent, N
             yield _yield_sse_event('error', {'message': 'Internal error: Invalid batch data.'})
             if batch_directory_path and os.path.isdir(batch_directory_path): # Check if path is valid before removing
                 _safe_remove_directory(batch_directory_path, log_prefix, "invalid batch dir")
+            if upload_id in upload_progress_data:
+                upload_progress_data[upload_id]['status'] = 'error'
+                upload_progress_data[upload_id]['error'] = 'No destination chats configured.'
             return
 
         logging.info(f"{log_prefix} Processing batch: User='{username}', Dir='{batch_directory_path}', Files={original_filenames_in_batch}")
@@ -956,6 +1007,11 @@ def process_upload_and_generate_updates(upload_id: str) -> Generator[SseEvent, N
         else:
             logging.error(f"{log_prefix} No Telegram chat IDs configured. Cannot upload.")
             yield _yield_sse_event('error', {'message': 'Server configuration error: No destination chats.'})
+            if batch_directory_path and os.path.isdir(batch_directory_path):
+                _safe_remove_directory(batch_directory_path, log_prefix, "config error batch dir")
+            if upload_id in upload_progress_data:
+                upload_progress_data[upload_id]['status'] = 'error'
+                upload_progress_data[upload_id]['error'] = 'No destination chats configured.'
             return
 
 
@@ -976,6 +1032,9 @@ def process_upload_and_generate_updates(upload_id: str) -> Generator[SseEvent, N
         if not files_to_process_details:
             yield _yield_sse_event('error', {'message': 'No valid files found to upload in the batch.'})
             _safe_remove_directory(batch_directory_path, log_prefix, "empty batch dir after file check")
+            if upload_id in upload_progress_data:
+                 upload_progress_data[upload_id]['status'] = 'error'
+                 upload_progress_data[upload_id]['error'] = 'No valid files found to upload.'
             return
 
         yield _yield_sse_event('start', {'filename': batch_display_name, 'totalSize': total_original_bytes_in_batch})
@@ -984,7 +1043,7 @@ def process_upload_and_generate_updates(upload_id: str) -> Generator[SseEvent, N
         overall_start_time = time.time()
         bytes_sent_so_far = 0
         all_files_metadata_for_db = [] 
-        batch_overall_success = True # Tracks if all files in the batch were processed without primary failure
+        batch_overall_success = True 
 
         for file_detail in files_to_process_details:
             current_file_path = file_detail["path"]
@@ -1036,6 +1095,50 @@ def process_upload_and_generate_updates(upload_id: str) -> Generator[SseEvent, N
                             primary_send_success_for_this_chunk = False
                             primary_send_message_for_this_chunk = "Primary chunk send not attempted or failed."
 
+                            # if executor:
+                            #     for chat_id_str_loop in TELEGRAM_CHAT_IDS:
+                            #         cid_loop = str(chat_id_str_loop)
+                            #         fut = executor.submit(_send_chunk_task, chunk_data, chunk_filename, cid_loop, upload_id, part_number)
+                            #         chunk_specific_futures[fut] = cid_loop
+                            # else: 
+                            #     cid_single = str(TELEGRAM_CHAT_IDS[0])
+                            #     _, res_tuple_no_exec_chunk = _send_chunk_task(chunk_data, chunk_filename, cid_single, upload_id, part_number)
+                            #     chunk_specific_results[cid_single] = res_tuple_no_exec_chunk
+                            #     primary_send_success_for_this_chunk = res_tuple_no_exec_chunk[0]
+                            #     primary_send_message_for_this_chunk = res_tuple_no_exec_chunk[1]
+                            
+                            # if chunk_specific_futures: 
+                            #     primary_chunk_fut: Optional[Future] = None
+                            #     primary_cid_str_chunk = str(PRIMARY_TELEGRAM_CHAT_ID)
+                            #     for fut_key, chat_id_val in chunk_specific_futures.items():
+                            #         if chat_id_val == primary_cid_str_chunk: primary_chunk_fut = fut_key; break
+                            #     if primary_chunk_fut:
+                            #         cid_res_chunk, res_chunk = primary_chunk_fut.result()
+                            #         chunk_specific_results[cid_res_chunk] = res_chunk
+                            #         primary_send_success_for_this_chunk = res_chunk[0]
+                            #         primary_send_message_for_this_chunk = res_chunk[1]
+                            #     else: 
+                            #         primary_send_success_for_this_chunk = False; primary_send_message_for_this_chunk = "Primary chat not configured for chunk."
+                            #     for fut_completed_chunk in as_completed(chunk_specific_futures):
+                            #         cid_res_c, res_c = fut_completed_chunk.result()
+                            #         if cid_res_c not in chunk_specific_results: chunk_specific_results[cid_res_c] = res_c
+                            
+                            # parsed_locations_for_this_chunk = _parse_send_results(f"{log_chunk_prefix}", 
+                            #     [{"chat_id": k, "success": r[0], "message": r[1], "tg_response": r[2]} for k, r in chunk_specific_results.items()])
+
+                            # if primary_send_success_for_this_chunk:
+                            #     file_meta_entry["chunks"].append({"part_number": part_number, "size": len(chunk_data), "send_locations": parsed_locations_for_this_chunk})
+                            #     bytes_sent_so_far += len(chunk_data)
+                            #     bytes_processed_for_this_file_chunking += len(chunk_data)
+                            #     current_batch_progress_chunk = _calculate_progress(overall_start_time, bytes_sent_so_far, total_original_bytes_in_batch)
+                            #     yield _yield_sse_event('progress', current_batch_progress_chunk)
+                            #     yield _yield_sse_event('status', {'message': f'Uploaded chunk {part_number} for {current_filename}'})
+                            # else:
+                            #     logging.error(f"{log_chunk_prefix} Failed. Reason: {primary_send_message_for_this_chunk}. Aborting for this file.")
+                            #     batch_overall_success = False; all_chunks_sent_successfully_for_this_file = False
+                            #     file_meta_entry["failed"] = True; file_meta_entry["reason"] = f"Failed chunk {part_number}: {primary_send_message_for_this_chunk}"
+                            #     break # Break from while True (chunk loop for this file)
+                            # part_number += 1
                             if executor:
                                 for chat_id_str_loop in TELEGRAM_CHAT_IDS:
                                     cid_loop = str(chat_id_str_loop)
@@ -1045,8 +1148,8 @@ def process_upload_and_generate_updates(upload_id: str) -> Generator[SseEvent, N
                                 cid_single = str(TELEGRAM_CHAT_IDS[0])
                                 _, res_tuple_no_exec_chunk = _send_chunk_task(chunk_data, chunk_filename, cid_single, upload_id, part_number)
                                 chunk_specific_results[cid_single] = res_tuple_no_exec_chunk
-                                primary_send_success_for_this_chunk = res_tuple_no_exec_chunk[0]
-                                primary_send_message_for_this_chunk = res_tuple_no_exec_chunk[1]
+                                primary_api_call_success_for_this_chunk = res_tuple_no_exec_chunk[0]
+                                primary_api_call_message_for_this_chunk = res_tuple_no_exec_chunk[1]
                             
                             if chunk_specific_futures: 
                                 primary_chunk_fut: Optional[Future] = None
@@ -1056,10 +1159,10 @@ def process_upload_and_generate_updates(upload_id: str) -> Generator[SseEvent, N
                                 if primary_chunk_fut:
                                     cid_res_chunk, res_chunk = primary_chunk_fut.result()
                                     chunk_specific_results[cid_res_chunk] = res_chunk
-                                    primary_send_success_for_this_chunk = res_chunk[0]
-                                    primary_send_message_for_this_chunk = res_chunk[1]
+                                    primary_api_call_success_for_this_chunk = res_chunk[0]
+                                    primary_api_call_message_for_this_chunk = res_chunk[1]
                                 else: 
-                                    primary_send_success_for_this_chunk = False; primary_send_message_for_this_chunk = "Primary chat not configured for chunk."
+                                    primary_api_call_success_for_this_chunk = False; primary_api_call_message_for_this_chunk = "Primary chat not configured for chunk."
                                 for fut_completed_chunk in as_completed(chunk_specific_futures):
                                     cid_res_c, res_c = fut_completed_chunk.result()
                                     if cid_res_c not in chunk_specific_results: chunk_specific_results[cid_res_c] = res_c
@@ -1067,21 +1170,32 @@ def process_upload_and_generate_updates(upload_id: str) -> Generator[SseEvent, N
                             parsed_locations_for_this_chunk = _parse_send_results(f"{log_chunk_prefix}", 
                                 [{"chat_id": k, "success": r[0], "message": r[1], "tg_response": r[2]} for k, r in chunk_specific_results.items()])
 
-                            if primary_send_success_for_this_chunk:
+                            # Check success of the primary chunk after parsing
+                            primary_parsed_chunk_loc = next((loc for loc in parsed_locations_for_this_chunk if loc.get('chat_id') == str(PRIMARY_TELEGRAM_CHAT_ID) and loc.get('success')), None)
+
+                            if primary_parsed_chunk_loc: # Primary chunk sent and parsed successfully
                                 file_meta_entry["chunks"].append({"part_number": part_number, "size": len(chunk_data), "send_locations": parsed_locations_for_this_chunk})
                                 bytes_sent_so_far += len(chunk_data)
                                 bytes_processed_for_this_file_chunking += len(chunk_data)
                                 current_batch_progress_chunk = _calculate_progress(overall_start_time, bytes_sent_so_far, total_original_bytes_in_batch)
                                 yield _yield_sse_event('progress', current_batch_progress_chunk)
                                 yield _yield_sse_event('status', {'message': f'Uploaded chunk {part_number} for {current_filename}'})
-                            else:
-                                logging.error(f"{log_chunk_prefix} Failed. Reason: {primary_send_message_for_this_chunk}. Aborting for this file.")
+                            else: # Primary chunk failed (either API call or parsing)
+                                error_reason_chunk = primary_api_call_message_for_this_chunk
+                                if primary_api_call_success_for_this_chunk: # API call was ok, but parsing failed
+                                    failed_loc = next((loc for loc in parsed_locations_for_this_chunk if loc.get('chat_id') == str(PRIMARY_TELEGRAM_CHAT_ID)), None)
+                                    if failed_loc and failed_loc.get('error'):
+                                        error_reason_chunk = failed_loc.get('error')
+                                
+                                logging.error(f"{log_chunk_prefix} Failed. Reason: {error_reason_chunk}. Aborting for this file.")
                                 batch_overall_success = False; all_chunks_sent_successfully_for_this_file = False
-                                file_meta_entry["failed"] = True; file_meta_entry["reason"] = f"Failed chunk {part_number}: {primary_send_message_for_this_chunk}"
-                                break # Break from while True (chunk loop for this file)
+                                file_meta_entry["failed"] = True; file_meta_entry["reason"] = f"Failed chunk {part_number}: {error_reason_chunk}"
+                                file_meta_entry["send_locations"] = [] # Clear any partial chunk locations for the main file entry
+                                file_meta_entry["chunks"] = parsed_locations_for_this_chunk # Store the problematic chunk's attempt
+                                break 
                             part_number += 1
                     # End of `with open` for chunking
-                    if all_chunks_sent_successfully_for_this_file: # If loop completed without break
+                    if all_chunks_sent_successfully_for_this_file: 
                         file_meta_entry["compressed_total_size"] = bytes_processed_for_this_file_chunking
                         logging.info(f"{log_file_prefix_indiv} All {part_number-1} chunks processed successfully.")
                     # If loop broke due to chunk failure, file_meta_entry["failed"] is already True.
@@ -1103,9 +1217,9 @@ def process_upload_and_generate_updates(upload_id: str) -> Generator[SseEvent, N
                         cid_single_no_exec = str(TELEGRAM_CHAT_IDS[0])
                         _, res_tuple_single_no_exec = _send_single_file_task(current_file_path, current_filename, cid_single_no_exec, upload_id)
                         single_file_results[cid_single_no_exec] = res_tuple_single_no_exec
-                        primary_send_success_for_single_file = res_tuple_single_no_exec[0]
-                        primary_send_message_single_file = res_tuple_single_no_exec[1]
-
+                        primary_api_call_success_for_single_file = res_tuple_single_no_exec[0]
+                        primary_api_call_message_single_file = res_tuple_single_no_exec[1]
+                        
                     if single_file_futures:
                         primary_fut_single: Optional[Future] = None
                         primary_cid_str_single = str(PRIMARY_TELEGRAM_CHAT_ID)
@@ -1114,9 +1228,10 @@ def process_upload_and_generate_updates(upload_id: str) -> Generator[SseEvent, N
                         if primary_fut_single:
                             cid_res_s, res_s = primary_fut_single.result()
                             single_file_results[cid_res_s] = res_s
-                            primary_send_success_for_single_file = res_s[0]; primary_send_message_single_file = res_s[1]
+                            primary_api_call_success_for_single_file = res_s[0]; primary_api_call_message_single_file = res_s[1]
                         else:
-                            primary_send_success_for_single_file = False; primary_send_message_single_file = "Primary chat not configured (single file)."
+                            primary_api_call_success_for_single_file = False; primary_api_call_message_single_file = "Primary chat not configured (single file)."
+                            
                         for fut_completed_s in as_completed(single_file_futures):
                             cid_res_s_comp, res_s_comp = fut_completed_s.result()
                             if cid_res_s_comp not in single_file_results: single_file_results[cid_res_s_comp] = res_s_comp
@@ -1124,22 +1239,30 @@ def process_upload_and_generate_updates(upload_id: str) -> Generator[SseEvent, N
                     parsed_locations_single_file = _parse_send_results(f"{log_file_prefix_indiv}", 
                         [{"chat_id": k, "success": r[0], "message": r[1], "tg_response": r[2]} for k,r in single_file_results.items()])
 
-                    if primary_send_success_for_single_file:
+                    primary_parsed_loc = next((loc for loc in parsed_locations_single_file if loc.get('chat_id') == str(PRIMARY_TELEGRAM_CHAT_ID) and loc.get('success')), None)
+                    
+                    if primary_parsed_loc: # Primary send successful and parsed correctly
                         bytes_sent_so_far += current_file_size
                         file_meta_entry["send_locations"] = parsed_locations_single_file
                         logging.info(f"{log_file_prefix_indiv} Successfully processed (single file).")
-                    else:
+                    else: # Primary send failed (either API call or parsing)
                         batch_overall_success = False
                         file_meta_entry["failed"] = True
-                        file_meta_entry["reason"] = f"Primary send failed (single): {primary_send_message_single_file}"
-                        file_meta_entry["send_locations"] = parsed_locations_single_file
-                        logging.error(f"{log_file_prefix_indiv} Failed (single). Reason: {primary_send_message_single_file}")
+                        error_reason_single = primary_api_call_message_single_file
+                        if primary_api_call_success_for_single_file: # API call was OK, but parsing failed
+                             failed_loc = next((loc for loc in parsed_locations_single_file if loc.get('chat_id') == str(PRIMARY_TELEGRAM_CHAT_ID)), None)
+                             if failed_loc and failed_loc.get('error'):
+                                 error_reason_single = failed_loc.get('error')
 
-            except Exception as file_processing_exception: # Catch errors from if/else block
+                        file_meta_entry["reason"] = f"Primary send failed: {error_reason_single}"
+                        file_meta_entry["send_locations"] = parsed_locations_single_file # Store whatever was parsed (likely errors)
+                        logging.error(f"{log_file_prefix_indiv} Failed (single). Reason: {error_reason_single}")
+
+            except Exception as file_processing_exception: 
                 logging.error(f"{log_file_prefix_indiv} Unexpected error processing this file: {file_processing_exception}", exc_info=True)
                 file_meta_entry["failed"] = True
                 file_meta_entry["reason"] = f"Unexpected internal error: {str(file_processing_exception)}"
-                batch_overall_success = False
+                batch_overall_success = False # Mark batch as having errors
             
             all_files_metadata_for_db.append(file_meta_entry)
             progress_data_after_file = _calculate_progress(overall_start_time, bytes_sent_so_far, total_original_bytes_in_batch)
@@ -1154,7 +1277,8 @@ def process_upload_and_generate_updates(upload_id: str) -> Generator[SseEvent, N
             logging.error(f"{log_prefix} CRITICAL: No metadata generated after processing loop.")
             # This indicates a fundamental flaw if reached. Send error and exit.
             yield _yield_sse_event('error', {'message': 'Internal server error: Failed to record upload details.'})
-            upload_data['status'] = 'error'; upload_data['error'] = "No metadata generated"
+            if upload_id in upload_progress_data:
+                upload_progress_data[upload_id]['status'] = 'error'; upload_progress_data[upload_id]['error'] = "No metadata generated" 
             return
 
         final_batch_had_errors = any(fme.get("failed", False) for fme in all_files_metadata_for_db)
@@ -1179,27 +1303,49 @@ def process_upload_and_generate_updates(upload_id: str) -> Generator[SseEvent, N
         logging.info(f"{log_prefix} DB: Successfully saved batch metadata.")
         
         browser_url = f"{request.host_url.rstrip('/')}/browse/{access_id}"
-        complete_message = f'Batch upload ({len(files_to_process_details)} files) ' + \
-                           ('completed with errors.' if final_batch_had_errors else 'complete!')
+        # complete_message = f'Batch upload ({len(files_to_process_details)} files) ' + \
+        #                    ('completed with errors.' if final_batch_had_errors else 'complete!')
+        # complete_payload = {
+        #     'message': complete_message, 'download_url': browser_url,
+        #     'filename': batch_display_name, 'batch_access_id': access_id 
+        # }
+        # upload_data['status'] = 'completed_with_errors' if final_batch_had_errors else 'completed'
+        # logging.info(f"{log_prefix} Yielding '{upload_data['status']}' event. Payload: {json.dumps(complete_payload)}")
+        # yield _yield_sse_event('complete', complete_payload)
+
+        num_total_files = len(files_to_process_details)
+        num_successful_files = sum(1 for fme in all_files_metadata_for_db if not fme.get("failed") and not fme.get("skipped"))
+        
+        if num_successful_files == num_total_files:
+            complete_message = f'Batch upload of {num_total_files} file(s) complete!'
+            upload_data['status'] = 'completed'
+        elif num_successful_files > 0:
+            complete_message = f'Batch upload complete with {num_total_files - num_successful_files} issue(s) out of {num_total_files} files.'
+            upload_data['status'] = 'completed_with_errors'
+        else:
+            complete_message = f'Batch upload failed. All {num_total_files} file(s) had issues.'
+            upload_data['status'] = 'error' # Or completed_with_errors if that's more appropriate
+
         complete_payload = {
             'message': complete_message, 'download_url': browser_url,
             'filename': batch_display_name, 'batch_access_id': access_id 
         }
-        upload_data['status'] = 'completed_with_errors' if final_batch_had_errors else 'completed'
         logging.info(f"{log_prefix} Yielding '{upload_data['status']}' event. Payload: {json.dumps(complete_payload)}")
         yield _yield_sse_event('complete', complete_payload)
 
+        
     except Exception as e: # Outermost catch-all for the generator
         logging.error(f"{log_prefix} UNHANDLED EXCEPTION in upload generator: {e}", exc_info=True)
         error_msg_final = f"Critical upload processing error: {str(e) or type(e).__name__}"
         yield _yield_sse_event('error', {'message': error_msg_final})
-        if upload_id in upload_progress_data: # Should exist
+        if upload_id in upload_progress_data: 
             upload_progress_data[upload_id]['status'] = 'error'
             upload_progress_data[upload_id]['error'] = error_msg_final
+            
     finally:
         logging.info(f"{log_prefix} Upload generator final cleanup.")
         if executor:
-            executor.shutdown(wait=True) # Changed to wait=True to ensure tasks (like file closing) finish
+            executor.shutdown(wait=True) 
             logging.info(f"{log_prefix} Upload executor shutdown (waited).")
         
         if batch_directory_path and os.path.exists(batch_directory_path):
@@ -2777,13 +2923,19 @@ def download_single_file(access_id: str, filename: str):
         return response
 
     files_in_batch = batch_info.get('files_in_batch', [])
-    target_file_info = next((f for f in files_in_batch if f.get('original_filename') == filename and not f.get('skipped') and not f.get('failed')), None)
+    target_file_info = next((f for f in files_in_batch if f.get('original_filename') == filename), None)
 
     if not target_file_info:
         logging.warning(f"{log_prefix} File '{filename}' not found or was skipped/failed in batch '{access_id}'.")
         def error_stream(): yield _yield_sse_event('error', {'message': f"File '{filename}' not found or unavailable in this batch."})
         return Response(stream_with_context(error_stream()), mimetype='text/event-stream', status=404)
 
+    if target_file_info.get('skipped') or target_file_info.get('failed'):
+        reason = target_file_info.get('reason', 'File was skipped or failed during upload.')
+        logging.warning(f"{log_prefix} File '{filename}' cannot be downloaded. Reason: {reason}")
+        def error_stream(): yield _yield_sse_event('error', {'message': f"Cannot download '{filename}': {reason}"})
+        return Response(stream_with_context(error_stream()), mimetype='text/event-stream', status=400)
+    
     prep_telegram_file_id: Optional[str] = None
     prep_is_split = target_file_info.get('is_split', False)
     prep_chunks_meta: Optional[List[Dict[str, Any]]] = None
@@ -2791,9 +2943,10 @@ def download_single_file(access_id: str, filename: str):
     
     if prep_is_split:
         prep_chunks_meta = target_file_info.get('chunks')
-        if not prep_chunks_meta: # Checks for None or empty list
+        if not prep_chunks_meta: 
             logging.error(f"{log_prefix} Split file '{filename}' in batch '{access_id}' is missing chunk metadata or has an empty chunk list.")
-            def error_stream(): yield _yield_sse_event('error', {'message': f"Internal error: Chunk data missing for '{filename}'."})
+            # Use a more specific error message for the user here
+            def error_stream(): yield _yield_sse_event('error', {'message': f"Error preparing '{filename}': Essential chunk data is missing. The upload might have been corrupted."})
             return Response(stream_with_context(error_stream()), mimetype='text/event-stream', status=500)
         logging.info(f"{log_prefix} File '{filename}' is split, will use chunk metadata for download. Chunks found: {len(prep_chunks_meta)}")
     else: 
@@ -2802,7 +2955,8 @@ def download_single_file(access_id: str, filename: str):
         
         if not tg_file_id_lookup: 
             logging.error(f"{log_prefix} No usable Telegram file_id found for non-split file '{filename}' in batch '{access_id}'. Locations: {send_locations}")
-            def error_stream(): yield _yield_sse_event('error', {'message': f"Could not find a valid source for file '{filename}'. Upload might be incomplete."})
+            # This is the message from the backend log in the issue description
+            def error_stream(): yield _yield_sse_event('error', {'message': f"Could not find a valid download source for '{filename}'. The upload might be incomplete or corrupted."})
             return Response(stream_with_context(error_stream()), mimetype='text/event-stream', status=500)
         
         prep_telegram_file_id = tg_file_id_lookup 
@@ -2818,10 +2972,10 @@ def download_single_file(access_id: str, filename: str):
         "telegram_file_id": prep_telegram_file_id, 
         "is_split": prep_is_split, 
         "chunks_meta": prep_chunks_meta, 
-        "is_compressed": prep_is_compressed,
+        "is_compressed": prep_is_compressed, # Use the determined value
         "final_expected_size": target_file_info.get('original_size', 0),
-        "compressed_total_size": target_file_info.get('compressed_total_size', 0),
-        "is_item_from_batch": True, # Explicitly mark that this prep_data is for a file within a batch
+        "compressed_total_size": target_file_info.get('compressed_total_size', 0) if prep_is_split else target_file_info.get('original_size', 0), # For non-split, compressed is original
+        "is_item_from_batch": True, 
         "error": None,
         "final_temp_file_path": None,
         "final_file_size": 0,

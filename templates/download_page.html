@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download File - {{ filename }}</title>
+    <style>
+        body { font-family: sans-serif; padding: 2em; line-height: 1.6; }
+        .container { max-width: 600px; margin: auto; border: 1px solid #ccc; padding: 2em; border-radius: 8px; background-color: #f9f9f9; }
+        h1 { color: #333; text-align: center; }
+        p { margin: 0.5em 0; }
+        strong { color: #555; }
+        hr { border: none; border-top: 1px solid #eee; margin: 1.5em 0; }
+
+        /* Style for the Button (can be same as original link style) */
+        .download-button {
+            display: inline-block;
+            background-color: #337ab7;
+            color: white;
+            padding: 12px 25px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 1.1em;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        .download-button:hover:not(:disabled) { background-color: #0056b3; }
+        .download-button:disabled {
+             background-color: #cccccc;
+             cursor: not-allowed;
+             opacity: 0.7;
+        }
+
+        .center-button { text-align: center; margin-top: 1em; }
+
+        /* --- START: Added styles for progress details (similar to index.html) --- */
+        #download-progress-details {
+            margin-top: 15px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f9f9f9; /* Match container background */
+        }
+        #download-progress-details progress {
+            width: 100%;
+            height: 10px;
+            margin-bottom: 10px;
+            /* Optional: Add specific styling for the progress bar appearance */
+            accent-color: #337ab7; /* Match button color */
+        }
+        #download-progress-details .progress-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+         #download-progress-details .progress-info span {
+             word-break: break-all; /* Prevent long filenames from breaking layout */
+         }
+        #download-progress-details .progress-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9em;
+            color: #555;
+        }
+        #download-progress-details .progress-meta span {
+             margin-right: 5px; /* Spacing for icons/text */
+        }
+        #download-progress-details .progress-meta span[title] {
+            cursor: help; /* Indicate tooltips */
+        }
+        /* Status message styling */
+        #download-status {
+             margin-top: 10px;
+             font-weight: bold;
+             text-align: center; /* Center status messages */
+             min-height: 1.2em; /* Prevent layout jumps */
+        }
+        /* --- END: Added styles --- */
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>File Ready for Download</h1>
+        <p><strong>Filename:</strong> <span id="static-filename">{{ filename }}</span></p> {# Added span ID #}
+        <p><strong>Size:</strong> {{ filesize | format_bytes }}</p> {# Keep original size display #}
+        <p><strong>Uploaded:</strong> {{ upload_date }}</p>
+        <hr>
+
+        <!-- === START: Added Download Progress Details Section (Hidden Initially) === -->
+        <div id="download-progress-details" style="display: none;">
+            <div class="progress-info">
+                <span id="download-progress-filename" style="font-weight: bold;">filename.zip</span>
+                <span> <!-- Progress text (MB/MB) -->
+                    <span id="download-mb-received" style="color: #337ab7;">0.0 MB</span> / <span id="download-mb-total">0.0 MB</span>
+                </span>
+            </div>
+            <progress id="download-progress-bar" value="0" max="100"></progress>
+            <div class="progress-meta">
+                <div>
+                    <span title="Estimated Time Remaining">⏱️</span>
+                    <span id="download-eta">--:--</span>
+                    <span style="margin-left: 15px;" title="Download Speed">⬇️</span>
+                    <span id="download-speed">0.0 MB/s</span>
+                </div>
+                <!-- Optional: Could add a Cancel button here later -->
+                <!-- <button id="cancel-download-button" class="progress-button">Cancel</button> -->
+            </div>
+        </div>
+        <!-- Status Message Area -->
+        <p id="download-status"></p>
+        <!-- === END: Added Download Progress Details Section === -->
+
+
+        <div class="center-button">
+            <!-- === START: Replaced Link with Button === -->
+            <button id="download-button"
+                class="download-button"
+                data-access-id="{{ access_id }}"  {# Changed from data-download-url #}
+                data-filename="{{ filename }}">
+            Download Now
+        </button>
+            <!-- === END: Replaced Link with Button === -->
+        </div>
+
+        <p style="text-align:center; font-size: 0.8em; color: #777; margin-top: 1.5em;">
+            Link generated by Telegram Uploader.
+        </p>
+    </div>
+    <script>
+                    // === START: Step 2 - SSE JavaScript ===
+        console.log("Download page SSE JavaScript executing.");
+
+// --- Element References ---
+const downloadButton = document.getElementById('download-button');
+const progressDetailsDiv = document.getElementById('download-progress-details');
+const progressFilenameSpan = document.getElementById('download-progress-filename');
+const mbReceivedSpan = document.getElementById('download-mb-received'); // Will show Bytes Processed
+const mbTotalSpan = document.getElementById('download-mb-total');
+const progressBar = document.getElementById('download-progress-bar');
+const etaSpan = document.getElementById('download-eta');
+const speedSpan = document.getElementById('download-speed');
+const statusPara = document.getElementById('download-status');
+const staticFilenameSpan = document.getElementById('static-filename'); // Can still use for default
+
+let sse = null; // To hold the EventSource object
+
+// --- Helper Function: Format Time (Keep as is) ---
+function formatTime(seconds) {
+    if (isNaN(seconds) || seconds < 0 || !isFinite(seconds)) return "--:--"; // Added isFinite check
+    seconds = Math.round(seconds);
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+
+    if (hours > 0) {
+        return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    } else {
+        return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+}
+
+// --- Download Button Logic ---
+downloadButton.addEventListener('click', (event) => {
+        event.preventDefault();
+
+        // Close existing SSE connection if button is clicked again somehow
+        if (sse) {
+            sse.close();
+            sse = null;
+            console.log("Closed previous SSE connection.");
+        }
+
+        // === START: Step 3 - Read from corrected data attribute ===
+        const accessId = downloadButton.dataset.accessId; // Read from data-access-id
+        // === END: Step 3 - Read from corrected data attribute ===
+
+        if (!accessId) {
+            statusPara.textContent = "Error: Cannot determine file ID.";
+            statusPara.style.color = 'red';
+            return;
+        }
+
+        const streamUrl = `/stream-download/${accessId}`;
+
+    // --- UI Setup ---
+    downloadButton.disabled = true;
+    statusPara.textContent = 'Connecting to preparation service...';
+    statusPara.style.color = '#333';
+    progressDetailsDiv.style.display = 'block'; // Show progress section
+    // Reset progress elements
+    progressBar.value = 0;
+    mbReceivedSpan.textContent = '0.0 MB'; // Will show bytes processed by server
+    mbTotalSpan.textContent = '?.? MB';   // Waiting for 'start' event
+    etaSpan.textContent = '--:--';
+    speedSpan.textContent = '0.0 MB/s';
+    // Set initial filename from static text, will be updated by 'start' event
+    progressFilenameSpan.textContent = staticFilenameSpan.textContent;
+
+    console.log(`Connecting to SSE stream: ${streamUrl}`);
+    sse = new EventSource(streamUrl);
+
+    // --- SSE Event Handlers ---
+
+    sse.onopen = function() {
+        console.log("SSE connection opened.");
+        statusPara.textContent = 'Connection established. Preparing download...';
+    };
+
+    sse.addEventListener('start', function(event) {
+        console.log("SSE 'start' event:", event.data);
+        try {
+            const data = JSON.parse(event.data);
+            progressFilenameSpan.textContent = data.filename || 'Unknown Filename';
+            const totalBytes = data.totalSize || 0;
+            if (totalBytes > 0) {
+                mbTotalSpan.textContent = `${(totalBytes / (1024 * 1024)).toFixed(1)} MB`;
+            } else {
+                mbTotalSpan.textContent = 'N/A';
+            }
+            progressBar.value = 0; // Ensure reset
+            mbReceivedSpan.textContent = '0.0 MB'; // Ensure reset
+        } catch (e) {
+            console.error("Error parsing 'start' event data:", e);
+        }
+    });
+
+    sse.addEventListener('status', function(event) {
+        console.log("SSE 'status' event:", event.data);
+         try {
+            const data = JSON.parse(event.data);
+            statusPara.textContent = data.message || 'Processing...';
+        } catch (e) {
+            console.error("Error parsing 'status' event data:", e);
+            statusPara.textContent = event.data; // Display raw data if parse fails
+        }
+    });
+
+    sse.addEventListener('progress', function(event) {
+        // console.log("SSE 'progress' event:", event.data); // Can be noisy, uncomment for debug
+         try {
+            const data = JSON.parse(event.data);
+            const percentage = data.percentage !== undefined ? Math.min(Math.max(data.percentage, 0), 100) : 0;
+            const bytesProcessed = data.bytesProcessed || 0;
+            const totalBytes = data.totalBytes || 0; // Use totalBytes from progress if available
+            const speed = data.speedMBps !== undefined ? data.speedMBps.toFixed(1) : '0.0';
+            const eta = data.etaFormatted || '--:--';
+
+            progressBar.value = percentage;
+            mbReceivedSpan.textContent = `${(bytesProcessed / (1024 * 1024)).toFixed(1)} MB`;
+            // Update total only if provided in progress, otherwise keep value from 'start'
+            if (totalBytes > 0) {
+                mbTotalSpan.textContent = `${(totalBytes / (1024 * 1024)).toFixed(1)} MB`;
+            }
+            speedSpan.textContent = `${speed} MB/s`;
+            etaSpan.textContent = eta;
+
+        } catch (e) {
+            console.error("Error parsing 'progress' event data:", e);
+        }
+    });
+
+    sse.addEventListener('ready', function(event) {
+        console.log("SSE 'ready' event:", event.data);
+         try {
+            const data = JSON.parse(event.data);
+            const tempFileId = data.temp_file_id;
+            const finalFilename = data.final_filename || staticFilenameSpan.textContent || 'download.dat'; // Use received filename
+
+            if (!tempFileId) {
+                throw new Error("Missing temporary file ID from server.");
+            }
+
+            // Construct the final download URL
+            // Need to make sure url encoding is handled correctly if filename has special chars
+            const finalDownloadUrl = `/serve-temp-file/${tempFileId}/${encodeURIComponent(finalFilename)}`;
+
+            console.log(`Preparation complete. Redirecting to: ${finalDownloadUrl}`);
+            statusPara.textContent = `File "${finalFilename}" is downloaded.`;
+            statusPara.style.color = 'green';
+            progressBar.value = 100; // Ensure 100%
+
+            // Close the SSE connection BEFORE redirecting
+            if (sse) {
+                sse.close();
+                sse = null;
+                console.log("SSE connection closed on ready.");
+            }
+
+            // Redirect the browser to trigger the actual download
+            window.location.href = finalDownloadUrl;
+
+            // Re-enable the button after a delay (download happens in new request)
+             setTimeout(() => {
+                 downloadButton.disabled = false;
+                 // Optional: Hide progress details again?
+                 // progressDetailsDiv.style.display = 'none';
+             }, 4000); // Longer delay as redirect takes time
+
+
+         } catch (e) {
+            console.error("Error parsing 'ready' event data or building URL:", e);
+            statusPara.textContent = `Error preparing final download: ${e.message}`;
+            statusPara.style.color = 'red';
+             if (sse) { sse.close(); sse = null; } // Close SSE on error too
+            downloadButton.disabled = false; // Re-enable button on error
+            progressDetailsDiv.style.display = 'none';
+         }
+    });
+
+    sse.addEventListener('error', function(event) {
+        console.error("SSE 'error' event received:", event.data);
+         let errorMsg = 'An error occurred during preparation.';
+         try {
+             if (event.data) {
+                 const data = JSON.parse(event.data);
+                 errorMsg = `Error: ${data.message || 'Unknown preparation error.'}`;
+             }
+         } catch(e) { /* Ignore if data is not JSON */ }
+
+        statusPara.textContent = errorMsg;
+        statusPara.style.color = 'red';
+        progressDetailsDiv.style.display = 'none'; // Hide progress on error
+         if (sse) { sse.close(); sse = null; } // Close SSE
+        downloadButton.disabled = false; // Re-enable button
+    });
+
+    // Handle generic SSE connection errors
+   sse.onerror = function(err) {
+       console.error("SSE EventSource connection error:", err);
+       // Avoid showing error if WE closed the connection (e.g., on 'ready')
+       if (sse) { // Check if sse object still exists (wasn't set to null)
+           statusPara.textContent = 'Connection to preparation service lost.';
+           statusPara.style.color = 'red';
+           progressDetailsDiv.style.display = 'none';
+           sse.close(); // Ensure it's closed
+           sse = null;
+           downloadButton.disabled = false;
+       } else {
+           console.log("SSE onerror skipped (connection likely closed intentionally).");
+       }
+   };
+
+}); // End of button click listener
+
+// === END: Step 2 - SSE JavaScript ===
+    </script>
+
+</body>
+</html>

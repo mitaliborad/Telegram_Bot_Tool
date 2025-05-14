@@ -1,153 +1,92 @@
-# from flask import Flask
-# import logging
-# from flask_cors import CORS
-# from typing import Dict, Any
-# from config import format_bytes, app, mail
-# from flask_login import LoginManager
-# from flask_jwt_extended import JWTManager
-# import os
-# from datetime import timedelta # <<< CORRECTED IMPORT
-# from dotenv import load_dotenv
-# load_dotenv()
-
-# # static_folder_path = os.path.join(os.path.dirname(__file__), 'dist', 'telegrambot')
-
-# # --- Flask Application Setup ---
-# # app = Flask(__name__, template_folder='.')
-
-# # Use a strong, unique secret key, ideally from environment variables
-# app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'default-flask-secret-key-change-me!') # Change this default!
-# # Use a separate strong secret key for JWT
-# app.config["JWT_SECRET_KEY"] = os.environ.get('JWT_SECRET_KEY', 'default-jwt-secret-key-change-me!') # Change this default!
-# # Configure token expiration
-# app.config["JWT_ACCESS_TOKEN_EXPIRES"] = False  
-
-# # Register custom Jinja filters
-# app.jinja_env.filters['format_bytes'] = format_bytes
-# logging.info("Custom Jinja filter 'format_bytes' registered.")
-
-# #default_frontend_url = "http://localhost:4200"
-# FRONTEND_URL_FROM_ENV = os.environ.get('FRONTEND_URL')
-# #, default_frontend_url
-# #allowed_origins = FRONTEND_URL_FROM_ENV
-# allowed_origins = "*"
-
-# # --- Initialize CORS ---
-# # allowed_origins = "https://telegrambot-rosy-psi.vercel.app/home"
-# # CORS(app, origins=allowed_origins, supports_credentials=True)
-# # logging.info(f"Flask-CORS initialized. Allowing origins: {allowed_origins}")
-
-# #allowed_origins = "https://telegrambot-rosy-psi.vercel.app"
-# CORS(app, origins=allowed_origins, supports_credentials=True, methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
-# logging.info(f"Flask-CORS initialized. Allowing origins: {allowed_origins}")
-
-
-# # --- Initialize JWT ---
-# jwt = JWTManager(app)
-# logging.info("Flask-JWT-Extended initialized.")
-
-# # --- Initialize Flask-Login (Keep if used for non-API parts) ---
-# login_manager = LoginManager()
-# login_manager.init_app(app)
-# login_manager.login_view = 'login' # Route function name for server-side login page
-# login_manager.login_message = u"Please log in to access this page."
-# login_manager.login_message_category = "info"
-# logging.info("Flask-Login initialized.")
-
-# # --- Global State ---
-# upload_progress_data: Dict[str, Any] = {}
-# download_prep_data: Dict[str, Any] = {}
-# logging.info("Global state variables initialized (upload_progress_data, download_prep_data).")
-
-
-# from password_reset_routes import password_reset_bp 
-# app.register_blueprint(password_reset_bp) # Register it with your app
-# logging.info("Password Reset Blueprint registered.")
-
-# import logging
-# import os 
-# import routes
-
-
-# # --- Application Runner ---
-# if __name__ == '__main__':
-#     logging.info("Starting Flask development server...")
-#     app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=True)
-
 # app_setup.py
 import logging
 import os
 from flask_cors import CORS
-from flask_login import LoginManager
-from flask_jwt_extended import JWTManager
+# from flask_login import LoginManager # No longer defined here
+# from flask_jwt_extended import JWTManager # No longer defined here
 from dotenv import load_dotenv
 
 load_dotenv() # Load .env variables first
 
 from config import app, mail, format_bytes # Import app & mail from config.py
-from password_reset_routes import password_reset_bp
+# Import instances from your new extensions.py
+from extensions import login_manager, jwt, upload_progress_data, download_prep_data
 
 # --- Flask Application Extensions Setup ---
-# SECRET_KEY and JWT_SECRET_KEY are already set in app.config within config.py
-# app.config["JWT_ACCESS_TOKEN_EXPIRES"] = False # Also in config.py
-
 app.jinja_env.filters['format_bytes'] = format_bytes
 # logging.info("Custom Jinja filter 'format_bytes' registered.") # Logging is set up in config.py
 
 env_frontend_url_setting = os.environ.get('FRONTEND_URL')
-
+allowed_origins_config = "*" # Default
 if env_frontend_url_setting and env_frontend_url_setting.strip() == "*":
     allowed_origins_config = "*"
 elif env_frontend_url_setting:
     allowed_origins_config = [url.strip() for url in env_frontend_url_setting.split(',')]
 else:
-    # Default to "*" if FRONTEND_URL is not set or empty,
-    # or provide a more restrictive default list if preferred for security.
-    # The user's provided file had `allowed_origins = "*"`.
-    allowed_origins_config = "*" 
     logging.warning("FRONTEND_URL environment variable not set. Defaulting CORS to allow all origins ('*'). "
                     "For production, it's recommended to set FRONTEND_URL to your specific frontend domain(s).")
 
 CORS(app, 
      origins=allowed_origins_config, 
      supports_credentials=True, 
-     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"], allow_headers=["Content-Type", "Authorization", "X-Requested-With"])
+     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
 logging.info(f"Flask-CORS initialized. Allowing origins: {allowed_origins_config}")
 
-jwt = JWTManager(app)
+# Initialize JWT with the app object
+jwt.init_app(app) # jwt instance from extensions.py
 logging.info("Flask-JWT-Extended initialized.")
 
-# login_manager needs to be defined here to be importable by routes.py
-login_manager = LoginManager()
-login_manager.init_app(app)
-login_manager.login_view = 'login' # Make sure 'login' is a route defined in your main routes.py
+# Initialize LoginManager with the app object
+login_manager.init_app(app) # login_manager instance from extensions.py
+login_manager.login_view = 'auth.login' # Make sure 'auth.login' is correct after blueprint setup
 login_manager.login_message = u"Please log in to access this page."
 login_manager.login_message_category = "info"
 logging.info("Flask-Login initialized.")
 
-# --- Global State (if needed by multiple modules, otherwise keep local) ---
-upload_progress_data: dict = {}
-download_prep_data: dict = {}
-logging.info("Global state variables initialized.")
+# Global state variables are now imported from extensions.py, no need to redefine here
+# upload_progress_data and download_prep_data are already imported.
+logging.info("Global state variables (from extensions.py) are available.")
 
-from password_reset_routes import password_reset_bp
+
 # --- Import and Register Blueprints ---
-# This is the critical part for ordering
+
+from routes.password_reset_routes import password_reset_bp 
+from routes.auth_routes import auth_bp                     
+from routes.upload_routes import upload_bp                 
+from routes.download_routes import download_bp             
+from routes.file_routes import file_bp 
+
 if 'password_reset' not in app.blueprints:
     app.register_blueprint(password_reset_bp)
     logging.info("Password Reset Blueprint registered.")
 else:
-    # This case means the registration line was hit again.
-    # This can happen with some reloader configurations or complex import scenarios.
     logging.warning("Blueprint 'password_reset' was already registered. Skipping re-registration.")
 
-# Import your main routes module AFTER app and extensions are set up
-import routes
-# If routes.py defines its own blueprint (e.g., main_bp = Blueprint(...)),
-# you would register it here too:
-# from routes import main_bp # Assuming main_bp is defined in routes.py
-# app.register_blueprint(main_bp)
-# If routes.py just uses @app.route, simply importing it is enough to register those routes.
+if 'auth' not in app.blueprints:
+    app.register_blueprint(auth_bp)
+    logging.info("Auth Blueprint registered.")
+else:
+    logging.warning("Blueprint 'auth' was already registered. Skipping re-registration.")
+
+if 'upload' not in app.blueprints:
+    app.register_blueprint(upload_bp)
+    logging.info("Upload Blueprint registered.")
+else:
+    logging.warning("Blueprint 'upload' was already registered. Skipping re-registration.")
+
+if 'download' not in app.blueprints:
+    app.register_blueprint(download_bp)
+    logging.info("Download Blueprint registered.")
+else:
+    logging.warning("Blueprint 'download' was already registered. Skipping re-registration.")
+
+if 'file' not in app.blueprints:
+    app.register_blueprint(file_bp)
+    logging.info("File Blueprint registered.")
+else:
+    logging.warning("Blueprint 'file' was already registered. Skipping re-registration.")
+
+# ... (rest of your app_setup.py, e.g., Angular serving routes, if __name__ == '__main__')
 
 # --- Application Runner ---
 if __name__ == '__main__':

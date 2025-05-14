@@ -44,7 +44,7 @@ encoded_password = urllib.parse.quote_plus(ATLAS_PASSWORD)
 cluster_host_for_uri = ATLAS_CLUSTER_HOST if ATLAS_CLUSTER_HOST else "your.default.cluster.host.for.error"
 
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = False
 
 app.config['SECRET_KEY'] = os.environ.get('FLASK_SECRET_KEY') or 'a-default-fallback-secret-key-for-dev-ONLY' # CHANGE THIS!

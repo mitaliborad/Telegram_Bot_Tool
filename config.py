@@ -45,6 +45,7 @@ cluster_host_for_uri = ATLAS_CLUSTER_HOST if ATLAS_CLUSTER_HOST else "your.defau
 
 
 app = Flask(__name__)
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = False
 
 app.config['SECRET_KEY'] = os.environ.get('FLASK_SECRET_KEY') or 'a-default-fallback-secret-key-for-dev-ONLY' # CHANGE THIS!
 MONGO_URI = f"mongodb+srv://{encoded_user}:{encoded_password}@{ATLAS_CLUSTER_HOST}/?retryWrites=true&w=majority&appName=Telegrambot"

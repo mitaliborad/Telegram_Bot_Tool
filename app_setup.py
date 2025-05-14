@@ -108,11 +108,10 @@ else:
     logging.warning("FRONTEND_URL environment variable not set. Defaulting CORS to allow all origins ('*'). "
                     "For production, it's recommended to set FRONTEND_URL to your specific frontend domain(s).")
 
-
 CORS(app, 
      origins=allowed_origins_config, 
      supports_credentials=True, 
-     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
+     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"], allow_headers=["Content-Type", "Authorization", "X-Requested-With"])
 logging.info(f"Flask-CORS initialized. Allowing origins: {allowed_origins_config}")
 
 jwt = JWTManager(app)

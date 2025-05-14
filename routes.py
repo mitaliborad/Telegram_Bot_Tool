@@ -416,6 +416,79 @@ def _download_chunk_task(file_id: str, part_num: int, prep_id: str) -> ChunkData
         else: logging.info(f"[{prep_id}] T> OK dl chunk {part_num} ({len(content)} bytes)."); return part_num, content, None
     except Exception as e: logging.error(f"[{prep_id}] T> Unexp err dl chunk {part_num}: {e}", exc_info=True); return part_num, None, f"Thread error: {e}"
 
+def _download_and_prepare_single_file_for_zip(file_meta: Dict[str, Any], parent_log_prefix: str) -> Tuple[str, Optional[bytes], Optional[str]]:
+    """
+    Downloads/reassembles a single file described by file_meta.
+    Returns (original_filename, content_bytes_or_None, error_string_or_None)
+    """
+    original_filename = file_meta.get("original_filename", "unknown_file_for_zip")
+    log_prefix = f"[{parent_log_prefix}_FileZipPrep_{original_filename[:20]}]"
+    is_split = file_meta.get("is_split", False)
+
+    try:
+        if is_split:
+            chunks_meta = file_meta.get("chunks_meta", [])
+            if not chunks_meta:
+                return original_filename, None, "Split file missing chunk metadata."
+            
+            # Sort chunks by part_number to ensure correct order for reassembly
+            try:
+                chunks_meta.sort(key=lambda c: int(c.get('part_number', 0)))
+            except (TypeError, ValueError) as e:
+                logging.error(f"{log_prefix} Invalid part_number in chunks for sorting: {e}")
+                return original_filename, None, f"Invalid chunk data for {original_filename}."
+
+            logging.info(f"{log_prefix} Reassembling {len(chunks_meta)} chunks.")
+            reassembled_content = io.BytesIO()
+            # Use a temporary executor for downloading chunks of this single file
+            # This could be optimized if many split files are processed, but for clarity:
+            with ThreadPoolExecutor(max_workers=MAX_DOWNLOAD_WORKERS, thread_name_prefix=f"ZipSubDl_{original_filename[:10]}") as chunk_dl_executor:
+                chunk_futures: Dict[Future, int] = {} # future -> part_number
+                for chunk_detail in chunks_meta:
+                    part_num = chunk_detail.get("part_number")
+                    chunk_locs = chunk_detail.get("send_locations", [])
+                    best_chunk_fid, _ = _find_best_telegram_file_id(chunk_locs, PRIMARY_TELEGRAM_CHAT_ID)
+                    if best_chunk_fid and part_num is not None:
+                        fut = chunk_dl_executor.submit(_download_chunk_task, best_chunk_fid, part_num, log_prefix)
+                        chunk_futures[fut] = part_num
+                    else:
+                        return original_filename, None, f"Missing file_id for chunk {part_num} of {original_filename}."
+                
+                downloaded_chunks_map: Dict[int, bytes] = {}
+                for fut_c in as_completed(chunk_futures):
+                    p_num, c_content, c_err = fut_c.result()
+                    if c_err or not c_content:
+                        return original_filename, None, f"Failed to download chunk {p_num} for {original_filename}: {c_err or 'No content'}"
+                    downloaded_chunks_map[p_num] = c_content
+            
+            # Write sorted chunks to stream
+            for i in range(1, len(chunks_meta) + 1):
+                content_to_write = downloaded_chunks_map.get(i)
+                if not content_to_write:
+                    return original_filename, None, f"Chunk {i} missing after download for {original_filename}."
+                reassembled_content.write(content_to_write)
+
+            final_bytes = reassembled_content.getvalue()
+            reassembled_content.close()
+            logging.info(f"{log_prefix} Successfully reassembled. Size: {format_bytes(len(final_bytes))}")
+            return original_filename, final_bytes, None
+        else: # Not split
+            telegram_file_id = file_meta.get("telegram_file_id")
+            if not telegram_file_id:
+                return original_filename, None, "Missing telegram_file_id for non-split file."
+            
+            logging.info(f"{log_prefix} Downloading non-split file directly (ID: {telegram_file_id}).")
+            # _download_chunk_task can be reused, part_num is just for logging/context here
+            _, content, err = _download_chunk_task(telegram_file_id, 0, log_prefix) 
+            if err or not content:
+                return original_filename, None, f"Failed to download non-split file: {err or 'No content'}"
+            logging.info(f"{log_prefix} Successfully downloaded non-split file. Size: {format_bytes(len(content))}")
+            return original_filename, content, None
+
+    except Exception as e:
+        logging.error(f"{log_prefix} Unexpected error preparing file for zip: {e}", exc_info=True)
+        return original_filename, None, f"Internal error preparing file: {str(e)}"
+
 def _parse_send_results(log_prefix: str, send_results: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     all_chat_details = []
     for res in send_results:
@@ -2417,52 +2490,88 @@ def initiate_download_all(access_id: str):
     total_expected_zip_content_size: int = 0
 
     for file_item in batch_info.get("files_in_batch", []):
-# skip files the uploader marked as failed / skipped
+        original_filename = file_item.get("original_filename")
         if file_item.get("skipped") or file_item.get("failed"):
+            logging.info(f"{log_prefix} Skipping file '{original_filename or 'Unknown'}' (Download All) because it was marked skipped/failed. Reason: {file_item.get('reason')}")
             continue
 
-        original_filename = file_item.get("original_filename")
         original_size = file_item.get("original_size", 0)
+        is_split = file_item.get("is_split", False)
+        temp_telegram_file_id_for_task: Optional[str] = None
+        
+        if is_split:
+            chunks_meta = file_item.get("chunks", [])
+            if chunks_meta and isinstance(chunks_meta, list) and len(chunks_meta) > 0:
+                # Ensure chunks are sorted by part_number if not already
+                try:
+                    sorted_chunks = sorted(chunks_meta, key=lambda c: int(c.get('part_number', 0)))
+                    first_chunk_locations = sorted_chunks[0].get("send_locations", [])
+                    if first_chunk_locations:
+                        chunk_fid, _ = _find_best_telegram_file_id(first_chunk_locations, PRIMARY_TELEGRAM_CHAT_ID)
+                        temp_telegram_file_id_for_task = chunk_fid
+                    else:
+                        logging.warning(f"{log_prefix} Split file '{original_filename}' first chunk has no send_locations.")
+                except (TypeError, ValueError) as e:
+                    logging.warning(f"{log_prefix} Error processing chunks for split file '{original_filename}': {e}")
+            else:
+                logging.warning(f"{log_prefix} Split file '{original_filename}' has no valid chunk data.")
+        else: # Regular non-split file
+            send_locations = file_item.get("send_locations", [])
+            file_fid, _ = _find_best_telegram_file_id(send_locations, PRIMARY_TELEGRAM_CHAT_ID)
+            temp_telegram_file_id_for_task = file_fid
 
 # ── NEW: handle normal upload vs. chunked (is_split) upload ───────────────
-        tg_file_id = None
+        # tg_file_id = None
 
-        if file_item.get("is_split"):
-        # file was split into 18 MiB chunks; grab the TG file-id from the 1st chunk
-            chunks = file_item.get("chunks", [])
-            if chunks:
-                first_chunk_locations = chunks[0].get("send_locations", [])
-            if first_chunk_locations:
-                tg_file_id = first_chunk_locations[0].get("file_id")
-        else:
-        # regular ≤ 18 MiB upload – existing logic
-            send_locations = file_item.get("send_locations", [])
-            tg_file_id, _ = _find_best_telegram_file_id(
-            send_locations, PRIMARY_TELEGRAM_CHAT_ID
-        )
+        # if file_item.get("is_split"):
+        # # file was split into 18 MiB chunks; grab the TG file-id from the 1st chunk
+        #     chunks = file_item.get("chunks", [])
+        #     if chunks:
+        #         first_chunk_locations = chunks[0].get("send_locations", [])
+        #     if first_chunk_locations:
+        #         tg_file_id = first_chunk_locations[0].get("file_id")
+        # else:
+        # # regular ≤ 18 MiB upload – existing logic
+        #     send_locations = file_item.get("send_locations", [])
+        #     tg_file_id, _ = _find_best_telegram_file_id(
+        #     send_locations, PRIMARY_TELEGRAM_CHAT_ID
+        # )
 
         # ── add to the zip list if we found a TG file-id ──────────────────────────
-        if original_filename and tg_file_id:
+        if original_filename and temp_telegram_file_id_for_task:
             meta_entry = {
-            "original_filename": original_filename,
-            "telegram_file_id" : tg_file_id,
-            "original_size" : original_size,
-            "is_split" : file_item.get("is_split", False),
+                "original_filename": original_filename,
+                "telegram_file_id" : temp_telegram_file_id_for_task, # Used by _download_chunk_task for non-split or 1st chunk of split
+                "original_size" : original_size,
+                "is_split" : is_split,
+                "is_compressed_original": file_item.get("is_compressed", False), # Whether original file was a zip
             }
-            # keep full chunk metadata so the zip-generator can re-assemble later
-            if file_item.get("is_split"):
-                meta_entry["chunks_meta"] = file_item.get("chunks", [])
+            if is_split:
+                meta_entry["chunks_meta"] = file_item.get("chunks", []) # Full chunk data for reassembly
 
-                files_to_zip_meta.append(meta_entry)
-                total_expected_zip_content_size += original_size
+            files_to_zip_meta.append(meta_entry)
+            total_expected_zip_content_size += original_size
         else:
             logging.warning(
-            f"{log_prefix} Skipping file '{original_filename or 'Unknown'}' "
-            f"due to missing name or TG file ID for zipping."
+                f"{log_prefix} Skipping file '{original_filename or 'Unknown'}' in Download All. "
+                f"is_split: {is_split}, temp_tg_file_id_found: {temp_telegram_file_id_for_task is not None}. "
+                f"File item details: {file_item.get('send_locations') if not is_split else file_item.get('chunks')}"
             )
+
+        #     # keep full chunk metadata so the zip-generator can re-assemble later
+        #     if file_item.get("is_split"):
+        #         meta_entry["chunks_meta"] = file_item.get("chunks", [])
+
+        #         files_to_zip_meta.append(meta_entry)
+        #         total_expected_zip_content_size += original_size
+        # else:
+        #     logging.warning(
+        #     f"{log_prefix} Skipping file '{original_filename or 'Unknown'}' "
+        #     f"due to missing name or TG file ID for zipping."
+        #     )
     
     if not files_to_zip_meta:
-        logging.warning(f"{log_prefix} No valid files found in batch '{access_id}' to include in zip.")
+        logging.warning(f"{log_prefix} No valid files found in batch '{access_id}' to include in zip after filtering. Batch info files: {batch_info.get('files_in_batch')}")
         return jsonify({"error": "No files available to include in the 'Download All' zip.", "prep_id": None}), 404
 
     batch_display_name_for_zip = batch_info.get('batch_display_name', f"download_all_{access_id}.zip")
@@ -2476,7 +2585,7 @@ def initiate_download_all(access_id: str):
         "access_id_original_batch": access_id, 
         "username": batch_info.get('username'),
         "batch_display_name": batch_display_name_for_zip, 
-        "original_filename": batch_display_name_for_zip, 
+        "original_filename": batch_display_name_for_zip, # This is the name of the final .zip file
         "files_to_zip_meta": files_to_zip_meta, 
         "total_expected_content_size": total_expected_zip_content_size, 
         "error": None,
@@ -2484,7 +2593,8 @@ def initiate_download_all(access_id: str):
         "final_file_size": 0,        
         "start_time": time.time()
     }
-    logging.info(f"{log_prefix} Stored prep data for 'Download All'. {len(files_to_zip_meta)} files to zip. Expected content size: {total_expected_zip_content_size} bytes. Zip name: {batch_display_name_for_zip}")
+    
+    logging.info(f"{log_prefix} Stored prep data for 'Download All'. {len(files_to_zip_meta)} files to zip. Expected content size: {format_bytes(total_expected_zip_content_size)}. Zip name: {batch_display_name_for_zip}")
 
     return jsonify({
         "message": "Download All initiated. Connect to SSE stream for progress.",
@@ -2504,92 +2614,104 @@ def _generate_zip_and_stream_progress(prep_id_for_zip: str) -> Generator[SseEven
 
     prep_data['status'] = 'zipping_all_fetching' 
 
-    files_to_process_meta = prep_data.get('files_to_zip_meta', [])
-    batch_display_name_for_zip = prep_data.get('batch_display_name', f"batch_download_{prep_id_for_zip}.zip")
-    prep_data['original_filename'] = batch_display_name_for_zip
+    files_to_process_meta_list = prep_data.get('files_to_zip_meta', [])
+    batch_display_name_for_zip = prep_data.get('batch_display_name')
+    #prep_data['original_filename'] = batch_display_name_for_zip
     total_expected_content_size = prep_data.get('total_expected_content_size', 0)
     
     temp_zip_file_path: Optional[str] = None
     download_all_executor: Optional[ThreadPoolExecutor] = None
 
     try:
-        if not files_to_process_meta:
+        if not files_to_process_meta_list:
             raise ValueError("No files specified for zipping in 'Download All'.")
 
-        yield _yield_sse_event('status', {'message': f'Starting download of {len(files_to_process_meta)} files for batch archive...'})
-        yield _yield_sse_event('start', { 
-            'filename': batch_display_name_for_zip,
-            'totalSize': total_expected_content_size 
-        })
+        yield _yield_sse_event('status', {'message': f'Starting download of {len(files_to_process_meta_list)} files for batch archive...'})
+        yield _yield_sse_event('filename', {'filename': batch_display_name_for_zip })
+        yield _yield_sse_event('totalSizeUpdate', {'totalSize': total_expected_content_size }) # This is sum of original file sizes
+        
         with tempfile.NamedTemporaryFile(suffix=".zip", delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"dl_all_zip_{prep_id_for_zip}_") as tf_zip:
             temp_zip_file_path = tf_zip.name
-        logging.info(f"{log_prefix} Created temporary zip file: {temp_zip_file_path}")
+        logging.info(f"{log_prefix} Created temporary zip file for 'Download All': {temp_zip_file_path}")
 
-        bytes_downloaded_and_zipped = 0
+        bytes_added_to_zip_so_far = 0 # Based on original file sizes
         overall_zip_gen_start_time = time.time()
         
-        downloaded_file_contents: Dict[str, bytes] = {} 
-        files_processed_count = 0
+        final_file_contents_for_zip: Dict[str, bytes] = {} 
+        files_successfully_prepared_count = 0
         
-        if files_to_process_meta: 
+        if files_to_process_meta_list: 
             download_all_executor = ThreadPoolExecutor(max_workers=MAX_DOWNLOAD_WORKERS, thread_name_prefix=f'DLAllZip_{prep_id_for_zip[:4]}')
-
-            future_to_filename: Dict[Future, str] = {}
-            for file_meta in files_to_process_meta:
-                filename = file_meta["original_filename"]
-                tg_file_id = file_meta["telegram_file_id"]
-                fut = download_all_executor.submit(_download_chunk_task, tg_file_id, 0, prep_id_for_zip) 
-                future_to_filename[fut] = filename
             
-            logging.info(f"{log_prefix} Submitted {len(future_to_filename)} individual file download tasks.")
-            for future in as_completed(future_to_filename):
-                original_filename = future_to_filename[future]
-                try:
-                    _, content, error_msg = future.result() 
-                    if error_msg:
-                        logging.error(f"{log_prefix} Failed to download '{original_filename}': {error_msg}")
-                        raise ValueError(f"Failed to download '{original_filename}': {error_msg}")
-                    if not content:
-                        raise ValueError(f"Downloaded empty content for '{original_filename}'.")
-                    
-                    downloaded_file_contents[original_filename] = content
-                    bytes_downloaded_and_zipped += len(content) 
-                    files_processed_count += 1
-                    
-                    progress = _calculate_progress(overall_zip_gen_start_time, bytes_downloaded_and_zipped, total_expected_content_size)
-                    yield _yield_sse_event('progress', progress)
-                    yield _yield_sse_event('status', {'message': f'Fetched {files_processed_count}/{len(files_to_process_meta)} files... ({original_filename})'})
-                    logging.debug(f"{log_prefix} Fetched '{original_filename}' ({len(content)} bytes).")
+            # Store futures for each file's full download/assembly process
+            # The value will be the file_meta_item itself for context
+            file_processing_futures: Dict[Future, Dict[str, Any]] = {}
 
-                except Exception as exc:
-                    logging.error(f"{log_prefix} Error processing download for '{original_filename}': {exc}", exc_info=True)
-                    raise 
-        logging.info(f"{log_prefix} All necessary files fetched. Writing to master zip: {temp_zip_file_path}")
+            for file_meta_item in files_to_process_meta_list:
+                # Submit a task that handles downloading (and reassembling if split) for ONE file_meta_item
+                # This task will return (original_filename, content_bytes_or_none, error_string_or_none)
+                fut = download_all_executor.submit(
+                    _download_and_prepare_single_file_for_zip, 
+                    file_meta_item, 
+                    f"{log_prefix}_{file_meta_item.get('original_filename', 'unknown')}"
+                )
+                file_processing_futures[fut] = file_meta_item
+
+            logging.info(f"{log_prefix} Submitted {len(file_processing_futures)} individual file preparation tasks for the zip.")
+
+            for future in as_completed(file_processing_futures):
+                completed_file_meta = file_processing_futures[future]
+                original_fn_completed = completed_file_meta.get('original_filename', 'UnknownFile')
+                try:
+                    _, file_content_bytes, file_error_msg = future.result()
+                    
+                    if file_error_msg or not file_content_bytes:
+                        logging.error(f"{log_prefix} Failed to prepare '{original_fn_completed}' for zip: {file_error_msg or 'No content'}")
+                        # Optionally, yield a per-file error or just skip it
+                        yield _yield_sse_event('status', {'message': f"Skipping '{original_fn_completed}' due to error: {file_error_msg or 'No content'}"})
+                        continue # Skip adding this file to the zip
+
+                    final_file_contents_for_zip[original_fn_completed] = file_content_bytes
+                    bytes_added_to_zip_so_far += completed_file_meta.get("original_size", len(file_content_bytes))
+                    files_successfully_prepared_count += 1
+                    
+                    progress_stats = _calculate_progress(overall_zip_gen_start_time, bytes_added_to_zip_so_far, total_expected_content_size)
+                    yield _yield_sse_event('progress', progress_stats)
+                    yield _yield_sse_event('status', {'message': f'Prepared {files_successfully_prepared_count}/{len(files_to_process_meta_list)} files... ({original_fn_completed})'})
+                    logging.debug(f"{log_prefix} Prepared '{original_fn_completed}' ({format_bytes(len(file_content_bytes))}) for zip.")
+
+                except Exception as exc_future:
+                    logging.error(f"{log_prefix} Exception processing future for '{original_fn_completed}': {exc_future}", exc_info=True)
+                    yield _yield_sse_event('status', {'message': f"Error processing '{original_fn_completed}': {exc_future}"})
+            
+        if not final_file_contents_for_zip: # No files were successfully prepared
+            logging.warning(f"{log_prefix} No files were successfully prepared to be added to the zip.")
+            # The frontend already received the 404 if files_to_zip_meta was empty initially.
+            # If files_to_zip_meta was not empty, but all failed preparation, this is a different error.
+            raise ValueError("All files failed preparation for zipping.")
+
+
+        logging.info(f"{log_prefix} All file preparation tasks complete. Writing {len(final_file_contents_for_zip)} files to master zip: {temp_zip_file_path}")
         yield _yield_sse_event('status', {'message': 'Creating archive...'})
         
         with zipfile.ZipFile(temp_zip_file_path, 'w', zipfile.ZIP_DEFLATED) as zf:
-            for file_meta in files_to_process_meta: 
-                filename_to_add = file_meta["original_filename"]
-                if filename_to_add in downloaded_file_contents:
-                    zf.writestr(filename_to_add, downloaded_file_contents[filename_to_add])
-                    logging.debug(f"{log_prefix} Added '{filename_to_add}' to zip archive.")
-                else:
-                    logging.warning(f"{log_prefix} Content for '{filename_to_add}' not found in downloaded map, skipping zip entry.")
+            for fn, content in final_file_contents_for_zip.items():
+                zf.writestr(fn, content)
+                logging.debug(f"{log_prefix} Added '{fn}' to zip archive.")
         
         final_zip_actual_size = os.path.getsize(temp_zip_file_path)
-        logging.info(f"{log_prefix} Finished writing master zip. Path: {temp_zip_file_path}, Size: {final_zip_actual_size}")
+        logging.info(f"{log_prefix} Finished writing master zip. Path: {temp_zip_file_path}, Size: {format_bytes(final_zip_actual_size)}")
 
         prep_data['status'] = 'ready'
         prep_data['final_temp_file_path'] = temp_zip_file_path 
         prep_data['final_file_size'] = final_zip_actual_size
-        yield _yield_sse_event('progress', {
-            'percentage': 100, 
-            'bytesProcessed': total_expected_content_size, 
-            'totalBytes': total_expected_content_size, 
-            'etaFormatted': '00:00'
-        })
+        
+        final_progress_payload = _calculate_progress(overall_zip_gen_start_time, total_expected_content_size, total_expected_content_size)
+        final_progress_payload['percentage'] = 100
+        final_progress_payload['etaFormatted'] = "00:00"
+        yield _yield_sse_event('progress', final_progress_payload)
         yield _yield_sse_event('status', {'message': 'Archive ready for download!'})
-        time.sleep(0.1)
+        time.sleep(0.1) 
         
         yield _yield_sse_event('ready', {
             'temp_file_id': prep_id_for_zip, 
@@ -2607,13 +2729,14 @@ def _generate_zip_and_stream_progress(prep_id_for_zip: str) -> Generator[SseEven
     finally:
         logging.info(f"{log_prefix} 'Download All' zipping generator cleanup.")
         if download_all_executor:
-            download_all_executor.shutdown(wait=False)
-            logging.info(f"{log_prefix} Download All executor shutdown.")
+            download_all_executor.shutdown(wait=True) # Wait for tasks to finish
+            logging.info(f"{log_prefix} Download All executor shutdown (waited).")
         
-        if prep_data.get('status') != 'ready' and temp_zip_file_path and os.path.exists(temp_zip_file_path):
-            _safe_remove_file(temp_zip_file_path, log_prefix, "partially created download-all zip")
+        current_prep_status = prep_data.get('status') if prep_data else 'unknown'
+        if current_prep_status != 'ready' and temp_zip_file_path and os.path.exists(temp_zip_file_path):
+            _safe_remove_file(temp_zip_file_path, log_prefix, "partially created/failed download-all zip")
         
-        logging.info(f"{log_prefix} 'Download All' zipping generator task ended. Status: {prep_data.get('status')}")
+        logging.info(f"{log_prefix} 'Download All' zipping generator task ended. Status: {current_prep_status}")
         
 @app.route('/stream-download-all/<prep_id_for_zip>')
 def stream_download_all(prep_id_for_zip: str):

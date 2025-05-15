@@ -216,13 +216,14 @@ def _prepare_download_and_generate_updates(prep_id: str) -> Generator[SseEvent, 
                 else:
                     logging.error(f"{log_prefix} CRITICAL: Reassembled temp file {temp_reassembled_file_path} does not exist after writing!")
                     raise RuntimeError("Reassembled file disappeared after creation.")
-                logging.info(f"{log_prefix} Reassembly complete. Reassembled file: {temp_reassembled_file_path}, Size: {format_bytes(os.path.getsize(temp_reassembled_file_path)) if os.path.exists(temp_reassembled_file_path) else 'N/A'}")
+                #logging.info(f"{log_prefix} Reassembly complete. Reassembled file: {temp_reassembled_file_path}, Size: {format_bytes(os.path.getsize(temp_reassembled_file_path)) if os.path.exists(temp_reassembled_file_path) else 'N/A'}")
                     
                 temp_final_file_path = temp_reassembled_file_path
                 temp_reassembled_file_path = None 
 
                 if is_compressed_final:
                     yield _yield_sse_event('status', {'message': 'Decompressing reassembled ZIP...'})
+                    logging.info(f"{log_prefix} Reassembled file is a ZIP (original type): {temp_final_file_path}. No further extraction planned for split ZIPs at this stage.")
                     with tempfile.NamedTemporaryFile(delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"dl_extracted_{prep_id}_") as tf_extracted:
                         extracted_path = tf_extracted.name
                     zf_reassembled = None
@@ -259,10 +260,12 @@ def _prepare_download_and_generate_updates(prep_id: str) -> Generator[SseEvent, 
                     finally:
                         if zf_single: zf_single.close()
                     logging.info(f"{log_prefix} Decompression complete for non-split file. Extracted to: {temp_final_file_path}")
+                    pass
                 else: 
                     with tempfile.NamedTemporaryFile(delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"dl_final_{prep_id}_") as tf:
                         temp_final_file_path = tf.name
                         tf.write(content_bytes)
+                    pass
                 yield _yield_sse_event('progress', {'percentage': 95})
             logging.info(f"{log_prefix} Preparing to finalize. Current temp_final_file_path: {temp_final_file_path}")
             

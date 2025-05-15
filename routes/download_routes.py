@@ -206,8 +206,16 @@ def _prepare_download_and_generate_updates(prep_id: str) -> Generator[SseEvent, 
                         # but as a safeguard during reassembly:
                             logging.error(f"{log_prefix} CRITICAL: Chunk {pnum_write} missing from map during reassembly!")
                             raise SystemError(f"Reassembly error: Chunk {pnum_write} content missing from downloaded map.")
-                    tf_reassemble.write(chunk_content_to_write)
-                downloaded_content_map.clear() # Clear map after use
+                        tf_reassemble.write(chunk_content_to_write)
+                downloaded_content_map.clear() 
+                
+                if os.path.exists(temp_reassembled_file_path):
+                    reassembled_size = os.path.getsize(temp_reassembled_file_path)
+                    logging.info(f"{log_prefix} Reassembly complete. Reassembled file: {temp_reassembled_file_path}, Size: {format_bytes(reassembled_size)}")
+                # You might compare reassembled_size with total_bytes_to_fetch or similar expected value
+                else:
+                    logging.error(f"{log_prefix} CRITICAL: Reassembled temp file {temp_reassembled_file_path} does not exist after writing!")
+                    raise RuntimeError("Reassembled file disappeared after creation.")
                 logging.info(f"{log_prefix} Reassembly complete. Reassembled file: {temp_reassembled_file_path}, Size: {format_bytes(os.path.getsize(temp_reassembled_file_path)) if os.path.exists(temp_reassembled_file_path) else 'N/A'}")
                     
                 temp_final_file_path = temp_reassembled_file_path
@@ -227,7 +235,8 @@ def _prepare_download_and_generate_updates(prep_id: str) -> Generator[SseEvent, 
                         if zf_reassembled: zf_reassembled.close()
                     yield _yield_sse_event('progress', {'percentage': 95})
 
-            else: # NOT SPLIT
+            else: 
+            
                 if not telegram_file_id_final: raise ValueError("Non-split file but no TG file ID.")
                 yield _yield_sse_event('status', {'message': 'Downloading...'})
                 content_bytes, err_msg = download_telegram_file_content(telegram_file_id_final)

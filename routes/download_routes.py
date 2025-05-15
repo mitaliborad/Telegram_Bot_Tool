@@ -29,6 +29,7 @@ from routes.utils import (
     _calculate_download_fetch_progress, _safe_remove_file, _safe_remove_directory, _calculate_progress
 )
 
+STREAMING_CHUNK_SIZE_TO_CLIENT = 1 * 1024 * 1024
 # Type Aliases
 SseEvent = str
 ChunkDataResult = Tuple[int, Optional[bytes], Optional[str]] # part_num, content_bytes, error_message
@@ -74,7 +75,6 @@ def stream_download_by_access_id(access_id: str) -> Response:
         def error_stream(): yield _yield_sse_event('error', {'message': error_msg or 'Invalid or expired download link.'})
         return Response(stream_with_context(error_stream()), mimetype='text/event-stream')
     
-    # Check if username exists in file_info, essential for some logic paths
     username_from_record = file_info.get('username')
     if not username_from_record:
         logging.error(f"[{prep_id}] Record for access_id '{access_id}' is missing username. Cannot proceed.")
@@ -102,7 +102,6 @@ def _prepare_download_and_generate_updates(prep_id: str) -> Generator[SseEvent, 
     chunks_meta_final: Optional[List[Dict[str, Any]]] = prep_data.get('chunks_meta')
     telegram_file_id_final: Optional[str] = prep_data.get('telegram_file_id')
     original_filename_final: str = prep_data.get('original_filename', "download")
-    # is_compressed_final logic from original routes.py:
     is_compressed_final: bool = prep_data.get('is_compressed', False) 
     final_expected_size_final: int = prep_data.get('final_expected_size', 0)
     compressed_total_size_final: int = prep_data.get('compressed_total_size', 0)
@@ -115,11 +114,9 @@ def _prepare_download_and_generate_updates(prep_id: str) -> Generator[SseEvent, 
         is_item_from_batch = prep_data.get("is_item_from_batch", False)
         needs_db_lookup = not is_item_from_batch
         
-        # If not an item from batch, or essential info missing, then lookup.
-        # Also, if it's a direct TG file ID, it might not need DB lookup for split/chunk info.
-        if needs_db_lookup and not prep_data.get('telegram_file_id_is_direct_source'): # Add a flag if TG ID is the *only* info
+        if needs_db_lookup and not prep_data.get('telegram_file_id_is_direct_source'):
             db_access_id = prep_data.get('access_id')
-            db_username = prep_data.get('username') # Must be present
+            db_username = prep_data.get('username') 
             db_requested_filename = prep_data.get('requested_filename')
             fetched_file_info: Optional[Dict[str, Any]] = None; lookup_error_msg = ""
 
@@ -133,7 +130,7 @@ def _prepare_download_and_generate_updates(prep_id: str) -> Generator[SseEvent, 
             original_filename_final = fetched_file_info.get('original_filename', fetched_file_info.get('batch_display_name', db_requested_filename or 'unknown'))
             final_expected_size_final = fetched_file_info.get('original_size', 0)
             is_split_final = fetched_file_info.get('is_split', False)
-            is_compressed_final = fetched_file_info.get('is_compressed', False) # Use DB value
+            is_compressed_final = fetched_file_info.get('is_compressed', False) 
             compressed_total_size_final = fetched_file_info.get('compressed_total_size', 0)
 
             if is_split_final:
@@ -146,7 +143,6 @@ def _prepare_download_and_generate_updates(prep_id: str) -> Generator[SseEvent, 
                 if not tg_id: raise ValueError(f"No TG file ID in DB for non-split file.")
                 telegram_file_id_final = tg_id; chunks_meta_final = None
         
-        # Correction for is_compressed if it's a direct file ID and not from batch/DB lookup
         if prep_data.get('telegram_file_id_is_direct_source') and not is_item_from_batch and not needs_db_lookup:
             is_compressed_final = original_filename_final.lower().endswith('.zip')
 
@@ -171,9 +167,9 @@ def _prepare_download_and_generate_updates(prep_id: str) -> Generator[SseEvent, 
             for i, chunk_info in enumerate(chunks_meta_final):
                 part_num = chunk_info.get("part_number")
                 chunk_send_locations = chunk_info.get("send_locations", [])
-                if not chunk_send_locations: logging.warning(f"Chunk {part_num} no send_locations, skipping."); continue
+                if not chunk_send_locations: logging.warning(f"{log_prefix} Chunk {part_num} no send_locations, skipping."); continue
                 chunk_tg_file_id, _ = _find_best_telegram_file_id(chunk_send_locations, PRIMARY_TELEGRAM_CHAT_ID)
-                if not chunk_tg_file_id: logging.warning(f"Chunk {part_num} no TG file_id, skipping."); continue
+                if not chunk_tg_file_id: logging.warning(f"{log_prefix} Chunk {part_num} no TG file_id, skipping."); continue
                 submitted_futures.append(download_executor.submit(_download_chunk_task, chunk_tg_file_id, part_num, prep_id))
             
             yield _yield_sse_event('status', {'message': f'Downloading {num_chunks} file parts...'})
@@ -186,7 +182,7 @@ def _prepare_download_and_generate_updates(prep_id: str) -> Generator[SseEvent, 
                     elif content_result:
                         downloaded_chunk_count += 1; fetched_bytes_count += len(content_result)
                         downloaded_content_map[pnum_result] = content_result
-                        overall_perc = (downloaded_chunk_count / num_chunks) * 80.0 # Target 80% for fetch phase
+                        overall_perc = (downloaded_chunk_count / num_chunks) * 80.0 
                         yield _yield_sse_event('progress', _calculate_download_fetch_progress(start_fetch_time, fetched_bytes_count, total_bytes_to_fetch, downloaded_chunk_count, num_chunks, overall_perc, final_expected_size_final))
                     else: 
                         if not first_download_error: first_download_error = f"Chunk {pnum_result}: Internal task error (no content/error)."
@@ -204,63 +200,22 @@ def _prepare_download_and_generate_updates(prep_id: str) -> Generator[SseEvent, 
                 for pnum_write in range(1, num_chunks + 1):
                     tf_reassemble.write(downloaded_content_map.get(pnum_write, b''))
             downloaded_content_map.clear()
-            # For split files, the reassembled path *is* the final path unless it needs decompression (which is not standard for split files, but could be an edge case)
             temp_final_file_path = temp_reassembled_file_path
-            temp_reassembled_file_path = None # Mark as moved
+            temp_reassembled_file_path = None 
 
-            # If a split file itself was a ZIP (e.g., user uploaded large.zip which was split)
-            # This 'is_compressed_final' refers to the original nature of the file, not compression of chunks.
-            if is_compressed_final: # original_filename_final indicates it was a zip
+            if is_compressed_final:
                  yield _yield_sse_event('status', {'message': 'Decompressing reassembled ZIP...'})
-                 # The reassembled file (temp_final_file_path) is the ZIP. Now extract from it.
                  with tempfile.NamedTemporaryFile(delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"dl_extracted_{prep_id}_") as tf_extracted:
                      extracted_path = tf_extracted.name
                  zf_reassembled = None
                  try:
-                     zf_reassembled = zipfile.ZipFile(temp_final_file_path, 'r')
-                     # The expected filename for extraction is original_filename_final (without .partX)
-                     # However, if original_filename_final itself was 'archive.zip', _find_filename_in_zip should find the member within that.
-                     # This part can be tricky if the original file was e.g. "my_large_document.txt" and it was zipped for upload, then split.
-                     # Assuming original_filename_final is the name of the *file inside the zip* if it was pre-zipped.
-                     # If original_filename_final *is* the .zip name, then _find_filename_in_zip should find a member.
-                     # Let's assume original_filename_final is the target content, not the zip container name from split context
-                     inner_filename_to_extract = original_filename_final # This might need adjustment based on how display names vs content names are handled
-                     if not original_filename_final.lower().endswith(".zip"): # If the file was data.txt then zipped, then split
-                        # we are extracting data.txt from the reassembled zip.
-                        # If the file was data.zip, then split, we are extracting members from data.zip
-                        # This logic branch handles if the "original file" was not itself a zip, but became one during a non-split upload that was then marked is_compressed.
-                        # For a split file, original_filename_final is the actual file. If it's a zip, we extract.
-                         pass # original_filename_final is what we want.
-                     
-                     # We need to find what to extract. If original_filename_final is "archive.zip",
-                     # it's ambiguous. If it was "data.txt" that became "data.txt.zip" for upload,
-                     # then we need to extract "data.txt".
-                     # For split files, the `original_filename_final` is the true original name.
-                     # The `is_compressed_final` indicates if this true original was a zip.
-                     
-                     # If the split file IS a zip (e.g. big_archive.zip was split)
-                     # then _find_filename_in_zip behavior is to find a member. This is usually not what's wanted.
-                     # We want to serve the big_archive.zip itself.
-                     # So, if is_split_final AND is_compressed_final, temp_final_file_path already points to the reassembled .zip. No further extraction.
-                     # The confusion comes from "is_compressed" flag. If it means "the content *inside* the telegram file is a zip that needs extraction",
-                     # then the logic is different for split vs non-split.
-
-                     # Let's simplify: For SPLIT files, the reassembled file IS the final file.
-                     # The is_compressed_final flag is about its *nature*.
-                     # No further extraction step here for split files that were originally zips.
-                     # The `temp_final_file_path` already points to the reassembled ZIP.
-                     logging.info(f"{log_prefix} Reassembled file is a ZIP: {temp_final_file_path}. No further extraction for split ZIPs.")
-                     # The `if is_compressed_final and not original_filename_final.lower().endswith('.zip'):`
-                     # in the non-split section handles files that were zipped *by the uploader script*
-                     # but were not originally zips. This doesn't apply the same way to split files.
+                     # This logic for split ZIPs assumes that if a file was split and its original_filename_final indicates it was a zip,
+                     # the reassembled file (temp_final_file_path) IS the zip to be served.
+                     # No further extraction for split ZIPs is done here; the reassembled ZIP is considered the final file.
+                     logging.info(f"{log_prefix} Reassembled file is a ZIP: {temp_final_file_path}. No further extraction for split ZIPs at this stage.")
                  finally:
                     if zf_reassembled: zf_reassembled.close()
-                    # If we decided *not* to extract, and temp_final_file_path *is* the zip, we are good.
-                    # If we *did* extract (which we are avoiding now for split zips):
-                    # _safe_remove_file(temp_final_file_path, log_prefix, "intermediate reassembled zip after extraction")
-                    # temp_final_file_path = extracted_path
                  yield _yield_sse_event('progress', {'percentage': 95})
-
 
         else: # NOT SPLIT
             if not telegram_file_id_final: raise ValueError("Non-split file but no TG file ID.")
@@ -269,10 +224,6 @@ def _prepare_download_and_generate_updates(prep_id: str) -> Generator[SseEvent, 
             if err_msg: raise ValueError(f"TG download failed: {err_msg}")
             if not content_bytes: raise ValueError("TG download returned empty content.")
             
-            # This 'is_compressed_final' is from DB.
-            # The condition `and not original_filename_final.lower().endswith('.zip')` is key.
-            # It means: the uploader marked it as compressed (likely it zipped it),
-            # AND the original file wasn't a zip itself. So we need to decompress.
             if is_compressed_final and not original_filename_final.lower().endswith('.zip'):
                 yield _yield_sse_event('status', {'message': 'Decompressing...'})
                 with tempfile.NamedTemporaryFile(delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"dl_final_{prep_id}_") as tf:
@@ -281,13 +232,12 @@ def _prepare_download_and_generate_updates(prep_id: str) -> Generator[SseEvent, 
                 try:
                     zip_buffer = io.BytesIO(content_bytes)
                     zf_single = zipfile.ZipFile(zip_buffer, 'r')
-                    # Here, original_filename_final is the name of the content *inside* the zip.
                     inner_filename = _find_filename_in_zip(zf_single, original_filename_final, log_prefix)
                     with zf_single.open(inner_filename, 'r') as inner_fs, open(temp_final_file_path, 'wb') as tf_out:
                         shutil.copyfileobj(inner_fs, tf_out)  
                 finally:
                     if zf_single: zf_single.close()
-            else: # Serve as is (either not compressed, or it was originally a .zip file)
+            else: 
                 with tempfile.NamedTemporaryFile(delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"dl_final_{prep_id}_") as tf:
                     temp_final_file_path = tf.name
                     tf.write(content_bytes)
@@ -307,46 +257,98 @@ def _prepare_download_and_generate_updates(prep_id: str) -> Generator[SseEvent, 
 
     except Exception as e:
         error_message = f"Download prep failed: {str(e) or type(e).__name__}"
+        logging.error(f"{log_prefix} {error_message}", exc_info=True) # Add exc_info for more details
         yield _yield_sse_event('error', {'message': error_message})
-        if prep_id in download_prep_data:
+        if prep_id in download_prep_data: # Check existence before modifying
             download_prep_data[prep_id]['status'] = 'error'; download_prep_data[prep_id]['error'] = error_message
     finally:
         if download_executor: download_executor.shutdown(wait=False)
-        if temp_reassembled_file_path and os.path.exists(temp_reassembled_file_path): # If it wasn't moved to temp_final_file_path
+        if temp_reassembled_file_path and os.path.exists(temp_reassembled_file_path): 
             _safe_remove_file(temp_reassembled_file_path, log_prefix, "intermediate reassembled file in finally")
-        logging.info(f"{log_prefix} Generator ended. Status: {prep_data.get('status', 'unknown')}")
-
+        # Ensure prep_data is accessed safely if it might have been deleted or is None
+        current_status = prep_data.get('status', 'unknown') if prep_data else 'unknown (prep_data missing)'
+        logging.info(f"{log_prefix} Generator ended. Status: {current_status}")
+        
+def generate_stream_with_cleanup(path: str, temp_id_for_cleanup: str):
+    """Generator to stream a file and ensure cleanup afterwards."""
+    log_prefix_stream = f"StreamServe-{temp_id_for_cleanup}"
+    
+    # Retrieve original filename for logging, if prep_data still exists
+    prep_data_entry = download_prep_data.get(temp_id_for_cleanup)
+    original_fn = prep_data_entry.get('original_filename', 'unknown_file') if prep_data_entry else 'unknown_file (prep_data gone)'
+    
+    logging.info(f"[{log_prefix_stream}] Starting to stream file '{original_fn}' from path '{path}'.")
+    try:
+        with open(path, 'rb') as f:
+            while True:
+                chunk = f.read(STREAMING_CHUNK_SIZE_TO_CLIENT) # Use defined chunk size
+                if not chunk:
+                    logging.info(f"[{log_prefix_stream}] Finished streaming file '{original_fn}'.")
+                    break
+                yield chunk
+    except Exception as e:
+        logging.error(f"[{log_prefix_stream}] Error during file streaming for '{original_fn}': {e}", exc_info=True)
+        # Re-raise to ensure Flask handles the error and closes the connection.
+        # The finally block will still be executed.
+        raise
+    finally:
+        # This block executes regardless of how the stream ends (success, client disconnect, error).
+        logging.info(f"[{log_prefix_stream}] Stream for '{original_fn}' ended or errored. Initiating cleanup for temp_id {temp_id_for_cleanup}.")
+        _schedule_cleanup(temp_id_for_cleanup, path)
 
 @download_bp.route('/serve-temp-file/<temp_id>/<path:filename>')
 def serve_temp_file(temp_id: str, filename: str) -> Response:
+    log_prefix_serve = f"[ServeTemp-{temp_id}]"
     prep_info = download_prep_data.get(temp_id)
-    if not prep_info or prep_info.get('status') != 'ready':
-        err_msg = "Invalid or expired link."
-        if prep_info: err_msg = prep_info.get('error', f"File not ready (Status: {prep_info.get('status')})")
-        return make_response(f"Error: {err_msg}", 404 if not prep_info else 400)
+
+    if not prep_info:
+        logging.warning(f"{log_prefix_serve} No prep_info found. Invalid or expired link.")
+        # _schedule_cleanup(temp_id, None) # Clean up prep_data if somehow it exists but file info is stale
+        return make_response("Error: Invalid or expired download link.", 404)
+
+    if prep_info.get('status') != 'ready':
+        err_msg = prep_info.get('error', f"File not ready (Status: {prep_info.get('status')})")
+        logging.warning(f"{log_prefix_serve} File not ready. Status: {prep_info.get('status')}, Error: {prep_info.get('error')}")
+        # If status is 'error', the file might not exist or be corrupted.
+        # _schedule_cleanup will be called eventually by _prepare_download_and_generate_updates's finally or if an error occurred there.
+        # If it's an error state, it's good to ensure cleanup is triggered if not already.
+        if prep_info.get('status') == 'error':
+            _schedule_cleanup(temp_id, prep_info.get('final_temp_file_path'))
+        return make_response(f"Error: {err_msg}", 400)
 
     temp_path = prep_info.get('final_temp_file_path')
     dl_name = prep_info.get('original_filename', filename)
 
     if not temp_path or not os.path.exists(temp_path):
-        _schedule_cleanup(temp_id, temp_path) # Schedule cleanup even if file missing now
-        return make_response("Error: Prepared file data missing.", 500)
-
-    def generate_stream(path: str, pid: str):
-        timer = threading.Timer(120, _schedule_cleanup, args=[pid, path]) # 2 min cleanup
-        timer.daemon = True; timer.start()
-        with open(path, 'rb') as f:
-            while True:
-                chunk = f.read(TELEGRAM_MAX_CHUNK_SIZE_BYTES)
-                if not chunk: break
-                yield chunk
+        logging.error(f"{log_prefix_serve} Prepared file path '{temp_path}' missing or does not exist for serving.")
+        # Path is gone, ensure prep_data is also cleaned up.
+        _schedule_cleanup(temp_id, temp_path) 
+        return make_response("Error: Prepared file data missing or already cleaned up.", 500)
     
-    response = Response(stream_with_context(generate_stream(temp_path, temp_id)), mimetype='application/octet-stream')
-    try: enc_name = dl_name.encode('utf-8').decode('latin-1', 'ignore')
-    except: enc_name = f"download_{temp_id}.dat"
+    # The old timer logic is removed here. Cleanup is handled by generate_stream_with_cleanup.
+    
+    response = Response(
+        stream_with_context(generate_stream_with_cleanup(temp_path, temp_id)),
+        mimetype='application/octet-stream'
+    )
+    try:
+        # Ensure filename is properly encoded for Content-Disposition header
+        # Using 'latin-1' with 'ignore' is a common way to handle non-ASCII characters,
+        # but modern browsers also support UTF-8 with `filename*=UTF-8''...`
+        # For simplicity, keeping the existing encoding method.
+        enc_name = dl_name.encode('utf-8').decode('latin-1', 'ignore')
+    except Exception:
+        logging.warning(f"{log_prefix_serve} Could not encode original filename '{dl_name}'. Using fallback.")
+        enc_name = f"download_{temp_id}.dat" # Fallback filename
+
     response.headers.set('Content-Disposition', 'attachment', filename=enc_name)
-    if prep_info.get('final_file_size') is not None:
-        response.headers.set('Content-Length', str(prep_info['final_file_size']))
+    
+    final_size = prep_info.get('final_file_size')
+    if final_size is not None: # Ensure final_size is not None
+        response.headers.set('Content-Length', str(final_size))
+    else:
+        logging.warning(f"{log_prefix_serve} final_file_size not found in prep_info for '{dl_name}'. Content-Length will not be set.")
+        
     return response
 
 @download_bp.route('/download-single/<access_id>/<path:filename>')

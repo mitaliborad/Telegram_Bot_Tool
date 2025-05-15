@@ -98,169 +98,187 @@ def _prepare_download_and_generate_updates(prep_id: str) -> Generator[SseEvent, 
         return
     prep_data['status'] = 'preparing'
 
-    is_split_final: bool = prep_data.get('is_split', False)
-    chunks_meta_final: Optional[List[Dict[str, Any]]] = prep_data.get('chunks_meta')
-    telegram_file_id_final: Optional[str] = prep_data.get('telegram_file_id')
-    original_filename_final: str = prep_data.get('original_filename', "download")
-    is_compressed_final: bool = prep_data.get('is_compressed', False) 
-    final_expected_size_final: int = prep_data.get('final_expected_size', 0)
-    compressed_total_size_final: int = prep_data.get('compressed_total_size', 0)
-
-    temp_reassembled_file_path: Optional[str] = None
-    temp_final_file_path: Optional[str] = None
-    download_executor: Optional[ThreadPoolExecutor] = None
-
     try:
-        is_item_from_batch = prep_data.get("is_item_from_batch", False)
-        needs_db_lookup = not is_item_from_batch
-        
-        if needs_db_lookup and not prep_data.get('telegram_file_id_is_direct_source'):
-            db_access_id = prep_data.get('access_id')
-            db_username = prep_data.get('username') 
-            db_requested_filename = prep_data.get('requested_filename')
-            fetched_file_info: Optional[Dict[str, Any]] = None; lookup_error_msg = ""
+        is_split_final: bool = prep_data.get('is_split', False)
+        chunks_meta_final: Optional[List[Dict[str, Any]]] = prep_data.get('chunks_meta')
+        telegram_file_id_final: Optional[str] = prep_data.get('telegram_file_id')
+        original_filename_final: str = prep_data.get('original_filename', "download")
+        is_compressed_final: bool = prep_data.get('is_compressed', False) 
+        final_expected_size_final: int = prep_data.get('final_expected_size', 0)
+        compressed_total_size_final: int = prep_data.get('compressed_total_size', 0)
 
-            if db_access_id: fetched_file_info, lookup_error_msg = find_metadata_by_access_id(db_access_id)
-            elif db_username and db_requested_filename:
-                all_user_files, lookup_error_msg = find_metadata_by_username(db_username)
-                if not lookup_error_msg and all_user_files:
-                    fetched_file_info = next((f for f in all_user_files if f.get('original_filename') == db_requested_filename or f.get('batch_display_name') == db_requested_filename), None)
-            if lookup_error_msg or not fetched_file_info: raise FileNotFoundError(lookup_error_msg or "File metadata not found.")
+        temp_reassembled_file_path: Optional[str] = None
+        temp_final_file_path: Optional[str] = None
+        download_executor: Optional[ThreadPoolExecutor] = None
 
-            original_filename_final = fetched_file_info.get('original_filename', fetched_file_info.get('batch_display_name', db_requested_filename or 'unknown'))
-            final_expected_size_final = fetched_file_info.get('original_size', 0)
-            is_split_final = fetched_file_info.get('is_split', False)
-            is_compressed_final = fetched_file_info.get('is_compressed', False) 
-            compressed_total_size_final = fetched_file_info.get('compressed_total_size', 0)
+        try:
+            is_item_from_batch = prep_data.get("is_item_from_batch", False)
+            needs_db_lookup = not is_item_from_batch
+            
+            if needs_db_lookup and not prep_data.get('telegram_file_id_is_direct_source'):
+                db_access_id = prep_data.get('access_id')
+                db_username = prep_data.get('username') 
+                db_requested_filename = prep_data.get('requested_filename')
+                fetched_file_info: Optional[Dict[str, Any]] = None; lookup_error_msg = ""
+
+                if db_access_id: fetched_file_info, lookup_error_msg = find_metadata_by_access_id(db_access_id)
+                elif db_username and db_requested_filename:
+                    all_user_files, lookup_error_msg = find_metadata_by_username(db_username)
+                    if not lookup_error_msg and all_user_files:
+                        fetched_file_info = next((f for f in all_user_files if f.get('original_filename') == db_requested_filename or f.get('batch_display_name') == db_requested_filename), None)
+                if lookup_error_msg or not fetched_file_info: raise FileNotFoundError(lookup_error_msg or "File metadata not found.")
+
+                original_filename_final = fetched_file_info.get('original_filename', fetched_file_info.get('batch_display_name', db_requested_filename or 'unknown'))
+                final_expected_size_final = fetched_file_info.get('original_size', 0)
+                is_split_final = fetched_file_info.get('is_split', False)
+                is_compressed_final = fetched_file_info.get('is_compressed', False) 
+                compressed_total_size_final = fetched_file_info.get('compressed_total_size', 0)
+
+                if is_split_final:
+                    chunks_meta_final = fetched_file_info.get('chunks')
+                    if not chunks_meta_final: raise RuntimeError(f"DB record split but no chunk data.")
+                    telegram_file_id_final = None 
+                else: 
+                    locations = fetched_file_info.get('send_locations', [])
+                    tg_id, _ = _find_best_telegram_file_id(locations, PRIMARY_TELEGRAM_CHAT_ID)
+                    if not tg_id: raise ValueError(f"No TG file ID in DB for non-split file.")
+                    telegram_file_id_final = tg_id; chunks_meta_final = None
+            
+            if prep_data.get('telegram_file_id_is_direct_source') and not is_item_from_batch and not needs_db_lookup:
+                is_compressed_final = original_filename_final.lower().endswith('.zip')
+
+
+            yield _yield_sse_event('filename', {'filename': original_filename_final})
+            yield _yield_sse_event('totalSizeUpdate', {'totalSize': final_expected_size_final}) 
+            yield _yield_sse_event('status', {'message': 'Preparing file...'})
 
             if is_split_final:
-                chunks_meta_final = fetched_file_info.get('chunks')
-                if not chunks_meta_final: raise RuntimeError(f"DB record split but no chunk data.")
-                telegram_file_id_final = None 
-            else: 
-                locations = fetched_file_info.get('send_locations', [])
-                tg_id, _ = _find_best_telegram_file_id(locations, PRIMARY_TELEGRAM_CHAT_ID)
-                if not tg_id: raise ValueError(f"No TG file ID in DB for non-split file.")
-                telegram_file_id_final = tg_id; chunks_meta_final = None
-        
-        if prep_data.get('telegram_file_id_is_direct_source') and not is_item_from_batch and not needs_db_lookup:
-            is_compressed_final = original_filename_final.lower().endswith('.zip')
+                if not chunks_meta_final: raise RuntimeError(f"File is split but no chunk metadata.")
+                chunks_meta_final.sort(key=lambda c: int(c.get('part_number', 0)))
+                num_chunks = len(chunks_meta_final)
+                total_bytes_to_fetch = compressed_total_size_final or sum(c.get('size',0) for c in chunks_meta_final)
+                
+                start_fetch_time = time.time(); fetched_bytes_count = 0; downloaded_chunk_count = 0
+                download_executor = ThreadPoolExecutor(max_workers=MAX_DOWNLOAD_WORKERS, thread_name_prefix=f'DlPrep_{prep_id[:4]}')
+                submitted_futures: List[Future] = []
+                downloaded_content_map: Dict[int, bytes] = {}
+                first_download_error: Optional[str] = None
+                file_too_big_errors_count = 0
 
+                for i, chunk_info in enumerate(chunks_meta_final):
+                    part_num = chunk_info.get("part_number")
+                    chunk_send_locations = chunk_info.get("send_locations", [])
+                    if not chunk_send_locations: logging.warning(f"{log_prefix} Chunk {part_num} no send_locations, skipping."); continue
+                    chunk_tg_file_id, _ = _find_best_telegram_file_id(chunk_send_locations, PRIMARY_TELEGRAM_CHAT_ID)
+                    if not chunk_tg_file_id: logging.warning(f"{log_prefix} Chunk {part_num} no TG file_id, skipping."); continue
+                    submitted_futures.append(download_executor.submit(_download_chunk_task, chunk_tg_file_id, part_num, prep_id))
+                
+                yield _yield_sse_event('status', {'message': f'Downloading {num_chunks} file parts...'})
+                for future in as_completed(submitted_futures):
+                    try:
+                        pnum_result, content_result, err_result = future.result()
+                        if err_result:
+                            if "file is too big" in err_result.lower(): file_too_big_errors_count += 1
+                            if not first_download_error: first_download_error = f"Chunk {pnum_result}: {err_result}"
+                        elif content_result:
+                            downloaded_chunk_count += 1; fetched_bytes_count += len(content_result)
+                            downloaded_content_map[pnum_result] = content_result
+                            overall_perc = (downloaded_chunk_count / num_chunks) * 80.0 
+                            yield _yield_sse_event('progress', _calculate_download_fetch_progress(start_fetch_time, fetched_bytes_count, total_bytes_to_fetch, downloaded_chunk_count, num_chunks, overall_perc, final_expected_size_final))
+                        else: 
+                            if not first_download_error: first_download_error = f"Chunk {pnum_result}: Internal task error (no content/error)."
+                    except Exception as e:
+                        if not first_download_error: first_download_error = f"Processing future for chunk: {str(e)}"
 
-        yield _yield_sse_event('filename', {'filename': original_filename_final})
-        yield _yield_sse_event('totalSizeUpdate', {'totalSize': final_expected_size_final}) 
-        yield _yield_sse_event('status', {'message': 'Preparing file...'})
+                if first_download_error:
+                    error_to_raise = f"Download failed: {first_download_error}"
+                    if file_too_big_errors_count > 0: error_to_raise = "Download failed: One or more file parts were too large."
+                    raise ValueError(error_to_raise)
+                if downloaded_chunk_count != num_chunks: raise SystemError(f"Chunk count mismatch. Expected:{num_chunks}, Got:{downloaded_chunk_count}.")
+                
+                with tempfile.NamedTemporaryFile(delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"dl_reass_{prep_id}_") as tf_reassemble:
+                    temp_reassembled_file_path = tf_reassemble.name
+                    logging.debug(f"{log_prefix} Created reassembly temp file: {temp_reassembled_file_path}")
+                    for pnum_write in range(1, num_chunks + 1):
+                        chunk_content_to_write = downloaded_content_map.get(pnum_write)
+                        if chunk_content_to_write is None:
+                        # This case should ideally be caught earlier if a chunk failed,
+                        # but as a safeguard during reassembly:
+                            logging.error(f"{log_prefix} CRITICAL: Chunk {pnum_write} missing from map during reassembly!")
+                            raise SystemError(f"Reassembly error: Chunk {pnum_write} content missing from downloaded map.")
+                    tf_reassemble.write(chunk_content_to_write)
+                downloaded_content_map.clear() # Clear map after use
+                logging.info(f"{log_prefix} Reassembly complete. Reassembled file: {temp_reassembled_file_path}, Size: {format_bytes(os.path.getsize(temp_reassembled_file_path)) if os.path.exists(temp_reassembled_file_path) else 'N/A'}")
+                    
+                temp_final_file_path = temp_reassembled_file_path
+                temp_reassembled_file_path = None 
 
-        if is_split_final:
-            if not chunks_meta_final: raise RuntimeError(f"File is split but no chunk metadata.")
-            chunks_meta_final.sort(key=lambda c: int(c.get('part_number', 0)))
-            num_chunks = len(chunks_meta_final)
-            total_bytes_to_fetch = compressed_total_size_final or sum(c.get('size',0) for c in chunks_meta_final)
+                if is_compressed_final:
+                    yield _yield_sse_event('status', {'message': 'Decompressing reassembled ZIP...'})
+                    with tempfile.NamedTemporaryFile(delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"dl_extracted_{prep_id}_") as tf_extracted:
+                        extracted_path = tf_extracted.name
+                    zf_reassembled = None
+                    try:
+                        # This logic for split ZIPs assumes that if a file was split and its original_filename_final indicates it was a zip,
+                        # the reassembled file (temp_final_file_path) IS the zip to be served.
+                        # No further extraction for split ZIPs is done here; the reassembled ZIP is considered the final file.
+                        logging.info(f"{log_prefix} Reassembled file is a ZIP: {temp_final_file_path}. No further extraction for split ZIPs at this stage.")
+                    finally:
+                        if zf_reassembled: zf_reassembled.close()
+                    yield _yield_sse_event('progress', {'percentage': 95})
+
+            else: # NOT SPLIT
+                if not telegram_file_id_final: raise ValueError("Non-split file but no TG file ID.")
+                yield _yield_sse_event('status', {'message': 'Downloading...'})
+                content_bytes, err_msg = download_telegram_file_content(telegram_file_id_final)
+                if err_msg: raise ValueError(f"TG download failed: {err_msg}")
+                if not content_bytes: raise ValueError("TG download returned empty content.")
+                logging.info(f"{log_prefix} Non-split file downloaded. Content length: {len(content_bytes) if content_bytes else 0}")
+                
+                if is_compressed_final and not original_filename_final.lower().endswith('.zip'):
+                    logging.info(f"{log_prefix} Decompressing non-split file: {original_filename_final}")
+                    yield _yield_sse_event('status', {'message': 'Decompressing...'})
+                    with tempfile.NamedTemporaryFile(delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"dl_final_{prep_id}_") as tf:
+                        temp_final_file_path = tf.name
+                    zf_single = None
+                    try:
+                        zip_buffer = io.BytesIO(content_bytes)
+                        zf_single = zipfile.ZipFile(zip_buffer, 'r')
+                        inner_filename = _find_filename_in_zip(zf_single, original_filename_final, log_prefix)
+                        with zf_single.open(inner_filename, 'r') as inner_fs, open(temp_final_file_path, 'wb') as tf_out:
+                            shutil.copyfileobj(inner_fs, tf_out)  
+                    finally:
+                        if zf_single: zf_single.close()
+                    logging.info(f"{log_prefix} Decompression complete for non-split file. Extracted to: {temp_final_file_path}")
+                else: 
+                    with tempfile.NamedTemporaryFile(delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"dl_final_{prep_id}_") as tf:
+                        temp_final_file_path = tf.name
+                        tf.write(content_bytes)
+                yield _yield_sse_event('progress', {'percentage': 95})
+            logging.info(f"{log_prefix} Preparing to finalize. Current temp_final_file_path: {temp_final_file_path}")
             
-            start_fetch_time = time.time(); fetched_bytes_count = 0; downloaded_chunk_count = 0
-            download_executor = ThreadPoolExecutor(max_workers=MAX_DOWNLOAD_WORKERS, thread_name_prefix=f'DlPrep_{prep_id[:4]}')
-            submitted_futures: List[Future] = []
-            downloaded_content_map: Dict[int, bytes] = {}
-            first_download_error: Optional[str] = None
-            file_too_big_errors_count = 0
-
-            for i, chunk_info in enumerate(chunks_meta_final):
-                part_num = chunk_info.get("part_number")
-                chunk_send_locations = chunk_info.get("send_locations", [])
-                if not chunk_send_locations: logging.warning(f"{log_prefix} Chunk {part_num} no send_locations, skipping."); continue
-                chunk_tg_file_id, _ = _find_best_telegram_file_id(chunk_send_locations, PRIMARY_TELEGRAM_CHAT_ID)
-                if not chunk_tg_file_id: logging.warning(f"{log_prefix} Chunk {part_num} no TG file_id, skipping."); continue
-                submitted_futures.append(download_executor.submit(_download_chunk_task, chunk_tg_file_id, part_num, prep_id))
+            if not temp_final_file_path or not os.path.exists(temp_final_file_path):
+                logging.error(f"{log_prefix} CRITICAL FAILURE: Final temp file path is invalid or file does not exist. Path: '{temp_final_file_path}'")
+                raise RuntimeError(f"Failed to produce final temp file path. Check logs for path details.")
             
-            yield _yield_sse_event('status', {'message': f'Downloading {num_chunks} file parts...'})
-            for future in as_completed(submitted_futures):
-                try:
-                    pnum_result, content_result, err_result = future.result()
-                    if err_result:
-                        if "file is too big" in err_result.lower(): file_too_big_errors_count += 1
-                        if not first_download_error: first_download_error = f"Chunk {pnum_result}: {err_result}"
-                    elif content_result:
-                        downloaded_chunk_count += 1; fetched_bytes_count += len(content_result)
-                        downloaded_content_map[pnum_result] = content_result
-                        overall_perc = (downloaded_chunk_count / num_chunks) * 80.0 
-                        yield _yield_sse_event('progress', _calculate_download_fetch_progress(start_fetch_time, fetched_bytes_count, total_bytes_to_fetch, downloaded_chunk_count, num_chunks, overall_perc, final_expected_size_final))
-                    else: 
-                        if not first_download_error: first_download_error = f"Chunk {pnum_result}: Internal task error (no content/error)."
-                except Exception as e:
-                    if not first_download_error: first_download_error = f"Processing future for chunk: {str(e)}"
-
-            if first_download_error:
-                error_to_raise = f"Download failed: {first_download_error}"
-                if file_too_big_errors_count > 0: error_to_raise = "Download failed: One or more file parts were too large."
-                raise ValueError(error_to_raise)
-            if downloaded_chunk_count != num_chunks: raise SystemError(f"Chunk count mismatch. Expected:{num_chunks}, Got:{downloaded_chunk_count}.")
+            final_actual_size = os.path.getsize(temp_final_file_path)
+            logging.info(f"{log_prefix} Final file ready. Path: {temp_final_file_path}, Actual Size: {format_bytes(final_actual_size)}")
             
-            with tempfile.NamedTemporaryFile(delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"dl_reass_{prep_id}_") as tf_reassemble:
-                temp_reassembled_file_path = tf_reassemble.name
-                for pnum_write in range(1, num_chunks + 1):
-                    tf_reassemble.write(downloaded_content_map.get(pnum_write, b''))
-            downloaded_content_map.clear()
-            temp_final_file_path = temp_reassembled_file_path
-            temp_reassembled_file_path = None 
+            prep_data['final_temp_file_path'] = temp_final_file_path
+            prep_data['final_file_size'] = final_actual_size
+            prep_data['status'] = 'ready'
 
-            if is_compressed_final:
-                 yield _yield_sse_event('status', {'message': 'Decompressing reassembled ZIP...'})
-                 with tempfile.NamedTemporaryFile(delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"dl_extracted_{prep_id}_") as tf_extracted:
-                     extracted_path = tf_extracted.name
-                 zf_reassembled = None
-                 try:
-                     # This logic for split ZIPs assumes that if a file was split and its original_filename_final indicates it was a zip,
-                     # the reassembled file (temp_final_file_path) IS the zip to be served.
-                     # No further extraction for split ZIPs is done here; the reassembled ZIP is considered the final file.
-                     logging.info(f"{log_prefix} Reassembled file is a ZIP: {temp_final_file_path}. No further extraction for split ZIPs at this stage.")
-                 finally:
-                    if zf_reassembled: zf_reassembled.close()
-                 yield _yield_sse_event('progress', {'percentage': 95})
+            yield _yield_sse_event('progress', {'percentage': 100});
+            yield _yield_sse_event('status', {'message': 'File ready!'});
+            yield _yield_sse_event('ready', {'temp_file_id': prep_id, 'final_filename': original_filename_final})
+            logging.info(f"{log_prefix} All 'ready' SSE events sent.")
 
-        else: # NOT SPLIT
-            if not telegram_file_id_final: raise ValueError("Non-split file but no TG file ID.")
-            yield _yield_sse_event('status', {'message': 'Downloading...'})
-            content_bytes, err_msg = download_telegram_file_content(telegram_file_id_final)
-            if err_msg: raise ValueError(f"TG download failed: {err_msg}")
-            if not content_bytes: raise ValueError("TG download returned empty content.")
-            
-            if is_compressed_final and not original_filename_final.lower().endswith('.zip'):
-                yield _yield_sse_event('status', {'message': 'Decompressing...'})
-                with tempfile.NamedTemporaryFile(delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"dl_final_{prep_id}_") as tf:
-                    temp_final_file_path = tf.name
-                zf_single = None
-                try:
-                    zip_buffer = io.BytesIO(content_bytes)
-                    zf_single = zipfile.ZipFile(zip_buffer, 'r')
-                    inner_filename = _find_filename_in_zip(zf_single, original_filename_final, log_prefix)
-                    with zf_single.open(inner_filename, 'r') as inner_fs, open(temp_final_file_path, 'wb') as tf_out:
-                        shutil.copyfileobj(inner_fs, tf_out)  
-                finally:
-                    if zf_single: zf_single.close()
-            else: 
-                with tempfile.NamedTemporaryFile(delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"dl_final_{prep_id}_") as tf:
-                    temp_final_file_path = tf.name
-                    tf.write(content_bytes)
-            yield _yield_sse_event('progress', {'percentage': 95})
-
-        if not temp_final_file_path or not os.path.exists(temp_final_file_path):
-            raise RuntimeError(f"Failed to produce final temp file path.")
-        final_actual_size = os.path.getsize(temp_final_file_path)
-        
-        prep_data['final_temp_file_path'] = temp_final_file_path
-        prep_data['final_file_size'] = final_actual_size
-        prep_data['status'] = 'ready'
-
-        yield _yield_sse_event('progress', {'percentage': 100});
-        yield _yield_sse_event('status', {'message': 'File ready!'});
-        yield _yield_sse_event('ready', {'temp_file_id': prep_id, 'final_filename': original_filename_final})
-
-    except Exception as e:
-        error_message = f"Download prep failed: {str(e) or type(e).__name__}"
-        logging.error(f"{log_prefix} {error_message}", exc_info=True) # Add exc_info for more details
-        yield _yield_sse_event('error', {'message': error_message})
-        if prep_id in download_prep_data: # Check existence before modifying
-            download_prep_data[prep_id]['status'] = 'error'; download_prep_data[prep_id]['error'] = error_message
+        except Exception as e:
+            error_message = f"Download prep failed: {str(e) or type(e).__name__}"
+            logging.error(f"{log_prefix} {error_message}", exc_info=True) # Add exc_info for more details
+            yield _yield_sse_event('error', {'message': error_message})
+            if prep_id in download_prep_data: # Check existence before modifying
+                download_prep_data[prep_id]['status'] = 'error'; download_prep_data[prep_id]['error'] = error_message
     finally:
         if download_executor: download_executor.shutdown(wait=False)
         if temp_reassembled_file_path and os.path.exists(temp_reassembled_file_path): 

@@ -1,0 +1,47 @@
+{% extends 'admin/master.html' %} <!-- This inherits the basic Flask-Admin layout -->
+
+{% block body %}
+  <h1>User List</h1>
+
+  {% if error_message %}
+    <div class="alert alert-danger" role="alert">
+      {{ error_message }}
+    </div>
+  {% endif %}
+
+  {% if users %}
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Created At</th>
+          <!-- Add other fields you want to display -->
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+          <tr>
+            <td>{{ user._id }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+            <td>
+                {% if user.created_at %}
+                    {{ user.created_at.strftime('%Y-%m-%d %H:%M:%S') if user.created_at is string else user.created_at }}
+                {% else %}
+                    N/A
+                {% endif %}
+            </td>
+            <!-- Add cells for other fields -->
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% elif not error_message %}
+    <p>No users found in the system.</p>
+  {% endif %}
+
+  <!-- We can add buttons for 'Create New User' here later -->
+
+{% endblock %}

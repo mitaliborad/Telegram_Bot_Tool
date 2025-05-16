@@ -5,6 +5,9 @@ from flask_cors import CORS
 # from flask_login import LoginManager # No longer defined here
 # from flask_jwt_extended import JWTManager # No longer defined here
 from dotenv import load_dotenv
+from flask_admin import Admin
+from flask_admin.contrib.fileadmin import FileAdmin
+from routes.admin.views import UserView, FileMetadataView
 
 load_dotenv() # Load .env variables first
 
@@ -47,6 +50,14 @@ logging.info("Flask-Login initialized.")
 # upload_progress_data and download_prep_data are already imported.
 logging.info("Global state variables (from extensions.py) are available.")
 
+admin = Admin(app, name='Storage Admin', template_mode='bootstrap4', url='/admin')
+logging.info("Flask-Admin initialized. Accessible at /admin")
+
+admin.add_view(UserView(name='Manage Users', endpoint='users')) 
+logging.info("Flask-Admin UserView registered.")
+
+admin.add_view(FileMetadataView(name='File Uploads', endpoint='files')) 
+logging.info("Flask-Admin FileMetadataView registered.")
 
 # --- Import and Register Blueprints ---
 
@@ -85,8 +96,8 @@ if 'file' not in app.blueprints:
     logging.info("File Blueprint registered.")
 else:
     logging.warning("Blueprint 'file' was already registered. Skipping re-registration.")
+    
 
-# ... (rest of your app_setup.py, e.g., Angular serving routes, if __name__ == '__main__')
 
 # --- Application Runner ---
 if __name__ == '__main__':

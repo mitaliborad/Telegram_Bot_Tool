@@ -1,0 +1,171 @@
+{% extends 'admin/master.html' %}
+
+{% block head_tail %}
+  {{ super() }}
+  <style>
+    .details-table th {
+      width: 25%;
+      font-weight: bold;
+      background-color: #f9f9f9;
+    }
+    .details-table td {
+      word-break: break-all; /* Helps with long file IDs */
+    }
+    pre {
+      background-color: #eee;
+      padding: 10px;
+      border-radius: 4px;
+      white-space: pre-wrap; /* Allows wrapping of long lines in pre tags */
+      word-break: break-all;
+    }
+  </style>
+{% endblock %}
+
+{% block body %}
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <a href="{{ url_for('.index') }}" class="btn btn-default pull-right" style="margin-bottom: 15px;">« Back to List</a>
+        <h2>
+          File/Batch Details:
+          <small>
+            {% if record %}
+              {{ record.get('batch_display_name') or record.get('original_filename') or record.get('access_id', 'N/A') }}
+            {% else %}
+              Record Not Found
+            {% endif %}
+          </small>
+        </h2>
+
+        {% if error_message %}
+          <div class="alert alert-danger">{{ error_message }}</div>
+        {% endif %}
+
+        {% if record %}
+          <table class="table table-bordered table-striped details-table">
+            <tbody>
+              <tr><th>Access ID</th><td>{{ record.get('access_id', 'N/A') }}</td></tr>
+              <tr><th>Username</th><td>{{ record.get('username', 'N/A') }}</td></tr>
+              <tr>
+                <th>Type</th>
+                <td>
+                  {% if record.get('is_batch') %}
+                    <span class="badge badge-info">Batch</span>
+                  {% else %}
+                    <span class="badge badge-secondary">Single File</span>
+                  {% endif %}
+                </td>
+              </tr>
+              <tr><th>Batch Display Name</th><td>{{ record.get('batch_display_name', 'N/A (not a batch or no display name)') }}</td></tr>
+              <tr><th>Original Filename (for single file)</th><td>{{ record.get('original_filename', 'N/A') }}</td></tr>
+              <tr>
+                 <th>Upload Timestamp</th>
+                 <td>{{ record.get('upload_timestamp', 'N/A') }}</td> {# Displays string as is #}
+              </tr>
+              <tr>
+                 <th>Total Original Size</th>
+                 <td>
+                     {% set total_size = record.get('total_original_size') %}
+                     {% set single_size = record.get('original_size') %}
+                     {% if total_size is not none %}{{ total_size | format_bytes }}{% elif single_size is not none %}{{ single_size | format_bytes }}{% else %}N/A{% endif %}
+                 </td>
+              </tr>
+              <tr><th>Total Upload Duration (seconds)</th><td>{{ record.get('total_upload_duration_seconds', 'N/A') }}</td></tr>
+              <tr>
+                 <th>Is Anonymous</th>
+                 <td>
+                     {% if record.get('is_anonymous') %}
+                         <span class="badge badge-warning">Yes</span>
+                         {% if record.get('anonymous_id') %}(ID: {{ record.anonymous_id }}){% endif %}
+                     {% else %}
+                         <span class="badge badge-success">No</span>
+                     {% endif %}
+                 </td>
+              </tr>
+              <tr><th>Database _id</th><td>{{ record.get('_id', 'N/A') }}</td></tr>
+
+              {# Displaying complex fields like send_locations or chunks as pretty JSON #}
+              {% if not record.get('is_batch') and record.get('send_locations') %}
+                <tr>
+                  <th>Send Locations (Single File)</th>
+                  <td><pre>{{ json.dumps(record.get('send_locations'), indent=2) }}</pre></td>
+                </tr>
+              {% endif %}
+
+              {# Displaying files_in_batch for batch uploads #}
+              {% if record.get('is_batch') and record.get('files_in_batch') %}
+                <tr>
+                  <th colspan="2" style="background-color: #e9ecef; text-align:center;">Files in Batch ({{ record.get('files_in_batch') | length }})</th>
+                </tr>
+                <tr>
+                  <td colspan="2">
+                    <div style="max-height: 400px; overflow-y: auto;">
+                      <table class="table table-sm table-inner">
+                        <thead>
+                          <tr>
+                            <th>Original Filename</th>
+                            <th>Original Size</th>
+                            <th>Split?</th>
+                            <th>Compressed?</th>
+                            <th>Failed?</th>
+                            <th>Reason</th>
+                            <th>Chunks/Locations (Summary)</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                             {% for file_item in record.get('files_in_batch', []) %}
+                               {% set item_id_suffix = loop.index %} {# Create a unique ID for collapse elements #}
+                               <tr>
+                                 <td>{{ file_item.get('original_filename', 'N/A') }}</td>
+                                 <td>{{ file_item.get('original_size', 0) | format_bytes }}</td>
+                                 <td>{{ 'Yes' if file_item.get('is_split') else 'No' }}</td>
+                                 <td>{{ 'Yes' if file_item.get('is_compressed') else 'No' }}</td>
+                                 <td>
+                                   {% if file_item.get('failed') %} <span class="badge badge-danger">Yes</span>
+                                   {% elif file_item.get('skipped') %} <span class="badge badge-warning">Skipped</span>
+                                   {% else %} <span class="badge badge-success">No</span>
+                                   {% endif %}
+                                 </td>
+                                 <td>{{ file_item.get('reason', '') }}</td>
+                                 <td>
+                                   {% set chunks = file_item.get('chunks') %}
+                                   {% set locations = file_item.get('send_locations') %}
+
+                                   {% if file_item.get('is_split') and chunks %}
+                                     {{ chunks | length }} chunk(s)
+                                     <a class="btn btn-link btn-sm p-0" data-toggle="collapse" href="#collapseChunks{{ item_id_suffix }}" role="button" aria-expanded="false" aria-controls="collapseChunks{{ item_id_suffix }}">
+                                       Show/Hide
+                                     </a>
+                                     <div class="collapse" id="collapseChunks{{ item_id_suffix }}">
+                                       <pre style="font-size: 0.8em; max-height:150px; overflow-y:auto;">{{ json.dumps(chunks, indent=1) }}</pre>
+                                     </div>
+                                   {% elif locations %}
+                                     {{ locations | length }} location(s)
+                                     <a class="btn btn-link btn-sm p-0" data-toggle="collapse" href="#collapseLocations{{ item_id_suffix }}" role="button" aria-expanded="false" aria-controls="collapseLocations{{ item_id_suffix }}">
+                                       Show/Hide
+                                     </a>
+                                     <div class="collapse" id="collapseLocations{{ item_id_suffix }}">
+                                       <pre style="font-size: 0.8em; max-height:150px; overflow-y:auto;">{{ json.dumps(locations, indent=1) }}</pre>
+                                     </div>
+                                   {% else %}
+                                     N/A
+                                   {% endif %}
+                                 </td>
+                               </tr>
+                             {% endfor %}
+                           </tbody>
+                      </table>
+                    </div>
+                  </td>
+                </tr>
+              {% endif %}
+
+            </tbody>
+          </table>
+        {% elif not error_message %}
+          <p>Could not load record details.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

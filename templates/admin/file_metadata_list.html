@@ -1,0 +1,83 @@
+{# templates/admin/file_metadata_list.html #}
+{% extends 'admin/master.html' %}
+{% from 'admin/lib.html' import pagination_widget %}
+
+{% block body %}
+  <h1>File/Batch Uploads</h1>
+
+  {% if error_message %}
+    <div class="alert alert-danger" role="alert">
+      {{ error_message }}
+    </div>
+  {% endif %}
+
+  {% if records %}
+    <table class="table table-striped table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>Access ID</th>
+          <th>Username</th>
+          <th>Display Name / Original Filename</th>
+          <th>Type</th> {# <--- This column #}
+          <th>Upload Date</th>
+          <th>Total Original Size</th>
+          <th>Anonymous</th> {# <--- And this column #}
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for record in records %}
+          <tr>
+            <td>
+              {{ record.access_id }}
+            </td>
+            <td>{{ record.username }}</td>
+            <td>
+                {% if record.is_batch %}
+                    {{ record.batch_display_name }}
+                {% elif record.original_filename %}
+                    {{ record.original_filename }}
+                {% else %}
+                    N/A
+                {% endif %}
+            </td>
+            <td>
+                {# --- RESTORED BADGE LOGIC FOR TYPE --- #}
+                {% if record.get('is_batch') %}
+                    <span class="badge badge-info">Batch</span>
+                {% else %}
+                    <span class="badge badge-secondary">Single File</span>
+                {% endif %}
+                {# --- END OF RESTORED BADGE LOGIC --- #}
+            </td>
+            <td>
+                {{ record.upload_timestamp if record.upload_timestamp else 'N/A' }}
+            </td>
+            <td>
+                {% set total_size = record.get('total_original_size') %}
+                {% set single_size = record.get('original_size') %}
+                {% if total_size is not none %}{{ total_size | format_bytes }}{% elif single_size is not none %}{{ single_size | format_bytes }}{% else %}N/A{% endif %}
+            </td>
+            <td>
+                {# --- RESTORED BADGE LOGIC FOR ANONYMOUS --- #}
+                {% if record.get('is_anonymous') %}
+                    <span class="badge badge-warning">Yes</span>
+                    {% if record.anonymous_id %}({{ record.anonymous_id[:8] }}...){% endif %}
+                {% else %}
+                    <span class="badge badge-success">No</span>
+                {% endif %}
+                {# --- END OF RESTORED BADGE LOGIC --- #}
+            </td>
+            <td>
+              <a href="{{ url_for('.details_view', access_id=record.access_id) }}" class="btn btn-xs btn-info">Details</a>
+              <a href="#" class="btn btn-xs btn-danger">Delete</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {# ... pagination ... #}
+  {% elif not error_message %}
+    <p>No file/batch upload records found.</p>
+  {% endif %}
+{% endblock %}

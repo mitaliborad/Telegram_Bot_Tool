@@ -134,6 +134,7 @@ class User(UserMixin):
         self.username = user_data.get('username')
         self.email = user_data.get('email')
         self.password_hash = user_data.get('password_hash')
+        # self.is_admin = user_data.get('is_admin', False)
         # Add any other user fields you might need access to via current_user
         # self.created_at = user_data.get('created_at')
 
@@ -156,39 +157,41 @@ class User(UserMixin):
              return False
         return check_password_hash(self.password_hash, password_to_check)
 
-# def find_user_by_id(user_id: ObjectId) -> Tuple[Optional[Dict[str, Any]], str]:
-#     """
-#     Finds a single user record by their MongoDB ObjectId.
+def get_all_users() -> Tuple[Optional[List[Dict[str, Any]]], str]:
+    """
+    Retrieves all user documents from the 'userinfo' collection.
 
-#     Args:
-#         user_id: The ObjectId of the user.
+    Returns:
+        A tuple (list_of_user_documents or None, error_message or "")
+    """
+    collection, error = get_userinfo_collection()
+    if error or collection is None:
+        logging.error(f"Failed to get userinfo collection for get_all_users: {error}")
+        return None, f"Database error: {error}"
 
-#     Returns:
-#         A tuple (user_document or None, error_message)
-#     """
-#     collection, error = get_userinfo_collection()
-#     if error or collection is None:
-#         logging.error(f"Failed to get userinfo collection for ID check: {error}")
-#         return None, f"Failed to get userinfo collection: {error}"
+    try:
+        users_cursor = collection.find({}) # Empty query {} means "find all"
+        users_list = list(users_cursor)
+        # Convert ObjectId to string for easier template rendering if needed,
+        # or do it in the template. For simplicity, let's do it here.
+        for user in users_list:
+            if '_id' in user and isinstance(user['_id'], ObjectId):
+                user['_id'] = str(user['_id'])
+            # Remove password hash before sending to template for security
+            if 'password_hash' in user:
+                del user['password_hash']
 
-#     if not isinstance(user_id, ObjectId):
-#         # Basic type check, ObjectId conversion happens in user_loader
-#         logging.error(f"Invalid type passed to find_user_by_id: {type(user_id)}")
-#         return None, "Invalid user ID format."
+        logging.info(f"Retrieved {len(users_list)} user(s) from userinfo collection.")
+        return users_list, ""
+    except PyMongoError as e: # Make sure PyMongoError is imported if not already
+        error_msg = f"PyMongoError fetching all users: {e}"
+        logging.error(error_msg, exc_info=True)
+        return None, error_msg
+    except Exception as e:
+        error_msg = f"Unexpected error fetching all users: {e}"
+        logging.error(error_msg, exc_info=True)
+        return None, error_msg
 
-#     try:
-#         user = collection.find_one({"_id": user_id})
-#         if user:
-#             logging.debug(f"Found user record for ID: {user_id}")
-#             return user, "" # Return the user document
-#         else:
-#             logging.debug(f"No user record found for ID: {user_id}")
-#             return None, "" # Not found isn't an error here
-
-#     except Exception as e:
-#         error_msg = f"Unexpected error finding user by ID '{user_id}': {e}"
-#         logging.exception(error_msg)
-#         return None, error_msg
 def find_user_by_id(user_id: ObjectId) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
     """Finds a user document by its MongoDB ObjectId."""
     collection, error = get_userinfo_collection()
@@ -637,3 +640,38 @@ def update_user_password(user_id: ObjectId, new_password: str) -> Tuple[bool, st
     except Exception as e:
         logging.error(f"Unexpected error updating password for user ID {user_id}: {e}", exc_info=True)
         return False, "Server error during password update."
+    
+def get_all_file_metadata() -> Tuple[Optional[List[Dict[str, Any]]], str]:
+    """
+    Retrieves all documents from the 'user_files' (metadata) collection.
+
+    Returns:
+        A tuple (list_of_records or None, error_message or "")
+    """
+    collection, error = get_metadata_collection() # Uses your existing function to get the 'user_files' collection
+    if error or collection is None:
+        logging.error(f"Failed to get metadata collection for get_all_file_metadata: {error}")
+        return None, f"Database error: {error}"
+
+    try:
+        records_cursor = collection.find({}).sort("upload_timestamp", -1) # Fetch all, sort by most recent
+        records_list = list(records_cursor)
+
+        # Convert ObjectId to string for easier template rendering
+        for record in records_list:
+            if '_id' in record and isinstance(record['_id'], ObjectId):
+                record['_id'] = str(record['_id'])
+            # You might want to format other fields here if necessary,
+            # e.g., recursively process 'files_in_batch' if you display its deep details.
+            # For now, we'll keep it simple.
+
+        logging.info(f"Retrieved {len(records_list)} file metadata record(s).")
+        return records_list, ""
+    except PyMongoError as e:
+        error_msg = f"PyMongoError fetching all file metadata: {e}"
+        logging.error(error_msg, exc_info=True)
+        return None, error_msg
+    except Exception as e:
+        error_msg = f"Unexpected error fetching all file metadata: {e}"
+        logging.error(error_msg, exc_info=True)
+        return None, error_msg

@@ -675,3 +675,54 @@ def get_all_file_metadata() -> Tuple[Optional[List[Dict[str, Any]]], str]:
         error_msg = f"Unexpected error fetching all file metadata: {e}"
         logging.error(error_msg, exc_info=True)
         return None, error_msg
+    
+def delete_user_by_id(user_id_str: str) -> Tuple[int, str]:
+    """
+    Deletes a user record from the 'userinfo' collection by their string ID.
+
+    Args:
+        user_id_str: The string representation of the user's MongoDB ObjectId.
+
+    Returns:
+        A tuple (number_of_deleted_records (0 or 1), error_message or "")
+    """
+    collection, error = get_userinfo_collection()
+    if error or collection is None:
+        logging.error(f"Failed to get userinfo collection for delete_user_by_id: {error}")
+        return 0, f"Database error: {error}"
+
+    try:
+        # Convert string ID to ObjectId for querying
+        user_oid = ObjectId(user_id_str)
+    except Exception as e:
+        logging.error(f"Invalid ObjectId format for user_id_str '{user_id_str}': {e}")
+        return 0, f"Invalid user ID format: {user_id_str}"
+
+    try:
+        result = collection.delete_one({"_id": user_oid})
+        deleted_count = result.deleted_count
+
+        if deleted_count == 1:
+            logging.info(f"Successfully deleted user with ID: {user_oid}")
+        elif deleted_count == 0:
+            logging.warning(f"No user found to delete with ID: {user_oid}. Already deleted?")
+        # delete_one should not return > 1
+        return deleted_count, ""
+
+    except PyMongoError as e:
+        error_msg = f"PyMongoError deleting user {user_oid}: {e}"
+        logging.error(error_msg, exc_info=True)
+        return 0, error_msg
+    except Exception as e:
+        error_msg = f"Unexpected error deleting user {user_oid}: {e}"
+        logging.error(error_msg, exc_info=True)
+        return 0, error_msg
+    
+def find_user_by_id_str(user_id_str: str) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
+    """Finds a user document by its string representation of MongoDB ObjectId."""
+    try:
+        user_oid = ObjectId(user_id_str)
+        return find_user_by_id(user_oid) # Calls your existing find_user_by_id
+    except Exception as e:
+        logging.error(f"Invalid ObjectId format in find_user_by_id_str for '{user_id_str}': {e}")
+        return None, f"Invalid user ID format: {user_id_str}"

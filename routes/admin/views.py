@@ -118,3 +118,77 @@ class FileMetadataView(BaseView):
                            record=record,
                            error_message=error_message,
                            json=json)
+        
+    @expose('/delete/<access_id>', methods=('POST',)) # Only allow POST for delete
+    def delete_view(self, access_id):
+        # In a real app with CSRF protection, you'd validate the CSRF token here.
+        # Flask-Admin forms usually handle this if you use its ModelView with forms.
+        # Since this is a custom link/button, we're keeping it simple for now.
+
+        try:
+            # Verify the record exists before attempting to delete (optional, but good practice)
+            record_to_delete, find_err = database.find_metadata_by_access_id(access_id)
+            if find_err:
+                flash(gettext('Error finding record to delete: %(error)s', error=find_err), 'danger')
+                return redirect(url_for('.index'))
+            if not record_to_delete:
+                flash(gettext('Record with Access ID %(access_id)s not found. Already deleted?', access_id=access_id), 'warning')
+                return redirect(url_for('.index'))
+
+            # Perform the deletion
+            deleted_count, db_error_msg = database.delete_metadata_by_access_id(access_id)
+
+            if db_error_msg:
+                flash(gettext('Error deleting record: %(error)s', error=db_error_msg), 'danger')
+                logging.error(f"[AdminFileMetadataDelete] DB error deleting {access_id}: {db_error_msg}")
+            elif deleted_count > 0:
+                display_name = record_to_delete.get('batch_display_name', record_to_delete.get('original_filename', access_id))
+                flash(gettext('Record "%(name)s" (%(id)s) deleted successfully.', name=display_name, id=access_id), 'success')
+                logging.info(f"[AdminFileMetadataDelete] Record {access_id} deleted by admin.")
+            else:
+                # Should have been caught by the find_metadata_by_access_id check above
+                flash(gettext('Failed to delete record %(access_id)s. It might have been already deleted.', access_id=access_id), 'warning')
+                logging.warning(f"[AdminFileMetadataDelete] Record {access_id} not found for deletion or no change.")
+
+        except Exception as e:
+            flash(gettext('An unexpected error occurred during deletion: %(error)s', error=str(e)), 'danger')
+            logging.error(f"[AdminFileMetadataDelete] Unexpected error deleting {access_id}: {str(e)}", exc_info=True)
+
+        return redirect(url_for('.index'))
+    
+    @expose('/delete/<user_id_str>', methods=('POST',)) # Only POST for delete
+    def delete_user_view(self, user_id_str):
+        # Security: In a real app, double-check admin privileges here again,
+        # even if is_accessible passed, as an extra layer.
+        # For now, matching the open access of other views.
+
+        try:
+            # Optional: Fetch user to get username for flash message before deleting
+            user_to_delete_doc, find_err = database.find_user_by_id_str(user_id_str) # We might need this new helper
+            if find_err :
+                flash(gettext('Error finding user for deletion details: %(error)s', error=find_err), 'danger')
+                return redirect(url_for('.index'))
+            if not user_to_delete_doc:
+                flash(gettext('User with ID %(id)s not found. Already deleted?', id=user_id_str), 'warning')
+                return redirect(url_for('.index'))
+
+            username_for_flash = user_to_delete_doc.get('username', user_id_str)
+
+            # Perform the deletion using the new database function
+            deleted_count, db_error_msg = database.delete_user_by_id(user_id_str)
+
+            if db_error_msg:
+                flash(gettext('Error deleting user: %(error)s', error=db_error_msg), 'danger')
+                logging.error(f"[AdminUserDelete] DB error deleting user {user_id_str}: {db_error_msg}")
+            elif deleted_count > 0:
+                flash(gettext('User "%(name)s" (ID: %(id)s) deleted successfully.', name=username_for_flash, id=user_id_str), 'success')
+                logging.info(f"[AdminUserDelete] User {user_id_str} deleted by admin.")
+            else:
+                flash(gettext('Failed to delete user %(id)s. It might have been already deleted.', id=user_id_str), 'warning')
+                logging.warning(f"[AdminUserDelete] User {user_id_str} not found for deletion or no change.")
+
+        except Exception as e:
+            flash(gettext('An unexpected error occurred during user deletion: %(error)s', error=str(e)), 'danger')
+            logging.error(f"[AdminUserDelete] Unexpected error deleting user {user_id_str}: {str(e)}", exc_info=True)
+
+        return redirect(url_for('.index'))

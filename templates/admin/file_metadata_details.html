@@ -158,9 +158,18 @@
                     </div>
                   </td>
                 </tr>
+                <hr>
+                <h4>Actions</h4>
+                <form method="POST" action="{{ url_for('.delete_view', access_id=record.access_id) }}" style="display: inline-block;">
+                    <button type="submit" class="btn btn-danger"
+                            onclick="return confirm('Are you sure you want to delete this record (Access ID: {{ record.access_id }})? This action cannot be undone.');">
+                      Delete This Record
+                    </button>
+                </form>
               {% endif %}
 
             </tbody>
+
           </table>
         {% elif not error_message %}
           <p>Could not load record details.</p>

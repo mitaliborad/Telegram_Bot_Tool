@@ -3,6 +3,19 @@
 {% from 'admin/lib.html' import pagination_widget %}
 
 {% block body %}
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category if category else 'info' }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
   <h1>File/Batch Uploads</h1>
 
   {% if error_message %}
@@ -26,55 +39,54 @@
         </tr>
       </thead>
       <tbody>
-        {% for record in records %}
-          <tr>
-            <td>
-              {{ record.access_id }}
-            </td>
-            <td>{{ record.username }}</td>
-            <td>
-                {% if record.is_batch %}
-                    {{ record.batch_display_name }}
-                {% elif record.original_filename %}
-                    {{ record.original_filename }}
-                {% else %}
-                    N/A
-                {% endif %}
-            </td>
-            <td>
-                {# --- RESTORED BADGE LOGIC FOR TYPE --- #}
-                {% if record.get('is_batch') %}
-                    <span class="badge badge-info">Batch</span>
-                {% else %}
-                    <span class="badge badge-secondary">Single File</span>
-                {% endif %}
-                {# --- END OF RESTORED BADGE LOGIC --- #}
-            </td>
-            <td>
-                {{ record.upload_timestamp if record.upload_timestamp else 'N/A' }}
-            </td>
-            <td>
-                {% set total_size = record.get('total_original_size') %}
-                {% set single_size = record.get('original_size') %}
-                {% if total_size is not none %}{{ total_size | format_bytes }}{% elif single_size is not none %}{{ single_size | format_bytes }}{% else %}N/A{% endif %}
-            </td>
-            <td>
-                {# --- RESTORED BADGE LOGIC FOR ANONYMOUS --- #}
-                {% if record.get('is_anonymous') %}
-                    <span class="badge badge-warning">Yes</span>
-                    {% if record.anonymous_id %}({{ record.anonymous_id[:8] }}...){% endif %}
-                {% else %}
-                    <span class="badge badge-success">No</span>
-                {% endif %}
-                {# --- END OF RESTORED BADGE LOGIC --- #}
-            </td>
-            <td>
-              <a href="{{ url_for('.details_view', access_id=record.access_id) }}" class="btn btn-xs btn-info">Details</a>
-              <a href="#" class="btn btn-xs btn-danger">Delete</a>
-            </td>
-          </tr>
-        {% endfor %}
-      </tbody>
+             {% for record in records %}
+               <tr>
+                 <td>
+                   {{ record.access_id }}
+                 </td>
+                 <td>{{ record.username }}</td>
+                 <td>
+                     {% if record.is_batch %}
+                         {{ record.batch_display_name }}
+                     {% elif record.original_filename %}
+                         {{ record.original_filename }}
+                     {% else %}
+                         N/A
+                     {% endif %}
+                 </td>
+                 <td>
+                     {% if record.is_batch %}
+                         <span class="badge badge-info">Batch</span>
+                     {% else %}
+                         <span class="badge badge-secondary">Single File</span>
+                     {% endif %}
+                 </td>
+                 <td>
+                     {{ record.upload_timestamp if record.upload_timestamp else 'N/A' }}
+                 </td>
+                 <td>
+                     {% set total_size = record.get('total_original_size') %}
+                     {% set single_size = record.get('original_size') %}
+                     {% if total_size is not none %}{{ total_size | format_bytes }}{% elif single_size is not none %}{{ single_size | format_bytes }}{% else %}N/A{% endif %}
+                 </td>
+                 <td>
+                     {% if record.is_anonymous %}<span class="badge badge-warning">Yes</span>{% if record.anonymous_id %}({{ record.anonymous_id[:8] }}...){% endif %}{% else %}<span class="badge badge-success">No</span>{% endif %}
+                 </td>
+                 <td>
+                   {# --- CORRECTED ACTIONS COLUMN --- #}
+                   <a href="{{ url_for('.details_view', access_id=record.access_id) }}" class="btn btn-xs btn-info" style="margin-right: 5px;">Details</a>
+                   
+                   <form method="POST" action="{{ url_for('.delete_view', access_id=record.access_id) }}" style="display: inline-block;">
+                       {# Optional: CSRF token for production - <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/> #}
+                       <button type="submit" class="btn btn-xs btn-danger"
+                               onclick="return confirm('Are you sure you want to delete this record (Access ID: {{ record.access_id }})? This action cannot be undone.');">
+                         Delete
+                       </button>
+                   </form>
+                 </td>
+               </tr>
+             {% endfor %}
+           </tbody>
     </table>
     {# ... pagination ... #}
   {% elif not error_message %}

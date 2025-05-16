@@ -48,6 +48,18 @@
 
   <h1>File/Batch Uploads</h1>
 
+  <form method="GET" action="{{ url_for('.index') }}" class="form-inline" style="margin-bottom: 20px;">
+    <div class="form-group">
+      <input type="text" name="q" class="form-control"
+             placeholder="Search Access ID, Filename, User..."
+             value="{{ search_query if search_query is not none else '' }}">
+    </div>
+    <button type="submit" class="btn btn-primary" style="margin-left: 10px;">Search</button>
+    {% if search_query %}
+      <a href="{{ url_for('.index') }}" class="btn btn-default" style="margin-left: 5px;">Clear</a>
+    {% endif %}
+  </form>
+
   {% if error_message %}
     <div class="alert alert-danger" role="alert">
       {{ error_message }}

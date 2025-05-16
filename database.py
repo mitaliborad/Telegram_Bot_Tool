@@ -664,27 +664,35 @@ def get_all_file_metadata(search_query: Optional[str] = None) ->Tuple[Optional[L
     Returns:
         A tuple (list_of_records or None, error_message or "")
     """
-    collection, error = get_metadata_collection() # Uses your existing function to get the 'user_files' collection
+    global _collection
+    if _collection is not None:
+        logging.info(f"Reusing existing metadata_collection: {_collection.name} in DB: {_collection.database.name}") # DEBUG
+        return _collection, ""
+    
+    collection, error = get_metadata_collection() 
     if error or collection is None:
         logging.error(f"Failed to get metadata collection for get_all_file_metadata: {error}")
         return None, f"Database error: {error}"
     
-    query_filter = {}
-    if search_query and search_query.strip():
-        search_term = search_query.strip()
-        escaped_query = re.escape(search_term)
-        regex_pattern = re.compile(escaped_query, re.IGNORECASE)
-        # Search on relevant fields for file metadata
-        query_filter["$or"] = [
-            {"access_id": {"$regex": regex_pattern}},
-            {"original_filename": {"$regex": regex_pattern}},
-            {"batch_display_name": {"$regex": regex_pattern}},
-            {"username": {"$regex": regex_pattern}}
-            # Add other fields you want to search if necessary
-        ]
-        logging.info(f"Searching file metadata with query: '{search_term}' using filter: {query_filter}")
-    else:
-        logging.info("Fetching all file metadata (no search query / empty search query).")
+    known_username_with_files = "jenali" # Or "jenali" if they have files
+    query_filter = {"username": known_username_with_files}
+    logging.info(f"--- DEBUG: Hardcoded filter for get_all_file_metadata: {query_filter} ---")
+    
+    # query_filter = {}
+    # if search_query and search_query.strip():
+    #     search_term = search_query.strip()
+    #     escaped_query = re.escape(search_term)
+    #     regex_pattern = re.compile(escaped_query, re.IGNORECASE)
+    #     # Search on relevant fields for file metadata
+    #     query_filter["$or"] = [
+    #         {"access_id": {"$regex": search_term, "$options": "i"}},
+    #         {"original_filename": {"$regex": search_term, "$options": "i"}},
+    #         {"batch_display_name": {"$regex": search_term, "$options": "i"}},
+    #         {"username": {"$regex": search_term, "$options": "i"}}
+    #     ]
+    #     logging.info(f"Searching file metadata with STRING regex query: '{search_term}' using filter: {query_filter}")
+    # else:
+    #     logging.info("Fetching all file metadata (no search query / empty search query).")
 
     try:
         records_cursor = collection.find({}).sort("upload_timestamp", -1) # Fetch all, sort by most recent

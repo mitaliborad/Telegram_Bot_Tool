@@ -68,38 +68,44 @@
           <th>ID</th>
           <th>Username</th>
           <th>Email</th>
+          <th>Admin Status</th>
           <th>Created At</th>
           <th>Actions</th>
 
         </tr>
       </thead>
       <tbody>
-        {% for user in users %}
-          <tr>
-            <td>{{ user._id }}</td>
-            <td>{{ user.username }}</td>
-            <td>{{ user.email }}</td>
-            <td>
-                {% if user.created_at %}
-                    {{ user.created_at.strftime('%Y-%m-%d %H:%M:%S') if user.created_at is string else user.created_at }}
-                {% else %}
-                    N/A
-                {% endif %}
-            </td>
-            <td>
-              {# --- NEW DELETE BUTTON/FORM FOR USERS --- #}
-              <form method="POST" action="{{ url_for('.delete_user_view', user_id_str=user._id) }}" style="display: inline-block;">
-                  {# Optional CSRF: <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/> #}
-                  <button type="submit" class="btn btn-xs btn-danger"
-                          onclick="return confirm('Are you sure you want to delete user {{ user.username }} (ID: {{ user._id }})? This action cannot be undone.');">
-                    Delete
-                  </button>
-              </form>
-              {# Add Edit button here later if needed #}
-            </td>
-          </tr>
-        {% endfor %}
-      </tbody>
+  {% for user in users %}
+    <tr>
+      <td>{{ user._id }}</td>
+      <td>{{ user.username }}</td>
+      <td>{{ user.email }}</td>
+      <td>
+        {% if user.is_admin %}<span class="badge badge-success">Admin</span>{% else %}<span class="badge badge-secondary">User</span>{% endif %}
+      </td>
+      <td>
+          {% if user.created_at %}{{ user.created_at.strftime('%Y-%m-%d %H:%M:%S') if user.created_at and not user.created_at is string else user.created_at }}{% else %}N/A{% endif %}
+      </td>
+      <td class="actions-column" style="min-width: 250px; white-space: nowrap;"> {# Adjusted min-width #}
+        {# --- NEW DETAILS LINK/BUTTON --- #}
+        <a href="{{ url_for('.user_details_view', user_id_str=user._id) }}" class="btn btn-xs btn-info" style="margin-right: 5px;">Details</a>
+
+        <form method="POST" action="{{ url_for('.toggle_admin_view', user_id_str=user._id) }}" style="display: inline-block; margin-right: 5px;">
+            <button type="submit" class="btn btn-xs {{ 'btn-warning' if user.is_admin else 'btn-success' }}">
+              {{ 'Remove Admin' if user.is_admin else 'Make Admin' }}
+            </button>
+        </form>
+
+        <form method="POST" action="{{ url_for('.delete_user_view', user_id_str=user._id) }}" style="display: inline-block;">
+            <button type="submit" class="btn btn-xs btn-danger"
+                    onclick="return confirm('Are you sure you want to delete user {{ user.username }} (ID: {{ user._id }})? This action cannot be undone.');">
+              Delete
+            </button>
+        </form>
+      </td>
+    </tr>
+  {% endfor %}
+</tbody>
     </table>
     
   {% elif not error_message %}

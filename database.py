@@ -187,17 +187,18 @@ def get_all_users(search_query: Optional[str] = None) -> Tuple[Optional[List[Dic
     try:
         users_cursor = collection.find(query_filter).sort("username", 1)
         users_list = list(users_cursor)
-        
         actual_found_count = len(users_list)
         logging.info(f"MongoDB find returned {actual_found_count} user(s) for filter: {query_filter} (Search: '{search_query}')")
-
+        
         for user in users_list:
             if '_id' in user and isinstance(user['_id'], ObjectId):
                 user['_id'] = str(user['_id'])
             if 'password_hash' in user:
                 del user['password_hash']
+            user['is_admin'] = user.get('is_admin', False)
         
         return users_list, ""
+    
     except PyMongoError as e:
         error_msg = f"PyMongoError fetching users: {e}"
         logging.error(error_msg, exc_info=True)
@@ -761,3 +762,48 @@ def find_user_by_id_str(user_id_str: str) -> Tuple[Optional[Dict[str, Any]], Opt
     except Exception as e:
         logging.error(f"Invalid ObjectId format in find_user_by_id_str for '{user_id_str}': {e}")
         return None, f"Invalid user ID format: {user_id_str}"
+    
+def update_user_admin_status(user_id_str: str, is_admin_new_status: bool) -> Tuple[bool, str]:
+    """
+    Updates the 'is_admin' status for a user.
+
+    Args:
+        user_id_str: The string representation of the user's MongoDB ObjectId.
+        is_admin_new_status: The new boolean value for is_admin.
+
+    Returns:
+        A tuple (success: bool, message: str)
+    """
+    collection, error = get_userinfo_collection()
+    if error or collection is None:
+        logging.error(f"Failed to get userinfo collection for updating admin status: {error}")
+        return False, f"Database error: {error}"
+
+    try:
+        user_oid = ObjectId(user_id_str)
+    except Exception as e:
+        logging.error(f"Invalid ObjectId format for user_id_str '{user_id_str}' in admin update: {e}")
+        return False, f"Invalid user ID format: {user_id_str}"
+
+    try:
+        result = collection.update_one(
+            {"_id": user_oid},
+            {"$set": {"is_admin": is_admin_new_status}}
+        )
+
+        if result.matched_count == 0:
+            logging.warning(f"Admin status update failed: User ID {user_oid} not found.")
+            return False, "User not found."
+        # modified_count can be 0 if the status is already the new_status, which is fine.
+        # We consider it a success if the user was matched.
+        logging.info(f"Successfully updated is_admin status for user ID {user_oid} to {is_admin_new_status}. Modified: {result.modified_count}")
+        return True, "User admin status updated."
+
+    except PyMongoError as e:
+        error_msg = f"PyMongoError updating admin status for user {user_oid}: {e}"
+        logging.error(error_msg, exc_info=True)
+        return False, error_msg
+    except Exception as e:
+        error_msg = f"Unexpected error updating admin status for user {user_oid}: {e}"
+        logging.error(error_msg, exc_info=True)
+        return False, error_msg

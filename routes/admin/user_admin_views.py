@@ -7,6 +7,7 @@ from flask import redirect, url_for, request, flash # Keep flash for feedback
 from math import ceil
 import re
 import database
+import json
 
 class UserView(BaseView):
     def is_accessible(self):
@@ -94,3 +95,75 @@ class UserView(BaseView):
         except Exception as e:
             flash(gettext('An unexpected error occurred during user deletion: %(error)s', error=str(e)), 'danger')
         return redirect(url_for('.index'))
+    
+    @expose('/toggle-admin/<user_id_str>', methods=('POST',)) # Require POST
+    def toggle_admin_view(self, user_id_str):
+        # Security: Later, ensure current_user cannot demote themselves if they are the only admin, etc.
+        # For now, keeping access open for dev.
+
+        try:
+            user_doc, find_err = database.find_user_by_id_str(user_id_str)
+            if find_err or not user_doc:
+                flash(gettext('User not found: %(error)s', error=find_err or "Unknown ID"), 'danger')
+                return redirect(url_for('.index'))
+
+            current_is_admin_status = user_doc.get('is_admin', False)
+            new_is_admin_status = not current_is_admin_status # Toggle the status
+
+            # Optional: Prevent demoting the last admin or self-demotion logic here
+            # For example, if current_user.get_id() == user_id_str and new_is_admin_status == False:
+            #    flash('You cannot remove your own admin status.', 'danger')
+            #    return redirect(url_for('.index'))
+
+            success, msg = database.update_user_admin_status(user_id_str, new_is_admin_status)
+
+            if success:
+                action = "promoted to admin" if new_is_admin_status else "removed from admin"
+                flash(gettext('User "%(username)s" successfully %(action)s.',
+                              username=user_doc.get('username', user_id_str), action=action), 'success')
+                logging.info(f"[AdminUserToggle] User {user_id_str} ({user_doc.get('username')}) {action} by admin.")
+            else:
+                flash(gettext('Failed to update admin status for user "%(username)s": %(msg)s',
+                              username=user_doc.get('username', user_id_str), msg=msg), 'danger')
+                logging.error(f"[AdminUserToggle] Failed to update admin status for {user_id_str}: {msg}")
+
+        except Exception as e:
+            flash(gettext('An unexpected error occurred: %(error)s', error=str(e)), 'danger')
+            logging.error(f"[AdminUserToggle] Unexpected error for user {user_id_str}: {str(e)}", exc_info=True)
+
+        return redirect(url_for('.index', q=request.args.get('q', ''), page=request.args.get('page', '1')))
+    
+    
+    
+    @expose('/details/<user_id_str>')
+    def user_details_view(self, user_id_str):
+        user_doc = None
+        error_message = None
+        try:
+            # Use the existing find_user_by_id_str helper
+            user_data, db_error = database.find_user_by_id_str(user_id_str)
+            if db_error:
+                error_message = f"Error fetching user details for ID {user_id_str}: {db_error}"
+                logging.error(f"[AdminUserDetailsView] {error_message}")
+            elif user_data:
+                user_doc = user_data
+                # We already remove password_hash in get_all_users and find_user_by_id_str.
+                # If find_user_by_id_str didn't, we would do it here:
+                # if 'password_hash' in user_doc:
+                #     del user_doc['password_hash']
+            else:
+                error_message = f"User with ID '{user_id_str}' not found."
+                logging.warning(f"[AdminUserDetailsView] {error_message}")
+                # Optionally: return abort(404)
+
+        except Exception as e:
+            error_message = f"An unexpected error occurred: {str(e)}"
+            logging.error(f"[AdminUserDetailsView] Error for user {user_id_str}: {error_message}", exc_info=True)
+
+        if not user_doc and not error_message:
+            error_message = f"User with ID '{user_id_str}' not found."
+
+        return self.render('admin/user_details.html',
+                           user_doc=user_doc,
+                           error_message=error_message,
+                           json=json) # Pass json for potential future use

@@ -16,6 +16,7 @@ Flask-CORS
 Flask-Login
 Flask-JWT-Extended
 flask_mail
+flask_admin
 
 # Database (for MongoDB BSON/ObjectId)
 pymongo

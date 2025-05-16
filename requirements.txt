@@ -17,6 +17,9 @@ Flask-Login
 Flask-JWT-Extended
 flask_mail
 flask_admin
+Flask-WTF
+email_validator
+
 
 # Database (for MongoDB BSON/ObjectId)
 pymongo

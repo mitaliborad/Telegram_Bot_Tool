@@ -67,8 +67,8 @@
 
           <hr>
           <h4>Actions</h4>
-          {# Link to Edit page (we'll create this later) #}
-          {# <a href="{{ url_for('.edit_user_view', user_id_str=user_doc._id) }}" class="btn btn-primary" style="margin-right: 10px;">Edit User</a> #}
+
+          <a href="{{ url_for('.edit_user_view', user_id_str=user_doc._id) }}" class="btn btn-primary" style="margin-right: 10px;">Edit User</a> 
 
           <form method="POST" action="{{ url_for('.toggle_admin_view', user_id_str=user_doc._id) }}" style="display: inline-block; margin-right: 5px;">
               <button type="submit" class="btn {{ 'btn-warning' if user_doc.is_admin else 'btn-success' }}">

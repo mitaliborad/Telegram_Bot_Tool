@@ -8,6 +8,8 @@ from math import ceil
 import re
 import database
 import json
+from .forms import EditUserForm
+from bson import ObjectId
 
 class UserView(BaseView):
     def is_accessible(self):
@@ -167,3 +169,61 @@ class UserView(BaseView):
                            user_doc=user_doc,
                            error_message=error_message,
                            json=json) # Pass json for potential future use
+        
+        
+    @expose('/edit/<user_id_str>', methods=('GET', 'POST'))
+    def edit_user_view(self, user_id_str):
+        user_doc, find_err = database.find_user_by_id_str(user_id_str)
+        if find_err or not user_doc:
+            flash(gettext('User not found: %(error)s', error=find_err or "Unknown ID"), 'danger')
+            return redirect(url_for('.index'))
+
+        form = EditUserForm(obj=user_doc) # Pre-populate form with existing user data if names match
+
+        if form.validate_on_submit(): # If form submitted and valid
+            update_data = {
+                'username': form.username.data,
+                'email': form.email.data.lower(), # Store email as lowercase
+                'is_admin': form.is_admin.data
+                # Add other fields from the form here
+            }
+            
+            # Ensure original_email and original_username are available for comparison
+            original_email = user_doc.get('email')
+            original_username = user_doc.get('username')
+
+            # Check email uniqueness only if it changed
+            if update_data['email'] != original_email:
+                existing_user_email, _ = database.find_user_by_email_excluding_id(update_data['email'], ObjectId(user_id_str))
+                if existing_user_email:
+                    form.email.errors.append("This email address is already in use by another account.")
+                    # Re-render form with error
+                    return self.render('admin/user_edit_form.html', form=form, user_doc=user_doc, error_message=None) # Pass user_doc for title etc.
+            
+            # Check username uniqueness only if it changed
+            if update_data['username'] != original_username:
+                existing_user_username, _ = database.find_user_by_username_excluding_id(update_data['username'], ObjectId(user_id_str))
+                if existing_user_username:
+                    form.username.errors.append("This username is already taken by another account.")
+                    # Re-render form with error
+                    return self.render('admin/user_edit_form.html', form=form, user_doc=user_doc, error_message=None)
+
+
+            success, msg = database.update_user_details(user_id_str, update_data)
+            if success:
+                flash(gettext('User "%(username)s" updated successfully.', username=update_data['username']), 'success')
+                return redirect(url_for('.user_details_view', user_id_str=user_id_str)) # Redirect to details page
+            else:
+                flash(gettext('Error updating user: %(msg)s', msg=msg), 'danger')
+        elif request.method == 'POST' and not form.validate(): # If POST and validation failed
+             flash('Please correct the errors below.', 'warning')
+
+
+        # For GET request or if validation failed on POST, pre-populate form:
+        if request.method == 'GET':
+             form.username.data = user_doc.get('username')
+             form.email.data = user_doc.get('email')
+             form.is_admin.data = user_doc.get('is_admin', False)
+             # Populate other form fields from user_doc
+
+        return self.render('admin/user_edit_form.html', form=form, user_doc=user_doc, error_message=None)

@@ -807,3 +807,98 @@ def update_user_admin_status(user_id_str: str, is_admin_new_status: bool) -> Tup
         error_msg = f"Unexpected error updating admin status for user {user_oid}: {e}"
         logging.error(error_msg, exc_info=True)
         return False, error_msg
+    
+    
+# database.py
+# ... (existing imports) ...
+
+def update_user_details(user_id_str: str, update_data: Dict[str, Any]) -> Tuple[bool, str]:
+    """
+    Updates specified details for a user (e.g., username, email, is_admin).
+    Does not update the password.
+
+    Args:
+        user_id_str: The string representation of the user's MongoDB ObjectId.
+        update_data: A dictionary containing fields to update and their new values.
+                     Example: {"username": "new_name", "email": "new@example.com", "is_admin": True}
+
+    Returns:
+        A tuple (success: bool, message: str)
+    """
+    collection, error = get_userinfo_collection()
+    if error or collection is None:
+        return False, f"Database error: {error}"
+
+    if not update_data:
+        return False, "No update data provided."
+
+    try:
+        user_oid = ObjectId(user_id_str)
+    except Exception as e:
+        return False, f"Invalid user ID format: {user_id_str}"
+
+    # Ensure we don't try to update immutable fields like _id or sensitive ones like password_hash directly
+    allowed_to_update = {'username', 'email', 'is_admin'} # Add other editable fields
+    update_payload = {k: v for k, v in update_data.items() if k in allowed_to_update}
+
+    if not update_payload:
+        return False, "No valid fields provided for update."
+        
+    # Check for email uniqueness if email is being changed
+    if 'email' in update_payload:
+        new_email_lower = update_payload['email'].lower()
+        existing_user_with_email, _ = find_user_by_email_excluding_id(new_email_lower, user_oid)
+        if existing_user_with_email:
+            return False, f"Email '{new_email_lower}' is already taken by another user."
+    
+    # Check for username uniqueness if username is being changed
+    if 'username' in update_payload:
+        new_username = update_payload['username']
+        existing_user_with_username, _ = find_user_by_username_excluding_id(new_username, user_oid) # You'll need this helper
+        if existing_user_with_username:
+            return False, f"Username '{new_username}' is already taken by another user."
+
+
+    try:
+        result = collection.update_one(
+            {"_id": user_oid},
+            {"$set": update_payload}
+        )
+
+        if result.matched_count == 0:
+            return False, "User not found."
+        
+        # modified_count could be 0 if submitted data is same as existing, which is fine.
+        logging.info(f"User {user_oid} details updated. Payload: {update_payload}. Modified: {result.modified_count}")
+        return True, "User details updated successfully."
+
+    except PyMongoError as e:
+        # Check for duplicate key errors if unique indexes are violated (e.g., on email or username)
+        if e.code == 11000: # Duplicate key error code
+            if 'email_1' in str(e): return False, "Email address is already in use."
+            if 'username_1' in str(e): return False, "Username is already in use."
+            return False, f"Database constraint violation: {str(e)}"
+        return False, f"Database error updating user details: {str(e)}"
+    except Exception as e:
+        return False, f"Unexpected error updating user details: {str(e)}"
+
+# --- Helper functions for uniqueness checks (needed by update_user_details) ---
+def find_user_by_email_excluding_id(email: str, exclude_user_id: ObjectId) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
+    """Finds a user by email, excluding a specific user ID."""
+    collection, error = get_userinfo_collection()
+    if error or collection is None: return None, str(error)
+    try:
+        user_doc = collection.find_one({"email": email.lower(), "_id": {"$ne": exclude_user_id}})
+        return user_doc, None
+    except Exception as e:
+        return None, str(e)
+
+def find_user_by_username_excluding_id(username: str, exclude_user_id: ObjectId) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
+    """Finds a user by username, excluding a specific user ID."""
+    collection, error = get_userinfo_collection()
+    if error or collection is None: return None, str(error)
+    try:
+        user_doc = collection.find_one({"username": username, "_id": {"$ne": exclude_user_id}})
+        return user_doc, None
+    except Exception as e:
+        return None, str(e)

@@ -7,7 +7,6 @@ from flask_admin import Admin
 from flask_admin.contrib.fileadmin import FileAdmin
 from routes.admin.user_admin_views import UserView
 from routes.admin.file_admin_views import FileMetadataView
-
 load_dotenv()
 
 from config import app, mail, format_bytes 
@@ -53,7 +52,6 @@ admin.add_view(FileMetadataView(name='File Uploads', endpoint='files'))
 logging.info("Flask-Admin FileMetadataView registered.")
 
 # --- Import and Register Blueprints ---
-
 from routes.password_reset_routes import password_reset_bp 
 from routes.auth_routes import auth_bp                     
 from routes.upload_routes import upload_bp                 

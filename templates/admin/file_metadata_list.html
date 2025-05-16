@@ -2,6 +2,36 @@
 {% extends 'admin/master.html' %}
 {% from 'admin/lib.html' import pagination_widget %}
 
+{% macro render_pagination(current_page, total_pages, endpoint_args={}) %}
+  {# ... (Same macro content as in user_list.html, ensure total_users/total_records is correct in the display) ... #}
+  {% if total_pages > 1 %}
+    <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-center">
+        <li class="page-item {% if current_page == 1 %}disabled{% endif %}">
+          <a class="page-link" href="{{ url_for(request.endpoint, page=current_page-1, **endpoint_args) if current_page > 1 else '#' }}">«</a>
+        </li>
+        {% set page_window = 2 %}
+        {% for p in range(1, total_pages + 1) %}
+          {% if p == 1 or p == total_pages or (p >= current_page - page_window and p <= current_page + page_window) %}
+            {% if loop.previtem is defined and p > loop.previtem + 1 and p > current_page - page_window -1 %}
+              <li class="page-item disabled"><span class="page-link">...</span></li>
+            {% endif %}
+            <li class="page-item {% if p == current_page %}active{% endif %}">
+              <a class="page-link" href="{{ url_for(request.endpoint, page=p, **endpoint_args) }}">{{ p }}</a>
+            </li>
+          {% endif %}
+        {% endfor %}
+        <li class="page-item {% if current_page == total_pages %}disabled{% endif %}">
+          <a class="page-link" href="{{ url_for(request.endpoint, page=current_page+1, **endpoint_args) if current_page < total_pages else '#' }}">»</a>
+        </li>
+      </ul>
+    </nav>
+    <p class="text-center small">
+      Page {{ current_page }} of {{ total_pages }}. (Total {{ total_records if total_records is defined else total_users }} items)
+    </p>
+  {% endif %}
+{% endmacro %}
+
 {% block body %}
   {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
@@ -88,7 +118,7 @@
              {% endfor %}
            </tbody>
     </table>
-    {# ... pagination ... #}
+    {{ render_pagination(current_page, total_pages) }}
   {% elif not error_message %}
     <p>No file/batch upload records found.</p>
   {% endif %}

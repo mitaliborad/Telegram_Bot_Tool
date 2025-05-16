@@ -17,6 +17,7 @@ from pymongo.errors import OperationFailure
 from pymongo import MongoClient
 from pymongo.errors import PyMongoError
 from config import MONGO_URI
+import re
 
 # client = MongoClient(MONGO_URI, 'mongodb://localhost:27017/')
 client = MongoClient(MONGO_URI)
@@ -157,38 +158,52 @@ class User(UserMixin):
              return False
         return check_password_hash(self.password_hash, password_to_check)
 
-def get_all_users() -> Tuple[Optional[List[Dict[str, Any]]], str]:
-    """
-    Retrieves all user documents from the 'userinfo' collection.
+# database.py
+import re # For regex compilation
+from typing import Optional, List, Dict, Any, Tuple # Ensure these are imported
+from bson import ObjectId # Ensure this is imported
+from pymongo.errors import PyMongoError # Ensure this is imported
 
-    Returns:
-        A tuple (list_of_user_documents or None, error_message or "")
-    """
+def get_all_users(search_query: Optional[str] = None) -> Tuple[Optional[List[Dict[str, Any]]], str]:
     collection, error = get_userinfo_collection()
     if error or collection is None:
         logging.error(f"Failed to get userinfo collection for get_all_users: {error}")
         return None, f"Database error: {error}"
 
+    query_filter = {}
+    if search_query and search_query.strip(): # Ensure search_query is not just whitespace
+        search_term = search_query.strip() # Use the stripped version
+        escaped_query = re.escape(search_term)
+        regex_pattern = re.compile(escaped_query, re.IGNORECASE)
+        query_filter["$or"] = [
+            {"username": {"$regex": regex_pattern}},
+            {"email": {"$regex": regex_pattern}}
+        ]
+        logging.info(f"Searching users with query: '{search_term}' using filter: {query_filter}")
+    else:
+        logging.info("Fetching all users (no search query / empty search query).")
+        # query_filter remains {} which means find all
+
     try:
-        users_cursor = collection.find({}) # Empty query {} means "find all"
+        users_cursor = collection.find(query_filter).sort("username", 1)
         users_list = list(users_cursor)
-        # Convert ObjectId to string for easier template rendering if needed,
-        # or do it in the template. For simplicity, let's do it here.
+        
+        actual_found_count = len(users_list)
+        logging.info(f"MongoDB find returned {actual_found_count} user(s) for filter: {query_filter} (Search: '{search_query}')")
+
         for user in users_list:
             if '_id' in user and isinstance(user['_id'], ObjectId):
                 user['_id'] = str(user['_id'])
-            # Remove password hash before sending to template for security
             if 'password_hash' in user:
                 del user['password_hash']
-
-        logging.info(f"Retrieved {len(users_list)} user(s) from userinfo collection.")
+        
         return users_list, ""
-    except PyMongoError as e: # Make sure PyMongoError is imported if not already
-        error_msg = f"PyMongoError fetching all users: {e}"
+    except PyMongoError as e:
+        error_msg = f"PyMongoError fetching users: {e}"
         logging.error(error_msg, exc_info=True)
         return None, error_msg
     except Exception as e:
-        error_msg = f"Unexpected error fetching all users: {e}"
+        error_msg = f"Unexpected error fetching users: {e}"
         logging.error(error_msg, exc_info=True)
         return None, error_msg
 
@@ -641,7 +656,7 @@ def update_user_password(user_id: ObjectId, new_password: str) -> Tuple[bool, st
         logging.error(f"Unexpected error updating password for user ID {user_id}: {e}", exc_info=True)
         return False, "Server error during password update."
     
-def get_all_file_metadata() -> Tuple[Optional[List[Dict[str, Any]]], str]:
+def get_all_file_metadata(search_query: Optional[str] = None) ->Tuple[Optional[List[Dict[str, Any]]], str]:
     """
     Retrieves all documents from the 'user_files' (metadata) collection.
 
@@ -652,10 +667,30 @@ def get_all_file_metadata() -> Tuple[Optional[List[Dict[str, Any]]], str]:
     if error or collection is None:
         logging.error(f"Failed to get metadata collection for get_all_file_metadata: {error}")
         return None, f"Database error: {error}"
+    
+    query_filter = {}
+    if search_query and search_query.strip():
+        search_term = search_query.strip()
+        escaped_query = re.escape(search_term)
+        regex_pattern = re.compile(escaped_query, re.IGNORECASE)
+        # Search on relevant fields for file metadata
+        query_filter["$or"] = [
+            {"access_id": {"$regex": regex_pattern}},
+            {"original_filename": {"$regex": regex_pattern}},
+            {"batch_display_name": {"$regex": regex_pattern}},
+            {"username": {"$regex": regex_pattern}}
+            # Add other fields you want to search if necessary
+        ]
+        logging.info(f"Searching file metadata with query: '{search_term}' using filter: {query_filter}")
+    else:
+        logging.info("Fetching all file metadata (no search query / empty search query).")
 
     try:
         records_cursor = collection.find({}).sort("upload_timestamp", -1) # Fetch all, sort by most recent
         records_list = list(records_cursor)
+        
+        actual_found_count = len(records_list)
+        logging.info(f"MongoDB find returned {actual_found_count} file metadata record(s) for filter: {query_filter} (Search: '{search_query}')")
 
         # Convert ObjectId to string for easier template rendering
         for record in records_list:

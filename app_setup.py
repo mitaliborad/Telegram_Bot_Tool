@@ -2,25 +2,22 @@
 import logging
 import os
 from flask_cors import CORS
-# from flask_login import LoginManager # No longer defined here
-# from flask_jwt_extended import JWTManager # No longer defined here
 from dotenv import load_dotenv
 from flask_admin import Admin
 from flask_admin.contrib.fileadmin import FileAdmin
-from routes.admin.views import UserView, FileMetadataView
+from routes.admin.user_admin_views import UserView
+from routes.admin.file_admin_views import FileMetadataView
 
-load_dotenv() # Load .env variables first
+load_dotenv()
 
-from config import app, mail, format_bytes # Import app & mail from config.py
-# Import instances from your new extensions.py
+from config import app, mail, format_bytes 
 from extensions import login_manager, jwt, upload_progress_data, download_prep_data
 
 # --- Flask Application Extensions Setup ---
 app.jinja_env.filters['format_bytes'] = format_bytes
-# logging.info("Custom Jinja filter 'format_bytes' registered.") # Logging is set up in config.py
 
 env_frontend_url_setting = os.environ.get('FRONTEND_URL')
-allowed_origins_config = "*" # Default
+allowed_origins_config = "*"
 if env_frontend_url_setting and env_frontend_url_setting.strip() == "*":
     allowed_origins_config = "*"
 elif env_frontend_url_setting:
@@ -28,7 +25,6 @@ elif env_frontend_url_setting:
 else:
     logging.warning("FRONTEND_URL environment variable not set. Defaulting CORS to allow all origins ('*'). "
                     "For production, it's recommended to set FRONTEND_URL to your specific frontend domain(s).")
-
 CORS(app, 
      origins=allowed_origins_config, 
      supports_credentials=True, 
@@ -36,27 +32,24 @@ CORS(app,
 logging.info(f"Flask-CORS initialized. Allowing origins: {allowed_origins_config}")
 
 # Initialize JWT with the app object
-jwt.init_app(app) # jwt instance from extensions.py
+jwt.init_app(app) 
 logging.info("Flask-JWT-Extended initialized.")
 
-# Initialize LoginManager with the app object
-login_manager.init_app(app) # login_manager instance from extensions.py
-login_manager.login_view = 'auth.login' # Make sure 'auth.login' is correct after blueprint setup
+login_manager.init_app(app) 
+login_manager.login_view = 'auth.login' 
 login_manager.login_message = u"Please log in to access this page."
 login_manager.login_message_category = "info"
 logging.info("Flask-Login initialized.")
 
-# Global state variables are now imported from extensions.py, no need to redefine here
-# upload_progress_data and download_prep_data are already imported.
 logging.info("Global state variables (from extensions.py) are available.")
 
 admin = Admin(app, name='Storage Admin', template_mode='bootstrap4', url='/admin')
 logging.info("Flask-Admin initialized. Accessible at /admin")
 
-admin.add_view(UserView(name='Manage Users', endpoint='users')) 
+admin.add_view(UserView(name='Manage Users', endpoint='users'))
 logging.info("Flask-Admin UserView registered.")
 
-admin.add_view(FileMetadataView(name='File Uploads', endpoint='files')) 
+admin.add_view(FileMetadataView(name='File Uploads', endpoint='files'))
 logging.info("Flask-Admin FileMetadataView registered.")
 
 # --- Import and Register Blueprints ---
@@ -97,7 +90,6 @@ if 'file' not in app.blueprints:
 else:
     logging.warning("Blueprint 'file' was already registered. Skipping re-registration.")
     
-
 
 # --- Application Runner ---
 if __name__ == '__main__':

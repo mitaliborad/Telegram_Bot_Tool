@@ -657,60 +657,124 @@ def update_user_password(user_id: ObjectId, new_password: str) -> Tuple[bool, st
         logging.error(f"Unexpected error updating password for user ID {user_id}: {e}", exc_info=True)
         return False, "Server error during password update."
     
-def get_all_file_metadata(search_query: Optional[str] = None) ->Tuple[Optional[List[Dict[str, Any]]], str]:
+# def get_all_file_metadata(search_query: Optional[str] = None) ->Tuple[Optional[List[Dict[str, Any]]], str]:
+#     """
+#     Retrieves all documents from the 'user_files' (metadata) collection.
+
+#     Returns:
+#         A tuple (list_of_records or None, error_message or "")
+#     """
+#     global _collection
+#     if _collection is not None:
+#         logging.info(f"Reusing existing metadata_collection: {_collection.name} in DB: {_collection.database.name}") # DEBUG
+#         return _collection, ""
+    
+#     collection, error = get_metadata_collection() 
+#     if error or collection is None:
+#         logging.error(f"Failed to get metadata collection for get_all_file_metadata: {error}")
+#         return None, f"Database error: {error}"
+    
+#     # known_username_with_files = "jenali" # Or "jenali" if they have files
+#     # query_filter = {"username": known_username_with_files}
+#     # logging.info(f"--- DEBUG: Hardcoded filter for get_all_file_metadata: {query_filter} ---")
+    
+#     query_filter = {}
+#     if search_query and search_query.strip():
+#         search_term = search_query.strip()
+#         # escaped_query = re.escape(search_term)
+#         # regex_pattern = re.compile(escaped_query, re.IGNORECASE)
+#         # Search on relevant fields for file metadata
+#         query_filter["$or"] = [
+#             {"access_id": {"$regex": search_term, "$options": "i"}},
+#             {"original_filename": {"$regex": search_term, "$options": "i"}},
+#             {"batch_display_name": {"$regex": search_term, "$options": "i"}},
+#             {"username": {"$regex": search_term, "$options": "i"}}
+#         ]
+#         logging.info(f"Searching file metadata with STRING regex query: '{search_term}' using filter: {query_filter}")
+#     else:
+#         logging.info("Fetching all file metadata (no search query / empty search query).")
+
+#     try:
+#         # count_from_db_with_filter = collection.count_documents(query_filter)
+#         # logging.info(f"--- DEBUG: collection.count_documents with filter {query_filter} returned: {count_from_db_with_filter} ---")
+        
+#         records_cursor = collection.find({}).sort("upload_timestamp", -1) # Fetch all, sort by most recent
+#         records_list = list(records_cursor)
+        
+#         actual_fetched_count_from_find = len(records_list)
+#         logging.info(f"MongoDB find().list() resulted in {actual_fetched_count_from_find} record(s) for filter: {query_filter}")
+        
+#         # if count_from_db_with_filter != actual_fetched_count_from_find:
+#         #     logging.error(f"CRITICAL MISMATCH: count_documents returned {count_from_db_with_filter} but find().list() returned {actual_fetched_count_from_find} for the same filter!")
+
+#         # Convert ObjectId to string for easier template rendering
+#         for record in records_list:
+#             if '_id' in record and isinstance(record['_id'], ObjectId):
+#                 record['_id'] = str(record['_id'])
+#             # You might want to format other fields here if necessary,
+#             # e.g., recursively process 'files_in_batch' if you display its deep details.
+#             # For now, we'll keep it simple.
+
+#         logging.info(f"Retrieved {len(records_list)} file metadata record(s).")
+#         return records_list, ""
+#     except PyMongoError as e:
+#         error_msg = f"PyMongoError fetching all file metadata: {e}"
+#         logging.error(error_msg, exc_info=True)
+#         return None, error_msg
+#     except Exception as e:
+#         error_msg = f"Unexpected error fetching all file metadata: {e}"
+#         logging.error(error_msg, exc_info=True)
+#         return None, error_msg
+    
+    
+def get_all_file_metadata(search_query: Optional[str] = None) -> Tuple[Optional[List[Dict[str, Any]]], str]:
     """
     Retrieves all documents from the 'user_files' (metadata) collection.
-
-    Returns:
-        A tuple (list_of_records or None, error_message or "")
+    Always queries the database based on the current search_query.
     """
-    global _collection
-    if _collection is not None:
-        logging.info(f"Reusing existing metadata_collection: {_collection.name} in DB: {_collection.database.name}") # DEBUG
-        return _collection, ""
-    
+    # Get the collection object. get_metadata_collection handles caching _collection internally.
     collection, error = get_metadata_collection() 
-    if error or collection is None:
+    if error or collection is None: # Correct check on local 'collection'
         logging.error(f"Failed to get metadata collection for get_all_file_metadata: {error}")
         return None, f"Database error: {error}"
     
-    known_username_with_files = "jenali" # Or "jenali" if they have files
-    query_filter = {"username": known_username_with_files}
-    logging.info(f"--- DEBUG: Hardcoded filter for get_all_file_metadata: {query_filter} ---")
-    
-    # query_filter = {}
-    # if search_query and search_query.strip():
-    #     search_term = search_query.strip()
-    #     escaped_query = re.escape(search_term)
-    #     regex_pattern = re.compile(escaped_query, re.IGNORECASE)
-    #     # Search on relevant fields for file metadata
-    #     query_filter["$or"] = [
-    #         {"access_id": {"$regex": search_term, "$options": "i"}},
-    #         {"original_filename": {"$regex": search_term, "$options": "i"}},
-    #         {"batch_display_name": {"$regex": search_term, "$options": "i"}},
-    #         {"username": {"$regex": search_term, "$options": "i"}}
-    #     ]
-    #     logging.info(f"Searching file metadata with STRING regex query: '{search_term}' using filter: {query_filter}")
-    # else:
-    #     logging.info("Fetching all file metadata (no search query / empty search query).")
+    # --- The rest of your existing logic for building query_filter and fetching records ---
+    query_filter = {}
+    if search_query and search_query.strip():
+        search_term = search_query.strip()
+        query_filter["$or"] = [
+            {"access_id": {"$regex": search_term, "$options": "i"}},
+            {"original_filename": {"$regex": search_term, "$options": "i"}},
+            {"batch_display_name": {"$regex": search_term, "$options": "i"}},
+            {"username": {"$regex": search_term, "$options": "i"}}
+        ]
+        logging.info(f"Searching file metadata with STRING regex query: '{search_term}' using filter: {query_filter}")
+    else:
+        logging.info("Fetching all file metadata (no search query / empty search query).")
 
     try:
-        records_cursor = collection.find({}).sort("upload_timestamp", -1) # Fetch all, sort by most recent
+        # count_from_db_with_filter = collection.count_documents(query_filter) # Keep this for debugging if search still fails
+        # logging.info(f"--- DEBUG: collection.count_documents with filter {query_filter} returned: {count_from_db_with_filter} ---")
+        
+        # Use query_filter in the find() operation
+        records_cursor = collection.find(query_filter).sort("upload_timestamp", -1)
         records_list = list(records_cursor)
         
-        actual_found_count = len(records_list)
-        logging.info(f"MongoDB find returned {actual_found_count} file metadata record(s) for filter: {query_filter} (Search: '{search_query}')")
+        actual_fetched_count_from_find = len(records_list)
+        # Log the filter that was actually used for the find
+        logging.info(f"MongoDB find().list() resulted in {actual_fetched_count_from_find} record(s) for filter: {query_filter}")
+        
+        # if count_from_db_with_filter != actual_fetched_count_from_find: # Keep for debugging if search fails
+            # logging.error(f"CRITICAL MISMATCH: count_documents returned {count_from_db_with_filter} but find().list() returned {actual_fetched_count_from_find} for the same filter!")
 
-        # Convert ObjectId to string for easier template rendering
         for record in records_list:
             if '_id' in record and isinstance(record['_id'], ObjectId):
                 record['_id'] = str(record['_id'])
-            # You might want to format other fields here if necessary,
-            # e.g., recursively process 'files_in_batch' if you display its deep details.
-            # For now, we'll keep it simple.
-
-        logging.info(f"Retrieved {len(records_list)} file metadata record(s).")
-        return records_list, ""
+        
+        # The log message here was slightly off, it should just confirm retrieval based on the executed query
+        logging.info(f"Retrieved {len(records_list)} file metadata record(s) after processing.")
+        return records_list, "" # Always return the list of documents and an error string
+        
     except PyMongoError as e:
         error_msg = f"PyMongoError fetching all file metadata: {e}"
         logging.error(error_msg, exc_info=True)

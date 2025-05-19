@@ -1,0 +1,57 @@
+{% extends 'admin/master.html' %}
+
+{% block body %}
+  <h1>Admin Dashboard</h1>
+  <p class="lead">Welcome to the Storage Admin Panel!</p>
+  <hr>
+
+  {% if error_message %}
+    <div class="alert alert-danger">Error loading dashboard data: {{ error_message }}</div>
+  {% endif %}
+
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card text-white bg-primary mb-3">
+        <div class="card-header">Total Users</div>
+        <div class="card-body">
+          <h4 class="card-title">{{ user_count if user_count is not none else 'N/A' }}</h4>
+          <p class="card-text">Registered users in the system.</p>
+          <a href="{{ url_for('users.index') }}" class="btn btn-light btn-sm">Manage Users »</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card text-white bg-info mb-3">
+        <div class="card-header">Total File/Batch Records</div>
+        <div class="card-body">
+          <h4 class="card-title">{{ file_record_count if file_record_count is not none else 'N/A' }}</h4>
+          <p class="card-text">Uploaded file/batch metadata records.</p>
+          <a href="{{ url_for('files.index') }}" class="btn btn-light btn-sm">Manage File Uploads »</a>
+        </div>
+      </div>
+    </div>
+
+    {# Add more cards for other stats later #}
+    <!--
+    <div class="col-md-4">
+      <div class="card bg-light mb-3">
+        <div class="card-header">Other Stat</div>
+        <div class="card-body">
+          <h4 class="card-title">...</h4>
+          <p class="card-text">...</p>
+        </div>
+      </div>
+    </div>
+    -->
+  </div>
+
+  <hr>
+  <h4>Quick Actions</h4>
+  <ul>
+    <li><a href="{{ url_for('users.index') }}">View All Users</a></li>
+    <li><a href="{{ url_for('files.index') }}">View All File Uploads</a></li>
+    {# Add links to other important admin sections as you build them #}
+  </ul>
+
+{% endblock %}

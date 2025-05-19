@@ -7,10 +7,31 @@ from flask_admin import Admin
 from flask_admin.contrib.fileadmin import FileAdmin
 from routes.admin.user_admin_views import UserView
 from routes.admin.file_admin_views import FileMetadataView
+from routes.admin.dashboard_view import MyAdminIndexView
 load_dotenv()
 
 from config import app, mail, format_bytes 
 from extensions import login_manager, jwt, upload_progress_data, download_prep_data
+
+admin = Admin(
+    app,
+    name='Storage Admin',
+    template_mode='bootstrap4',
+    url='/admin',  # This is the URL prefix for all admin views
+    index_view=MyAdminIndexView(
+        name="Dashboard",   # Name displayed in menu/breadcrumbs
+        endpoint='admin_dashboard',  # <--- ADD/CHANGE THIS ENDPOINT TO BE UNIQUE
+        url='/admin'  # This is the URL for this specific index view, relative to admin.url_prefix if set
+                      # Or absolute if admin.url_prefix is not set.
+                      # Since Admin's url is '/admin', and this view's url is also '/admin',
+                      # this effectively means the dashboard is at the root of the admin interface.
+    )
+)
+logging.info("Flask-Admin initialized with custom dashboard. Accessible at /admin")
+
+admin.add_view(UserView(name='Manage Users', endpoint='users', menu_icon_type='glyph', menu_icon_value='glyphicon-user'))
+admin.add_view(FileMetadataView(name='File Uploads', endpoint='files', menu_icon_type='glyph', menu_icon_value='glyphicon-file'))
+logging.info("Flask-Admin UserView and FileMetadataView registered.")
 
 # --- Flask Application Extensions Setup ---
 app.jinja_env.filters['format_bytes'] = format_bytes
@@ -42,14 +63,14 @@ logging.info("Flask-Login initialized.")
 
 logging.info("Global state variables (from extensions.py) are available.")
 
-admin = Admin(app, name='Storage Admin', template_mode='bootstrap4', url='/admin')
-logging.info("Flask-Admin initialized. Accessible at /admin")
+# admin = Admin(app, name='Storage Admin', template_mode='bootstrap4', url='/admin')
+# logging.info("Flask-Admin initialized. Accessible at /admin")
 
-admin.add_view(UserView(name='Manage Users', endpoint='users'))
-logging.info("Flask-Admin UserView registered.")
+# admin.add_view(UserView(name='Manage Users', endpoint='users'))
+# logging.info("Flask-Admin UserView registered.")
 
-admin.add_view(FileMetadataView(name='File Uploads', endpoint='files'))
-logging.info("Flask-Admin FileMetadataView registered.")
+# admin.add_view(FileMetadataView(name='File Uploads', endpoint='files'))
+# logging.info("Flask-Admin FileMetadataView registered.")
 
 # --- Import and Register Blueprints ---
 from routes.password_reset_routes import password_reset_bp 

@@ -139,6 +139,8 @@ class User(UserMixin):
         # Add any other user fields you might need access to via current_user
         # self.created_at = user_data.get('created_at')
 
+        self.role = user_data.get('role', 'Free User')
+        
         # --- Important: Validate essential fields ---
         if not self.id or not self.username or not self.email or not self.password_hash:
              logging.error(f"User data missing essential fields during User object creation: {user_data}")
@@ -158,12 +160,11 @@ class User(UserMixin):
              return False
         return check_password_hash(self.password_hash, password_to_check)
 
-# database.py
-import re # For regex compilation
-from typing import Optional, List, Dict, Any, Tuple # Ensure these are imported
-from bson import ObjectId # Ensure this is imported
-from pymongo.errors import PyMongoError # Ensure this is imported
-
+    @property
+    def is_admin(self) -> bool:
+        """Checks if the user has the Admin role."""
+        return self.role == "Admin"
+    
 def get_all_users(search_query: Optional[str] = None) -> Tuple[Optional[List[Dict[str, Any]]], str]:
     collection, error = get_userinfo_collection()
     if error or collection is None:
@@ -195,7 +196,8 @@ def get_all_users(search_query: Optional[str] = None) -> Tuple[Optional[List[Dic
                 user['_id'] = str(user['_id'])
             if 'password_hash' in user:
                 del user['password_hash']
-            user['is_admin'] = user.get('is_admin', False)
+            user['role'] = user.get('role', 'Free User')
+            # user['is_admin'] = user.get('is_admin', False)
         
         return users_list, ""
     
@@ -211,6 +213,10 @@ def get_all_users(search_query: Optional[str] = None) -> Tuple[Optional[List[Dic
 def find_user_by_id(user_id: ObjectId) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
     """Finds a user document by its MongoDB ObjectId."""
     collection, error = get_userinfo_collection()
+    if error or collection is None: # Corrected this line from a previous version
+        logging.error(f"DB error in find_user_by_id: {error}")
+        return None, str(error or "Collection not available")
+    
     if not isinstance(user_id, ObjectId):
          logging.error(f"Invalid type passed to find_user_by_id: {type(user_id)}")
          # It's often better to let the ObjectId conversion happen *before* calling this

@@ -1,4 +1,4 @@
-{% extends 'admin/master.html' %} <!-- This inherits the basic Flask-Admin layout -->
+{% extends 'admin/master.html' %} 
 
 {% block body %}
   <h1>User List</h1>
@@ -66,11 +66,11 @@
       <thead>
         <tr>
           <th>ID</th>
-          <th>Username</th>
-          <th>Email</th>
-          <th>Admin Status</th>
-          <th>Created At</th>
-          <th>Actions</th>
+             <th>Username</th>
+             <th>Email</th>
+             <th>User Role</th>   
+             <th>Created At</th>
+             <th>Actions</th>
 
         </tr>
       </thead>
@@ -81,7 +81,15 @@
       <td>{{ user.username }}</td>
       <td>{{ user.email }}</td>
       <td>
-        {% if user.is_admin %}<span class="badge badge-success">Admin</span>{% else %}<span class="badge badge-secondary">User</span>{% endif %}
+        {% if user.role == "Admin" %}
+                   <span class="badge badge-danger">{{ user.role }}</span> {# Admins are often highlighted #}
+                 {% elif user.role == "Premium User" %}
+                   <span class="badge badge-success">{{ user.role }}</span>
+                 {% elif user.role == "Free User" %}
+                   <span class="badge badge-info">{{ user.role }}</span>
+                 {% else %}
+                   <span class="badge badge-secondary">{{ user.role | default('N/A', true) }}</span> {# Default if role is something else or None #}
+                 {% endif %}
       </td>
       <td>
           {% if user.created_at %}{{ user.created_at.strftime('%Y-%m-%d %H:%M:%S') if user.created_at and not user.created_at is string else user.created_at }}{% else %}N/A{% endif %}
@@ -90,11 +98,11 @@
         {# --- NEW DETAILS LINK/BUTTON --- #}
         <a href="{{ url_for('.user_details_view', user_id_str=user._id) }}" class="btn btn-xs btn-info" style="margin-right: 5px;">Details</a>
 
-        <form method="POST" action="{{ url_for('.toggle_admin_view', user_id_str=user._id) }}" style="display: inline-block; margin-right: 5px;">
+        <!-- <form method="POST" action="{{ url_for('.toggle_admin_view', user_id_str=user._id) }}" style="display: inline-block; margin-right: 5px;">
             <button type="submit" class="btn btn-xs {{ 'btn-warning' if user.is_admin else 'btn-success' }}">
               {{ 'Remove Admin' if user.is_admin else 'Make Admin' }}
             </button>
-        </form>
+        </form> -->
 
         <form method="POST" action="{{ url_for('.delete_user_view', user_id_str=user._id) }}" style="display: inline-block;">
             <button type="submit" class="btn btn-xs btn-danger"

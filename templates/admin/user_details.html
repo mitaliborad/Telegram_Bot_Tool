@@ -32,12 +32,17 @@
               <tr><th>Username</th><td>{{ user_doc.get('username', 'N/A') }}</td></tr>
               <tr><th>Email</th><td>{{ user_doc.get('email', 'N/A') }}</td></tr>
               <tr>
-                <th>Admin Status</th>
+                <th>User Role</th>
                 <td>
-                  {% if user_doc.get('is_admin') %}
-                    <span class="badge badge-success">Admin</span>
+                  {% set role = user_doc.get('role', 'Free User') %} {# Default if somehow missing after DB fetch #}
+                  {% if role == "Admin" %}
+                    <span class="badge badge-danger">{{ role }}</span>
+                  {% elif role == "Premium User" %}
+                    <span class="badge badge-success">{{ role }}</span>
+                  {% elif role == "Free User" %}
+                    <span class="badge badge-info">{{ role }}</span>
                   {% else %}
-                    <span class="badge badge-secondary">User</span>
+                    <span class="badge badge-secondary">{{ role | default('N/A', true) }}</span>
                   {% endif %}
                 </td>
               </tr>
@@ -70,11 +75,11 @@
 
           <a href="{{ url_for('.edit_user_view', user_id_str=user_doc._id) }}" class="btn btn-primary" style="margin-right: 10px;">Edit User</a> 
 
-          <form method="POST" action="{{ url_for('.toggle_admin_view', user_id_str=user_doc._id) }}" style="display: inline-block; margin-right: 5px;">
+          <!-- <form method="POST" action="{{ url_for('.toggle_admin_view', user_id_str=user_doc._id) }}" style="display: inline-block; margin-right: 5px;">
               <button type="submit" class="btn {{ 'btn-warning' if user_doc.is_admin else 'btn-success' }}">
                 {{ 'Remove Admin Role' if user_doc.is_admin else 'Make Admin' }}
               </button>
-          </form>
+          </form> -->
 
           <form method="POST" action="{{ url_for('.delete_user_view', user_id_str=user_doc._id) }}" style="display: inline-block;">
               <button type="submit" class="btn btn-danger"

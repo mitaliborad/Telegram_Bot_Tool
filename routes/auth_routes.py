@@ -90,8 +90,7 @@ def _ensure_username_in_user_doc(user_doc: Optional[Dict[str, Any]]) -> Optional
     return user_doc
 
 @login_manager.user_loader
-def load_user(user_id: str): # Removed Optional[User] for brevity, add back if strict typing
-    # ... (your load_user logic)
+def load_user(user_id: str): 
     logging.debug(f"Attempting to load user with ID: {user_id}")
     if not user_id:
         return None
@@ -307,7 +306,7 @@ def login():
 
 
 @auth_bp.route('/logout')
-# @login_required # Not strictly needed if it's just clearing session, but good practice if you access current_user
+# @login_required 
 def logout():
     user_email_display = "User"
     if current_user and current_user.is_authenticated:

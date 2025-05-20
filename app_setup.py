@@ -45,9 +45,9 @@ elif env_frontend_url_setting:
 else:
     logging.warning("FRONTEND_URL environment variable not set. Defaulting CORS to allow all origins ('*'). "
                     "For production, it's recommended to set FRONTEND_URL to your specific frontend domain(s).")
-CORS(app, 
-     origins=allowed_origins_config, 
-     supports_credentials=True, 
+CORS(app,
+     origins=allowed_origins_config,
+     supports_credentials=True,
      methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
 logging.info(f"Flask-CORS initialized. Allowing origins: {allowed_origins_config}")
 
@@ -78,6 +78,7 @@ from routes.auth_routes import auth_bp
 from routes.upload_routes import upload_bp                 
 from routes.download_routes import download_bp             
 from routes.file_routes import file_bp 
+from routes.archive_routes import archive_bp
 
 if 'password_reset' not in app.blueprints:
     app.register_blueprint(password_reset_bp)
@@ -108,6 +109,12 @@ if 'file' not in app.blueprints:
     logging.info("File Blueprint registered.")
 else:
     logging.warning("Blueprint 'file' was already registered. Skipping re-registration.")
+    
+if 'archive' not in app.blueprints: 
+    app.register_blueprint(archive_bp)
+    logging.info("Archive Blueprint registered.")
+else:
+    logging.warning("Blueprint 'archive' was already registered. Skipping re-registration.")
     
 
 # --- Application Runner ---

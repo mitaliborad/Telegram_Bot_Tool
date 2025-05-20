@@ -1,7 +1,7 @@
 import os
 import urllib.parse
 import logging
-from pymongo import MongoClient # Corrected import casing
+from pymongo import MongoClient 
 from pymongo.server_api import ServerApi
 from pymongo.collection import Collection
 from pymongo.database import Database
@@ -28,18 +28,21 @@ load_dotenv()
 # --- Configuration ---
 DATABASE_NAME = "Telegrambot"      
 COLLECTION_NAME = "user_files"     
+ARCHIVED_COLLECTION_NAME = "archived_files"
 
 # --- MongoDB Connection Setup ---
 _client: Optional[MongoClient] = None
 _db: Optional[Database] = None
 _collection: Optional[Collection] = None
+_userinfo_collection: Optional[Collection] = None 
+_archived_files_collection: Optional[Collection] = None
 
 def _connect_to_db() -> Tuple[Optional[MongoClient], str]:
     """
     Establishes a connection to MongoDB Atlas using environment variables.
     Returns the client instance and an error message if connection fails.
     """
-    global _client # Allow modification of the global variable
+    global _client 
 
     if _client is not None:
          return _client, "" 
@@ -144,12 +147,7 @@ class User(UserMixin):
         # --- Important: Validate essential fields ---
         if not self.id or not self.username or not self.email or not self.password_hash:
              logging.error(f"User data missing essential fields during User object creation: {user_data}")
-             # Decide how to handle this - raise error or create an invalid user?
-             # Raising an error is safer during development.
              raise ValueError("User data from database is missing required fields (_id, username, email, password_hash).")
-
-
-    # Flask-Login requires get_id() to return the user's unique ID as a string
     def get_id(self):
         return self.id
 
@@ -219,7 +217,6 @@ def find_user_by_id(user_id: ObjectId) -> Tuple[Optional[Dict[str, Any]], Option
     
     if not isinstance(user_id, ObjectId):
          logging.error(f"Invalid type passed to find_user_by_id: {type(user_id)}")
-         # It's often better to let the ObjectId conversion happen *before* calling this
          return None, "Invalid user ID format provided."
     try:
         user_doc = collection.find_one({"_id": user_id})
@@ -422,12 +419,6 @@ def close_db_connection():
 
 logging.info("Database module initialized.")
 
-
-
-# --- User Information Collection Functions ---
-
-_userinfo_collection: Optional[Collection] = None # Global variable for userinfo collection
-
 def get_userinfo_collection() -> Tuple[Optional[Collection], str]:
     """
     Gets the userinfo collection instance, connecting if necessary.
@@ -450,38 +441,6 @@ def get_userinfo_collection() -> Tuple[Optional[Collection], str]:
         error_msg = f"Error accessing collection 'userinfo': {e}"
         logging.exception(error_msg)
         return None, error_msg
-
-# def find_user_by_email(email: str) -> Tuple[Optional[Dict[str, Any]], str]:
-#     """
-#     Finds a single user record by their email address.
-
-#     Args:
-#         email: The email address to search for.
-
-#     Returns:
-#         A tuple (user_document or None, error_message)
-#     """
-#     collection, error = get_userinfo_collection()
-#     if error or collection is None:
-#         return None, f"Failed to get userinfo collection: {error}"
-
-#     try:
-#         # Convert email to lowercase for case-insensitive check
-#         email_lower = email.lower()
-#         user_doc = collection.find_one({"email": email_lower})
-#         if user_doc:
-#             logging.debug(f"Found user by email: {email}")
-#             return user_doc, None
-#         else:
-#             logging.debug(f"User not found by email: {email}")
-#             return None, None
-        
-#     except PyMongoError as e:
-#         logging.error(f"Database error finding user by email {email}: {e}", exc_info=True)
-#         return None, f"Database error finding user: {e}"
-#     except Exception as e:
-#         logging.error(f"Error finding user by email {email}: {e}", exc_info=True)
-#         return None, f"Error finding user: {e}"
 
 def find_user_by_email(email: str) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
     """Finds a user document by email (case-insensitive search recommended)."""
@@ -521,7 +480,6 @@ def save_user(user_data: Dict[str, Any]) -> Tuple[bool, str]:
         return False, "User data is missing required email or password_hash fields."
 
     try:
-        # Convert email to lowercase before saving
         user_data["email"] = user_data["email"].lower()
 
         result = collection.insert_one(user_data)
@@ -533,11 +491,8 @@ def save_user(user_data: Dict[str, Any]) -> Tuple[bool, str]:
              return False, "User insert operation finished unexpectedly."
 
     except OperationFailure as of:
-        # This might catch duplicate key errors if an index is set on email,
-        # but we should ideally check find_user_by_email first.
         error_msg = f"Database operation failed saving user: {of}"
         logging.exception(error_msg)
-        # Check if it's a duplicate key error (E11000)
         if "E11000" in str(of):
             return False, "Email address already exists."
         return False, error_msg
@@ -547,7 +502,6 @@ def save_user(user_data: Dict[str, Any]) -> Tuple[bool, str]:
         return False, error_msg
     
 def find_user_by_username(username: str) -> Tuple[Optional[Dict[str, Any]], str]:
-    # ... (keep the implementation from the previous step) ...
     """
     Finds a single user record by their username.
 
@@ -625,6 +579,7 @@ def delete_metadata_by_access_id(access_id: str) -> Tuple[int, str]:
         error_msg = f"Unexpected error deleting metadata by access_id '{access_id}': {e}"
         logging.exception(error_msg)
         return 0, error_msg
+    
 def update_user_password(user_id: ObjectId, new_password: str) -> Tuple[bool, str]:
     """Updates the password hash for a given user ID."""
     collection, error = get_userinfo_collection()
@@ -662,77 +617,7 @@ def update_user_password(user_id: ObjectId, new_password: str) -> Tuple[bool, st
     except Exception as e:
         logging.error(f"Unexpected error updating password for user ID {user_id}: {e}", exc_info=True)
         return False, "Server error during password update."
-    
-# def get_all_file_metadata(search_query: Optional[str] = None) ->Tuple[Optional[List[Dict[str, Any]]], str]:
-#     """
-#     Retrieves all documents from the 'user_files' (metadata) collection.
-
-#     Returns:
-#         A tuple (list_of_records or None, error_message or "")
-#     """
-#     global _collection
-#     if _collection is not None:
-#         logging.info(f"Reusing existing metadata_collection: {_collection.name} in DB: {_collection.database.name}") # DEBUG
-#         return _collection, ""
-    
-#     collection, error = get_metadata_collection() 
-#     if error or collection is None:
-#         logging.error(f"Failed to get metadata collection for get_all_file_metadata: {error}")
-#         return None, f"Database error: {error}"
-    
-#     # known_username_with_files = "jenali" # Or "jenali" if they have files
-#     # query_filter = {"username": known_username_with_files}
-#     # logging.info(f"--- DEBUG: Hardcoded filter for get_all_file_metadata: {query_filter} ---")
-    
-#     query_filter = {}
-#     if search_query and search_query.strip():
-#         search_term = search_query.strip()
-#         # escaped_query = re.escape(search_term)
-#         # regex_pattern = re.compile(escaped_query, re.IGNORECASE)
-#         # Search on relevant fields for file metadata
-#         query_filter["$or"] = [
-#             {"access_id": {"$regex": search_term, "$options": "i"}},
-#             {"original_filename": {"$regex": search_term, "$options": "i"}},
-#             {"batch_display_name": {"$regex": search_term, "$options": "i"}},
-#             {"username": {"$regex": search_term, "$options": "i"}}
-#         ]
-#         logging.info(f"Searching file metadata with STRING regex query: '{search_term}' using filter: {query_filter}")
-#     else:
-#         logging.info("Fetching all file metadata (no search query / empty search query).")
-
-#     try:
-#         # count_from_db_with_filter = collection.count_documents(query_filter)
-#         # logging.info(f"--- DEBUG: collection.count_documents with filter {query_filter} returned: {count_from_db_with_filter} ---")
-        
-#         records_cursor = collection.find({}).sort("upload_timestamp", -1) # Fetch all, sort by most recent
-#         records_list = list(records_cursor)
-        
-#         actual_fetched_count_from_find = len(records_list)
-#         logging.info(f"MongoDB find().list() resulted in {actual_fetched_count_from_find} record(s) for filter: {query_filter}")
-        
-#         # if count_from_db_with_filter != actual_fetched_count_from_find:
-#         #     logging.error(f"CRITICAL MISMATCH: count_documents returned {count_from_db_with_filter} but find().list() returned {actual_fetched_count_from_find} for the same filter!")
-
-#         # Convert ObjectId to string for easier template rendering
-#         for record in records_list:
-#             if '_id' in record and isinstance(record['_id'], ObjectId):
-#                 record['_id'] = str(record['_id'])
-#             # You might want to format other fields here if necessary,
-#             # e.g., recursively process 'files_in_batch' if you display its deep details.
-#             # For now, we'll keep it simple.
-
-#         logging.info(f"Retrieved {len(records_list)} file metadata record(s).")
-#         return records_list, ""
-#     except PyMongoError as e:
-#         error_msg = f"PyMongoError fetching all file metadata: {e}"
-#         logging.error(error_msg, exc_info=True)
-#         return None, error_msg
-#     except Exception as e:
-#         error_msg = f"Unexpected error fetching all file metadata: {e}"
-#         logging.error(error_msg, exc_info=True)
-#         return None, error_msg
-    
-    
+      
 def get_all_file_metadata(search_query: Optional[str] = None) -> Tuple[Optional[List[Dict[str, Any]]], str]:
     """
     Retrieves all documents from the 'user_files' (metadata) collection.
@@ -744,7 +629,6 @@ def get_all_file_metadata(search_query: Optional[str] = None) -> Tuple[Optional[
         logging.error(f"Failed to get metadata collection for get_all_file_metadata: {error}")
         return None, f"Database error: {error}"
     
-    # --- The rest of your existing logic for building query_filter and fetching records ---
     query_filter = {}
     if search_query and search_query.strip():
         search_term = search_query.strip()
@@ -759,27 +643,17 @@ def get_all_file_metadata(search_query: Optional[str] = None) -> Tuple[Optional[
         logging.info("Fetching all file metadata (no search query / empty search query).")
 
     try:
-        # count_from_db_with_filter = collection.count_documents(query_filter) # Keep this for debugging if search still fails
-        # logging.info(f"--- DEBUG: collection.count_documents with filter {query_filter} returned: {count_from_db_with_filter} ---")
-        
-        # Use query_filter in the find() operation
         records_cursor = collection.find(query_filter).sort("upload_timestamp", -1)
         records_list = list(records_cursor)
         
         actual_fetched_count_from_find = len(records_list)
-        # Log the filter that was actually used for the find
         logging.info(f"MongoDB find().list() resulted in {actual_fetched_count_from_find} record(s) for filter: {query_filter}")
-        
-        # if count_from_db_with_filter != actual_fetched_count_from_find: # Keep for debugging if search fails
-            # logging.error(f"CRITICAL MISMATCH: count_documents returned {count_from_db_with_filter} but find().list() returned {actual_fetched_count_from_find} for the same filter!")
 
         for record in records_list:
             if '_id' in record and isinstance(record['_id'], ObjectId):
                 record['_id'] = str(record['_id'])
-        
-        # The log message here was slightly off, it should just confirm retrieval based on the executed query
         logging.info(f"Retrieved {len(records_list)} file metadata record(s) after processing.")
-        return records_list, "" # Always return the list of documents and an error string
+        return records_list, "" 
         
     except PyMongoError as e:
         error_msg = f"PyMongoError fetching all file metadata: {e}"
@@ -806,7 +680,6 @@ def delete_user_by_id(user_id_str: str) -> Tuple[int, str]:
         return 0, f"Database error: {error}"
 
     try:
-        # Convert string ID to ObjectId for querying
         user_oid = ObjectId(user_id_str)
     except Exception as e:
         logging.error(f"Invalid ObjectId format for user_id_str '{user_id_str}': {e}")
@@ -820,7 +693,6 @@ def delete_user_by_id(user_id_str: str) -> Tuple[int, str]:
             logging.info(f"Successfully deleted user with ID: {user_oid}")
         elif deleted_count == 0:
             logging.warning(f"No user found to delete with ID: {user_oid}. Already deleted?")
-        # delete_one should not return > 1
         return deleted_count, ""
 
     except PyMongoError as e:
@@ -872,8 +744,6 @@ def update_user_admin_status(user_id_str: str, is_admin_new_status: bool) -> Tup
         if result.matched_count == 0:
             logging.warning(f"Admin status update failed: User ID {user_oid} not found.")
             return False, "User not found."
-        # modified_count can be 0 if the status is already the new_status, which is fine.
-        # We consider it a success if the user was matched.
         logging.info(f"Successfully updated is_admin status for user ID {user_oid} to {is_admin_new_status}. Modified: {result.modified_count}")
         return True, "User admin status updated."
 
@@ -885,10 +755,6 @@ def update_user_admin_status(user_id_str: str, is_admin_new_status: bool) -> Tup
         error_msg = f"Unexpected error updating admin status for user {user_oid}: {e}"
         logging.error(error_msg, exc_info=True)
         return False, error_msg
-    
-    
-# database.py
-# ... (existing imports) ...
 
 def update_user_details(user_id_str: str, update_data: Dict[str, Any]) -> Tuple[bool, str]:
     """
@@ -916,7 +782,7 @@ def update_user_details(user_id_str: str, update_data: Dict[str, Any]) -> Tuple[
         return False, f"Invalid user ID format: {user_id_str}"
 
     # Ensure we don't try to update immutable fields like _id or sensitive ones like password_hash directly
-    allowed_to_update = {'username', 'email', 'is_admin'} # Add other editable fields
+    allowed_to_update = {'username', 'email'} # Add other editable fields
     update_payload = {k: v for k, v in update_data.items() if k in allowed_to_update}
 
     if not update_payload:
@@ -980,3 +846,129 @@ def find_user_by_username_excluding_id(username: str, exclude_user_id: ObjectId)
         return user_doc, None
     except Exception as e:
         return None, str(e)
+    
+    
+def get_archived_files_collection() -> Tuple[Optional[Collection], str]:
+    """
+    Gets the archived_files collection instance, connecting if necessary.
+    Returns the collection instance and an error message.
+    """
+    global _archived_files_collection  
+    if _archived_files_collection is not None:
+        return _archived_files_collection, ""
+
+    db_instance, error = get_db()  
+    if error or db_instance is None:
+        logging.error(f"Failed to get DB instance for archived_files collection: {error}")
+        return None, error
+
+    try:
+        _archived_files_collection = db_instance[ARCHIVED_COLLECTION_NAME]
+        logging.info(f"Accessed collection: {ARCHIVED_COLLECTION_NAME}")
+        return _archived_files_collection, ""
+    except Exception as e:
+        error_msg = f"Error accessing collection '{ARCHIVED_COLLECTION_NAME}': {e}"
+        logging.exception(error_msg)
+        return None, error_msg
+    
+def find_archived_metadata_by_username(username: str) -> Tuple[Optional[List[Dict[str, Any]]], str]:
+    """
+    Finds all archived metadata records for a given username.
+
+    Args:
+        username: The username to search for in the archived_files collection.
+
+    Returns:
+        A tuple (list_of_archived_records or None, error_message)
+    """
+    collection, error = get_archived_files_collection()  
+    if error or collection is None:
+        logging.error(f"Failed to get archived_files collection for user '{username}': {error}")
+        return None, f"Database error: {error}"
+
+    try:
+
+        records_cursor = collection.find({"username": username}).sort("archived_timestamp", -1) 
+        records_list = list(records_cursor)
+        logging.info(f"Found {len(records_list)} archived metadata records for username: {username}")
+
+        for record in records_list:
+            if '_id' in record and isinstance(record['_id'], ObjectId):
+                record['_id'] = str(record['_id'])
+
+        return records_list, ""
+
+    except OperationFailure as of:
+        error_msg = f"Database operation failed finding archived metadata for '{username}': {of}"
+        logging.exception(error_msg)
+        return None, error_msg
+    except Exception as e:
+        error_msg = f"Unexpected error finding archived metadata for '{username}': {e}"
+        logging.exception(error_msg)
+        return None, error_msg
+    
+def find_archived_metadata_by_access_id(access_id: str) -> Tuple[Optional[Dict[str, Any]], str]:
+    """
+    Finds a single archived metadata record by its unique access_id.
+
+    Args:
+        access_id: The unique access ID to search for in the archived_files collection.
+
+    Returns:
+        A tuple (archived_record_dictionary or None, error_message)
+    """
+    collection, error = get_archived_files_collection()
+    if error or collection is None:
+        logging.error(f"Failed to get archived_files collection for access_id '{access_id}': {error}")
+        return None, f"Database error: {error}"
+
+    try:
+        record = collection.find_one({"access_id": access_id})
+        if record:
+            logging.info(f"Found archived metadata record for access_id: {access_id}")
+            # Convert ObjectId to string if needed for further processing before sending to frontend
+            if '_id' in record and isinstance(record['_id'], ObjectId):
+                record['_id'] = str(record['_id'])
+            return record, ""
+        else:
+            logging.info(f"No archived metadata record found for access_id: {access_id}")
+            return None, "Archived file record not found."
+
+    except OperationFailure as of:
+        error_msg = f"Database operation failed finding archived metadata by access_id '{access_id}': {of}"
+        logging.exception(error_msg)
+        return None, error_msg
+    except Exception as e:
+        error_msg = f"Unexpected error finding archived metadata by access_id '{access_id}': {e}"
+        logging.exception(error_msg)
+        return None, error_msg
+    
+def delete_archived_metadata_by_access_id(access_id: str) -> Tuple[int, str]:
+    """
+    Deletes a single archived metadata record matching the unique access_id.
+
+    Args:
+        access_id: The unique access ID of the archived record to delete.
+
+    Returns:
+        A tuple (deleted_count (0 or 1), error_message)
+    """
+    collection, error = get_archived_files_collection()
+    if error or collection is None:
+        logging.error(f"Failed to get archived_files collection for deleting access_id '{access_id}': {error}")
+        return 0, f"Database error: {error}"
+
+    try:
+        result = collection.delete_one({"access_id": access_id}) # Use delete_one for unique ID
+        deleted_count = result.deleted_count
+        if deleted_count == 1:
+            logging.info(f"Deleted archived metadata record for access_id '{access_id}'.")
+        elif deleted_count == 0:
+            logging.warning(f"No archived metadata record found to delete for access_id '{access_id}'.")
+        # else: Should not happen with delete_one
+
+        return deleted_count, ""
+    except Exception as e:
+        error_msg = f"Unexpected error deleting archived metadata by access_id '{access_id}': {e}"
+        logging.exception(error_msg)
+        return 0, error_msg

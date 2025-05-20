@@ -859,7 +859,7 @@ def get_archived_files_collection() -> Tuple[Optional[Collection], str]:
 
     db_instance, error = get_db()  
     if error or db_instance is None:
-        logging.error(f"Failed to get DB instance for archived_files collection: {error}")
+        logging.error(f"DATABASE_PY_ERROR: Failed to get DB instance for archived_files collection: {error}") 
         return None, error
 
     try:
@@ -867,7 +867,7 @@ def get_archived_files_collection() -> Tuple[Optional[Collection], str]:
         logging.info(f"Accessed collection: {ARCHIVED_COLLECTION_NAME}")
         return _archived_files_collection, ""
     except Exception as e:
-        error_msg = f"Error accessing collection '{ARCHIVED_COLLECTION_NAME}': {e}"
+        error_msg = f"DATABASE_PY_ERROR: Error accessing collection '{ARCHIVED_COLLECTION_NAME}': {e}" 
         logging.exception(error_msg)
         return None, error_msg
     
@@ -972,3 +972,61 @@ def delete_archived_metadata_by_access_id(access_id: str) -> Tuple[int, str]:
         error_msg = f"Unexpected error deleting archived metadata by access_id '{access_id}': {e}"
         logging.exception(error_msg)
         return 0, error_msg
+    
+def get_all_archived_files(search_query: Optional[str] = None) -> Tuple[Optional[List[Dict[str, Any]]], str]:
+    """
+    Retrieves all documents from the 'archived_files' collection,
+    optionally filtered by a search query.
+
+    Args:
+        search_query: Optional string to search for within archived records.
+
+    Returns:
+        A tuple (list_of_archived_records or None, error_message or "")
+    """
+    collection, error = get_archived_files_collection() # Uses your existing function
+    if error or collection is None:
+        logging.error(f"Failed to get archived_files collection for get_all_archived_files: {error}")
+        return None, f"Database error: {error}"
+
+    query_filter = {}
+    if search_query and search_query.strip():
+        search_term = search_query.strip()
+        # Using string regex with $options for consistency
+        # Adjust fields to search based on what's relevant in archived_files
+        query_filter["$or"] = [
+            {"access_id": {"$regex": search_term, "$options": "i"}},
+            {"original_filename": {"$regex": search_term, "$options": "i"}}, # If present
+            {"batch_display_name": {"$regex": search_term, "$options": "i"}}, # If present
+            {"username": {"$regex": search_term, "$options": "i"}}, # Original uploader
+            {"archived_by_username": {"$regex": search_term, "$options": "i"}} # Who archived it
+        ]
+        logging.info(f"Searching archived_files with query: '{search_term}' using filter: {query_filter}")
+    else:
+        logging.info("Fetching all archived_files (no search query / empty search query).")
+
+    try:
+        # Sort by archived_timestamp, most recent first
+        records_cursor = collection.find(query_filter).sort("archived_timestamp", -1)
+        records_list = list(records_cursor)
+        
+        actual_found_count = len(records_list)
+        logging.info(f"MongoDB find returned {actual_found_count} archived record(s) for filter: {query_filter} (Search: '{search_query}')")
+
+        for record in records_list:
+            if '_id' in record and isinstance(record['_id'], ObjectId):
+                record['_id'] = str(record['_id'])
+            # Convert other fields if necessary (e.g., dates to strings or datetime objects)
+            # For example, your archived_timestamp is already a datetime object.
+
+        logging.info(f"Retrieved {len(records_list)} archived file record(s) after processing.")
+        return records_list, ""
+        
+    except PyMongoError as e:
+        error_msg = f"PyMongoError fetching all archived files: {e}"
+        logging.error(error_msg, exc_info=True)
+        return None, error_msg
+    except Exception as e:
+        error_msg = f"Unexpected error fetching all archived files: {e}"
+        logging.error(error_msg, exc_info=True)
+        return None, error_msg

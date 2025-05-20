@@ -11,7 +11,5 @@ class EditUserForm(FlaskForm):
                'Usernames must have only letters, numbers, dots or underscores')
     ])
     email = StringField('Email', validators=[DataRequired(), Email()])
-    is_admin = BooleanField('Is Admin?') # For toggling admin status via form
-    # Add other fields you want to make editable, e.g., first_name, last_name
-    # Be careful about allowing password changes here; that's usually a separate flow.
+    #is_admin = BooleanField('Is Admin?') 
     submit = SubmitField('Save Changes')

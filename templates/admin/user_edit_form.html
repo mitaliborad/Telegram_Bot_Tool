@@ -1,82 +1,86 @@
 {% extends 'admin/master.html' %}
-{% from 'admin/lib.html' import render_field %} {# Flask-Admin might provide this, or use WTForms macros #}
-
-{# If render_field is not available or you prefer WTForms macros: #}
-
-{# If not using Flask-Bootstrap, you'll render fields manually:
-<div class="form-group">
-    {{ form.username.label(class="form-control-label") }}
-    {{ form.username(class="form-control" + (" is-invalid" if form.username.errors else "")) }}
-    {% if form.username.errors %}
-        <div class="invalid-feedback">
-            {% for error in form.username.errors %}<span>{{ error }}</span><br>{% endfor %}
-        </div>
-    {% endif %}
-</div>
-#}
-
+{# Removed: {% from 'admin/lib.html' import render_field %} #}
+{# Removed: {% import "bootstrap/wtf.html" as wtf %} #}
 
 {% block body %}
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-8 offset-md-2">
+        {# --- Ensure user_doc is available for the back button --- #}
+        {# --- If user_doc might not exist (e.g. on initial create form later), add conditional logic --- #}
+        {% if user_doc and user_doc._id %}
         <a href="{{ url_for('.user_details_view', user_id_str=user_doc._id) }}" class="btn btn-default pull-right" style="margin-bottom: 15px;">
           « Back to User Details
         </a>
         <h2>Edit User: <small>{{ user_doc.get('username', 'N/A') }}</small></h2>
+        {% else %}
+        <h2>Edit User</h2> {# Fallback title if user_doc isn't fully loaded #}
+        <a href="{{ url_for('.index') }}" class="btn btn-default pull-right" style="margin-bottom: 15px;">
+            « Back to User List
+          </a>
+        {% endif %}
+
 
         {% with messages = get_flashed_messages(with_categories=true) %}
           {% if messages %}
             {% for category, message in messages %}
-              <div class="alert alert-{{ category }}">{{ message }}</div>
+              <div class="alert alert-{{ category if category else 'info' }} alert-dismissible fade show" role="alert">
+                 {{ message }}
+                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+              </div>
             {% endfor %}
           {% endif %}
         {% endwith %}
 
-        {# --- Using Flask-Bootstrap's wtf.quick_form for simplicity --- #}
-        {# --- If you don't have Flask-Bootstrap, render fields manually as commented above --- #}
         {% if form %}
-             <form method="POST" action="{{ url_for('.edit_user_view', user_id_str=user_doc._id) }}">
-               {{ form.hidden_tag() }} {# IMPORTANT for CSRF protection #}
+          <form method="POST" action="{{ url_for('.edit_user_view', user_id_str=user_doc._id if user_doc else '') }}"> {# Handle case where user_doc might be None initially #}
+            {{ form.hidden_tag() }} {# IMPORTANT for CSRF protection #}
 
-               <div class="form-group {% if form.username.errors %}has-error is-invalid{% endif %}"> {# Added is-invalid for BS4 #}
-                 {{ form.username.label(class="control-label") }}
-                 {{ form.username(class="form-control" + (" is-invalid" if form.username.errors else ""), size=30) }}
-                 {% if form.username.errors %}
-                   <div class="invalid-feedback"> {# BS4 class for errors #}
-                       {% for error in form.username.errors %}<span>{{ error }}</span><br>{% endfor %}
-                   </div>
-                 {% endif %}
-               </div>
+            {# Username Field #}
+            <div class="form-group {% if form.username.errors %} is-invalid{% endif %}">
+              {{ form.username.label(class="form-control-label") }}
+              {{ form.username(class="form-control" + (" is-invalid" if form.username.errors else ""), size=30) }}
+              {% if form.username.errors %}
+                <div class="invalid-feedback">
+                    {% for error in form.username.errors %}<span>{{ error }}</span><br>{% endfor %}
+                </div>
+              {% endif %}
+            </div>
 
-               <div class="form-group {% if form.email.errors %}has-error is-invalid{% endif %}">
-                 {{ form.email.label(class="control-label") }}
-                 {{ form.email(class="form-control" + (" is-invalid" if form.email.errors else ""), size=30) }}
-                 {% if form.email.errors %}
-                   <div class="invalid-feedback">
-                       {% for error in form.email.errors %}<span>{{ error }}</span><br>{% endfor %}
-                   </div>
-                 {% endif %}
-               </div>
+            {# Email Field #}
+            <div class="form-group {% if form.email.errors %} is-invalid{% endif %}">
+              {{ form.email.label(class="form-control-label") }}
+              {{ form.email(class="form-control" + (" is-invalid" if form.email.errors else ""), size=30) }}
+              {% if form.email.errors %}
+                <div class="invalid-feedback">
+                    {% for error in form.email.errors %}<span>{{ error }}</span><br>{% endfor %}
+                </div>
+              {% endif %}
+            </div>
 
-               <div class="form-group">
-                 <div class="form-check"> {# BS4 class for checkbox layout #}
-                   {{ form.is_admin(class="form-check-input") }}
-                   {{ form.is_admin.label(class="form-check-label") }}
-                 </div>
-                 {% if form.is_admin.errors %}
-                   {# Display errors for checkbox if any (less common for boolean) #}
-                   <div class="text-danger small">
-                       {% for error in form.is_admin.errors %}{{ error }}<br>{% endfor %}
-                   </div>
-                 {% endif %}
-               </div>
+            {# --- "Is Admin?" CHECKBOX SECTION IS NOW COMPLETELY REMOVED --- #}
 
-               {{ form.submit(class="btn btn-primary") }}
-             </form>
-           {% else %}
-             <p>Form could not be loaded.</p>
-           {% endif %}
+            {# --- OPTIONAL: Display Current Role (Read-Only) --- #}
+            {% if user_doc and 'current_role' in self._context %} {# Check if current_role was passed #}
+            <div class="form-group">
+                <label class="control-label">Current Role</label>
+                <p class="form-control-static">
+                    {% if current_role == "Admin" %}<span class="badge badge-danger">{{ current_role }}</span>
+                    {% elif current_role == "Premium User" %}<span class="badge badge-success">{{ current_role }}</span>
+                    {% elif current_role == "Free User" %}<span class="badge badge-info">{{ current_role }}</span>
+                    {% else %}<span class="badge badge-secondary">{{ current_role | default('N/A', true) }}</span>
+                    {% endif %}
+                    <br><small class="form-text text-muted">(Admin role is managed directly in the database. Other roles might be editable if a form field for 'role' is added.)</small>
+                </p>
+            </div>
+            {% endif %}
+            {# --- END OF OPTIONAL DISPLAY --- #}
+
+            {{ form.submit(class="btn btn-primary") }}
+          </form>
+        {% else %}
+          <p>Form could not be loaded. {{ error_message if error_message }}</p>
+        {% endif %}
       </div>
     </div>
   </div>

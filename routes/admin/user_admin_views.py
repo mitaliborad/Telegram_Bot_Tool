@@ -184,7 +184,7 @@ class UserView(BaseView):
             update_data = {
                 'username': form.username.data,
                 'email': form.email.data.lower(), # Store email as lowercase
-                'is_admin': form.is_admin.data
+                # 'is_admin': form.is_admin.data
                 # Add other fields from the form here
             }
             
@@ -206,15 +206,18 @@ class UserView(BaseView):
                 if existing_user_username:
                     form.username.errors.append("This username is already taken by another account.")
                     # Re-render form with error
+                    validation_passed = False
                     return self.render('admin/user_edit_form.html', form=form, user_doc=user_doc, error_message=None)
-
-
-            success, msg = database.update_user_details(user_id_str, update_data)
-            if success:
-                flash(gettext('User "%(username)s" updated successfully.', username=update_data['username']), 'success')
-                return redirect(url_for('.user_details_view', user_id_str=user_id_str)) # Redirect to details page
+            if validation_passed:
+                success, msg = database.update_user_details(user_id_str, update_data)
+                if success:
+                    flash(gettext('User "%(username)s" updated successfully.', username=update_data['username']), 'success')
+                    return redirect(url_for('.user_details_view', user_id_str=user_id_str))
+                else:
+                    flash(gettext('Error updating user: %(msg)s', msg=msg), 'danger')
             else:
-                flash(gettext('Error updating user: %(msg)s', msg=msg), 'danger')
+                flash('Please correct the errors below.', 'warning')
+
         elif request.method == 'POST' and not form.validate(): # If POST and validation failed
              flash('Please correct the errors below.', 'warning')
 
@@ -223,7 +226,11 @@ class UserView(BaseView):
         if request.method == 'GET':
              form.username.data = user_doc.get('username')
              form.email.data = user_doc.get('email')
-             form.is_admin.data = user_doc.get('is_admin', False)
+            #  form.is_admin.data = user_doc.get('is_admin', False)
              # Populate other form fields from user_doc
+        current_role_for_display = user_doc.get('role', 'Free User')
 
-        return self.render('admin/user_edit_form.html', form=form, user_doc=user_doc, error_message=None)
+        return self.render('admin/user_edit_form.html',
+                           form=form,
+                           user_doc=user_doc,
+                           current_role=current_role_for_display)

@@ -8,6 +8,7 @@ from flask_admin.contrib.fileadmin import FileAdmin
 from routes.admin.user_admin_views import UserView
 from routes.admin.file_admin_views import FileMetadataView
 from routes.admin.dashboard_view import MyAdminIndexView
+from routes.admin.archive_admin_views import ArchivedFileView
 load_dotenv()
 
 from config import app, mail, format_bytes 
@@ -17,14 +18,11 @@ admin = Admin(
     app,
     name='Storage Admin',
     template_mode='bootstrap4',
-    url='/admin',  # This is the URL prefix for all admin views
+    url='/admin',  
     index_view=MyAdminIndexView(
-        name="Dashboard",   # Name displayed in menu/breadcrumbs
-        endpoint='admin_dashboard',  # <--- ADD/CHANGE THIS ENDPOINT TO BE UNIQUE
-        url='/admin'  # This is the URL for this specific index view, relative to admin.url_prefix if set
-                      # Or absolute if admin.url_prefix is not set.
-                      # Since Admin's url is '/admin', and this view's url is also '/admin',
-                      # this effectively means the dashboard is at the root of the admin interface.
+        name="Dashboard",  
+        endpoint='admin_dashboard',  
+        url='/admin'  
     )
 )
 logging.info("Flask-Admin initialized with custom dashboard. Accessible at /admin")
@@ -32,6 +30,8 @@ logging.info("Flask-Admin initialized with custom dashboard. Accessible at /admi
 admin.add_view(UserView(name='Manage Users', endpoint='users', menu_icon_type='glyph', menu_icon_value='glyphicon-user'))
 admin.add_view(FileMetadataView(name='File Uploads', endpoint='files', menu_icon_type='glyph', menu_icon_value='glyphicon-file'))
 logging.info("Flask-Admin UserView and FileMetadataView registered.")
+admin.add_view(ArchivedFileView(name='Archived Files', endpoint='archivedfiles', category='File Management', menu_icon_type='glyph', menu_icon_value='glyphicon-folder-open'))
+logging.info("Flask-Admin UserView, FileMetadataView, and ArchivedFileView registered.")
 
 # --- Flask Application Extensions Setup ---
 app.jinja_env.filters['format_bytes'] = format_bytes

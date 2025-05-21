@@ -443,9 +443,10 @@ def _prepare_download_and_generate_updates(prep_id: str) -> Generator[SseEvent, 
                 upload_datetime = parser.isoparse(upload_timestamp_str_final)
                 if upload_datetime.tzinfo is None or upload_datetime.tzinfo.utcoffset(upload_datetime) is None:
                     upload_datetime = upload_datetime.replace(tzinfo=timezone.utc)
-
-                expiration_limit = timedelta(days=30)
-                # expiration_limit = timedelta(minutes=1) # For testing
+                    
+                expiration_limit = timedelta(seconds=30)
+                # expiration_limit = timedelta(days=30)
+                # expiration_limit = timedelta(minutes=1) 
                 now_utc = datetime.now(timezone.utc)
 
                 if now_utc > (upload_datetime + expiration_limit):
@@ -831,9 +832,9 @@ def _generate_zip_and_stream_progress(prep_id_for_zip: str) -> Generator[SseEven
             if upload_datetime_batch.tzinfo is None or upload_datetime_batch.tzinfo.utcoffset(upload_datetime_batch) is None:
                 upload_datetime_batch = upload_datetime_batch.replace(tzinfo=timezone.utc)
             
-            expiration_limit = timedelta(days=30)
+            # expiration_limit = timedelta(days=30)
             # For testing:
-            # expiration_limit = timedelta(seconds=30) 
+            expiration_limit = timedelta(seconds=30) 
             now_utc = datetime.now(timezone.utc)
 
             if now_utc > (upload_datetime_batch + expiration_limit):

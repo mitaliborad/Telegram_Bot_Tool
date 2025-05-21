@@ -17,7 +17,6 @@ from flask import (
 )
 # No JWT needed for these download routes if they are public or use access_id
 
-import database
 from database import find_metadata_by_username, find_metadata_by_access_id
 from config import (
     PRIMARY_TELEGRAM_CHAT_ID, UPLOADS_TEMP_DIR, MAX_DOWNLOAD_WORKERS, TELEGRAM_MAX_CHUNK_SIZE_BYTES,

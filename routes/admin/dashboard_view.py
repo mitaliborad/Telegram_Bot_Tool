@@ -3,7 +3,7 @@ import logging
 from flask_admin import AdminIndexView, expose
 from flask_login import current_user # Will be used when security is back
 from flask import redirect, url_for, request
-import database # To fetch counts or other data
+from database import get_all_users, get_all_file_metadata
 
 class MyAdminIndexView(AdminIndexView):
     def is_accessible(self):
@@ -29,14 +29,14 @@ class MyAdminIndexView(AdminIndexView):
         error_msg = None
 
         try:
-            users, err = database.get_all_users() # Fetches all, then counts
+            users, err = get_all_users() # Fetches all, then counts
             if not err and users is not None: # Check users is not None
                 user_count = len(users)
             elif err:
                 logging.error(f"Error fetching users for dashboard: {err}")
                 error_msg = err
 
-            files, err_files = database.get_all_file_metadata() # Fetches all, then counts
+            files, err_files = get_all_file_metadata() # Fetches all, then counts
             if not err_files and files is not None: # Check files is not None
                 file_record_count = len(files)
             elif err_files:

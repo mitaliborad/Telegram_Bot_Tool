@@ -5,7 +5,12 @@ from flask_admin.base import BaseView, expose
 from flask import redirect, url_for, request, flash, abort 
 import json
 from math import ceil
-import database
+from database import (
+    get_all_file_metadata,
+    find_metadata_by_access_id,
+    archive_file_record_by_access_id, # For the delete/archive action
+    find_archived_metadata_by_access_id # Used in delete_view to get name after archive
+)
 
 class FileMetadataView(BaseView):
     def is_accessible(self):
@@ -29,7 +34,7 @@ class FileMetadataView(BaseView):
         error_message = None
 
         try:
-            all_records_data, db_error = database.get_all_file_metadata(search_query=search_query) 
+            all_records_data, db_error = get_all_file_metadata(search_query=search_query) 
 
             if db_error:
                 error_message = f"Error fetching file metadata: {db_error}"
@@ -75,7 +80,7 @@ class FileMetadataView(BaseView):
         record = None
         error_message = None
         try:
-            record_data, db_error = database.find_metadata_by_access_id(access_id)
+            record_data, db_error = find_metadata_by_access_id(access_id)
             if db_error:
                 error_message = f"Error fetching record details for {access_id}: {db_error}"
             elif record_data:
@@ -98,12 +103,12 @@ class FileMetadataView(BaseView):
         display_name_for_flash = access_id
 
         try:
-            success, msg = database.archive_file_record_by_access_id(access_id, admin_username_for_archive)
-            temp_archived_record, _ = database.find_archived_metadata_by_access_id(access_id) # Check if it's in archive
+            success, msg = archive_file_record_by_access_id(access_id, admin_username_for_archive)
+            temp_archived_record, _ = find_archived_metadata_by_access_id(access_id) # Check if it's in archive
             if temp_archived_record and success: # If found in archive and operation was successful
                  display_name_for_flash = temp_archived_record.get('batch_display_name', temp_archived_record.get('original_filename', access_id))
             elif not success: # if archive failed, try to get name from original location if still there
-                 original_record, _ = database.find_metadata_by_access_id(access_id)
+                 original_record, _ = find_metadata_by_access_id(access_id)
                  if original_record:
                       display_name_for_flash = original_record.get('batch_display_name', original_record.get('original_filename', access_id))
 

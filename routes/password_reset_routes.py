@@ -5,7 +5,7 @@ from flask import (
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
 from bson.objectid import ObjectId 
 from datetime import datetime 
-import database
+from database import find_user_by_email, find_user_by_id, update_user_password
 from config import mail 
 from flask_mail import Message
 import os
@@ -51,7 +51,7 @@ def request_password_reset_api():
         email = data['email'].strip().lower()
         logging.info(f"API Password reset requested for email: {email}")
 
-        user_doc, db_error = database.find_user_by_email(email)
+        user_doc, db_error = find_user_by_email(email)
 
         if db_error:
             logging.error(f"DB error checking email {email} for API password reset: {db_error}")
@@ -132,7 +132,7 @@ def request_password_reset_api():
 def reset_password_api(token: str): 
     """
     API endpoint to handle the submission of the new password.
-    Validates the token, checks the new password, and updates it in the database.
+    Validates the token, checks the new password, and updates it in the 
     Expects a JSON payload with 'password' and 'confirmPassword'.
     """
     if request.method == 'OPTIONS':
@@ -192,11 +192,11 @@ def reset_password_api(token: str):
             logging.error(f"Invalid ObjectId format in token for user_id: {user_id_str}")
             return make_response(jsonify({"error": "Invalid user identifier in reset link."}), 400)
 
-        user_doc_verify, _ = database.find_user_by_id(user_oid)
+        user_doc_verify, _ = find_user_by_id(user_oid)
         if not user_doc_verify:
             logging.error(f"User account with ID {user_oid} (from token) not found during password reset execution.")
             return make_response(jsonify({"error": "User account associated with this link no longer exists."}), 404) 
-        update_success, update_msg = database.update_user_password(user_oid, new_password)
+        update_success, update_msg = update_user_password(user_oid, new_password)
 
         if not update_success:
             logging.error(f"Failed to update password for user ID {user_oid}: {update_msg}")

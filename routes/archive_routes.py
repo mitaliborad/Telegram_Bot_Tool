@@ -6,10 +6,11 @@ from datetime import datetime, timezone
 
 import database 
 from database import (
+    find_user_by_id,                          
     find_archived_metadata_by_username,
     find_archived_metadata_by_access_id,
-    save_file_metadata,
-    delete_archived_metadata_by_access_id
+    save_file_metadata,                       
+    delete_archived_metadata_by_access_id 
 
 )
 
@@ -23,7 +24,7 @@ def list_user_archived_files(username: str) -> Response:
 
     log_prefix = f"[ListArchivedFiles-{username}]"
     current_user_jwt_identity = get_jwt_identity()
-    user_doc, error = database.find_user_by_id(ObjectId(current_user_jwt_identity))
+    user_doc, error = find_user_by_id(ObjectId(current_user_jwt_identity))
 
     if error or not user_doc:
         logging.warning(f"{log_prefix} User not found or token invalid for JWT ID: {current_user_jwt_identity}")
@@ -55,7 +56,7 @@ def restore_archived_file(access_id: str) -> Response:
 
     log_prefix = f"[RestoreFile-{access_id}]"
     current_user_jwt_identity = get_jwt_identity()
-    user_doc, error = database.find_user_by_id(ObjectId(current_user_jwt_identity))
+    user_doc, error = find_user_by_id(ObjectId(current_user_jwt_identity))
 
     if error or not user_doc:
         logging.warning(f"{log_prefix} User not found or token invalid for JWT ID: {current_user_jwt_identity}")

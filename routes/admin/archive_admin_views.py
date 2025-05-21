@@ -5,9 +5,12 @@ from flask_admin.base import BaseView, expose
 from flask_login import current_user # For security later
 from flask import redirect, url_for, request, flash
 from math import ceil
-import database # Your database module
-# json might be needed if you add a details view for archived files later
-# import json
+from database import (
+    get_all_archived_files,
+    find_archived_metadata_by_access_id,
+    save_file_metadata,                     
+    delete_archived_metadata_by_access_id   
+)
 
 class ArchivedFileView(BaseView):
     def is_accessible(self):
@@ -44,7 +47,7 @@ class ArchivedFileView(BaseView):
         error_message = None
 
         try:
-            all_archived_data, db_error = database.get_all_archived_files(search_query=search_query)
+            all_archived_data, db_error = get_all_archived_files(search_query=search_query)
 
             if db_error:
                 error_message = f"Error fetching archived files: {db_error}"
@@ -102,7 +105,8 @@ class ArchivedFileView(BaseView):
 
         try:
             # 1. Find the record in the 'archived_files' collection
-            archived_record, find_err = database.find_archived_metadata_by_access_id(access_id)
+            
+            archived_record, find_err = find_archived_metadata_by_access_id(access_id)
             if find_err:
                 raise Exception(f"Error finding record to restore: {find_err}")
             if not archived_record:
@@ -117,13 +121,13 @@ class ArchivedFileView(BaseView):
             if '_id' in record_to_restore: del record_to_restore['_id'] # Original _id from archive
 
             # 3. Insert (or upsert) into 'user_files' collection
-            success, message = database.save_file_metadata(record_to_restore) # Your existing function
+            success, message = save_file_metadata(record_to_restore) # Your existing function
             if not success:
                 raise Exception(f"Failed to save restored record to user_files: {message}")
             logging.info(f"{log_prefix} Record (access_id: {access_id}) successfully saved back to user_files by {requesting_username_for_log}.")
 
             # 4. Delete from the 'archived_files' collection
-            deleted_count, del_arc_err = database.delete_archived_metadata_by_access_id(access_id)
+            deleted_count, del_arc_err = delete_archived_metadata_by_access_id(access_id)
             if del_arc_err:
                 logging.critical(f"{log_prefix} CRITICAL: Record restored BUT failed to delete from archive (access_id: {access_id}). Error: {del_arc_err}")
                 # Don't raise exception here, flash a critical warning instead
@@ -156,7 +160,7 @@ class ArchivedFileView(BaseView):
         try:
             # Optional: Find the record first to get its display name for the flash message
             # This also confirms it exists before trying to delete.
-            archived_record, find_err = database.find_archived_metadata_by_access_id(access_id)
+            archived_record, find_err = find_archived_metadata_by_access_id(access_id)
             if find_err:
                 # This error is less critical if the goal is just to ensure it's gone
                 logging.warning(f"{log_prefix} Error finding record before permanent delete (continuing with delete attempt): {find_err}")
@@ -164,7 +168,7 @@ class ArchivedFileView(BaseView):
                 display_name_for_flash = archived_record.get('batch_display_name', archived_record.get('original_filename', access_id))
 
             # Call the database function to delete from 'archived_files'
-            deleted_count, db_error_msg = database.delete_archived_metadata_by_access_id(access_id)
+            deleted_count, db_error_msg = delete_archived_metadata_by_access_id(access_id)
 
             if db_error_msg:
                 flash(gettext('Error permanently deleting record: %(error)s', error=db_error_msg), 'danger')

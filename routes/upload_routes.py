@@ -14,8 +14,7 @@ from flask import (
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from bson import ObjectId
 
-import database
-from database import User, save_file_metadata # Add other db functions if needed
+from database import User, find_user_by_id, save_file_metadata
 from extensions import upload_progress_data
 from config import (
     TELEGRAM_CHAT_IDS, PRIMARY_TELEGRAM_CHAT_ID, CHUNK_SIZE,
@@ -103,7 +102,7 @@ def initiate_upload() -> Response:
     if current_user_jwt_identity:
         is_anonymous = False
         try:
-            user_doc, error = database.find_user_by_id(ObjectId(current_user_jwt_identity))
+            user_doc, error = find_user_by_id(ObjectId(current_user_jwt_identity))
             if error or not user_doc:
                 logging.error(f"{log_prefix} User not found for JWT identity '{current_user_jwt_identity}'. Error: {error}")
                 return jsonify({"error": "Invalid user token or user not found"}), 401 

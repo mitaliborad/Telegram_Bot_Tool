@@ -25,22 +25,7 @@ import io
 from flask_jwt_extended import jwt_required, get_jwt_identity
 import threading
 import database
-from database import (
-    save_file_metadata,
-    find_metadata_by_username,
-    find_metadata_by_access_id,
-    delete_metadata_by_filename,
-    find_user_by_email,
-    save_user
-)
-from database import (
-    save_file_metadata,
-    find_metadata_by_username,
-    find_metadata_by_access_id,
-    delete_metadata_by_filename,
-    find_user_by_email,
-    save_user
-)
+from database import User, find_user_by_id, find_user_by_email, find_user_by_username, save_user
 from config import format_time
 from flask_cors import CORS
 from config import app 
@@ -100,7 +85,7 @@ def load_user(user_id: str):
         logging.error(f"Invalid ObjectId format for user_id: {user_id}")
         return None
     
-    user_doc, error = database.find_user_by_id(user_obj_id) # find_user_by_id needs to be robust
+    user_doc, error = find_user_by_id(user_obj_id) # find_user_by_id needs to be robust
     if error:
          logging.error(f"Error loading user by ID {user_id}: {error}")
          return None
@@ -157,7 +142,7 @@ def register_user():
         return make_response(jsonify({"error": "You must agree to all terms and privacy conditions."}), 400)
 
     try:
-        existing_user_by_username, db_error_uname = database.find_user_by_username(username)
+        existing_user_by_username, db_error_uname = find_user_by_username(username)
         if db_error_uname: raise Exception(db_error_uname) 
         if existing_user_by_username:
             return make_response(jsonify({"error": "Username is already taken."}), 409) 

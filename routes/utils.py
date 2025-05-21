@@ -24,15 +24,6 @@ from dateutil import parser as dateutil_parser
 import io
 from flask_jwt_extended import jwt_required, get_jwt_identity
 import threading
-import database
-from database import (
-    save_file_metadata,
-    find_metadata_by_username,
-    find_metadata_by_access_id,
-    delete_metadata_by_filename,
-    find_user_by_email,
-    save_user
-)
 from config import format_time
 from flask_cors import CORS
 from config import app 

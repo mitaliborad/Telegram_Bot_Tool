@@ -6,7 +6,15 @@ from flask_admin.base import BaseView, expose
 from flask import redirect, url_for, request, flash # Keep flash for feedback
 from math import ceil
 import re
-import database
+from database import (
+    get_all_users,
+    delete_user_by_id,
+    find_user_by_id_str,
+    update_user_admin_status,
+    update_user_details,
+    find_user_by_email_excluding_id,    
+    find_user_by_username_excluding_id  
+)
 import json
 from .forms import EditUserForm
 from bson import ObjectId
@@ -33,7 +41,7 @@ class UserView(BaseView):
         error_message = None
 
         try:
-            all_users_data, db_error = database.get_all_users(search_query=search_query)
+            all_users_data, db_error = get_all_users(search_query=search_query)
 
             if db_error:
                 error_message = f"Error fetching users: {db_error}"
@@ -77,7 +85,7 @@ class UserView(BaseView):
     @expose('/delete/<user_id_str>', methods=('POST',))
     def delete_user_view(self, user_id_str):
         try:
-            user_to_delete_doc, find_err = database.find_user_by_id_str(user_id_str)
+            user_to_delete_doc, find_err = find_user_by_id_str(user_id_str)
             if find_err :
                 flash(gettext('Error finding user for deletion details: %(error)s', error=find_err), 'danger')
                 return redirect(url_for('.index'))
@@ -86,7 +94,7 @@ class UserView(BaseView):
                 return redirect(url_for('.index'))
 
             username_for_flash = user_to_delete_doc.get('username', user_id_str)
-            deleted_count, db_error_msg = database.delete_user_by_id(user_id_str)
+            deleted_count, db_error_msg = delete_user_by_id(user_id_str)
 
             if db_error_msg:
                 flash(gettext('Error deleting user: %(error)s', error=db_error_msg), 'danger')
@@ -104,7 +112,7 @@ class UserView(BaseView):
         # For now, keeping access open for dev.
 
         try:
-            user_doc, find_err = database.find_user_by_id_str(user_id_str)
+            user_doc, find_err = find_user_by_id_str(user_id_str)
             if find_err or not user_doc:
                 flash(gettext('User not found: %(error)s', error=find_err or "Unknown ID"), 'danger')
                 return redirect(url_for('.index'))
@@ -117,7 +125,7 @@ class UserView(BaseView):
             #    flash('You cannot remove your own admin status.', 'danger')
             #    return redirect(url_for('.index'))
 
-            success, msg = database.update_user_admin_status(user_id_str, new_is_admin_status)
+            success, msg = update_user_admin_status(user_id_str, new_is_admin_status)
 
             if success:
                 action = "promoted to admin" if new_is_admin_status else "removed from admin"
@@ -143,7 +151,7 @@ class UserView(BaseView):
         error_message = None
         try:
             # Use the existing find_user_by_id_str helper
-            user_data, db_error = database.find_user_by_id_str(user_id_str)
+            user_data, db_error = find_user_by_id_str(user_id_str)
             if db_error:
                 error_message = f"Error fetching user details for ID {user_id_str}: {db_error}"
                 logging.error(f"[AdminUserDetailsView] {error_message}")
@@ -173,7 +181,7 @@ class UserView(BaseView):
         
     @expose('/edit/<user_id_str>', methods=('GET', 'POST'))
     def edit_user_view(self, user_id_str):
-        user_doc, find_err = database.find_user_by_id_str(user_id_str)
+        user_doc, find_err = find_user_by_id_str(user_id_str)
         if find_err or not user_doc:
             flash(gettext('User not found: %(error)s', error=find_err or "Unknown ID"), 'danger')
             return redirect(url_for('.index'))
@@ -194,7 +202,7 @@ class UserView(BaseView):
 
             # Check email uniqueness only if it changed
             if update_data['email'] != original_email:
-                existing_user_email, _ = database.find_user_by_email_excluding_id(update_data['email'], ObjectId(user_id_str))
+                existing_user_email, _ = find_user_by_email_excluding_id(update_data['email'], ObjectId(user_id_str))
                 if existing_user_email:
                     form.email.errors.append("This email address is already in use by another account.")
                     # Re-render form with error
@@ -202,14 +210,14 @@ class UserView(BaseView):
             
             # Check username uniqueness only if it changed
             if update_data['username'] != original_username:
-                existing_user_username, _ = database.find_user_by_username_excluding_id(update_data['username'], ObjectId(user_id_str))
+                existing_user_username, _ = find_user_by_username_excluding_id(update_data['username'], ObjectId(user_id_str))
                 if existing_user_username:
                     form.username.errors.append("This username is already taken by another account.")
                     # Re-render form with error
                     validation_passed = False
                     return self.render('admin/user_edit_form.html', form=form, user_doc=user_doc, error_message=None)
             if validation_passed:
-                success, msg = database.update_user_details(user_id_str, update_data)
+                success, msg = update_user_details(user_id_str, update_data)
                 if success:
                     flash(gettext('User "%(username)s" updated successfully.', username=update_data['username']), 'success')
                     return redirect(url_for('.user_details_view', user_id_str=user_id_str))

@@ -6,8 +6,12 @@ from bson import ObjectId
 from datetime import datetime, timezone
 import database
 from database import (
-    find_metadata_by_username, find_metadata_by_access_id, save_file_metadata, 
-    delete_metadata_by_access_id, get_archived_files_collection
+    find_user_by_id,             
+    find_metadata_by_username,   
+    find_metadata_by_access_id,  
+    delete_metadata_by_access_id, 
+    get_archived_files_collection, 
+    archive_file_record_by_access_id
 )
 from config import app 
 
@@ -21,7 +25,7 @@ def list_user_files(username: str) -> Response:
 
     log_prefix = f"[ListFiles-{username}]"
     current_user_jwt_identity = get_jwt_identity()
-    user_doc, error = database.find_user_by_id(ObjectId(current_user_jwt_identity))
+    user_doc, error = find_user_by_id(ObjectId(current_user_jwt_identity))
 
     if error or not user_doc:
         return jsonify({"error": "User not found or token invalid."}), 401
@@ -46,7 +50,7 @@ def list_user_files(username: str) -> Response:
 def list_user_files_page(username: str):
     # Similar authorization check as list_user_files API
     current_user_jwt_identity = get_jwt_identity() # Or current_user from Flask-Login
-    user_doc, error = database.find_user_by_id(ObjectId(current_user_jwt_identity))
+    user_doc, error = find_user_by_id(ObjectId(current_user_jwt_identity))
     if error or not user_doc or user_doc.get('username') != username:
         # Handle error, perhaps flash a message and redirect
         return jsonify({"error": "Unauthorized to view these files"}), 403 # Or redirect
@@ -66,7 +70,7 @@ def delete_file_record(username: str, access_id_from_path: str) -> Response:
     log_prefix = f"[ArchiveFile-{access_id_from_path}]" 
     try:
         current_user_jwt_identity = get_jwt_identity()
-        user_doc, error = database.find_user_by_id(ObjectId(current_user_jwt_identity))
+        user_doc, error = find_user_by_id(ObjectId(current_user_jwt_identity))
         if error or not user_doc: return jsonify({"error": "User not found or token invalid."}), 401
 
         requesting_username = user_doc.get('username')
@@ -130,7 +134,7 @@ def delete_file_record(username: str, access_id_from_path: str) -> Response:
 def delete_batch_record(access_id: str) -> Response:
     log_prefix = f"[ArchiveBatch-{access_id}]" # Changed log prefix
     current_user_jwt_identity = get_jwt_identity()
-    user_doc, error = database.find_user_by_id(ObjectId(current_user_jwt_identity))
+    user_doc, error = find_user_by_id(ObjectId(current_user_jwt_identity))
     if error or not user_doc: return jsonify({"error": "User not found/token invalid."}), 401
 
     requesting_username = user_doc.get('username')

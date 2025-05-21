@@ -18,6 +18,7 @@ from pymongo import MongoClient
 from pymongo.errors import PyMongoError
 from config import MONGO_URI
 import re
+from datetime import datetime, timezone, timedelta
 
 # client = MongoClient(MONGO_URI, 'mongodb://localhost:27017/')
 client = MongoClient(MONGO_URI)
@@ -1030,3 +1031,52 @@ def get_all_archived_files(search_query: Optional[str] = None) -> Tuple[Optional
         error_msg = f"Unexpected error fetching all archived files: {e}"
         logging.error(error_msg, exc_info=True)
         return None, error_msg
+    
+def archive_file_record_by_access_id(access_id: str, admin_username: str) -> Tuple[bool, str]:
+    """
+    Archives a file record by copying it to 'archived_files' and deleting from 'user_files'.
+    """
+    user_files_coll, error1 = get_metadata_collection() # This is 'user_files'
+    archived_coll, error2 = get_archived_files_collection()
+
+    if error1 or user_files_coll is None:
+        return False, f"Error accessing user_files collection: {error1}"
+    if error2 or archived_coll is None:
+        return False, f"Error accessing archived_files collection: {error2}"
+
+    try:
+        # 1. Find the record in the main 'user_files' collection
+        record_to_archive = user_files_coll.find_one({"access_id": access_id})
+        if not record_to_archive:
+            return False, f"Record ID '{access_id}' not found in active files."
+
+        # 2. Prepare the record for the 'archived_files' collection
+        archived_record_doc = record_to_archive.copy()
+        archived_record_doc["archived_timestamp"] = datetime.now(timezone.utc)
+        archived_record_doc["archived_by_username"] = admin_username # Record who archived it
+        # MongoDB will generate a new _id on insert into archived_files,
+        # so we don't need to delete the original _id from record_to_archive if it's there.
+        # However, if record_to_archive['_id'] is carried over, it won't cause an issue with insert_one.
+
+        # 3. Insert into 'archived_files' collection
+        insert_result = archived_coll.insert_one(archived_record_doc)
+        if not insert_result.inserted_id:
+            return False, "Failed to insert record into archive (no inserted_id)."
+        logging.info(f"Record {access_id} copied to archive with new _id {insert_result.inserted_id} by {admin_username}.")
+
+        # 4. Delete from the original 'user_files' collection
+        delete_result = user_files_coll.delete_one({"access_id": access_id})
+        if delete_result.deleted_count == 0:
+            # This is a critical state: copied but not deleted from original.
+            logging.critical(f"CRITICAL: Record {access_id} archived BUT failed to delete from user_files. Manual cleanup needed.")
+            return False, "Record archived but failed to remove original. Please contact support."
+        
+        logging.info(f"Record {access_id} successfully deleted from user_files after archiving.")
+        return True, "Record archived successfully."
+
+    except PyMongoError as e:
+        logging.error(f"PyMongoError archiving record {access_id}: {e}", exc_info=True)
+        return False, f"Database error during archive: {e}"
+    except Exception as e:
+        logging.error(f"Unexpected error archiving record {access_id}: {e}", exc_info=True)
+        return False, f"Unexpected server error during archive: {e}"

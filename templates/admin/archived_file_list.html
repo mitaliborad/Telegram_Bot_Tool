@@ -98,13 +98,13 @@
                 {% if total_size is not none %}{{ total_size | format_bytes }}{% elif single_size is not none %}{{ single_size | format_bytes }}{% else %}N/A{% endif %}
             </td>
             <td style="white-space: nowrap;">
-              {# Placeholder for Restore action - will be a POST form #}
-              <form method="POST" action="{{ url_for('archive.restore_archived_file', access_id=record.access_id) }}" style="display: inline-block; margin-right: 5px;">
-                  <button type="submit" class="btn btn-xs btn-success"
-                          onclick="return confirm('Are you sure you want to restore this record (Access ID: {{ record.access_id }})?');">
-                    Restore
-                  </button>
-              </form>
+              {# templates/admin/archived_file_list.html - Restore Button Form #}
+            <form method="POST" action="{{ url_for('.restore_file_action', access_id=record.access_id) }}" style="display: inline-block; margin-right: 5px;">
+              <button type="submit" class="btn btn-xs btn-success"
+                        onclick="return confirm('Are you sure you want to restore this record (Access ID: {{ record.access_id }})?');">
+                  Restore
+              </button>
+            </form>
 
               {# Placeholder for Permanently Delete action - will be a POST form #}
               <form method="POST" action="{{ url_for('.permanently_delete_view', access_id=record.access_id) }}" style="display: inline-block;">

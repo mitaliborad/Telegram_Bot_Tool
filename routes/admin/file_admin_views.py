@@ -93,24 +93,31 @@ class FileMetadataView(BaseView):
 
     @expose('/delete/<access_id>', methods=('POST',))
     def delete_view(self, access_id):
+        log_prefix = f"[AdminArchiveFile-{access_id}]"
+        admin_username_for_archive = "AdminPanelAction"
+        display_name_for_flash = access_id
+
         try:
-            record_to_delete, find_err = database.find_metadata_by_access_id(access_id)
-            if find_err:
-                flash(gettext('Error finding record to delete: %(error)s', error=find_err), 'danger')
-                return redirect(url_for('.index'))
-            if not record_to_delete:
-                flash(gettext('Record with Access ID %(access_id)s not found. Already deleted?', access_id=access_id), 'warning')
-                return redirect(url_for('.index'))
+            success, msg = database.archive_file_record_by_access_id(access_id, admin_username_for_archive)
+            temp_archived_record, _ = database.find_archived_metadata_by_access_id(access_id) # Check if it's in archive
+            if temp_archived_record and success: # If found in archive and operation was successful
+                 display_name_for_flash = temp_archived_record.get('batch_display_name', temp_archived_record.get('original_filename', access_id))
+            elif not success: # if archive failed, try to get name from original location if still there
+                 original_record, _ = database.find_metadata_by_access_id(access_id)
+                 if original_record:
+                      display_name_for_flash = original_record.get('batch_display_name', original_record.get('original_filename', access_id))
 
-            display_name = record_to_delete.get('batch_display_name', record_to_delete.get('original_filename', access_id))
-            deleted_count, db_error_msg = database.delete_metadata_by_access_id(access_id)
 
-            if db_error_msg:
-                flash(gettext('Error deleting record: %(error)s', error=db_error_msg), 'danger')
-            elif deleted_count > 0:
-                flash(gettext('Record "%(name)s" (%(id)s) deleted successfully.', name=display_name, id=access_id), 'success')
+            if success:
+                flash(gettext('Record "%(name)s" (%(id)s) archived successfully.', name=display_name_for_flash, id=access_id), 'success')
+                logging.info(f"{log_prefix} Record {access_id} archived by {admin_username_for_archive}.")
             else:
-                flash(gettext('Failed to delete record %(access_id)s. It might have been already deleted.', access_id=access_id), 'warning')
+                flash(gettext('Error archiving record "%(name)s": %(error)s', name=display_name_for_flash, error=msg), 'danger')
+                logging.error(f"{log_prefix} Failed to archive {access_id}: {msg}")
+
         except Exception as e:
-            flash(gettext('An unexpected error occurred during deletion: %(error)s', error=str(e)), 'danger')
-        return redirect(url_for('.index'))
+            flash(gettext('An unexpected error occurred during archiving: %(error)s', error=str(e)), 'danger')
+            logging.error(f"{log_prefix} Unexpected error archiving {access_id}: {str(e)}", exc_info=True)
+
+        return redirect(url_for('.index', q=request.args.get('q', ''), page=request.args.get('page', '1')))
+        

@@ -1,0 +1,112 @@
+{% extends 'admin/master.html' %}
+
+{# Re-use or define the pagination macro if not already in a shared lib #}
+{% macro render_pagination(current_page, total_pages, endpoint_args={}) %}
+  {% if total_pages > 1 %}
+    <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-center">
+        <li class="page-item {% if current_page == 1 %}disabled{% endif %}">
+          <a class="page-link" href="{{ url_for(request.endpoint, page=current_page-1, **endpoint_args) if current_page > 1 else '#' }}">«</a>
+        </li>
+        {% set page_window = 2 %}
+        {% for p in range(1, total_pages + 1) %}
+          {% if p == 1 or p == total_pages or (p >= current_page - page_window and p <= current_page + page_window) %}
+            {% if loop.previtem is defined and p > loop.previtem + 1 and p > current_page - page_window -1 %}
+              <li class="page-item disabled"><span class="page-link">...</span></li>
+            {% endif %}
+            <li class="page-item {% if p == current_page %}active{% endif %}">
+              <a class="page-link" href="{{ url_for(request.endpoint, page=p, **endpoint_args) }}">{{ p }}</a>
+            </li>
+          {% endif %}
+        {% endfor %}
+        <li class="page-item {% if current_page == total_pages %}disabled{% endif %}">
+          <a class="page-link" href="{{ url_for(request.endpoint, page=current_page+1, **endpoint_args) if current_page < total_pages else '#' }}">»</a>
+        </li>
+      </ul>
+    </nav>
+    <p class="text-center small">
+      Page {{ current_page }} of {{ total_pages }}. (Total {{ total_records }} items)
+    </p>
+  {% endif %}
+{% endmacro %}
+
+{% block body %}
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category if category else 'info' }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <h1>Archived User Accounts</h1>
+
+  <form method="GET" action="{{ url_for('.index') }}" class="form-inline" style="margin-bottom: 20px;">
+    <div class="form-group">
+      <input type="text" name="q" class="form-control"
+             placeholder="Search Original Username or Email..."
+             value="{{ search_query if search_query is not none else '' }}">
+    </div>
+    <button type="submit" class="btn btn-primary" style="margin-left: 10px;">Search</button>
+    {% if search_query %}
+      <a href="{{ url_for('.index') }}" class="btn btn-default" style="margin-left: 5px;">Clear</a>
+    {% endif %}
+  </form>
+
+  {% if error_message %}
+    <div class="alert alert-danger" role="alert">{{ error_message }}</div>
+  {% endif %}
+
+  {% if records %}
+    <table class="table table-striped table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>Archive Record ID</th>
+          <th>Original User ID</th>
+          <th>Original Username</th>
+          <th>Original Email</th>
+          <th>Archived Date</th>
+          <th>Archived By</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for record in records %}
+          <tr>
+            <td>{{ record.get('_id', 'N/A') }}</td> {# This is the _id of the document in archived_users #}
+            <td>{{ record.get('original_user_id', 'N/A') }}</td>
+            <td>{{ record.get('original_username', 'N/A') }}</td>
+            <td>{{ record.get('original_email', 'N/A') }}</td>
+            <td>
+                {% set adt = record.get('archived_at') %}
+                {{ adt.strftime('%Y-%m-%d %H:%M:%S UTC') if adt and not adt is string else adt | default('N/A', true) }}
+            </td>
+            <td>{{ record.get('archived_by', 'N/A') }}</td>
+            <td style="white-space: nowrap;">
+              <form method="POST" action="{{ url_for('.restore_user_action', original_user_id_str=record.original_user_id, q=request.args.get('q', ''), page=request.args.get('page', '1')) }}" style="display: inline-block; margin-right: 5px;">
+                  <button type="submit" class="btn btn-xs btn-success"
+                          onclick="return confirm('Are you sure you want to restore user {{ record.original_username|default(record.original_user_id, true) }} (Original ID: {{ record.original_user_id }})?');">
+                    Restore
+                  </button>
+              </form>
+              <form method="POST" action="{{ url_for('.permanently_delete_action', archived_record_id_str=record._id, q=request.args.get('q', ''), page=request.args.get('page', '1')) }}" style="display: inline-block;">
+                  <button type="submit" class="btn btn-xs btn-danger"
+                          onclick="return confirm('PERMANENTLY DELETE archived user {{ record.original_username|default(record.original_user_id, true) }} (Archive Record ID: {{ record._id }})? This cannot be undone.');">
+                    Delete Permanently
+                  </button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {{ render_pagination(current_page, total_pages, endpoint_args=endpoint_args if endpoint_args is defined else {}) }}
+  {% elif search_query %}
+    <p>No archived users found matching your search for "<strong>{{ search_query }}</strong>".</p>
+  {% elif not error_message %}
+    <p>No user accounts are currently archived.</p>
+  {% endif %}
+{% endblock %}

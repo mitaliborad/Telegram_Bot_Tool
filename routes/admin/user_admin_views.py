@@ -8,7 +8,7 @@ from math import ceil
 import re
 from database import (
     get_all_users,
-    delete_user_by_id,
+    archive_user_account,
     find_user_by_id_str,
     update_user_admin_status,
     update_user_details,
@@ -84,27 +84,37 @@ class UserView(BaseView):
 
     @expose('/delete/<user_id_str>', methods=('POST',))
     def delete_user_view(self, user_id_str):
+        log_prefix = f"[AdminArchiveUser-{user_id_str}]" # Changed log prefix
+        admin_username_for_archive = "AdminPanelAction"
         try:
-            user_to_delete_doc, find_err = find_user_by_id_str(user_id_str)
+            # Find user to get username for flash message, and to confirm existence
+            user_to_archive_doc, find_err = find_user_by_id_str(user_id_str)
             if find_err :
-                flash(gettext('Error finding user for deletion details: %(error)s', error=find_err), 'danger')
-                return redirect(url_for('.index'))
-            if not user_to_delete_doc:
-                flash(gettext('User with ID %(id)s not found. Already deleted?', id=user_id_str), 'warning')
-                return redirect(url_for('.index'))
+                flash(gettext('Error finding user for archiving: %(error)s', error=find_err), 'danger')
+                logging.error(f"{log_prefix} Error finding user: {find_err}")
+                return redirect(url_for('.index', q=request.args.get('q', ''), page=request.args.get('page', '1')))
+            if not user_to_archive_doc:
+                flash(gettext('User with ID %(id)s not found. Already archived or deleted?', id=user_id_str), 'warning')
+                logging.warning(f"{log_prefix} User not found with ID: {user_id_str}")
+                return redirect(url_for('.index', q=request.args.get('q', ''), page=request.args.get('page', '1')))
 
-            username_for_flash = user_to_delete_doc.get('username', user_id_str)
-            deleted_count, db_error_msg = delete_user_by_id(user_id_str)
+            username_for_flash = user_to_archive_doc.get('username', user_id_str)
 
-            if db_error_msg:
-                flash(gettext('Error deleting user: %(error)s', error=db_error_msg), 'danger')
-            elif deleted_count > 0:
-                flash(gettext('User "%(name)s" (ID: %(id)s) deleted successfully.', name=username_for_flash, id=user_id_str), 'success')
+            # Call the archive_user_account function
+            success, msg = archive_user_account(user_id_str, admin_username_for_archive)
+
+            if success:
+                flash(gettext('User "%(name)s" (ID: %(id)s) archived successfully.', name=username_for_flash, id=user_id_str), 'success')
+                logging.info(f"{log_prefix} User '{username_for_flash}' (ID: {user_id_str}) archived by {admin_username_for_archive}.")
             else:
-                flash(gettext('Failed to delete user %(id)s. It might have been already deleted.', id=user_id_str), 'warning')
+                flash(gettext('Error archiving user "%(name)s": %(error)s', name=username_for_flash, error=msg), 'danger')
+                logging.error(f"{log_prefix} Failed to archive user '{username_for_flash}' (ID: {user_id_str}): {msg}")
         except Exception as e:
-            flash(gettext('An unexpected error occurred during user deletion: %(error)s', error=str(e)), 'danger')
-        return redirect(url_for('.index'))
+            flash(gettext('An unexpected error occurred during user archiving: %(error)s', error=str(e)), 'danger')
+            logging.error(f"{log_prefix} Unexpected error: {str(e)}", exc_info=True)
+        
+        # Redirect back to the user list, preserving search and page context
+        return redirect(url_for('.index', q=request.args.get('q', ''), page=request.args.get('page', '1')))
     
     @expose('/toggle-admin/<user_id_str>', methods=('POST',)) # Require POST
     def toggle_admin_view(self, user_id_str):

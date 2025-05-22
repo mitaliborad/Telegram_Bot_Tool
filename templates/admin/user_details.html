@@ -81,10 +81,10 @@
               </button>
           </form> -->
 
-          <form method="POST" action="{{ url_for('.delete_user_view', user_id_str=user_doc._id) }}" style="display: inline-block;">
-              <button type="submit" class="btn btn-danger"
-                      onclick="return confirm('Are you sure you want to delete user {{ user_doc.username }} (ID: {{ user_doc._id }})? This action cannot be undone.');">
-                Delete User
+          <form method="POST" action="{{ url_for('.delete_user_view', user_id_str=user_doc._id, q=request.args.get('q', ''), page=request.args.get('page', '1')) }}" style="display: inline-block;">
+              <button type="submit" class="btn btn-warning" {# Changed btn-danger to btn-warning #}
+                      onclick="return confirm('Are you sure you want to archive user {{ user_doc.username }} (ID: {{ user_doc._id }})?');">
+                Archive User {# Changed text #}
               </button>
           </form>
 

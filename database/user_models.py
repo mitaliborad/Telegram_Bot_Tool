@@ -127,10 +127,8 @@ def save_user(user_data: Dict[str, Any]) -> Tuple[bool, str]:
         return False, "User data is missing required email or password_hash fields."
     try:
         user_data["email"] = user_data["email"].lower() # Ensure email is stored lowercase
-        # 'created_at' and other fields like 'role' should be set before calling save_user
-        # For example, role could default to 'Free User' if not provided.
-        # user_data.setdefault('role', 'Free User')
-        # user_data.setdefault('created_at', datetime.now(timezone.utc))
+        user_data.setdefault('role', 'Free User') # Ensure 'role' has a default if not provided
+        # user_data.setdefault('created_at', datetime.now(timezone.utc)) # Usually handled in auth_routes
 
         result = collection.insert_one(user_data)
         if result.inserted_id:
@@ -167,6 +165,11 @@ def update_user_password(user_id: ObjectId, new_password: str) -> Tuple[bool, st
     except PyMongoError as e: logging.error(f"Database error updating password for user ID {user_id}: {e}", exc_info=True); return False, "Database error during password update."
     except Exception as e: logging.error(f"Unexpected error updating password for user ID {user_id}: {e}", exc_info=True); return False, "Server error during password update."
 
+# Note on delete_user_by_id:
+# This function performs a PERMANENT deletion of a user from the 'userinfo' (active users) collection.
+# With the introduction of the user archiving system, the admin UI's "Delete" button
+# for users will typically call `database.archive_user_account` instead of this function directly.
+# This function remains for low-level permanent deletion if explicitly needed.
 def delete_user_by_id(user_id_str: str) -> Tuple[int, str]:
     collection, error = get_userinfo_collection()
     if error or collection is None:
@@ -180,16 +183,15 @@ def delete_user_by_id(user_id_str: str) -> Tuple[int, str]:
     try:
         result = collection.delete_one({"_id": user_oid})
         deleted_count = result.deleted_count
-        if deleted_count == 1: logging.info(f"Successfully deleted user with ID: {user_oid}")
-        elif deleted_count == 0: logging.warning(f"No user found to delete with ID: {user_oid}. Already deleted?")
+        if deleted_count == 1: logging.info(f"Successfully deleted user with ID: {user_oid} from userinfo collection.")
+        elif deleted_count == 0: logging.warning(f"No user found to delete with ID: {user_oid} in userinfo collection. Already deleted?")
         return deleted_count, ""
-    except PyMongoError as e: error_msg = f"PyMongoError deleting user {user_oid}: {e}"; logging.error(error_msg, exc_info=True); return 0, error_msg
-    except Exception as e: error_msg = f"Unexpected error deleting user {user_oid}: {e}"; logging.error(error_msg, exc_info=True); return 0, error_msg
+    except PyMongoError as e: error_msg = f"PyMongoError deleting user {user_oid} from userinfo: {e}"; logging.error(error_msg, exc_info=True); return 0, error_msg
+    except Exception as e: error_msg = f"Unexpected error deleting user {user_oid} from userinfo: {e}"; logging.error(error_msg, exc_info=True); return 0, error_msg
 
 def update_user_admin_status(user_id_str: str, is_admin_new_status: bool) -> Tuple[bool, str]:
     """
     Updates the 'role' of a user to 'Admin' or 'Free User'.
-    Consider replacing 'is_admin' field with 'role' checks throughout the app.
     """
     collection, error = get_userinfo_collection()
     if error or collection is None:
@@ -201,9 +203,8 @@ def update_user_admin_status(user_id_str: str, is_admin_new_status: bool) -> Tup
         logging.error(f"Invalid ObjectId format for user_id_str '{user_id_str}' in admin update: {e}")
         return False, f"Invalid user ID format: {user_id_str}"
 
-    new_role = "Admin" if is_admin_new_status else "Free User" # Assuming these are your roles
+    new_role = "Admin" if is_admin_new_status else "Free User"
     try:
-        # Instead of setting 'is_admin', set 'role'
         result = collection.update_one({"_id": user_oid}, {"$set": {"role": new_role}})
         if result.matched_count == 0:
             return False, "User not found."
@@ -221,25 +222,20 @@ def update_user_details(user_id_str: str, update_data: Dict[str, Any]) -> Tuple[
         user_oid = ObjectId(user_id_str)
     except Exception as e: return False, f"Invalid user ID format: {user_id_str}"
 
-    # Define allowed fields to update. 'role' could be one if you manage it via this function.
-    # Password should be updated via update_user_password.
-    allowed_to_update = {'username', 'email'} # Add 'role' here if it's part of general user edits
+    allowed_to_update = {'username', 'email', 'role'}
     update_payload = {k: v for k, v in update_data.items() if k in allowed_to_update}
 
     if not update_payload: return False, "No valid fields provided for update."
 
-    # Uniqueness checks
     if 'email' in update_payload:
         new_email_lower = update_payload['email'].lower()
-        # Ensure find_user_by_email_excluding_id is correctly defined and imported
         existing_user_with_email, _ = find_user_by_email_excluding_id(new_email_lower, user_oid)
         if existing_user_with_email:
             return False, f"Email '{new_email_lower}' is already taken by another user."
-        update_payload['email'] = new_email_lower # Ensure it's saved lowercase
+        update_payload['email'] = new_email_lower
 
     if 'username' in update_payload:
         new_username = update_payload['username']
-        # Ensure find_user_by_username_excluding_id is correctly defined and imported
         existing_user_with_username, _ = find_user_by_username_excluding_id(new_username, user_oid)
         if existing_user_with_username:
             return False, f"Username '{new_username}' is already taken by another user."
@@ -250,9 +246,9 @@ def update_user_details(user_id_str: str, update_data: Dict[str, Any]) -> Tuple[
         logging.info(f"User {user_oid} details updated. Payload: {update_payload}. Modified: {result.modified_count}")
         return True, "User details updated successfully."
     except PyMongoError as e:
-        if e.code == 11000: # Duplicate key error
-            if 'email_1' in str(e).lower(): return False, "Email address is already in use." # Check for index name
-            if 'username_1' in str(e).lower(): return False, "Username is already in use." # Check for index name
+        if hasattr(e, 'code') and e.code == 11000: # Duplicate key error
+            if 'email_1' in str(e).lower(): return False, "Email address is already in use."
+            if 'username_1' in str(e).lower(): return False, "Username is already in use."
             return False, f"Database constraint violation: A unique field value is already taken."
         return False, f"Database error updating user details: {str(e)}"
     except Exception as e: return False, f"Unexpected error updating user details: {str(e)}"

@@ -40,35 +40,106 @@ class User(UserMixin):
 
 # --- User Data Access Functions ---
 
-def get_all_users(search_query: Optional[str] = None) -> Tuple[Optional[List[Dict[str, Any]]], str]:
+# def get_all_users(search_query: Optional[str] = None) -> Tuple[Optional[List[Dict[str, Any]]], str]:
+#     collection, error = get_userinfo_collection()
+#     if error or collection is None:
+#         logging.error(f"Failed to get userinfo collection for get_all_users: {error}")
+#         return None, f"Database error: {error}"
+#     query_filter = {}
+#     if search_query and search_query.strip():
+#         search_term = search_query.strip()
+#         escaped_query = re.escape(search_term)
+#         regex_pattern = re.compile(escaped_query, re.IGNORECASE)
+#         query_filter["$or"] = [
+#             {"username": {"$regex": regex_pattern}},
+#             {"email": {"$regex": regex_pattern}}
+#         ]
+#         logging.info(f"Searching users with query: '{search_term}' using filter: {query_filter}")
+#     else:
+#         logging.info("Fetching all users (no search query / empty search query).")
+#     try:
+#         users_cursor = collection.find(query_filter).sort("username", 1)
+#         users_list = list(users_cursor)
+#         for user in users_list:
+#             if '_id' in user and isinstance(user['_id'], ObjectId):
+#                 user['_id'] = str(user['_id'])
+#             if 'password_hash' in user: # Remove password hash for safety when listing users
+#                 del user['password_hash']
+#             user['role'] = user.get('role', 'Free User')
+#         return users_list, ""
+#     except PyMongoError as e: error_msg = f"PyMongoError fetching users: {e}"; logging.error(error_msg, exc_info=True); return None, error_msg
+#     except Exception as e: error_msg = f"Unexpected error fetching users: {e}"; logging.error(error_msg, exc_info=True); return None, error_msg
+
+def get_all_users(search_query: Optional[str] = None, role_filter: Optional[str] = None) -> Tuple[Optional[List[Dict[str, Any]]], str]:
     collection, error = get_userinfo_collection()
     if error or collection is None:
         logging.error(f"Failed to get userinfo collection for get_all_users: {error}")
         return None, f"Database error: {error}"
-    query_filter = {}
+    
+    query_conditions = [] # List to hold individual conditions
+
     if search_query and search_query.strip():
         search_term = search_query.strip()
         escaped_query = re.escape(search_term)
         regex_pattern = re.compile(escaped_query, re.IGNORECASE)
-        query_filter["$or"] = [
-            {"username": {"$regex": regex_pattern}},
-            {"email": {"$regex": regex_pattern}}
-        ]
-        logging.info(f"Searching users with query: '{search_term}' using filter: {query_filter}")
-    else:
-        logging.info("Fetching all users (no search query / empty search query).")
+        search_condition = {
+            "$or": [
+                {"username": {"$regex": regex_pattern}},
+                {"email": {"$regex": regex_pattern}}
+            ]
+        }
+        query_conditions.append(search_condition)
+        logging.info(f"Searching users with query: '{search_term}'")
+
+    if role_filter and role_filter.strip():
+        # Ensure role_filter matches exactly how roles are stored (e.g., "Premium User", "Free User")
+        cleaned_role_filter = role_filter.strip()
+        logging.info(f"Attempting to filter users by role: '{cleaned_role_filter}'")
+        # logging.info(f"Filtering users by role: '{role_filter.strip()}'")
+        if cleaned_role_filter == "Free User":
+            # Implicit Free User: role is NOT Admin AND NOT Premium User
+            # This also correctly includes users where 'role' field might be null or not exist.
+            role_condition = {
+                "role": { "$nin": ["Admin", "Premium User"] }
+            }
+            logging.info(f"Applying implicit 'Free User' filter: role not in ['Admin', 'Premium User']")
+        elif cleaned_role_filter == "Premium User":
+            # Explicit Premium User
+            role_condition = {"role": "Premium User"}
+            logging.info(f"Applying explicit 'Premium User' filter.")
+        elif cleaned_role_filter == "Admin":
+             # Explicit Admin User (though typically admins aren't listed this way from dashboard, good to have)
+            role_condition = {"role": "Admin"}
+            logging.info(f"Applying explicit 'Admin' filter.")
+        else:
+            # For any other specific role string, do an exact match (if you add more roles later)
+            role_condition = {"role": cleaned_role_filter}
+            logging.info(f"Applying explicit filter for role: '{cleaned_role_filter}'.")
+        query_conditions.append(role_condition)
+
+    # Combine conditions with $and if multiple exist, otherwise use the single condition or empty for all
+    final_query = {}
+    if len(query_conditions) > 1:
+        final_query = {"$and": query_conditions}
+    elif len(query_conditions) == 1:
+        final_query = query_conditions[0]
+    # If query_conditions is empty, final_query remains {} which means find all.
+
+    logging.info(f"Final user query: {final_query}")
+
     try:
-        users_cursor = collection.find(query_filter).sort("username", 1)
+        users_cursor = collection.find(final_query).sort("username", 1)
         users_list = list(users_cursor)
-        for user in users_list:
-            if '_id' in user and isinstance(user['_id'], ObjectId):
-                user['_id'] = str(user['_id'])
-            if 'password_hash' in user: # Remove password hash for safety when listing users
-                del user['password_hash']
-            user['role'] = user.get('role', 'Free User')
+        for user_doc in users_list:
+             if '_id' in user_doc and isinstance(user_doc['_id'], ObjectId):
+                user_doc['_id'] = str(user_doc['_id'])
+             if 'password_hash' in user_doc: 
+                del user_doc['password_hash']
+        user_doc['role'] = user_doc.get('role', 'Free User')
         return users_list, ""
     except PyMongoError as e: error_msg = f"PyMongoError fetching users: {e}"; logging.error(error_msg, exc_info=True); return None, error_msg
     except Exception as e: error_msg = f"Unexpected error fetching users: {e}"; logging.error(error_msg, exc_info=True); return None, error_msg
+
 
 def find_user_by_id(user_id: ObjectId) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
     collection, error = get_userinfo_collection()

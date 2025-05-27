@@ -76,38 +76,39 @@
       </thead>
       <tbody>
   {% for user in users %}
-    <tr>
+        <tr>
       <td>{{ user._id }}</td>
       <td>{{ user.username }}</td>
       <td>{{ user.email }}</td>
       <td>
-        {% if user.role == "Admin" %}
-                   <span class="badge badge-danger">{{ user.role }}</span> {# Admins are often highlighted #}
-                 {% elif user.role == "Premium User" %}
-                   <span class="badge badge-success">{{ user.role }}</span>
-                 {% elif user.role == "Free User" %}
-                   <span class="badge badge-info">{{ user.role }}</span>
-                 {% else %}
-                   <span class="badge badge-secondary">{{ user.role | default('N/A', true) }}</span> {# Default if role is something else or None #}
-                 {% endif %}
+        {# --- MODIFIED SECTION FOR ROLE DISPLAY --- #}
+        {% set display_role = user.role %} {# user.role is now reliably set by the backend #}
+
+        {% if display_role == "Admin" %}
+            <span class="badge badge-danger">{{ display_role }}</span>
+        {% elif display_role == "Premium User" %}
+            <span class="badge badge-success">{{ display_role }}</span>
+        {% elif display_role == "Free User" %}  {# This will now catch all free users correctly #}
+            <span class="badge badge-info">{{ display_role }}</span>
+        {% else %}
+            {# Fallback for any truly unexpected role value not covered above, 
+               or if display_role somehow ended up None or empty despite backend logic.
+               The default('N/A', true) makes sure something is shown.
+            #}
+            <span class="badge badge-secondary">{{ display_role | default('N/A', true) }}</span>
+        {% endif %}
+        {# --- END OF MODIFIED SECTION --- #}
       </td>
       <td>
           {% if user.created_at %}{{ user.created_at.strftime('%Y-%m-%d %H:%M:%S') if user.created_at and not user.created_at is string else user.created_at }}{% else %}N/A{% endif %}
       </td>
-      <td class="actions-column" style="min-width: 250px; white-space: nowrap;"> {# Adjusted min-width #}
-        {# --- NEW DETAILS LINK/BUTTON --- #}
-        <a href="{{ url_for('.user_details_view', user_id_str=user._id) }}" class="btn btn-xs btn-info" style="margin-right: 5px;">Details</a>
+      <td class="actions-column" style="min-width: 250px; white-space: nowrap;">
+        <a href="{{ url_for('.user_details_view', user_id_str=user._id, q=request.args.get('q', ''), page=request.args.get('page', '1'), role=request.args.get('role')) }}" class="btn btn-xs btn-info" style="margin-right: 5px;">Details</a>
 
-        <!-- <form method="POST" action="{{ url_for('.toggle_admin_view', user_id_str=user._id) }}" style="display: inline-block; margin-right: 5px;">
-            <button type="submit" class="btn btn-xs {{ 'btn-warning' if user.is_admin else 'btn-success' }}">
-              {{ 'Remove Admin' if user.is_admin else 'Make Admin' }}
-            </button>
-        </form> -->
-
-        <form method="POST" action="{{ url_for('.delete_user_view', user_id_str=user._id, q=request.args.get('q', ''), page=request.args.get('page', '1')) }}" style="display: inline-block;">
-            <button type="submit" class="btn btn-xs btn-warning" {# Changed btn-danger to btn-warning for "Archive" #}
+        <form method="POST" action="{{ url_for('.delete_user_view', user_id_str=user._id, q=request.args.get('q', ''), page=request.args.get('page', '1'), role=request.args.get('role')) }}" style="display: inline-block;">
+            <button type="submit" class="btn btn-xs btn-warning"
                     onclick="return confirm('Are you sure you want to archive user {{ user.username }} (ID: {{ user._id }})?');">
-              Archive {# Changed text from Delete to Archive #}
+              Archive
             </button>
         </form>
       </td>
@@ -117,17 +118,24 @@
     </table>
     
   {% elif not error_message %}
+  {% elif search_query and role_filter %}
+    <p>No users found matching your search for "<strong>{{ search_query }}</strong>" with the role "<strong>{{ role_filter }}</strong>".</p>
+  {% elif search_query %}                 {# << EXISTING: Only Search active #}
+    <p>No users found matching your search for "<strong>{{ search_query }}</strong>".</p>
+  {% elif role_filter %}                  {# << NEW CONDITION: Only Role Filter active #}
+    <p>No users found with the role "<strong>{{ role_filter }}</strong>".</p>
+  {% else %}                               {# << Default: No users at all, no filters/search #}
     <p>No users found in the system.</p>
   {% endif %}
 
-  {% if users %}
+  <!-- {% if users %}
     {# ... (table definition) ... #}
   {% elif search_query %}
      <p>No users found matching your search for "<strong>{{ search_query }}</strong>".</p>
   {% elif not error_message %}
     <p>No users found in the system.</p>
-  {% endif %}
+  {% endif %} -->
 
-  {{ render_pagination(current_page, total_pages) }}
+  {{ render_pagination(current_page, total_pages, endpoint_args=endpoint_args if endpoint_args is defined else {}) }}
 
 {% endblock %}

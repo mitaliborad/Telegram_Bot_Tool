@@ -6,6 +6,7 @@ from pymongo.errors import PyMongoError, OperationFailure
 
 # Import the function to get the metadata collection (user_files)
 from .connection import get_metadata_collection
+from .user_models import get_all_users
 
 # --- Active File Metadata (user_files collection) Functions ---
 
@@ -138,7 +139,7 @@ def delete_metadata_by_access_id(access_id: str) -> Tuple[int, str]:
     except PyMongoError as e: error_msg = f"PyMongoError deleting metadata by access_id '{access_id}': {e}"; logging.exception(error_msg); return 0, error_msg
     except Exception as e: error_msg = f"Unexpected error deleting metadata by access_id '{access_id}': {e}"; logging.exception(error_msg); return 0, error_msg
 
-def get_all_file_metadata(search_query: Optional[str] = None) -> Tuple[Optional[List[Dict[str, Any]]], str]:
+def get_all_file_metadata(search_query: Optional[str] = None, user_type_filter: Optional[str] = None) -> Tuple[Optional[List[Dict[str, Any]]], str]:
     """
     Retrieves all documents from the 'user_files' (active metadata) collection,
     optionally filtered by a search query.
@@ -147,29 +148,80 @@ def get_all_file_metadata(search_query: Optional[str] = None) -> Tuple[Optional[
     if error or collection is None:
         logging.error(f"Failed to get metadata collection for get_all_file_metadata: {error}")
         return None, f"Database error: {error}"
-    query_filter = {}
+    query_conditions = []
+    final_query = {}
+
+    if user_type_filter and user_type_filter.strip():
+        cleaned_user_type = user_type_filter.strip()
+        logging.info(f"Filtering file metadata by user_type: '{cleaned_user_type}'")
+
+        if cleaned_user_type == "Anonymous":
+            query_conditions.append({"is_anonymous": True})
+        elif cleaned_user_type == "Premium" or cleaned_user_type == "Free":
+            # Determine role to filter users by
+            role_for_usernames = "Premium User" if cleaned_user_type == "Premium" else "Free User"
+            
+            # Get all users matching that role (or implicit Free User logic)
+            # The get_all_users function already handles the implicit "Free User" logic
+            users_of_type, users_err = get_all_users(role_filter=role_for_usernames)
+            
+            if users_err:
+                logging.error(f"Error fetching {role_for_usernames} usernames for file filter: {users_err}")
+                return None, f"Error fetching user data for {cleaned_user_type} filter: {users_err}"
+            
+            if users_of_type:
+                usernames = [user['username'] for user in users_of_type if user.get('username')]
+                if usernames:
+                    query_conditions.append({"username": {"$in": usernames}, "is_anonymous": {"$ne": True}}) # Also ensure not anonymous
+                else:
+                    logging.info(f"No usernames found for role '{role_for_usernames}'. No files will match this user_type.")
+                    return [], "" # Return empty list immediately if no users of this type
+            else:
+                logging.info(f"No users found with role '{role_for_usernames}'. No files will match this user_type.")
+                return [], "" # Return empty list immediately
+        else:
+            logging.warning(f"Unknown user_type_filter: '{cleaned_user_type}'. Ignoring this filter.")
+
+    # query_filter = {}
     if search_query and search_query.strip():
         search_term = search_query.strip()
-        # Assuming 're' module is imported if you need re.escape for complex regex
-        # For simple case-insensitive substring search, $regex with $options "i" is fine.
-        query_filter["$or"] = [
-            {"access_id": {"$regex": search_term, "$options": "i"}},
-            {"original_filename": {"$regex": search_term, "$options": "i"}},
-            {"batch_display_name": {"$regex": search_term, "$options": "i"}},
-            {"username": {"$regex": search_term, "$options": "i"}}
-        ]
-        logging.info(f"Searching active file metadata with query: '{search_term}' using filter: {query_filter}")
-    else:
-        logging.info("Fetching all active file metadata (no search query / empty search query).")
+        # Simple case-insensitive substring search.
+        # If you used re.escape before, ensure 're' is imported.
+        try:
+            import re # Ensure re is available
+            escaped_search_term = re.escape(search_term)
+            regex_pattern = re.compile(escaped_search_term, re.IGNORECASE)
+        except ImportError: # Fallback if re is not available for some reason
+            regex_pattern = search_term # This would make it a simple substring match, potentially less safe for special chars
+
+        search_condition = {
+            "$or": [
+                {"access_id": {"$regex": regex_pattern}},
+                {"original_filename": {"$regex": regex_pattern}},
+                {"batch_display_name": {"$regex": regex_pattern}},
+                {"username": {"$regex": regex_pattern}} # Search username even if filtering by user type
+            ]
+        }
+        query_conditions.append(search_condition)
+        logging.info(f"Adding search query to file metadata filter: '{search_term}'")
+
+    # 3. Combine conditions
+    if len(query_conditions) > 1:
+        final_query = {"$and": query_conditions}
+    elif len(query_conditions) == 1:
+        final_query = query_conditions[0]
+    
+    logging.info(f"Final file metadata query to MongoDB: {final_query}")
+
     try:
-        records_cursor = collection.find(query_filter).sort("upload_timestamp", -1)
+        records_cursor = collection.find(final_query).sort([("upload_timestamp", -1)]) 
         records_list = list(records_cursor)
         for record in records_list:
             if '_id' in record and isinstance(record['_id'], ObjectId):
                 record['_id'] = str(record['_id'])
-        logging.info(f"Retrieved {len(records_list)} active file metadata record(s).")
+        logging.info(f"Retrieved {len(records_list)} file metadata record(s) with current filters.")
         return records_list, ""
-    except PyMongoError as e: error_msg = f"PyMongoError fetching all active file metadata: {e}"; logging.error(error_msg, exc_info=True); return None, error_msg
-    except Exception as e: error_msg = f"Unexpected error fetching all active file metadata: {e}"; logging.error(error_msg, exc_info=True); return None, error_msg
+    except PyMongoError as e: error_msg = f"PyMongoError fetching file metadata: {e}"; logging.error(error_msg, exc_info=True); return None, error_msg
+    except Exception as e: error_msg = f"Unexpected error fetching file metadata: {e}"; logging.error(error_msg, exc_info=True); return None, error_msg
 
 logging.info("Active file models module (database/file_models.py) initialized.")

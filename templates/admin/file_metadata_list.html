@@ -46,9 +46,12 @@
     {% endif %}
   {% endwith %}
 
-  <h1>File/Batch Uploads</h1>
+  <h1>File/Batch Uploads {% if user_type_filter %}<small class="text-muted">(Filtered by: {{ user_type_filter }})</small>{% endif %}</h1>
 
   <form method="GET" action="{{ url_for('.index') }}" class="form-inline" style="margin-bottom: 20px;">
+    {% if user_type_filter %}
+      <input type="hidden" name="user_type" value="{{ user_type_filter }}">
+    {% endif %}
     <div class="form-group">
       <input type="text" name="q" class="form-control"
              placeholder="Search Access ID, Filename, User..."
@@ -56,7 +59,9 @@
     </div>
     <button type="submit" class="btn btn-primary" style="margin-left: 10px;">Search</button>
     {% if search_query %}
-      <a href="{{ url_for('.index') }}" class="btn btn-default" style="margin-left: 5px;">Clear</a>
+      {# If only search is active, clear goes to plain index #}
+      {# If user_type_filter is also active, clear should go to index with user_type_filter preserved #}
+      <a href="{{ url_for('.index', user_type=user_type_filter if user_type_filter else None) }}" class="btn btn-default" style="margin-left: 5px;">Clear Search</a>
     {% endif %}
   </form>
 
@@ -86,15 +91,12 @@
                  <td>
                    {{ record.access_id }}
                  </td>
-                 <td>{{ record.username }}</td>
+                 <td>{{ record.username | default('N/A', true) }}</td> {# Default if username is missing #}
+              
                  <td>
-                     {% if record.is_batch %}
-                         {{ record.batch_display_name }}
-                     {% elif record.original_filename %}
-                         {{ record.original_filename }}
-                     {% else %}
-                         N/A
-                     {% endif %}
+                     {% if record.is_batch %}{{ record.batch_display_name }}
+                 {% elif record.original_filename %}{{ record.original_filename }}
+                 {% else %}N/A{% endif %}
                  </td>
                  <td>
                      {% if record.is_batch %}
@@ -116,21 +118,20 @@
                  </td>
                  <td>
                    {# --- CORRECTED ACTIONS COLUMN --- #}
-                   <a href="{{ url_for('.details_view', access_id=record.access_id) }}" class="btn btn-xs btn-info" style="margin-right: 5px;">Details</a>
+                   <a href="{{ url_for('.details_view', access_id=record.access_id, q=request.args.get('q'), page=request.args.get('page'), user_type=request.args.get('user_type')) }}" class="btn btn-xs btn-info" style="margin-right: 5px;">Details</a>
                    
-                   <form method="POST" action="{{ url_for('.delete_view', access_id=record.access_id) }}" style="display: inline-block;">
-                       {# Optional: CSRF token for production - <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/> #}
-                       <button type="submit" class="btn btn-xs btn-danger"
-                               onclick="return confirm('Are you sure you want to delete this record (Access ID: {{ record.access_id }})? This action cannot be undone.');">
-                         Archive
-                       </button>
-                   </form>
+                   <form method="POST" action="{{ url_for('.delete_view', access_id=record.access_id, q=request.args.get('q'), page=request.args.get('page'), user_type=request.args.get('user_type')) }}" style="display: inline-block;">
+                      <button type="submit" class="btn btn-xs btn-danger"
+                              onclick="return confirm('Are you sure you want to archive this record (Access ID: {{ record.access_id }})? This action cannot be undone.');">
+                        Archive
+                      </button>
+                  </form>
                  </td>
                </tr>
              {% endfor %}
            </tbody>
     </table>
-    {{ render_pagination(current_page, total_pages) }}
+    {{ render_pagination(current_page, total_pages, endpoint_args=endpoint_args if endpoint_args is defined else {}) }}
   {% elif not error_message %}
     <p>No file/batch upload records found.</p>
   {% endif %}

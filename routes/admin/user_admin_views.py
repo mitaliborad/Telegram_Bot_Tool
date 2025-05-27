@@ -30,9 +30,68 @@ class UserView(BaseView):
         # When security is on, this should redirect based on current_user state
         return redirect(url_for('auth.login')) # Fallback redirect
 
+    # @expose('/')
+    # def index(self):
+    #     search_query = request.args.get('q', '').strip()
+    #     role_filter = request.args.get('role', None)
+
+    #     page = request.args.get('page', 1, type=int)
+    #     per_page = 20
+    #     total_users = 0
+    #     total_pages = 1
+    #     users_list_page = []
+    #     error_message = None
+
+    #     try:
+    #         all_users_data, db_error = get_all_users(search_query=search_query, role_filter=role_filter)
+
+    #         if db_error:
+    #             error_message = f"Error fetching users: {db_error}"
+    #         elif all_users_data:
+    #             total_users = len(all_users_data)
+    #             total_pages = ceil(total_users / per_page) if per_page > 0 else 1
+    #             if total_pages == 0 and total_users > 0: total_pages = 1
+
+    #             start_index = (page - 1) * per_page
+    #             end_index = start_index + per_page
+    #             users_list_page = all_users_data[start_index:end_index]
+
+    #             if not users_list_page and page > 1:
+    #                 pass
+    #         else:
+    #             # If search_query is present and no users, it's not an error, just no results
+    #             if not search_query:
+    #                 logging.info("[AdminUserView] No users found in the database (no search).")
+    #             else:
+    #                 logging.info(f"[AdminUserView] No users found matching search: '{search_query}'.")
+
+
+    #     except Exception as e:
+    #         error_message = f"An unexpected error occurred: {str(e)}"
+    #         logging.error(f"[AdminUserView] Unexpected error: {error_message}", exc_info=True)
+
+    #     endpoint_args = {}
+    #     if search_query:
+    #         endpoint_args['q'] = search_query
+    #     if role_filter: 
+    #         endpoint_args['role'] = role_filter
+
+    #     return self.render('admin/user_list.html',
+    #                        users=users_list_page,
+    #                        error_message=error_message,
+    #                        current_page=page,
+    #                        total_pages=total_pages,
+    #                        per_page=per_page,
+    #                        total_users=total_users,
+    #                        search_query=search_query,
+    #                        role_filter=role_filter,
+    #                        endpoint_args=endpoint_args)
+
     @expose('/')
     def index(self):
         search_query = request.args.get('q', '').strip()
+        role_filter = request.args.get('role', None)
+        
         page = request.args.get('page', 1, type=int)
         per_page = 20
         total_users = 0
@@ -41,11 +100,11 @@ class UserView(BaseView):
         error_message = None
 
         try:
-            all_users_data, db_error = get_all_users(search_query=search_query)
+            all_users_data, db_error = get_all_users(search_query=search_query, role_filter=role_filter)
 
             if db_error:
                 error_message = f"Error fetching users: {db_error}"
-            elif all_users_data:
+            elif all_users_data: # If there are users returned
                 total_users = len(all_users_data)
                 total_pages = ceil(total_users / per_page) if per_page > 0 else 1
                 if total_pages == 0 and total_users > 0: total_pages = 1
@@ -54,14 +113,24 @@ class UserView(BaseView):
                 end_index = start_index + per_page
                 users_list_page = all_users_data[start_index:end_index]
 
-                if not users_list_page and page > 1:
-                    pass
-            else:
-                # If search_query is present and no users, it's not an error, just no results
-                if not search_query:
-                    logging.info("[AdminUserView] No users found in the database (no search).")
-                else:
-                    logging.info(f"[AdminUserView] No users found matching search: '{search_query}'.")
+                # This case is for when a high page number is requested with no users on that page
+                # For example, if total_pages is 2 and user requests page=3
+                # users_list_page would be empty here, but all_users_data was not.
+                if not users_list_page and page > 1 and total_users > 0:
+                     logging.info(f"[AdminUserView] Requested page {page} is out of range for current filters. Total users: {total_users}, Total pages: {total_pages}")
+                     # The template will show an empty list and pagination will allow going back.
+
+            # This 'else' block is now for when all_users_data itself is None or empty from the DB call
+            # meaning no users matched the criteria (search and/or role filter) AT ALL.
+            else: 
+                log_msg_parts = []
+                if search_query: log_msg_parts.append(f"search: '{search_query}'")
+                if role_filter: log_msg_parts.append(f"role: '{role_filter}'")
+                
+                if log_msg_parts: # If there was any filter or search
+                    logging.info(f"[AdminUserView] No users found matching {', '.join(log_msg_parts)}.")
+                else: # No search, no filter, and still no users
+                    logging.info("[AdminUserView] No users found in the database at all.")
 
 
         except Exception as e:
@@ -71,16 +140,19 @@ class UserView(BaseView):
         endpoint_args = {}
         if search_query:
             endpoint_args['q'] = search_query
+        if role_filter:
+            endpoint_args['role'] = role_filter
 
         return self.render('admin/user_list.html',
-                           users=users_list_page,
+                           users=users_list_page, # This will be an empty list if no users match
                            error_message=error_message,
                            current_page=page,
                            total_pages=total_pages,
-                           per_page=per_page,
-                           total_users=total_users,
+                           total_users=total_users, # This will be 0 if no users match
                            search_query=search_query,
+                           role_filter=role_filter, 
                            endpoint_args=endpoint_args)
+
 
     @expose('/delete/<user_id_str>', methods=('POST',))
     def delete_user_view(self, user_id_str):
@@ -114,7 +186,7 @@ class UserView(BaseView):
             logging.error(f"{log_prefix} Unexpected error: {str(e)}", exc_info=True)
         
         # Redirect back to the user list, preserving search and page context
-        return redirect(url_for('.index', q=request.args.get('q', ''), page=request.args.get('page', '1')))
+        return redirect(url_for('.index', q=request.args.get('q', ''), page=request.args.get('page', '1'), role=request.args.get('role')))
     
     @expose('/toggle-admin/<user_id_str>', methods=('POST',)) # Require POST
     def toggle_admin_view(self, user_id_str):
@@ -125,20 +197,22 @@ class UserView(BaseView):
             user_doc, find_err = find_user_by_id_str(user_id_str)
             if find_err or not user_doc:
                 flash(gettext('User not found: %(error)s', error=find_err or "Unknown ID"), 'danger')
-                return redirect(url_for('.index'))
-
+                return redirect(url_for('.index', role=request.args.get('role')))
+            
             current_is_admin_status = user_doc.get('is_admin', False)
-            new_is_admin_status = not current_is_admin_status # Toggle the status
+            current_role = user_doc.get('role', 'Free User')
+            new_role = "Free User" if current_role == "Admin" else "Admin"
+            # new_is_admin_status = not current_is_admin_status # Toggle the status
 
             # Optional: Prevent demoting the last admin or self-demotion logic here
             # For example, if current_user.get_id() == user_id_str and new_is_admin_status == False:
             #    flash('You cannot remove your own admin status.', 'danger')
             #    return redirect(url_for('.index'))
 
-            success, msg = update_user_admin_status(user_id_str, new_is_admin_status)
+            success, msg = update_user_admin_status(user_id_str, new_role == "Admin")
 
             if success:
-                action = "promoted to admin" if new_is_admin_status else "removed from admin"
+                action = "promoted to admin" if new_role == "Admin" else "removed from admin"
                 flash(gettext('User "%(username)s" successfully %(action)s.',
                               username=user_doc.get('username', user_id_str), action=action), 'success')
                 logging.info(f"[AdminUserToggle] User {user_id_str} ({user_doc.get('username')}) {action} by admin.")
@@ -151,7 +225,7 @@ class UserView(BaseView):
             flash(gettext('An unexpected error occurred: %(error)s', error=str(e)), 'danger')
             logging.error(f"[AdminUserToggle] Unexpected error for user {user_id_str}: {str(e)}", exc_info=True)
 
-        return redirect(url_for('.index', q=request.args.get('q', ''), page=request.args.get('page', '1')))
+        return redirect(url_for('.index', q=request.args.get('q', ''), page=request.args.get('page', '1'), role=request.args.get('role')))
     
     
     
@@ -209,6 +283,7 @@ class UserView(BaseView):
             # Ensure original_email and original_username are available for comparison
             original_email = user_doc.get('email')
             original_username = user_doc.get('username')
+            validation_passed = True
 
             # Check email uniqueness only if it changed
             if update_data['email'] != original_email:
@@ -226,18 +301,17 @@ class UserView(BaseView):
                     # Re-render form with error
                     validation_passed = False
                     return self.render('admin/user_edit_form.html', form=form, user_doc=user_doc, error_message=None)
-            if validation_passed:
+            if validation_passed: # Check flag before proceeding
                 success, msg = update_user_details(user_id_str, update_data)
                 if success:
                     flash(gettext('User "%(username)s" updated successfully.', username=update_data['username']), 'success')
-                    return redirect(url_for('.user_details_view', user_id_str=user_id_str))
+                    # Preserve role filter on redirect to details if it was part of the context
+                    # For now, details view doesn't use role, but list view does.
+                    return redirect(url_for('.user_details_view', user_id_str=user_id_str, role=request.args.get('role')))
                 else:
                     flash(gettext('Error updating user: %(msg)s', msg=msg), 'danger')
-            else:
+            else: # If validation_passed is false
                 flash('Please correct the errors below.', 'warning')
-
-        elif request.method == 'POST' and not form.validate(): # If POST and validation failed
-             flash('Please correct the errors below.', 'warning')
 
 
         # For GET request or if validation failed on POST, pre-populate form:

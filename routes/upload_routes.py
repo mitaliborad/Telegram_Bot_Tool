@@ -1,4 +1,5 @@
 import logging
+import mimetypes
 import os
 import uuid
 import time
@@ -250,6 +251,11 @@ def process_upload_and_generate_updates(upload_id: str) -> Generator[SseEvent, N
                 "send_locations": [], "chunks": []          
             }
             
+            mime_type_guess, _ = mimetypes.guess_type(current_filename)
+            file_meta_entry["mime_type"] = mime_type_guess if mime_type_guess else 'application/octet-stream'
+            
+            logging.info(f"{log_file_prefix_indiv} Guessed MIME type: {file_meta_entry['mime_type']}")
+
             if current_file_size == 0:
                 file_meta_entry["skipped"] = True; file_meta_entry["reason"] = "File is empty"
                 all_files_metadata_for_db.append(file_meta_entry)

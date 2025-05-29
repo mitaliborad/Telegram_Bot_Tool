@@ -1,9 +1,15 @@
 # file_routes.py
 import logging
+import io
+import zipfile
 from flask import Blueprint, request, make_response, jsonify, Response, url_for, render_template
 from flask_jwt_extended import jwt_required, get_jwt_identity
+import mimetypes
+from telegram_api import download_telegram_file_content
+from .utils import _find_best_telegram_file_id, _find_filename_in_zip, get_preview_type
+from dateutil import parser as dateutil_parser
 from bson import ObjectId
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 import database
 from database import (
     find_user_by_id,             
@@ -13,7 +19,8 @@ from database import (
     get_archived_files_collection, 
     archive_file_record_by_access_id
 )
-from config import app 
+from config import app , PRIMARY_TELEGRAM_CHAT_ID
+from typing import Dict, Any, Tuple, Optional, List, Generator
 
 file_bp = Blueprint('file', __name__, template_folder='../templates/file')
 
@@ -236,4 +243,439 @@ def api_get_batch_details(access_id: str):
         processed_files.append(processed_f_item)
     response_data["files"] = processed_files
     return jsonify(response_data)
+
+
+# @file_bp.route('/api/preview-details/<access_id>', methods=['GET'])
+# # @jwt_required(optional=True) # You can decide if this needs JWT.
+#                               # If browse links are public, this can be public.
+#                               # If only logged-in users can see previews, make it @jwt_required().
+#                               # For now, let's assume public access to the preview page itself.
+# def get_preview_details(access_id: str):
+#     """
+#     API endpoint to get details needed for rendering a file preview.
+#     """
+#     log_prefix = f"[PreviewDetails-{access_id}]"
+#     logging.info(f"{log_prefix} Request received.")
+
+#     file_info, error_msg_db = find_metadata_by_access_id(access_id)
+
+#     if error_msg_db:
+#         logging.error(f"{log_prefix} Database error: {error_msg_db}")
+#         return jsonify({"error": "Server error while fetching file information."}), 500
+#     if not file_info:
+#         logging.warning(f"{log_prefix} File not found.")
+#         return jsonify({"error": "File not found."}), 404
+
+#     # Ensure this endpoint is for single files, not batches, for preview.
+#     # Batch previews would be a separate, more complex feature.
+#     if file_info.get('is_batch'):
+#         logging.warning(f"{log_prefix} Attempted to get preview details for a batch.")
+#         return jsonify({"error": "Preview is not supported for batch uploads. Please select an individual file."}), 400
+
+#     original_filename = file_info.get('original_filename', 'unknown_file')
+
+#     # Get stored MIME type, or guess as a fallback
+#     mime_type = file_info.get('mime_type')
+#     if not mime_type:
+#         logging.warning(f"{log_prefix} MIME type not found in DB for '{original_filename}'. Guessing.")
+#         mime_type, _ = mimetypes.guess_type(original_filename)
+#         if not mime_type: # If guess also fails
+#             mime_type = 'application/octet-stream'
+#             logging.warning(f"{log_prefix} MIME type guess failed for '{original_filename}'. Defaulting to {mime_type}.")
+
+#     preview_type_str = get_preview_type(mime_type, original_filename)
+
+#     response_data = {
+#         "access_id": access_id,
+#         "filename": original_filename,
+#         "size": file_info.get('original_size', 0),
+#         "mime_type": mime_type,
+#         "preview_type": preview_type_str, # Use the determined string
+#         "is_anonymous": file_info.get('is_anonymous', False),
+#         "upload_timestamp": file_info.get('upload_timestamp'), # ISO string format from DB
+#         "preview_content_url": None, # URL to fetch raw content for preview
+#         "preview_data": None,        # For potentially embedding small text content directly
+#     }
+
+#     # --- Expiration Check for Anonymous Uploads ---
+#     if response_data["is_anonymous"] and response_data["upload_timestamp"]:
+#         logging.info(f"{log_prefix} Anonymous upload. Checking expiration. Timestamp: '{response_data['upload_timestamp']}'")
+#         try:
+#             upload_datetime = dateutil_parser.isoparse(response_data["upload_timestamp"])
+#             # Ensure timezone awareness (MongoDB stores in UTC)
+#             if upload_datetime.tzinfo is None or upload_datetime.tzinfo.utcoffset(upload_datetime) is None:
+#                 upload_datetime = upload_datetime.replace(tzinfo=timezone.utc)
+
+#             # Define expiration limit (e.g., 5 days. This should ideally come from config)
+#             # For this example, let's use a fixed 5 days.
+#             # In your config.py, you could add: ANON_UPLOAD_EXPIRATION_DAYS = 5
+#             # Then import and use it: from config import ANON_UPLOAD_EXPIRATION_DAYS
+#             expiration_limit = timedelta(days=5) # Replace 5 with config value later
+
+#             if datetime.now(timezone.utc) > (upload_datetime + expiration_limit):
+#                 logging.info(f"{log_prefix} Anonymous download link EXPIRED. Uploaded: {upload_datetime}, Expires: {upload_datetime + expiration_limit}")
+#                 # Update preview_type to signal frontend specifically about expiration
+#                 response_data["preview_type"] = "expired"
+#                 # Return 410 Gone, so frontend can handle this status code specifically
+#                 return jsonify(response_data), 410
+#             else:
+#                 logging.info(f"{log_prefix} Anonymous download link still valid. Expires at: {upload_datetime + expiration_limit}")
+
+#         except ValueError as e_parse: # Catch parsing errors for the timestamp
+#             logging.error(f"{log_prefix} Error parsing upload_timestamp '{response_data['upload_timestamp']}': {e_parse}", exc_info=True)
+#             # Decide how to handle: maybe treat as non-expiring or error out
+#             # For now, let's error out to be safe, as expiration is a key feature for anon.
+#             return jsonify({"error": "Error processing file metadata (invalid timestamp format)."}), 500
+#         except Exception as e_exp: # Catch any other exception during check
+#             logging.error(f"{log_prefix} Unexpected error during expiration check: {e_exp}", exc_info=True)
+#             return jsonify({"error": "Server error during file validation."}), 500
+#     else:
+#         logging.info(f"{log_prefix} Not an anonymous upload or no timestamp, expiration check skipped.")
+
+#     # --- Determine how to provide preview content ---
+#     # For types that need their raw content fetched by the browser (images, videos, PDFs, or any text file)
+#     if response_data["preview_type"] in ['image', 'video', 'pdf', 'code', 'text', 'markdown', 'directory_listing', 'audio']:
+#         # We generate a URL to another backend endpoint that will serve the raw file.
+#         # We'll create this `serve_raw_file_content` endpoint in Step 4.
+#         # `_external=False` generates a relative URL, suitable for API responses consumed by frontend on same domain.
+#         response_data['preview_content_url'] = url_for('file.serve_raw_file_content', access_id=access_id, _external=False)
+#         logging.info(f"{log_prefix} Preview content URL set to: {response_data['preview_content_url']}")
+
+#     # OPTIONAL: For very small text-based files, you *could* fetch the content here
+#     # and embed it directly in `response_data['preview_data']`.
+#     # This avoids an extra HTTP request from the frontend.
+#     # However, it makes this endpoint more complex and potentially slower.
+#     # For now, we'll stick to `preview_content_url` for all content-based previews.
+#     # Example (if you were to implement direct data embedding):
+#     # if response_data["preview_type"] in ['code', 'text', 'markdown', 'directory_listing'] and response_data["size"] < 1024 * 50: # e.g., < 50KB
+#     #     from .download_routes import _get_actual_file_content # You'd need to make this helper accessible
+#     #     content_bytes, err_content = _get_actual_file_content(access_id, file_info) # Simplified call
+#     #     if not err_content and content_bytes:
+#     #         try:
+#     #             response_data['preview_data'] = content_bytes.decode('utf-8')
+#     #             response_data['preview_content_url'] = None # No need for URL if data is embedded
+#     #         except UnicodeDecodeError:
+#     #             logging.warning(f"{log_prefix} Could not decode content as UTF-8 for direct preview.")
+#     #             # Fallback to URL method if direct decoding fails
+#     #             if not response_data['preview_content_url']: # If not already set
+#     #                 response_data['preview_content_url'] = url_for('file.serve_raw_file_content', access_id=access_id, _external=False)
+#     #     else:
+#     #         logging.warning(f"{log_prefix} Failed to get content for direct preview: {err_content}")
+
+
+#     logging.info(f"{log_prefix} Successfully prepared preview details: {response_data}")
+#     return jsonify(response_data)
+
+# routes/file_routes.py
+# ... (imports and other parts of the file remain the same)
+
+@file_bp.route('/api/preview-details/<access_id>', methods=['GET'])
+def get_preview_details(access_id: str):
+    log_prefix = f"[PreviewDetails-{access_id}]"
+    logging.info(f"{log_prefix} Request received.")
+
+    batch_level_info, error_msg_db = find_metadata_by_access_id(access_id)
+
+    if error_msg_db:
+        logging.error(f"{log_prefix} Database error: {error_msg_db}")
+        return jsonify({"error": "Server error while fetching file information."}), 500
+    if not batch_level_info:
+        logging.warning(f"{log_prefix} Record not found for access_id.")
+        return jsonify({"error": "File or batch not found."}), 404
+
+    # --- MODIFIED LOGIC TO HANDLE BATCHES OF ONE ---
+    target_file_info = None
+    is_true_batch_with_multiple_files = False
+
+    if batch_level_info.get('is_batch', False): # It's marked as a batch
+        files_in_batch = batch_level_info.get('files_in_batch', [])
+        if len(files_in_batch) == 1:
+            # It's a "batch" but only contains one file, so we can preview this single file.
+            target_file_info = files_in_batch[0]
+            logging.info(f"{log_prefix} Record is a 'batch of one'. Targeting the single file for preview.")
+        elif len(files_in_batch) > 1:
+            is_true_batch_with_multiple_files = True
+            logging.warning(f"{log_prefix} Record is a true batch with multiple files. Preview not supported for the whole batch.")
+            # For a true batch, the frontend would typically show a list of files in the batch,
+            # and clicking a file would call this endpoint again with a modified access_id
+            # or a new endpoint designed to get details for a *file within a batch*.
+            # For now, this endpoint will error for true batches.
+            return jsonify({"error": "This is a batch with multiple files. Preview is for single files. Please select a file from the batch."}), 400
+        else: # is_batch is true, but files_in_batch is empty
+            logging.warning(f"{log_prefix} Record marked as batch but has no files in files_in_batch array.")
+            return jsonify({"error": "Batch record is empty or corrupted."}), 400
+    else:
+        # It's a single file record (is_batch is false or missing, treat as false)
+        target_file_info = batch_level_info
+        logging.info(f"{log_prefix} Record is a single file type. Targeting it for preview.")
+
+    if not target_file_info:
+        # This should ideally not be reached if the logic above is correct
+        logging.error(f"{log_prefix} Could not determine target file info from record.")
+        return jsonify({"error": "Could not determine file to preview from the record."}), 500
+    # --- END OF MODIFIED LOGIC ---
+
+    original_filename = target_file_info.get('original_filename', 'unknown_file')
+
+    # Get stored MIME type from the target_file_info, or guess as a fallback
+    mime_type = target_file_info.get('mime_type')
+    if not mime_type:
+        logging.warning(f"{log_prefix} MIME type not found in DB for '{original_filename}'. Guessing.")
+        mime_type, _ = mimetypes.guess_type(original_filename)
+        if not mime_type:
+            mime_type = 'application/octet-stream'
+            logging.warning(f"{log_prefix} MIME type guess failed. Defaulting to {mime_type}.")
+
+    preview_type_str = get_preview_type(mime_type, original_filename)
+
+    response_data = {
+        "access_id": access_id, # The main access_id of the record fetched
+        "filename": original_filename,
+        "size": target_file_info.get('original_size', 0),
+        "mime_type": mime_type,
+        "preview_type": preview_type_str,
+        # Anonymity and timestamp for expiration should come from the top-level batch_level_info,
+        # as these apply to the whole upload record.
+        "is_anonymous": batch_level_info.get('is_anonymous', False),
+        "upload_timestamp": batch_level_info.get('upload_timestamp'),
+        "preview_content_url": None,
+        "preview_data": None,
+    }
+
+    # --- Expiration Check for Anonymous Uploads (uses batch_level_info for timestamp) ---
+    if response_data["is_anonymous"] and response_data["upload_timestamp"]:
+        # (Expiration check logic remains the same as before, using response_data["upload_timestamp"])
+        # ...
+        logging.info(f"{log_prefix} Anonymous upload. Checking expiration. Timestamp: '{response_data['upload_timestamp']}'")
+        try:
+            upload_datetime = dateutil_parser.isoparse(response_data["upload_timestamp"])
+            if upload_datetime.tzinfo is None or upload_datetime.tzinfo.utcoffset(upload_datetime) is None:
+                upload_datetime = upload_datetime.replace(tzinfo=timezone.utc)
+            expiration_limit = timedelta(days=5) # Replace with config value
+            if datetime.now(timezone.utc) > (upload_datetime + expiration_limit):
+                logging.info(f"{log_prefix} Anonymous download link EXPIRED.")
+                response_data["preview_type"] = "expired"
+                return jsonify(response_data), 410
+            else:
+                logging.info(f"{log_prefix} Anonymous download link still valid.")
+        except ValueError as e_parse:
+            logging.error(f"{log_prefix} Error parsing upload_timestamp '{response_data['upload_timestamp']}': {e_parse}", exc_info=True)
+            return jsonify({"error": "Error processing file metadata (invalid timestamp format)."}), 500
+        except Exception as e_exp:
+            logging.error(f"{log_prefix} Unexpected error during expiration check: {e_exp}", exc_info=True)
+            return jsonify({"error": "Server error during file validation."}), 500
+    else:
+        logging.info(f"{log_prefix} Not an anonymous upload or no timestamp, expiration check skipped.")
+
+
+    # --- Determine how to provide preview content ---
+    if response_data["preview_type"] in ['image', 'video', 'pdf', 'code', 'text', 'markdown', 'directory_listing', 'audio']:
+        # The access_id for serve_raw_file_content should be the main access_id.
+        # The serve_raw_file_content endpoint will then need to know if it's looking at a batch_of_one or a true single file.
+        # For now, let's keep it simple and assume serve_raw_file_content can also handle this.
+        response_data['preview_content_url'] = url_for('file.serve_raw_file_content', access_id=access_id, _external=False)
+        logging.info(f"{log_prefix} Preview content URL set to: {response_data['preview_content_url']}")
+
+    logging.info(f"{log_prefix} Successfully prepared preview details for single file within record: {response_data}")
+    return jsonify(response_data)
+
+# @file_bp.route('/api/file-content/<access_id>')
+# # @jwt_required(optional=True) # Match the auth requirement of get_preview_details for now
+# def serve_raw_file_content(access_id: str):
+    # """
+    # Serves the raw file content for preview.
+    # (Implementation to be completed in Step 4)
+    # """
+    # log_prefix = f"[ServeRawContent-{access_id}]"
+    # logging.info(f"{log_prefix} Placeholder hit. Full implementation in next step.")
+    # # For now, just return a placeholder response or an error
+    # # This allows url_for to build the URL correctly.
+    # return jsonify({"message": f"Placeholder for serving content of {access_id}. Implement in Step 4."}), 200
+
+
+# --- Helper function MUST be defined BEFORE it's called by serve_raw_file_content ---
+def _get_final_file_content_for_preview(access_id: str, top_level_record: Dict[str, Any]) -> Tuple[Optional[bytes], Optional[str], Optional[str]]:
+    """
+    Fetches/reassembles/decompresses the actual file content for preview.
+    Returns: (content_bytes, error_message, original_filename_for_mime)
+    The original_filename_for_mime is crucial if the file was decompressed.
+    """
+    log_prefix_helper = f"[GetContentHelper-{access_id}]"
+    actual_file_to_process_meta: Optional[Dict[str, Any]] = None
+    effective_original_filename: Optional[str] = None
+
+    # 1. Determine the actual file metadata to process (handles batch-of-one vs. single file)
+    if top_level_record.get('is_batch', False):
+        files_in_batch = top_level_record.get('files_in_batch', [])
+        if len(files_in_batch) == 1:
+            actual_file_to_process_meta = files_in_batch[0]
+            effective_original_filename = actual_file_to_process_meta.get('original_filename')
+            logging.info(f"{log_prefix_helper} Identified as batch-of-one. Target file: {effective_original_filename}")
+        else:
+            logging.error(f"{log_prefix_helper} Called for a multi-file batch. This function is for single file targets.")
+            return None, "Cannot get content for a multi-file batch directly using this helper.", None
+    else:
+        actual_file_to_process_meta = top_level_record
+        effective_original_filename = actual_file_to_process_meta.get('original_filename')
+        logging.info(f"{log_prefix_helper} Identified as single file record. Target file: {effective_original_filename}")
+
+    if not actual_file_to_process_meta or not effective_original_filename:
+        logging.error(f"{log_prefix_helper} Could not determine target file metadata or effective filename.")
+        return None, "Could not determine target file metadata.", None
+
+    # 2. Get raw downloaded content (handles split or non-split)
+    is_split = actual_file_to_process_meta.get('is_split', False)
+    raw_downloaded_content: Optional[bytes] = None # Initialize
+
+    if is_split:
+        logging.info(f"{log_prefix_helper} File '{effective_original_filename}' is split. Reassembling...")
+        chunks_meta = actual_file_to_process_meta.get('chunks')
+        if not chunks_meta:
+            logging.error(f"{log_prefix_helper} Split file metadata missing chunk information for '{effective_original_filename}'.")
+            return None, "Split file metadata missing chunk information.", effective_original_filename
+        
+        chunks_meta.sort(key=lambda c: int(c.get('part_number', 0)))
+        reassembled_buffer = io.BytesIO()
+        for i, chunk_info in enumerate(chunks_meta):
+            part_num = chunk_info.get("part_number", i + 1)
+            # You need to ensure _find_best_telegram_file_id and download_telegram_file_content are imported/accessible
+            chunk_tg_file_id, _ = _find_best_telegram_file_id(chunk_info.get("send_locations", []), PRIMARY_TELEGRAM_CHAT_ID)
+            if not chunk_tg_file_id:
+                logging.error(f"{log_prefix_helper} Missing Telegram ID for chunk {part_num} of '{effective_original_filename}'.")
+                return None, f"Missing Telegram ID for chunk {part_num} of '{effective_original_filename}'.", effective_original_filename
+            
+            logging.debug(f"{log_prefix_helper} Downloading chunk {part_num} (TG ID: {chunk_tg_file_id}) for '{effective_original_filename}'.")
+            content_part, err_part = download_telegram_file_content(chunk_tg_file_id) # Ensure this is imported
+            if err_part:
+                logging.error(f"{log_prefix_helper} Error downloading chunk {part_num} for '{effective_original_filename}': {err_part}")
+                return None, f"Error downloading chunk {part_num} for '{effective_original_filename}': {err_part}", effective_original_filename
+            if not content_part:
+                logging.error(f"{log_prefix_helper} Empty content for chunk {part_num} of '{effective_original_filename}'.")
+                return None, f"Empty content for chunk {part_num} of '{effective_original_filename}'.", effective_original_filename
+            reassembled_buffer.write(content_part)
+        
+        raw_downloaded_content = reassembled_buffer.getvalue()
+        reassembled_buffer.close()
+        logging.info(f"{log_prefix_helper} Finished reassembling '{effective_original_filename}'. Size: {len(raw_downloaded_content) if raw_downloaded_content else 0}")
+    else: # Not split
+        logging.info(f"{log_prefix_helper} File '{effective_original_filename}' is not split. Downloading directly.")
+        send_locations = actual_file_to_process_meta.get('send_locations', [])
+        tg_file_id, _ = _find_best_telegram_file_id(send_locations, PRIMARY_TELEGRAM_CHAT_ID) # Ensure imported
+        if not tg_file_id:
+            logging.error(f"{log_prefix_helper} Missing Telegram ID for non-split file '{effective_original_filename}'.")
+            return None, f"Missing Telegram ID for non-split file '{effective_original_filename}'.", effective_original_filename
+        
+        logging.debug(f"{log_prefix_helper} Downloading non-split (TG ID: {tg_file_id}) for '{effective_original_filename}'.")
+        raw_downloaded_content, err_download = download_telegram_file_content(tg_file_id) # Ensure imported
+        if err_download:
+            logging.error(f"{log_prefix_helper} Error downloading non-split file '{effective_original_filename}': {err_download}")
+            return None, f"Error downloading non-split file '{effective_original_filename}': {err_download}", effective_original_filename
+        logging.info(f"{log_prefix_helper} Finished downloading non-split '{effective_original_filename}'. Size: {len(raw_downloaded_content) if raw_downloaded_content else 0}")
+
+    # 3. Check if raw content was successfully obtained
+    if raw_downloaded_content is None:
+        logging.error(f"{log_prefix_helper} Failed to obtain raw downloaded content for '{effective_original_filename}'.")
+        return None, f"Failed to retrieve initial content for '{effective_original_filename}'.", effective_original_filename
+
+    # 4. Handle potential uploader-side compression
+    final_content_to_serve: bytes = raw_downloaded_content # Initialize with potentially zipped content
+    filename_for_mime_type_final: str = effective_original_filename # Default to original name
+
+    is_compressed_by_uploader = actual_file_to_process_meta.get('is_compressed', False)
+    if is_compressed_by_uploader and not effective_original_filename.lower().endswith('.zip'):
+        logging.info(f"{log_prefix_helper} File '{effective_original_filename}' was compressed by uploader. Attempting to decompress.")
+        try:
+            with zipfile.ZipFile(io.BytesIO(raw_downloaded_content), 'r') as zf:
+                # _find_filename_in_zip needs to be robust or we need to be sure about the name.
+                # Assuming effective_original_filename is the name of the single file inside the zip.
+                entry_name_to_extract = _find_filename_in_zip(zf, effective_original_filename, log_prefix_helper) # Ensure imported
+                final_content_to_serve = zf.read(entry_name_to_extract) # This is the actual content
+                # filename_for_mime_type_final remains effective_original_filename as it's the true name of the content
+                logging.info(f"{log_prefix_helper} Decompressed '{entry_name_to_extract}' from zip. New size: {len(final_content_to_serve)}")
+        except Exception as e_zip:
+            logging.error(f"{log_prefix_helper} Failed to decompress '{effective_original_filename}': {e_zip}", exc_info=True)
+            # If decompression fails, return an error, not the zipped content for a non-zip preview
+            return None, f"Failed to decompress file '{effective_original_filename}' for preview.", effective_original_filename
+    else:
+        logging.info(f"{log_prefix_helper} File '{effective_original_filename}' not marked for uploader-side decompression, or is already a zip.")
+        # final_content_to_serve is already raw_downloaded_content
+        # filename_for_mime_type_final is already effective_original_filename
+
+    # 5. Final check and return
+    if final_content_to_serve is None: # Should not happen if logic above is correct
+         logging.error(f"{log_prefix_helper} final_content_to_serve is None before returning for '{filename_for_mime_type_final}'. This is unexpected.")
+         return None, f"Unexpected error preparing content for '{filename_for_mime_type_final}'.", filename_for_mime_type_final
+
+    return final_content_to_serve, None, filename_for_mime_type_final
+# --- End of helper function ---
+
+@file_bp.route('/api/file-content/<access_id>')
+# @jwt_required(optional=True) # Keep auth consistent with get_preview_details
+def serve_raw_file_content(access_id: str):
+    """
+    Serves the raw file content for preview.
+    """
+    log_prefix = f"[ServeRawContent-{access_id}]"
+    logging.info(f"{log_prefix} Request received.")
+
+    # 1. Fetch the top-level record metadata
+    top_level_record, error_msg_db = find_metadata_by_access_id(access_id)
+
+    if error_msg_db:
+        logging.error(f"{log_prefix} Database error: {error_msg_db}")
+        return make_response("Server error while fetching file information.", 500)
+    if not top_level_record:
+        logging.warning(f"{log_prefix} Record not found.")
+        return make_response("File or batch not found.", 404)
+
+    # 2. Expiration Check for Anonymous Uploads (using top-level record's timestamp)
+    if top_level_record.get("is_anonymous") and top_level_record.get("upload_timestamp"):
+        logging.info(f"{log_prefix} Anonymous upload. Checking expiration. Timestamp: '{top_level_record['upload_timestamp']}'")
+        try:
+            upload_datetime = dateutil_parser.isoparse(top_level_record["upload_timestamp"])
+            if upload_datetime.tzinfo is None or upload_datetime.tzinfo.utcoffset(upload_datetime) is None:
+                upload_datetime = upload_datetime.replace(tzinfo=timezone.utc)
+            
+            expiration_limit = timedelta(days=5) # From config ideally
+            if datetime.now(timezone.utc) > (upload_datetime + expiration_limit):
+                logging.info(f"{log_prefix} Anonymous content link EXPIRED.")
+                return make_response("File link has expired.", 410) # 410 Gone
+        except Exception as e_exp:
+            logging.error(f"{log_prefix} Error during expiration check for content: {e_exp}", exc_info=True)
+            # If expiration check fails, better to deny access
+            return make_response("Error validating file expiration.", 500)
+    
+    # 3. Get the actual file content using the helper
+    # The helper will internally determine if it's a batch-of-one or a true single file record.
+    content_bytes, error_msg_content, filename_for_mime = _get_final_file_content_for_preview(access_id, top_level_record)
+
+    if error_msg_content:
+        logging.error(f"{log_prefix} Error getting final file content: {error_msg_content}")
+        return make_response(error_msg_content, 500)
+    if not content_bytes: # Should be caught by error_msg_content, but as a safeguard
+        logging.error(f"{log_prefix} Final content bytes are None or empty unexpectedly.")
+        return make_response("Failed to retrieve file content.", 500)
+    if not filename_for_mime: # Should also not happen if content_bytes is valid
+        logging.error(f"{log_prefix} Filename for MIME type determination is missing.")
+        filename_for_mime = "unknown.dat" # Fallback
+
+    # 4. Determine MIME type for the response
+    # Prefer stored MIME if available from the specific file_info (in case of batch-of-one)
+    # or top_level_record (for true single file).
+    # The _get_final_file_content_for_preview already used the correct original filename if it decompressed.
+    final_mime_type: Optional[str] = None
+    if top_level_record.get('is_batch', False) and len(top_level_record.get('files_in_batch', [])) == 1:
+        final_mime_type = top_level_record['files_in_batch'][0].get('mime_type')
+    else: # True single file record
+        final_mime_type = top_level_record.get('mime_type')
+
+    if not final_mime_type: # Fallback to guessing based on the (potentially decompressed) filename
+        final_mime_type, _ = mimetypes.guess_type(filename_for_mime)
+        if not final_mime_type:
+            final_mime_type = 'application/octet-stream' # Ultimate fallback
+    
+    logging.info(f"{log_prefix} Serving content for '{filename_for_mime}' with MIME type: {final_mime_type}. Size: {len(content_bytes)}")
+
+    # 5. Serve the content
+    return Response(content_bytes, mimetype=final_mime_type)
 

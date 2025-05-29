@@ -133,3 +133,71 @@ def _safe_remove_file(path: str, prefix: str, desc: str):
         except OSError as e: logging.error(f"[{prefix}] Error deleting {desc} '{path}': {e}", exc_info=True)
     else: logging.debug(f"[{prefix}] Cleanup skipped, {desc} file not found: {path}")
 
+
+def get_preview_type(mime_type: Optional[str], filename: str) -> str:
+    """
+    Determines a standardized preview type based on MIME type and filename.
+    """
+    filename_lower = filename.lower() # Normalize filename for extension checking
+
+    # Default to 'application/octet-stream' if mime_type is None
+    # This handles cases where mime_type might not have been set or was explicitly None.
+    if not mime_type:
+        logging.warning(f"get_preview_type called with None mime_type for filename: {filename}. Defaulting to octet-stream.")
+        mime_type = 'application/octet-stream'
+
+    # --- Image Types ---
+    if mime_type.startswith('image/'):
+        # You can be more specific if needed, e.g., distinguishing 'image/svg+xml'
+        # but for most image rendering, 'image' is sufficient.
+        return 'image'
+
+    # --- Video Types ---
+    if mime_type.startswith('video/'):
+        return 'video'
+
+    # --- PDF ---
+    if mime_type == 'application/pdf':
+        return 'pdf'
+
+    # --- Audio Types (Example, can expand) ---
+    if mime_type.startswith('audio/'):
+        return 'audio' # Frontend would need an audio player
+
+    # --- Text-based Types (More specific checks) ---
+    if mime_type.startswith('text/'):
+        # Specific code file extensions
+        # List can be expanded based on common code files you expect
+        code_extensions = ['.py', '.js', '.html', '.css', '.java', '.c', '.cpp', '.cs', '.rb', '.php', '.go', '.rs', '.swift', '.kt', '.ts', '.json', '.xml', '.yaml', '.yml', '.sh', '.bat']
+        if any(filename_lower.endswith(ext) for ext in code_extensions):
+            return 'code'
+
+        # Markdown
+        if filename_lower.endswith('.md'):
+            return 'markdown'
+
+        # Check for directory listing heuristic (based on your Limewire example)
+        # This is a heuristic and might need refinement.
+        if "directory_structure.txt" in filename_lower or \
+           "dir_list.txt" in filename_lower or \
+           "file_tree.txt" in filename_lower:
+            return 'directory_listing'
+
+        # If it's 'text/plain' or any other 'text/*' not caught above
+        return 'text' # Generic text
+
+    # --- Application Specific Types (can be expanded) ---
+    # Example: Microsoft Office documents (these are often harder to preview directly in browser)
+    # if mime_type == 'application/msword' or \
+    #    mime_type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document': # .doc, .docx
+    #     return 'document_word'
+    # if mime_type == 'application/vnd.ms-excel' or \
+    #    mime_type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': # .xls, .xlsx
+    #     return 'document_excel'
+
+    # --- Default for everything else ---
+    logging.debug(f"File '{filename}' with MIME type '{mime_type}' categorized as 'unsupported' for preview.")
+    return 'unsupported'
+
+# Optional: Add a log message to confirm this util module is loaded if it's a new file
+# logging.info("Preview utility functions (in routes/utils.py) loaded.")

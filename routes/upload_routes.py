@@ -380,9 +380,25 @@ def process_upload_and_generate_updates(upload_id: str) -> Generator[SseEvent, N
             yield _yield_sse_event('error', {'message': f"Upload processed, but failed to save details: {save_msg}"})
             return
         
-        browser_url = f"{request.host_url.rstrip('/')}/browse/{access_id}" # Adjust browse route if needed
+        is_single_effective_file = not db_batch_record.get('is_batch', True) 
+        final_browser_url_filename_for_sse = ""
+        if is_single_effective_file:
+            # Link directly to the preview page.
+            # The filename for the queryParam should be the actual file's name.
+            actual_filename = all_files_metadata_for_db[0].get('original_filename', 'file')
+            browser_url = f"{request.host_url.rstrip('/')}/preview/{access_id}?filename={actual_filename}"
+            final_browser_url_filename_for_sse = actual_filename
+            logging.info(f"{log_prefix} Generated PREVIEW link for single file: {browser_url}")
+        else: # It's a true multi-file batch
+            # Link to the batch listing page
+            browser_url = f"{request.host_url.rstrip('/')}/batch-view/{access_id}"
+            final_browser_url_filename_for_sse = batch_display_name # For batch, filename in SSE is batch_display_name
+            logging.info(f"{log_prefix} Generated BATCH LISTING link for multi-file batch: {browser_url}")
+
+        # browser_url = f"{request.host_url.rstrip('/')}/browse/{access_id}" # Adjust browse route if needed
         complete_message = f'Batch upload ' + ('completed with errors.' if not batch_overall_success else 'complete!')
-        complete_payload = {'message': complete_message, 'download_url': browser_url, 'filename': batch_display_name, 'batch_access_id': access_id }
+        complete_payload = {'message': complete_message, 'download_url': browser_url, 'filename': final_browser_url_filename_for_sse,'access_id': access_id, 'is_batch': not is_single_effective_file}
+                            #'batch_access_id': access_id, }
         upload_data['status'] = 'completed_with_errors' if not batch_overall_success else 'completed'
         yield _yield_sse_event('complete', complete_payload)
 

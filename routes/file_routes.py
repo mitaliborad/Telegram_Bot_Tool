@@ -128,7 +128,7 @@ def delete_file_record(username: str, access_id_from_path: str) -> Response:
         if deleted_count == 0:
             logging.warning(f"{log_prefix} Record archived (ID: {insert_result.inserted_id}) but original (access_id: {access_id_from_path}) was not found for deletion in user_files. Might have been deleted concurrently.")
 
-        display_name = record_to_archive.get('batch_display_name', record_to_archive.get('original_filename', access_id_from_path))
+        display_name = record_to_archive.get('batch_display_name', record_to_archive.get('filename_to_preview', access_id_from_path))
         logging.info(f"{log_prefix} Record '{display_name}' (access_id: {access_id_from_path}) successfully archived.")
         return jsonify({"message": f"Record '{display_name}' archived successfully."}), 200
     
@@ -208,7 +208,7 @@ def api_get_single_file_details(access_id: str):
     
     response_data = {
         "access_id": access_id,
-        "original_filename": file_info.get('original_filename', 'Unknown'),
+        "filename_to_preview": file_info.get('filename_to_preview', 'Unknown'),
         "original_size": file_info.get('original_size', 0),
         "upload_timestamp": file_info.get('upload_timestamp'),
         "username": file_info.get('username', 'N/A'),
@@ -235,7 +235,7 @@ def api_get_batch_details(access_id: str):
     processed_files = []
     for f_item in response_data["files"]:
         processed_f_item = f_item.copy()
-        processed_f_item.setdefault('original_filename', "Unknown File")
+        processed_f_item.setdefault('filename_to_preview', "Unknown File")
         processed_f_item.setdefault('original_size', 0)
         processed_f_item.setdefault('skipped', False)
         processed_f_item.setdefault('failed', False)
@@ -272,22 +272,22 @@ def api_get_batch_details(access_id: str):
 #         logging.warning(f"{log_prefix} Attempted to get preview details for a batch.")
 #         return jsonify({"error": "Preview is not supported for batch uploads. Please select an individual file."}), 400
 
-#     original_filename = file_info.get('original_filename', 'unknown_file')
+#     filename_to_preview = file_info.get('filename_to_preview', 'unknown_file')
 
 #     # Get stored MIME type, or guess as a fallback
 #     mime_type = file_info.get('mime_type')
 #     if not mime_type:
-#         logging.warning(f"{log_prefix} MIME type not found in DB for '{original_filename}'. Guessing.")
-#         mime_type, _ = mimetypes.guess_type(original_filename)
+#         logging.warning(f"{log_prefix} MIME type not found in DB for '{filename_to_preview}'. Guessing.")
+#         mime_type, _ = mimetypes.guess_type(filename_to_preview)
 #         if not mime_type: # If guess also fails
 #             mime_type = 'application/octet-stream'
-#             logging.warning(f"{log_prefix} MIME type guess failed for '{original_filename}'. Defaulting to {mime_type}.")
+#             logging.warning(f"{log_prefix} MIME type guess failed for '{filename_to_preview}'. Defaulting to {mime_type}.")
 
-#     preview_type_str = get_preview_type(mime_type, original_filename)
+#     preview_type_str = get_preview_type(mime_type, filename_to_preview)
 
 #     response_data = {
 #         "access_id": access_id,
-#         "filename": original_filename,
+#         "filename": filename_to_preview,
 #         "size": file_info.get('original_size', 0),
 #         "mime_type": mime_type,
 #         "preview_type": preview_type_str, # Use the determined string
@@ -372,23 +372,26 @@ def api_get_batch_details(access_id: str):
 @file_bp.route('/api/preview-details/<access_id>', methods=['GET'])
 def get_preview_details(access_id: str):
     log_prefix = f"[PreviewDetails-{access_id}]"
+    filename_to_preview = request.args.get('filename') # Get filename from query
+    if filename_to_preview:
+        log_prefix += f"-File-{filename_to_preview[:20]}"
     logging.info(f"{log_prefix} Request received.")
 
-    batch_level_info, error_msg_db = find_metadata_by_access_id(access_id)
+    # top_level_record , error_msg_db = find_metadata_by_access_id(access_id)
+    top_level_record, error_msg_db = find_metadata_by_access_id(access_id)
 
     if error_msg_db:
         logging.error(f"{log_prefix} Database error: {error_msg_db}")
         return jsonify({"error": "Server error while fetching file information."}), 500
-    if not batch_level_info:
-        logging.warning(f"{log_prefix} Record not found for access_id.")
+    if not top_level_record: # ... (handle record not found)
         return jsonify({"error": "File or batch not found."}), 404
 
     # --- MODIFIED LOGIC TO HANDLE BATCHES OF ONE ---
     target_file_info = None
     is_true_batch_with_multiple_files = False
 
-    if batch_level_info.get('is_batch', False): # It's marked as a batch
-        files_in_batch = batch_level_info.get('files_in_batch', [])
+    if top_level_record.get('is_batch', False): # It's marked as a batch
+        files_in_batch = top_level_record  .get('files_in_batch', [])
         if len(files_in_batch) == 1:
             # It's a "batch" but only contains one file, so we can preview this single file.
             target_file_info = files_in_batch[0]
@@ -406,7 +409,7 @@ def get_preview_details(access_id: str):
             return jsonify({"error": "Batch record is empty or corrupted."}), 400
     else:
         # It's a single file record (is_batch is false or missing, treat as false)
-        target_file_info = batch_level_info
+        target_file_info = top_level_record
         logging.info(f"{log_prefix} Record is a single file type. Targeting it for preview.")
 
     if not target_file_info:
@@ -415,34 +418,36 @@ def get_preview_details(access_id: str):
         return jsonify({"error": "Could not determine file to preview from the record."}), 500
     # --- END OF MODIFIED LOGIC ---
 
-    original_filename = target_file_info.get('original_filename', 'unknown_file')
+   # original_filename = target_file_info.get('original_filename', 'unknown_file')
 
     # Get stored MIME type from the target_file_info, or guess as a fallback
     mime_type = target_file_info.get('mime_type')
     if not mime_type:
-        logging.warning(f"{log_prefix} MIME type not found in DB for '{original_filename}'. Guessing.")
-        mime_type, _ = mimetypes.guess_type(original_filename)
+        logging.warning(f"{log_prefix} MIME type not found in DB for '{filename_to_preview}'. Guessing.")
+        mime_type, _ = mimetypes.guess_type(filename_to_preview)
         if not mime_type:
             mime_type = 'application/octet-stream'
             logging.warning(f"{log_prefix} MIME type guess failed. Defaulting to {mime_type}.")
 
-    preview_type_str = get_preview_type(mime_type, original_filename)
+    mime_type = mime_type or 'application/octet-stream'
+
+    preview_type_str = get_preview_type(mime_type, filename_to_preview)
 
     response_data = {
         "access_id": access_id, # The main access_id of the record fetched
-        "filename": original_filename,
+        "filename": filename_to_preview,
         "size": target_file_info.get('original_size', 0),
         "mime_type": mime_type,
         "preview_type": preview_type_str,
-        # Anonymity and timestamp for expiration should come from the top-level batch_level_info,
+        # Anonymity and timestamp for expiration should come from the top-level top_level_record   ,
         # as these apply to the whole upload record.
-        "is_anonymous": batch_level_info.get('is_anonymous', False),
-        "upload_timestamp": batch_level_info.get('upload_timestamp'),
+        "is_anonymous": top_level_record   .get('is_anonymous', False),
+        "upload_timestamp": top_level_record   .get('upload_timestamp'),
         "preview_content_url": None,
         "preview_data": None,
     }
 
-    # --- Expiration Check for Anonymous Uploads (uses batch_level_info for timestamp) ---
+    # --- Expiration Check for Anonymous Uploads (uses top_level_record for timestamp) ---
     if response_data["is_anonymous"] and response_data["upload_timestamp"]:
         # (Expiration check logic remains the same as before, using response_data["upload_timestamp"])
         # ...
@@ -473,7 +478,7 @@ def get_preview_details(access_id: str):
         # The access_id for serve_raw_file_content should be the main access_id.
         # The serve_raw_file_content endpoint will then need to know if it's looking at a batch_of_one or a true single file.
         # For now, let's keep it simple and assume serve_raw_file_content can also handle this.
-        response_data['preview_content_url'] = url_for('file.serve_raw_file_content', access_id=access_id, _external=False)
+        response_data['preview_content_url'] = url_for('file.serve_raw_file_content', access_id=access_id, filename=filename_to_preview, _external=False)
         logging.info(f"{log_prefix} Preview content URL set to: {response_data['preview_content_url']}")
 
     logging.info(f"{log_prefix} Successfully prepared preview details for single file within record: {response_data}")
@@ -493,33 +498,48 @@ def get_preview_details(access_id: str):
     # return jsonify({"message": f"Placeholder for serving content of {access_id}. Implement in Step 4."}), 200
 
 
+
 # --- Helper function MUST be defined BEFORE it's called by serve_raw_file_content ---
-def _get_final_file_content_for_preview(access_id: str, top_level_record: Dict[str, Any]) -> Tuple[Optional[bytes], Optional[str], Optional[str]]:
+def _get_final_file_content_for_preview(access_id: str, top_level_record: Dict[str, Any], specific_filename: Optional[str] = None) -> Tuple[Optional[bytes], Optional[str], Optional[str]]:
     """
     Fetches/reassembles/decompresses the actual file content for preview.
-    Returns: (content_bytes, error_message, original_filename_for_mime)
-    The original_filename_for_mime is crucial if the file was decompressed.
+    Returns: (content_bytes, error_message, filename_to_preview_for_mime)
+    The filename_to_preview_for_mime is crucial if the file was decompressed.
     """
     log_prefix_helper = f"[GetContentHelper-{access_id}]"
+    if specific_filename:
+        log_prefix_helper += f"-File-{specific_filename[:20]}"
+    log_prefix_helper += "]"
+    logging.info(f"{log_prefix_helper} Attempting to get final content.")
     actual_file_to_process_meta: Optional[Dict[str, Any]] = None
+    # effective_filename_to_preview: Optional[str] = None
     effective_original_filename: Optional[str] = None
 
     # 1. Determine the actual file metadata to process (handles batch-of-one vs. single file)
     if top_level_record.get('is_batch', False):
         files_in_batch = top_level_record.get('files_in_batch', [])
-        if len(files_in_batch) == 1:
-            actual_file_to_process_meta = files_in_batch[0]
-            effective_original_filename = actual_file_to_process_meta.get('original_filename')
-            logging.info(f"{log_prefix_helper} Identified as batch-of-one. Target file: {effective_original_filename}")
-        else:
-            logging.error(f"{log_prefix_helper} Called for a multi-file batch. This function is for single file targets.")
-            return None, "Cannot get content for a multi-file batch directly using this helper.", None
+        target_filename_for_batch = specific_filename
+        if not target_filename_for_batch:
+            if len(files_in_batch) == 1:
+                actual_file_to_process_meta = files_in_batch[0]
+                effective_filename_to_preview = actual_file_to_process_meta.get('filename_to_preview')
+                logging.info(f"{log_prefix_helper} Identified as batch-of-one. Target file: {effective_filename_to_preview}")
+            else:
+                logging.error(f"{log_prefix_helper} Called for a multi-file batch. This function is for single file targets.")
+                return None, "Cannot get content for a multi-file batch directly using this helper.", None
+        else: # Specific filename provided for a batch
+            actual_file_to_process_meta = next((f for f in files_in_batch if f.get('original_filename') == target_filename_for_batch), None)
+            if not actual_file_to_process_meta:
+                logging.error(f"{log_prefix_helper} File '{target_filename_for_batch}' not found in batch record {access_id}.")
+                return None, f"File '{target_filename_for_batch}' not found in batch.", None
+            effective_original_filename = target_filename_for_batch
+            logging.info(f"{log_prefix_helper} Targeting file '{effective_original_filename}' from batch.")
     else:
         actual_file_to_process_meta = top_level_record
-        effective_original_filename = actual_file_to_process_meta.get('original_filename')
-        logging.info(f"{log_prefix_helper} Identified as single file record. Target file: {effective_original_filename}")
+        effective_filename_to_preview = actual_file_to_process_meta.get('filename_to_preview')
+        logging.info(f"{log_prefix_helper} Identified as single file record. Target file: {effective_filename_to_preview}")
 
-    if not actual_file_to_process_meta or not effective_original_filename:
+    if not actual_file_to_process_meta or not effective_filename_to_preview:
         logging.error(f"{log_prefix_helper} Could not determine target file metadata or effective filename.")
         return None, "Could not determine target file metadata.", None
 
@@ -528,11 +548,11 @@ def _get_final_file_content_for_preview(access_id: str, top_level_record: Dict[s
     raw_downloaded_content: Optional[bytes] = None # Initialize
 
     if is_split:
-        logging.info(f"{log_prefix_helper} File '{effective_original_filename}' is split. Reassembling...")
+        logging.info(f"{log_prefix_helper} File '{effective_filename_to_preview}' is split. Reassembling...")
         chunks_meta = actual_file_to_process_meta.get('chunks')
         if not chunks_meta:
-            logging.error(f"{log_prefix_helper} Split file metadata missing chunk information for '{effective_original_filename}'.")
-            return None, "Split file metadata missing chunk information.", effective_original_filename
+            logging.error(f"{log_prefix_helper} Split file metadata missing chunk information for '{effective_filename_to_preview}'.")
+            return None, "Split file metadata missing chunk information.", effective_filename_to_preview
         
         chunks_meta.sort(key=lambda c: int(c.get('part_number', 0)))
         reassembled_buffer = io.BytesIO()
@@ -541,65 +561,65 @@ def _get_final_file_content_for_preview(access_id: str, top_level_record: Dict[s
             # You need to ensure _find_best_telegram_file_id and download_telegram_file_content are imported/accessible
             chunk_tg_file_id, _ = _find_best_telegram_file_id(chunk_info.get("send_locations", []), PRIMARY_TELEGRAM_CHAT_ID)
             if not chunk_tg_file_id:
-                logging.error(f"{log_prefix_helper} Missing Telegram ID for chunk {part_num} of '{effective_original_filename}'.")
-                return None, f"Missing Telegram ID for chunk {part_num} of '{effective_original_filename}'.", effective_original_filename
+                logging.error(f"{log_prefix_helper} Missing Telegram ID for chunk {part_num} of '{effective_filename_to_preview}'.")
+                return None, f"Missing Telegram ID for chunk {part_num} of '{effective_filename_to_preview}'.", effective_filename_to_preview
             
-            logging.debug(f"{log_prefix_helper} Downloading chunk {part_num} (TG ID: {chunk_tg_file_id}) for '{effective_original_filename}'.")
+            logging.debug(f"{log_prefix_helper} Downloading chunk {part_num} (TG ID: {chunk_tg_file_id}) for '{effective_filename_to_preview}'.")
             content_part, err_part = download_telegram_file_content(chunk_tg_file_id) # Ensure this is imported
             if err_part:
-                logging.error(f"{log_prefix_helper} Error downloading chunk {part_num} for '{effective_original_filename}': {err_part}")
-                return None, f"Error downloading chunk {part_num} for '{effective_original_filename}': {err_part}", effective_original_filename
+                logging.error(f"{log_prefix_helper} Error downloading chunk {part_num} for '{effective_filename_to_preview}': {err_part}")
+                return None, f"Error downloading chunk {part_num} for '{effective_filename_to_preview}': {err_part}", effective_filename_to_preview
             if not content_part:
-                logging.error(f"{log_prefix_helper} Empty content for chunk {part_num} of '{effective_original_filename}'.")
-                return None, f"Empty content for chunk {part_num} of '{effective_original_filename}'.", effective_original_filename
+                logging.error(f"{log_prefix_helper} Empty content for chunk {part_num} of '{effective_filename_to_preview}'.")
+                return None, f"Empty content for chunk {part_num} of '{effective_filename_to_preview}'.", effective_filename_to_preview
             reassembled_buffer.write(content_part)
         
         raw_downloaded_content = reassembled_buffer.getvalue()
         reassembled_buffer.close()
-        logging.info(f"{log_prefix_helper} Finished reassembling '{effective_original_filename}'. Size: {len(raw_downloaded_content) if raw_downloaded_content else 0}")
+        logging.info(f"{log_prefix_helper} Finished reassembling '{effective_filename_to_preview}'. Size: {len(raw_downloaded_content) if raw_downloaded_content else 0}")
     else: # Not split
-        logging.info(f"{log_prefix_helper} File '{effective_original_filename}' is not split. Downloading directly.")
+        logging.info(f"{log_prefix_helper} File '{effective_filename_to_preview}' is not split. Downloading directly.")
         send_locations = actual_file_to_process_meta.get('send_locations', [])
         tg_file_id, _ = _find_best_telegram_file_id(send_locations, PRIMARY_TELEGRAM_CHAT_ID) # Ensure imported
         if not tg_file_id:
-            logging.error(f"{log_prefix_helper} Missing Telegram ID for non-split file '{effective_original_filename}'.")
-            return None, f"Missing Telegram ID for non-split file '{effective_original_filename}'.", effective_original_filename
+            logging.error(f"{log_prefix_helper} Missing Telegram ID for non-split file '{effective_filename_to_preview}'.")
+            return None, f"Missing Telegram ID for non-split file '{effective_filename_to_preview}'.", effective_filename_to_preview
         
-        logging.debug(f"{log_prefix_helper} Downloading non-split (TG ID: {tg_file_id}) for '{effective_original_filename}'.")
+        logging.debug(f"{log_prefix_helper} Downloading non-split (TG ID: {tg_file_id}) for '{effective_filename_to_preview}'.")
         raw_downloaded_content, err_download = download_telegram_file_content(tg_file_id) # Ensure imported
         if err_download:
-            logging.error(f"{log_prefix_helper} Error downloading non-split file '{effective_original_filename}': {err_download}")
-            return None, f"Error downloading non-split file '{effective_original_filename}': {err_download}", effective_original_filename
-        logging.info(f"{log_prefix_helper} Finished downloading non-split '{effective_original_filename}'. Size: {len(raw_downloaded_content) if raw_downloaded_content else 0}")
+            logging.error(f"{log_prefix_helper} Error downloading non-split file '{effective_filename_to_preview}': {err_download}")
+            return None, f"Error downloading non-split file '{effective_filename_to_preview}': {err_download}", effective_filename_to_preview
+        logging.info(f"{log_prefix_helper} Finished downloading non-split '{effective_filename_to_preview}'. Size: {len(raw_downloaded_content) if raw_downloaded_content else 0}")
 
     # 3. Check if raw content was successfully obtained
     if raw_downloaded_content is None:
-        logging.error(f"{log_prefix_helper} Failed to obtain raw downloaded content for '{effective_original_filename}'.")
-        return None, f"Failed to retrieve initial content for '{effective_original_filename}'.", effective_original_filename
+        logging.error(f"{log_prefix_helper} Failed to obtain raw downloaded content for '{effective_filename_to_preview}'.")
+        return None, f"Failed to retrieve initial content for '{effective_filename_to_preview}'.", effective_filename_to_preview
 
     # 4. Handle potential uploader-side compression
     final_content_to_serve: bytes = raw_downloaded_content # Initialize with potentially zipped content
-    filename_for_mime_type_final: str = effective_original_filename # Default to original name
+    filename_for_mime_type_final: str = effective_filename_to_preview # Default to original name
 
     is_compressed_by_uploader = actual_file_to_process_meta.get('is_compressed', False)
-    if is_compressed_by_uploader and not effective_original_filename.lower().endswith('.zip'):
-        logging.info(f"{log_prefix_helper} File '{effective_original_filename}' was compressed by uploader. Attempting to decompress.")
+    if is_compressed_by_uploader and not effective_filename_to_preview.lower().endswith('.zip'):
+        logging.info(f"{log_prefix_helper} File '{effective_filename_to_preview}' was compressed by uploader. Attempting to decompress.")
         try:
             with zipfile.ZipFile(io.BytesIO(raw_downloaded_content), 'r') as zf:
                 # _find_filename_in_zip needs to be robust or we need to be sure about the name.
-                # Assuming effective_original_filename is the name of the single file inside the zip.
-                entry_name_to_extract = _find_filename_in_zip(zf, effective_original_filename, log_prefix_helper) # Ensure imported
+                # Assuming effective_filename_to_preview is the name of the single file inside the zip.
+                entry_name_to_extract = _find_filename_in_zip(zf, effective_filename_to_preview, log_prefix_helper) # Ensure imported
                 final_content_to_serve = zf.read(entry_name_to_extract) # This is the actual content
-                # filename_for_mime_type_final remains effective_original_filename as it's the true name of the content
+                # filename_for_mime_type_final remains effective_filename_to_preview as it's the true name of the content
                 logging.info(f"{log_prefix_helper} Decompressed '{entry_name_to_extract}' from zip. New size: {len(final_content_to_serve)}")
         except Exception as e_zip:
-            logging.error(f"{log_prefix_helper} Failed to decompress '{effective_original_filename}': {e_zip}", exc_info=True)
+            logging.error(f"{log_prefix_helper} Failed to decompress '{effective_filename_to_preview}': {e_zip}", exc_info=True)
             # If decompression fails, return an error, not the zipped content for a non-zip preview
-            return None, f"Failed to decompress file '{effective_original_filename}' for preview.", effective_original_filename
+            return None, f"Failed to decompress file '{effective_filename_to_preview}' for preview.", effective_filename_to_preview
     else:
-        logging.info(f"{log_prefix_helper} File '{effective_original_filename}' not marked for uploader-side decompression, or is already a zip.")
+        logging.info(f"{log_prefix_helper} File '{effective_filename_to_preview}' not marked for uploader-side decompression, or is already a zip.")
         # final_content_to_serve is already raw_downloaded_content
-        # filename_for_mime_type_final is already effective_original_filename
+        # filename_for_mime_type_final is already effective_filename_to_preview
 
     # 5. Final check and return
     if final_content_to_serve is None: # Should not happen if logic above is correct
@@ -616,6 +636,9 @@ def serve_raw_file_content(access_id: str):
     Serves the raw file content for preview.
     """
     log_prefix = f"[ServeRawContent-{access_id}]"
+    filename_from_query = request.args.get('filename') # Get filename from query
+    if filename_from_query:
+        log_prefix += f"-File-{filename_from_query[:20]}"
     logging.info(f"{log_prefix} Request received.")
 
     # 1. Fetch the top-level record metadata
@@ -647,7 +670,7 @@ def serve_raw_file_content(access_id: str):
     
     # 3. Get the actual file content using the helper
     # The helper will internally determine if it's a batch-of-one or a true single file record.
-    content_bytes, error_msg_content, filename_for_mime = _get_final_file_content_for_preview(access_id, top_level_record)
+    content_bytes, error_msg_content, filename_for_mime_determination = _get_final_file_content_for_preview(access_id, top_level_record, filename_from_query)
 
     if error_msg_content:
         logging.error(f"{log_prefix} Error getting final file content: {error_msg_content}")
@@ -663,12 +686,14 @@ def serve_raw_file_content(access_id: str):
     # Prefer stored MIME if available from the specific file_info (in case of batch-of-one)
     # or top_level_record (for true single file).
     # The _get_final_file_content_for_preview already used the correct original filename if it decompressed.
-    final_mime_type: Optional[str] = None
+    stored_mime_type: Optional[str] = None
+    
     if top_level_record.get('is_batch', False) and len(top_level_record.get('files_in_batch', [])) == 1:
         final_mime_type = top_level_record['files_in_batch'][0].get('mime_type')
     else: # True single file record
         final_mime_type = top_level_record.get('mime_type')
 
+    final_mime_type = stored_mime_type
     if not final_mime_type: # Fallback to guessing based on the (potentially decompressed) filename
         final_mime_type, _ = mimetypes.guess_type(filename_for_mime)
         if not final_mime_type:

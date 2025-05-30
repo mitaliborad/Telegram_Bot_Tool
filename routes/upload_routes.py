@@ -397,8 +397,8 @@ def process_upload_and_generate_updates(upload_id: str) -> Generator[SseEvent, N
 
         # browser_url = f"{request.host_url.rstrip('/')}/browse/{access_id}" # Adjust browse route if needed
         complete_message = f'Batch upload ' + ('completed with errors.' if not batch_overall_success else 'complete!')
-        complete_payload = {'message': complete_message, 'download_url': browser_url, 'filename': final_browser_url_filename_for_sse,'access_id': access_id, 'is_batch': not is_single_effective_file}
-                            #'batch_access_id': access_id, }
+        complete_payload = {'message': complete_message, 'download_url': browser_url, 'filename': final_browser_url_filename_for_sse,'access_id': access_id, 'is_batch': not is_single_effective_file,
+                            'batch_access_id': access_id, }
         upload_data['status'] = 'completed_with_errors' if not batch_overall_success else 'completed'
         yield _yield_sse_event('complete', complete_payload)
 

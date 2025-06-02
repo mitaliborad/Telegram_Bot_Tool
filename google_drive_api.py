@@ -6,9 +6,12 @@ from typing import Optional, Tuple
 from googleapiclient.http import MediaIoBaseUpload
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
-from googleapiclient.http import MediaFileUpload, MediaIoBaseDownload
+from googleapiclient.http import MediaIoBaseUpload, MediaFileUpload, MediaIoBaseDownload
 from googleapiclient.errors import HttpError
 from dotenv import load_dotenv
+from typing import Dict, Any, Tuple, Optional, List, Generator
+import mimetypes
+
 
 # Load environment variables from .env file
 load_dotenv()
@@ -214,82 +217,219 @@ def _get_drive_service():
 #         logging.error(f"An unexpected error occurred during Google Drive upload for '{filename}': {e}", exc_info=True)
 #         return None, f"Unexpected error uploading to Google Drive: {str(e)}"
 
-def upload_to_gdrive(file_stream: io.BytesIO, filename: str) -> Tuple[Optional[str], Optional[str]]:
+# def upload_to_gdrive(file_stream: io.BytesIO, filename: str) -> Tuple[Optional[str], Optional[str]]:
+#     """
+#     Uploads a file stream to the configured Google Drive temporary folder.
+
+#     Args:
+#         file_stream: A file-like object (BytesIO) containing the file content.
+#         filename: The desired name for the file in Google Drive.
+
+#     Returns:
+#         A tuple (gdrive_file_id, error_message).
+#         gdrive_file_id is None if upload fails.
+#         error_message is None if upload succeeds.
+#     """
+#     try:
+#         service = _get_drive_service()
+#         if not service:
+#             return None, "Google Drive service not available."
+
+#         file_stream.seek(0) # Ensure stream is at the beginning
+#         file_size = len(file_stream.getvalue())
+
+#         file_metadata = {
+#             'name': filename,
+#             'parents': [DRIVE_TEMP_FOLDER_ID]
+#         }
+        
+#         # --- CORRECTED Way to handle in-memory streams ---
+#         # Use MediaIoBaseUpload for in-memory streams directly.
+#         # Provide the stream (fd) and mimetype.
+#         media_body = MediaIoBaseUpload(
+#             fd=file_stream,
+#             mimetype='application/octet-stream', # Or guess mimetype
+#             chunksize=1024 * 1024 * 5,  # 5MB chunk size, adjust as needed
+#             resumable=True
+#         )
+#         # --- END OF CORRECTION ---
+
+#         logging.info(f"Uploading '{filename}' to Google Drive folder ID '{DRIVE_TEMP_FOLDER_ID}' (size: {file_size} bytes)...")
+        
+#         gdrive_request = service.files().create(
+#             body=file_metadata,
+#             media_body=media_body, # Pass the MediaIoBaseUpload object here
+#             fields='id, name, webViewLink, webContentLink'
+#         )
+        
+#         response = None
+#         # Loop for resumable upload progress
+#         while response is None:
+#             status, response = gdrive_request.next_chunk()
+#             if status:
+#                 logging.info(f"GDrive Upload Progress for '{filename}': {int(status.progress() * 100)}%")
+        
+#         uploaded_file_info = response
+
+#         if uploaded_file_info and uploaded_file_info.get('id'):
+#             gdrive_file_id = uploaded_file_info.get('id')
+#             name = uploaded_file_info.get('name')
+#             logging.info(f"File '{name}' uploaded successfully to Google Drive with ID: {gdrive_file_id}")
+#             return gdrive_file_id, None
+#         else:
+#             logging.error(f"Google Drive upload failed for '{filename}'. Response: {uploaded_file_info}")
+#             return None, "Upload to Google Drive failed (no file ID returned in final response)."
+
+#     except HttpError as error:
+#         # Ensure we get the reason string correctly
+#         reason = "Unknown HTTP error reason"
+#         if hasattr(error, '_get_reason'):
+#             reason = error._get_reason()
+#         elif hasattr(error, 'reason'): # some HttpError instances might have 'reason'
+#             reason = error.reason
+        
+#         logging.error(f"An HTTP error occurred during Google Drive upload for '{filename}': {error.resp.status} - {reason}", exc_info=True)
+#         return None, f"Google Drive API HTTP error: {error.resp.status} - {reason}"
+#     except Exception as e:
+#         logging.error(f"An unexpected error occurred during Google Drive upload for '{filename}': {e}", exc_info=True)
+#         return None, f"Unexpected error uploading to Google Drive: {str(e)}"
+
+def upload_to_gdrive_with_progress(
+    # Can accept either a file path or an in-memory stream
+    source: str | io.BytesIO, 
+    filename_in_gdrive: str,
+    operation_id_for_log: str # For logging context
+) -> Generator[Dict[str, Any], None, Tuple[Optional[str], Optional[str]]]:
     """
-    Uploads a file stream to the configured Google Drive temporary folder.
+    Uploads a file (from path or stream) to Google Drive, yielding progress.
 
     Args:
-        file_stream: A file-like object (BytesIO) containing the file content.
-        filename: The desired name for the file in Google Drive.
+        source: File path (str) or BytesIO stream.
+        filename_in_gdrive: Name for the file in Google Drive.
+        operation_id_for_log: ID for logging.
 
-    Returns:
+    Yields:
+        Progress dictionaries: {'type': 'progress', 'percentage': int}
+
+    Returns (via StopIteration):
         A tuple (gdrive_file_id, error_message).
-        gdrive_file_id is None if upload fails.
-        error_message is None if upload succeeds.
     """
+    log_prefix = f"[GDriveUpload-{operation_id_for_log}-{filename_in_gdrive[:20]}]"
+    service = None
     try:
         service = _get_drive_service()
         if not service:
+            logging.error(f"{log_prefix} Google Drive service not available for upload.")
+            # To make it a generator that signals error, we yield an error dict and then return
+            yield {"type": "error", "message": "Google Drive service not available."}
             return None, "Google Drive service not available."
 
-        file_stream.seek(0) # Ensure stream is at the beginning
-        file_size = len(file_stream.getvalue())
-
         file_metadata = {
-            'name': filename,
+            'name': filename_in_gdrive,
             'parents': [DRIVE_TEMP_FOLDER_ID]
         }
         
-        # --- CORRECTED Way to handle in-memory streams ---
-        # Use MediaIoBaseUpload for in-memory streams directly.
-        # Provide the stream (fd) and mimetype.
-        media_body = MediaIoBaseUpload(
-            fd=file_stream,
-            mimetype='application/octet-stream', # Or guess mimetype
-            chunksize=1024 * 1024 * 5,  # 5MB chunk size, adjust as needed
-            resumable=True
-        )
-        # --- END OF CORRECTION ---
+        media_body = None
+        file_size = 0
 
-        logging.info(f"Uploading '{filename}' to Google Drive folder ID '{DRIVE_TEMP_FOLDER_ID}' (size: {file_size} bytes)...")
+        if isinstance(source, str) and os.path.exists(source): # It's a file path
+            file_size = os.path.getsize(source)
+            media_body = MediaFileUpload(
+                source,
+                mimetype=mimetypes.guess_type(filename_in_gdrive)[0] or 'application/octet-stream',
+                resumable=True,
+                chunksize=1024 * 1024 * 1 # 1MB chunk for more frequent progress for smaller files
+            )
+            logging.info(f"{log_prefix} Prepared MediaFileUpload from path: {source}, size: {file_size}")
+        elif isinstance(source, io.BytesIO):
+            source.seek(0)
+            file_size = len(source.getvalue())
+            source.seek(0)
+            media_body = MediaIoBaseUpload(
+                fd=source,
+                mimetype=mimetypes.guess_type(filename_in_gdrive)[0] or 'application/octet-stream',
+                chunksize=1024 * 1024 * 1,
+                resumable=True
+            )
+            logging.info(f"{log_prefix} Prepared MediaIoBaseUpload from stream, size: {file_size}")
+        else:
+            err_msg = "Invalid source type for GDrive upload. Must be file path or BytesIO."
+            logging.error(f"{log_prefix} {err_msg}")
+            yield {"type": "error", "message": err_msg}
+            return None, err_msg
+        
+        if file_size == 0:
+            logging.warning(f"{log_prefix} Source file/stream is empty. Skipping actual GDrive upload call, but will create an empty file placeholder if needed by logic.")
+            # You might choose to create an empty file on GDrive or handle this differently.
+            # For now, let's assume an empty file means we don't upload but signal completion.
+            # Or, if an empty file is an error for you, raise an error.
+            # Let's simulate a successful "upload" of an empty file for now.
+            # empty_file_metadata = {'name': filename_in_gdrive, 'parents': [DRIVE_TEMP_FOLDER_ID], 'mimeType': 'application/octet-stream'}
+            # created_empty_file = service.files().create(body=empty_file_metadata, fields='id,name').execute()
+            # logging.info(f"{log_prefix} Created empty file placeholder in GDrive with ID: {created_empty_file.get('id')}")
+            # yield {"type": "progress", "percentage": 100}
+            # return created_empty_file.get('id'), None
+            # For now, let's treat empty file as successful GDrive "upload" (no actual bytes transferred)
+            # The caller should decide if an empty file is an error overall.
+            # We need to create an empty file on GDrive for consistency if we want to track its gdrive_file_id
+            placeholder_metadata = {'name': filename_in_gdrive, 'parents': [DRIVE_TEMP_FOLDER_ID]}
+            # Create an empty file using just metadata
+            empty_file = service.files().create(body=placeholder_metadata, fields='id,name').execute()
+            gdrive_id = empty_file.get('id')
+            if gdrive_id:
+                logging.info(f"{log_prefix} Empty source. Created empty file placeholder in GDrive. ID: {gdrive_id}")
+                yield {"type": "progress", "percentage": 100}
+                return gdrive_id, None
+            else:
+                return None, "Failed to create empty file placeholder on GDrive."
+
+
+        logging.info(f"{log_prefix} Initiating resumable upload to Google Drive...")
         
         gdrive_request = service.files().create(
             body=file_metadata,
-            media_body=media_body, # Pass the MediaIoBaseUpload object here
-            fields='id, name, webViewLink, webContentLink'
+            media_body=media_body,
+            fields='id, name' # Only need id and name for confirmation
         )
         
         response = None
-        # Loop for resumable upload progress
         while response is None:
             status, response = gdrive_request.next_chunk()
             if status:
-                logging.info(f"GDrive Upload Progress for '{filename}': {int(status.progress() * 100)}%")
+                progress_percentage = int(status.progress() * 100)
+                logging.info(f"{log_prefix} GDrive Upload Progress: {progress_percentage}%")
+                yield {"type": "progress", "percentage": progress_percentage}
         
+        # When loop finishes, response contains the completed file resource
         uploaded_file_info = response
 
         if uploaded_file_info and uploaded_file_info.get('id'):
             gdrive_file_id = uploaded_file_info.get('id')
             name = uploaded_file_info.get('name')
-            logging.info(f"File '{name}' uploaded successfully to Google Drive with ID: {gdrive_file_id}")
-            return gdrive_file_id, None
+            logging.info(f"{log_prefix} File '{name}' uploaded successfully to GDrive. ID: {gdrive_file_id}")
+            # Ensure 100% is yielded if not already
+            yield {"type": "progress", "percentage": 100} 
+            return gdrive_file_id, None # Return via StopIteration implicitly
         else:
-            logging.error(f"Google Drive upload failed for '{filename}'. Response: {uploaded_file_info}")
-            return None, "Upload to Google Drive failed (no file ID returned in final response)."
+            err_msg = "GDrive upload finished but no file ID returned in final response."
+            logging.error(f"{log_prefix} {err_msg} Response: {uploaded_file_info}")
+            yield {"type": "error", "message": err_msg}
+            return None, err_msg
 
     except HttpError as error:
-        # Ensure we get the reason string correctly
-        reason = "Unknown HTTP error reason"
-        if hasattr(error, '_get_reason'):
-            reason = error._get_reason()
-        elif hasattr(error, 'reason'): # some HttpError instances might have 'reason'
-            reason = error.reason
-        
-        logging.error(f"An HTTP error occurred during Google Drive upload for '{filename}': {error.resp.status} - {reason}", exc_info=True)
-        return None, f"Google Drive API HTTP error: {error.resp.status} - {reason}"
+        reason = getattr(error, '_get_reason', lambda: str(error))()
+        status_code = error.resp.status if hasattr(error, 'resp') else 'N/A'
+        logging.error(f"{log_prefix} GDrive API HTTP error: {status_code} - {reason}", exc_info=True)
+        yield {"type": "error", "message": f"Google Drive API HTTP error: {status_code} - {reason}"}
+        return None, f"Google Drive API HTTP error: {status_code} - {reason}"
     except Exception as e:
-        logging.error(f"An unexpected error occurred during Google Drive upload for '{filename}': {e}", exc_info=True)
+        logging.error(f"{log_prefix} Unexpected error during GDrive upload: {e}", exc_info=True)
+        yield {"type": "error", "message": f"Unexpected error uploading to GDrive: {str(e)}"}
         return None, f"Unexpected error uploading to Google Drive: {str(e)}"
+    finally:
+        if isinstance(source, io.BytesIO): # Close stream only if we created it here conceptually
+            # source.close() # Caller of this generator should handle closing the source stream if it was passed in
+            pass
 
 def download_from_gdrive(gdrive_file_id: str) -> Tuple[Optional[io.BytesIO], Optional[str]]:
     """

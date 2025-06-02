@@ -3,6 +3,7 @@ import logging
 from typing import Optional, Dict, Any, List, Tuple
 from bson import ObjectId
 from pymongo.errors import PyMongoError, OperationFailure
+import json
 
 # Import the function to get the metadata collection (user_files)
 from .connection import get_metadata_collection
@@ -10,38 +11,118 @@ from .user_models import get_all_users
 
 # --- Active File Metadata (user_files collection) Functions ---
 
+# def save_file_metadata(record: Dict[str, Any]) -> Tuple[bool, str]:
+#     """
+#     Saves a single file upload record (document) to the metadata collection.
+#     Overwrites existing record if one with the same 'access_id' exists (upsert).
+#     """
+#     collection, error = get_metadata_collection()
+#     if error or collection is None:
+#         return False, f"Failed to get collection: {error}"
+#     if "access_id" not in record:
+#         return False, "Record is missing 'access_id' field."
+#     access_id_for_log = record.get("access_id", "UNKNOWN_ACCESS_ID")
+#     log_prefix_save = f"[SaveMeta-{access_id_for_log}]"
+#     try:
+#         update_payload = record.copy()
+#         has_id_before_del = '_id' in update_payload
+#         id_value_before_del = str(update_payload.get('_id')) if has_id_before_del else "N/A"
+#         logging.info(f"{log_prefix_save} Update payload *before* _id removal. Has _id: {has_id_before_del}. _id value: {id_value_before_del}")
+
+#         if '_id' in update_payload:
+#             del update_payload['_id']
+#             logging.info(f"{log_prefix_save} Removed '_id' from update_payload.")
+#         else:
+#             logging.info(f"{log_prefix_save} '_id' was not in update_payload to begin with (likely an initial insert).")
+#         if '_id' in update_payload:
+#             del update_payload['_id']
+            
+#         result = collection.update_one(
+#             {"access_id": record["access_id"]},
+#             {"$set": update_payload},           
+#             upsert=True
+#         )
+#         if result.upserted_id:
+#             logging.info(f"Successfully inserted metadata for access_id: {record['access_id']}")
+#             return True, f"Metadata inserted (ID: {result.upserted_id})."
+#         elif result.modified_count > 0:
+#             logging.info(f"Successfully updated metadata for access_id: {record['access_id']}")
+#             return True, "Metadata updated."
+#         elif result.matched_count > 0:
+#             logging.info(f"Metadata for access_id {record['access_id']} already exists and is identical.")
+#             return True, "Metadata already up-to-date."
+#         else:
+#             # This case should ideally not be hit if upsert=True and access_id is present.
+#             # It implies the record was matched but no fields needed updating, and it wasn't a new insert.
+#             logging.warning(f"Upsert for access_id {record['access_id']} neither inserted nor modified directly (no change or unexpected).")
+#             return True, "Upsert completed (no change or unexpected state, but considered success)." # Adjusted to True for "no change"
+#     except OperationFailure as of: 
+#         if "would modify the immutable field '_id'" in str(of):
+#             logging.error(f"Attempted to modify immutable _id field for access_id {record.get('access_id', 'UNKNOWN')}. This should have been prevented. Payload had _id: {'_id' in record}. Error: {of}", exc_info=True)
+#             return False, f"Database error: Attempt to modify immutable field _id. {of}"
+#         error_msg = f"Database operation failed saving metadata: {of}"; logging.exception(error_msg); return False, error_msg
+
+#     except Exception as e: error_msg = f"Unexpected error saving metadata: {e}"; logging.exception(error_msg); return False, error_msg
+
 def save_file_metadata(record: Dict[str, Any]) -> Tuple[bool, str]:
-    """
-    Saves a single file upload record (document) to the metadata collection.
-    Overwrites existing record if one with the same 'access_id' exists (upsert).
-    """
     collection, error = get_metadata_collection()
     if error or collection is None:
         return False, f"Failed to get collection: {error}"
     if "access_id" not in record:
         return False, "Record is missing 'access_id' field."
+    
+    access_id_for_log = record.get("access_id", "UNKNOWN_ACCESS_ID")
+    log_prefix_save = f"[SaveMeta-{access_id_for_log}]"
+
     try:
+        update_payload = record.copy()
+        
+        # --- DETAILED LOGGING ADDED HERE ---
+        # logging.info(f"{log_prefix_save} Original record passed to save_file_metadata: {json.dumps(record, default=str, indent=2)}") # Can be very verbose for large records
+        
+        has_id_before_del = '_id' in update_payload
+        id_value_before_del = str(update_payload.get('_id')) if has_id_before_del else "N/A"
+        logging.info(f"{log_prefix_save} Update payload *before* _id removal. Has _id: {has_id_before_del}. _id value: {id_value_before_del}")
+
+        if '_id' in update_payload:
+            del update_payload['_id']
+            logging.info(f"{log_prefix_save} Removed '_id' from update_payload.")
+        else:
+            logging.info(f"{log_prefix_save} '_id' was not in update_payload to begin with (likely an initial insert).")
+        
+        # logging.info(f"{log_prefix_save} Final update_payload for $set: {json.dumps(update_payload, default=str, indent=2)}") # Verbose
+        # --- END OF DETAILED LOGGING ---
+
         result = collection.update_one(
             {"access_id": record["access_id"]},
-            {"$set": record},
+            {"$set": update_payload}, 
             upsert=True
         )
+        
         if result.upserted_id:
-            logging.info(f"Successfully inserted metadata for access_id: {record['access_id']}")
+            logging.info(f"{log_prefix_save} Successfully INSERTED metadata. New DB _id: {result.upserted_id}")
             return True, f"Metadata inserted (ID: {result.upserted_id})."
         elif result.modified_count > 0:
-            logging.info(f"Successfully updated metadata for access_id: {record['access_id']}")
+            logging.info(f"{log_prefix_save} Successfully UPDATED metadata.")
             return True, "Metadata updated."
         elif result.matched_count > 0:
-            logging.info(f"Metadata for access_id {record['access_id']} already exists and is identical.")
+            logging.info(f"{log_prefix_save} Metadata already exists and is identical (no modification needed).")
             return True, "Metadata already up-to-date."
         else:
-            # This case should ideally not be hit if upsert=True and access_id is present.
-            # It implies the record was matched but no fields needed updating, and it wasn't a new insert.
-            logging.warning(f"Upsert for access_id {record['access_id']} neither inserted nor modified directly (no change or unexpected).")
-            return True, "Upsert completed (no change or unexpected state, but considered success)." # Adjusted to True for "no change"
-    except OperationFailure as of: error_msg = f"Database operation failed saving metadata: {of}"; logging.exception(error_msg); return False, error_msg
-    except Exception as e: error_msg = f"Unexpected error saving metadata: {e}"; logging.exception(error_msg); return False, error_msg
+            logging.warning(f"{log_prefix_save} Upsert neither inserted nor modified (unexpected). Matched: {result.matched_count}, Modified: {result.modified_count}, Upserted ID: {result.upserted_id}")
+            return False, "Upsert completed unexpectedly (no change or insert failure)."
+
+    except OperationFailure as of:
+        if "would modify the immutable field '_id'" in str(of):
+            logging.error(f"{log_prefix_save} OperationFailure: Attempted to modify immutable _id field. This indicates the _id was still in the $set payload somehow. Error: {of}", exc_info=True)
+            return False, f"Database error: Attempt to modify immutable field _id. {of}"
+        error_msg = f"Database operation failed saving metadata: {of}"
+        logging.error(f"{log_prefix_save} {error_msg}", exc_info=True)
+        return False, error_msg
+    except Exception as e:
+        error_msg = f"Unexpected error saving metadata: {e}"
+        logging.error(f"{log_prefix_save} {error_msg}", exc_info=True)
+        return False, error_msg
 
 def find_metadata_by_username(username: str) -> Tuple[Optional[List[Dict[str, Any]]], str]:
     """

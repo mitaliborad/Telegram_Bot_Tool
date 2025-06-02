@@ -29,7 +29,7 @@ from config import (
 from telegram_api import send_file_to_telegram
 from routes.utils import _yield_sse_event, _calculate_progress, _safe_remove_directory
 from extensions import upload_progress_data
-from google_drive_api import upload_to_gdrive
+# from google_drive_api import upload_to_gdrive
 # Type Aliases
 ApiResult = Tuple[bool, str, Optional[Dict[str, Any]]] # success, message, response_json
 SseEvent = str

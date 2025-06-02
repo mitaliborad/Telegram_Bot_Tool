@@ -1,5 +1,13 @@
 # Python
 # -----------------------------------------------------------------------------
+gdrive-service-account-credentials.json
+Selenium-Logs/
+uploads_temp/
+# Add other files/directories you want to ignore
+*.pyc
+__pycache__/
+.env
+*.log
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

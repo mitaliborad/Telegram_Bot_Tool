@@ -9,7 +9,13 @@
 # pytz
 # # Keep python-telegram-bot if you still use bot.py separately
 # python-telegram-bot==13.15
-
+google-auth
+google-api-python-client
+python-dotenv
+google-api-python-client
+google-auth-httplib2
+google-auth-oauthlib
+python-dotenv
 
 Flask>=2.0
 Flask-CORS

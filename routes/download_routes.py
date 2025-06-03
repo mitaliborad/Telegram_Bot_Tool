@@ -11,6 +11,8 @@ import io
 import threading
 from typing import Dict, Any, Tuple, Optional, List, Generator
 from concurrent.futures import ThreadPoolExecutor, Future, as_completed
+from google_drive_api import download_from_gdrive
+from flask import redirect, abort
 from extensions import download_prep_data
 from flask import (
     Blueprint, request, make_response, jsonify, Response, stream_with_context, send_file, url_for
@@ -21,7 +23,7 @@ from datetime import datetime, timedelta, timezone
 from dateutil import parser
 from database import find_metadata_by_username, find_metadata_by_access_id
 from config import (
-    PRIMARY_TELEGRAM_CHAT_ID, UPLOADS_TEMP_DIR, MAX_DOWNLOAD_WORKERS, TELEGRAM_MAX_CHUNK_SIZE_BYTES,
+    PRIMARY_TELEGRAM_CHAT_ID, UPLOADS_TEMP_DIR, MAX_DOWNLOAD_WORKERS, TELEGRAM_MAX_CHUNK_SIZE_BYTES,CHUNK_SIZE,
     format_bytes # Used by _download_chunk_task if logging its size
 )
 from telegram_api import download_telegram_file_content
@@ -35,7 +37,24 @@ STREAMING_CHUNK_SIZE_TO_CLIENT = 1 * 1024 * 1024
 SseEvent = str
 ChunkDataResult = Tuple[int, Optional[bytes], Optional[str]] # part_num, content_bytes, error_message
 
-download_bp = Blueprint('download', __name__)
+download_bp = Blueprint('download_prefixed', __name__)
+download_sse_bp = Blueprint('download_sse', __name__)
+def generate_file_chunks(stream: io.BytesIO, stream_name: str = "download"):
+    """Helper generator to yield chunks from a BytesIO stream and ensure it's closed."""
+    try:
+        while True:
+            chunk = stream.read(CHUNK_SIZE) # Use a defined CHUNK_SIZE from config
+            if not chunk:
+                break
+            yield chunk
+    except Exception as e:
+        logging.error(f"Error during chunk generation for {stream_name}: {e}")
+        # Depending on desired behavior, you might yield an error marker or just stop
+    finally:
+        if stream:
+            stream.close()
+        logging.info(f"Stream {stream_name} closed after chunk generation.")
+
 
 def _schedule_cleanup(temp_id: str, path: Optional[str]):
     """Safely cleans up temporary download file and state data."""
@@ -67,30 +86,354 @@ def prepare_download_stream(username: str, filename: str) -> Response:
     return Response(stream_with_context(_prepare_download_and_generate_updates(prep_id)), mimetype='text/event-stream')
 
 @download_bp.route('/stream-download/<access_id>')
+# def stream_download_by_access_id(access_id: str) -> Response:
+#     prep_id = str(uuid.uuid4()) 
+#     file_info, error_msg = find_metadata_by_access_id(access_id)
+    
+#     if error_msg or not file_info : # Ensure file_info exists
+#         logging.warning(f"[{prep_id}] Invalid access_id '{access_id}' or DB error for SSE stream. Error: {error_msg}")
+#         def error_stream(): yield _yield_sse_event('error', {'message': error_msg or 'Invalid or expired download link.'})
+#         return Response(stream_with_context(error_stream()), mimetype='text/event-stream')
+    
+#     username_from_record = file_info.get('username')
+#     if not username_from_record:
+#         logging.error(f"[{prep_id}] Record for access_id '{access_id}' is missing username. Cannot proceed.")
+#         def error_stream(): yield _yield_sse_event('error', {'message': 'File record is incomplete (missing user info).'})
+#         return Response(stream_with_context(error_stream()), mimetype='text/event-stream')
+
+#     download_prep_data[prep_id] = {
+#          "prep_id": prep_id, "status": "initiated", "username": username_from_record, 
+#          "requested_filename": file_info.get('original_filename', file_info.get('batch_display_name', 'unknown')), 
+#          "original_filename": file_info.get('original_filename', file_info.get('batch_display_name', 'unknown')), 
+#          "access_id": access_id, "error": None, "final_temp_file_path": None,
+#          "final_file_size": 0, "start_time": time.time()
+#     }
+#     return Response(stream_with_context(_prepare_download_and_generate_updates(prep_id)), mimetype='text/event-stream')
+
+# def stream_download_by_access_id(access_id: str):
+#     metadata, error = find_metadata_by_access_id(access_id)
+#     if error or not metadata:
+#         logging.error(f"[Download-{access_id}] Metadata not found: {error}")
+#         abort(404, description="File record not found.")
+
+#     storage_location = metadata.get("storage_location")
+#     file_info_in_batch = metadata.get("files_in_batch", [{}])[0] # Assuming single file for now
+#     original_filename = file_info_in_batch.get("original_filename", "downloaded_file")
+
+#     if storage_location == "gdrive":
+#         gdrive_id = file_info_in_batch.get("gdrive_file_id")
+#         if not gdrive_id:
+#             abort(500, "GDrive ID missing in record.")
+        
+#         gdrive_stream, gdrive_err = download_from_gdrive(gdrive_id)
+#         if gdrive_err or not gdrive_stream:
+#             abort(500, f"Failed to download from GDrive: {gdrive_err}")
+        
+#         # Stream gdrive_stream to client
+#         # response = Response(stream_with_context(gdrive_stream_generator(gdrive_stream)))
+#         # response.headers['Content-Disposition'] = f'attachment; filename="{original_filename}"'
+#         # return response
+#         # For simplicity, let's assume download_from_gdrive returns a stream Flask can handle:
+#         # This is a placeholder - actual streaming from GDrive needs careful handling of the BytesIO
+#         def generate_gdrive_chunks(stream):
+#             while True:
+#                 chunk = stream.read(CHUNK_SIZE) # Define CHUNK_SIZE
+#                 if not chunk:
+#                     break
+#                 yield chunk
+#             stream.close()
+
+#         response = Response(stream_with_context(generate_gdrive_chunks(gdrive_stream)), mimetype=file_info_in_batch.get("mime_type", "application/octet-stream"))
+#         response.headers['Content-Disposition'] = f'attachment; filename="{original_filename}"'
+#         return response
+
+#     elif storage_location == "telegram":
+#         # Your existing logic to stream from Telegram using file_ids from metadata
+#         # tg_file_id = file_info_in_batch.get("telegram_file_id") # Or however you store it
+#         # This part depends heavily on your telegram_api.py implementation
+#         logging.info(f"[Download-{access_id}] Serving from Telegram. Details: {file_info_in_batch}")
+#         # ... implement Telegram streaming ...
+#         return "Streaming from Telegram (not fully implemented in this example)"
+        
+#     else:
+#         abort(500, f"Unknown or error storage location: {storage_location}")
+
+# @download_bp.route('/stream-download/<access_id>')
+# def stream_download_by_access_id(access_id: str) -> Response:
+#     log_prefix = f"[DL-Stream-{access_id}]"
+#     logging.info(f"{log_prefix} Request received.")
+
+#     metadata, error = find_metadata_by_access_id(access_id)
+#     if error or not metadata:
+#         logging.error(f"{log_prefix} Metadata not found or DB error: {error}")
+#         abort(404, description=f"File record not found for ID: {access_id}. {error or ''}")
+
+#     storage_location = metadata.get("storage_location")
+#     if not metadata.get("files_in_batch"):
+#         logging.error(f"{log_prefix} 'files_in_batch' is missing or empty in metadata.")
+#         abort(500, description="File metadata is incomplete (no file entries).")
+        
+#     file_info_in_batch = metadata.get("files_in_batch", [{}])[0] 
+#     original_filename = file_info_in_batch.get("original_filename", f"download_{access_id}")
+#     mime_type = file_info_in_batch.get("mime_type", "application/octet-stream")
+
+#     logging.info(f"{log_prefix} Filename: '{original_filename}', Storage: '{storage_location}'")
+
+#     if storage_location == "gdrive":
+#         gdrive_id = file_info_in_batch.get("gdrive_file_id")
+#         if not gdrive_id:
+#             logging.error(f"{log_prefix} GDrive ID missing in record for GDrive storage.")
+#             abort(500, "File record inconsistent: GDrive ID missing for GDrive storage.")
+        
+#         logging.info(f"{log_prefix} Attempting to download from GDrive ID: {gdrive_id}")
+#         gdrive_stream, gdrive_err = download_from_gdrive(gdrive_id)
+#         if gdrive_err or not gdrive_stream:
+#             logging.error(f"{log_prefix} Failed to download from GDrive: {gdrive_err}")
+#             abort(500, f"Failed to retrieve file from temporary storage: {gdrive_err}")
+        
+#         logging.info(f"{log_prefix} Successfully fetched from GDrive. Preparing to stream to client.")
+#         response = Response(stream_with_context(generate_file_chunks(gdrive_stream, f"GDrive-{gdrive_id}")), mimetype=mime_type)
+#         response.headers['Content-Disposition'] = f'attachment; filename="{original_filename}"'
+#         return response
+
+#     elif storage_location == "telegram":
+#         from routes.utils import _find_best_telegram_file_id # Ensure this is importable
+        
+#         tg_file_id_to_download = None
+#         if file_info_in_batch.get("is_split_for_telegram"):
+#             logging.error(f"{log_prefix} Direct streaming of split Telegram files not fully supported. Use preparation endpoint.")
+#             abort(501, "Direct streaming of split files not implemented here. Use preparation endpoint.")
+#         else:
+#             tg_file_id_to_download, _ = _find_best_telegram_file_id(file_info_in_batch.get("telegram_send_locations",[]), PRIMARY_TELEGRAM_CHAT_ID)
+
+#         if not tg_file_id_to_download:
+#             logging.error(f"{log_prefix} Telegram file ID missing in record for Telegram storage.")
+#             abort(500, "File record inconsistent: Telegram file ID missing.")
+
+#         logging.info(f"{log_prefix} Attempting to download from Telegram File ID: {tg_file_id_to_download}")
+#         telegram_stream, tg_dl_error = download_telegram_file_content(tg_file_id_to_download)
+#         if tg_dl_error or not telegram_stream:
+#             logging.error(f"{log_prefix} Failed to download from Telegram: {tg_dl_error}")
+#             abort(500, f"Failed to retrieve file from final storage: {tg_dl_error}")
+
+#         logging.info(f"{log_prefix} Successfully fetched from Telegram. Preparing to stream to client.")
+#         response = Response(stream_with_context(generate_file_chunks(telegram_stream, f"TG-{tg_file_id_to_download}")), mimetype=mime_type)
+#         response.headers['Content-Disposition'] = f'attachment; filename="{original_filename}"'
+#         return response
+        
+#     elif (storage_location == "mixed_gdrive_telegram_error" or
+#           db_record.get("status_overall") == "telegram_processing_errors"): # Use db_record here
+#         # Prioritize GDrive if Telegram transfer failed
+#         logging.warning(f"{log_prefix} Telegram transfer had issues. Attempting to serve from GDrive fallback.")
+#         gdrive_id = file_info_in_batch.get("gdrive_file_id") # file_info_in_batch comes from metadata (aliased as db_record here)
+#         if not gdrive_id:
+#             logging.error(f"{log_prefix} GDrive ID missing for fallback.")
+#             error_msg_fallback_no_id = (
+#                 "File unavailable: Telegram processing failed and GDrive copy is missing ID."
+#             )
+#             abort(500, error_msg_fallback_no_id)
+        
+#         gdrive_stream, gdrive_err = download_from_gdrive(gdrive_id)
+#         if gdrive_err or not gdrive_stream:
+#             logging.error(f"{log_prefix} Failed to download from GDrive (fallback): {gdrive_err}")
+#             error_msg_fallback_fail = (
+#                 "File unavailable: Telegram processing failed and GDrive copy "
+#                 f"could not be retrieved: {gdrive_err}"
+#             )
+#             abort(500, error_msg_fallback_fail)
+        
+#         response = Response(stream_with_context(generate_file_chunks(gdrive_stream, f"GDrive-Fallback-{gdrive_id}")), mimetype=mime_type)
+#         response.headers['Content-Disposition'] = f'attachment; filename="{original_filename}"'
+#         return response
+#     else:
+#         logging.error(f"{log_prefix} Unknown or error storage location: {storage_location} or status: {metadata.get('status_overall')}")
+#         abort(500, f"File is in an unknown or error state. Storage: {storage_location}")
+
+
+# @download_bp.route('/stream-download/<access_id>')
+# def stream_download_by_access_id(access_id: str) -> Response:
+#     log_prefix = f"[DL-Stream-{access_id}]"
+#     logging.info(f"{log_prefix} Request received.")
+
+#     metadata, error = find_metadata_by_access_id(access_id) # metadata is our db_record
+#     if error or not metadata:
+#         logging.error(f"{log_prefix} Metadata not found or DB error: {error}")
+#         abort(404, description=f"File record not found for ID: {access_id}. {error or ''}")
+
+#     storage_location = metadata.get("storage_location")
+#     if not metadata.get("files_in_batch"):
+#         logging.error(f"{log_prefix} 'files_in_batch' is missing or empty in metadata.")
+#         abort(500, description="File metadata is incomplete (no file entries).")
+        
+#     file_info_in_batch = metadata.get("files_in_batch", [{}])[0] 
+#     original_filename = file_info_in_batch.get("original_filename", f"download_{access_id}")
+#     mime_type = file_info_in_batch.get("mime_type", "application/octet-stream")
+
+#     logging.info(f"{log_prefix} Filename: '{original_filename}', Storage: '{storage_location}'")
+
+#     if storage_location == "gdrive":
+#         # ... (GDrive serving logic as before) ...
+#         gdrive_id = file_info_in_batch.get("gdrive_file_id")
+#         if not gdrive_id:
+#             logging.error(f"{log_prefix} GDrive ID missing in record for GDrive storage.")
+#             abort(500, "File record inconsistent: GDrive ID missing for GDrive storage.")
+#         logging.info(f"{log_prefix} Attempting to download from GDrive ID: {gdrive_id}")
+#         gdrive_stream, gdrive_err = download_from_gdrive(gdrive_id)
+#         if gdrive_err or not gdrive_stream:
+#             logging.error(f"{log_prefix} Failed to download from GDrive: {gdrive_err}")
+#             abort(500, f"Failed to retrieve file from temporary storage: {gdrive_err}")
+#         logging.info(f"{log_prefix} Successfully fetched from GDrive. Preparing to stream to client.")
+#         response = Response(stream_with_context(generate_file_chunks(gdrive_stream, f"GDrive-{gdrive_id}")), mimetype=mime_type)
+#         response.headers['Content-Disposition'] = f'attachment; filename="{original_filename}"'
+#         return response
+
+#     elif storage_location == "telegram":
+#         # ... (Telegram serving logic as before) ...
+#          from routes.utils import _find_best_telegram_file_id 
+#          tg_file_id_to_download = None
+#          if file_info_in_batch.get("is_split_for_telegram"): # Check this key from the background task
+#              logging.error(f"{log_prefix} Direct streaming of split Telegram files not fully supported for simple download. Client should use preparation endpoint.")
+#              abort(501, "Split files require download preparation. Cannot stream directly.")
+#          else:
+#              # For single files, "telegram_send_locations" should exist
+#              tg_file_id_to_download, _ = _find_best_telegram_file_id(file_info_in_batch.get("telegram_send_locations",[]), PRIMARY_TELEGRAM_CHAT_ID)
+
+#          if not tg_file_id_to_download:
+#              logging.error(f"{log_prefix} Telegram file ID missing in record for Telegram storage.")
+#              abort(500, "File record inconsistent: Telegram file ID missing.")
+
+#          logging.info(f"{log_prefix} Attempting to download from Telegram File ID: {tg_file_id_to_download}")
+#          telegram_stream, tg_dl_error = download_telegram_file_content(tg_file_id_to_download)
+#          if tg_dl_error or not telegram_stream:
+#              logging.error(f"{log_prefix} Failed to download from Telegram: {tg_dl_error}")
+#              abort(500, f"Failed to retrieve file from final storage: {tg_dl_error}")
+
+#          logging.info(f"{log_prefix} Successfully fetched from Telegram. Preparing to stream to client.")
+#          response = Response(stream_with_context(generate_file_chunks(telegram_stream, f"TG-{tg_file_id_to_download}")), mimetype=mime_type)
+#          response.headers['Content-Disposition'] = f'attachment; filename="{original_filename}"'
+#          return response
+        
+#     elif (storage_location == "mixed_gdrive_telegram_error" or
+#           metadata.get("status_overall") == "telegram_processing_errors"): # Correctly use 'metadata'
+#         # Prioritize GDrive if Telegram transfer failed
+#         logging.warning(f"{log_prefix} Telegram transfer had issues. Attempting to serve from GDrive fallback.")
+#         gdrive_id = file_info_in_batch.get("gdrive_file_id")
+#         if not gdrive_id:
+#             logging.error(f"{log_prefix} GDrive ID missing for fallback.")
+#             error_msg_fallback_no_id = (
+#                 "File unavailable: Telegram processing failed and GDrive copy is missing ID."
+#             )
+#             abort(500, error_msg_fallback_no_id)
+        
+#         gdrive_stream, gdrive_err = download_from_gdrive(gdrive_id)
+#         if gdrive_err or not gdrive_stream:
+#             logging.error(f"{log_prefix} Failed to download from GDrive (fallback): {gdrive_err}")
+#             error_msg_fallback_fail = (
+#                 "File unavailable: Telegram processing failed and GDrive copy "
+#                 f"could not be retrieved: {gdrive_err}"
+#             )
+#             abort(500, error_msg_fallback_fail)
+        
+#         response = Response(stream_with_context(generate_file_chunks(gdrive_stream, f"GDrive-Fallback-{gdrive_id}")), mimetype=mime_type)
+#         response.headers['Content-Disposition'] = f'attachment; filename="{original_filename}"'
+#         return response
+#     else:
+#         logging.error(f"{log_prefix} Unknown or error storage location: {storage_location} or status: {metadata.get('status_overall')}")
+#         abort(500, f"File is in an unknown or error state. Storage: {storage_location}")
+
+@download_bp.route('/stream-download/<access_id>')
 def stream_download_by_access_id(access_id: str) -> Response:
-    prep_id = str(uuid.uuid4()) 
-    file_info, error_msg = find_metadata_by_access_id(access_id)
-    
-    if error_msg or not file_info : # Ensure file_info exists
-        logging.warning(f"[{prep_id}] Invalid access_id '{access_id}' or DB error for SSE stream. Error: {error_msg}")
-        def error_stream(): yield _yield_sse_event('error', {'message': error_msg or 'Invalid or expired download link.'})
-        return Response(stream_with_context(error_stream()), mimetype='text/event-stream')
-    
-    username_from_record = file_info.get('username')
-    if not username_from_record:
-        logging.error(f"[{prep_id}] Record for access_id '{access_id}' is missing username. Cannot proceed.")
-        def error_stream(): yield _yield_sse_event('error', {'message': 'File record is incomplete (missing user info).'})
-        return Response(stream_with_context(error_stream()), mimetype='text/event-stream')
+    log_prefix = f"[DL-Stream-{access_id}]"
+    logging.info(f"{log_prefix} Request received.")
 
-    download_prep_data[prep_id] = {
-         "prep_id": prep_id, "status": "initiated", "username": username_from_record, 
-         "requested_filename": file_info.get('original_filename', file_info.get('batch_display_name', 'unknown')), 
-         "original_filename": file_info.get('original_filename', file_info.get('batch_display_name', 'unknown')), 
-         "access_id": access_id, "error": None, "final_temp_file_path": None,
-         "final_file_size": 0, "start_time": time.time()
-    }
-    return Response(stream_with_context(_prepare_download_and_generate_updates(prep_id)), mimetype='text/event-stream')
+    metadata, error = find_metadata_by_access_id(access_id) # metadata is our db_record
+    if error or not metadata:
+        logging.error(f"{log_prefix} Metadata not found or DB error: {error}")
+        abort(404, description=f"File record not found for ID: {access_id}. {error or ''}")
 
+    storage_location = metadata.get("storage_location")
+    if not metadata.get("files_in_batch"):
+        logging.error(f"{log_prefix} 'files_in_batch' is missing or empty in metadata.")
+        abort(500, description="File metadata is incomplete (no file entries).")
+        
+    file_info_in_batch = metadata.get("files_in_batch", [{}])[0] 
+    original_filename = file_info_in_batch.get("original_filename", f"download_{access_id}")
+    mime_type = file_info_in_batch.get("mime_type", "application/octet-stream")
+
+    logging.info(f"{log_prefix} Filename: '{original_filename}', Storage: '{storage_location}'")
+
+    if storage_location == "gdrive":
+        gdrive_id = file_info_in_batch.get("gdrive_file_id")
+        if not gdrive_id:
+            logging.error(f"{log_prefix} GDrive ID missing in record for GDrive storage.")
+            abort(500, "File record inconsistent: GDrive ID missing for GDrive storage.")
+        
+        logging.info(f"{log_prefix} Attempting to download from GDrive ID: {gdrive_id}")
+        gdrive_stream, gdrive_err = download_from_gdrive(gdrive_id)
+        if gdrive_err or not gdrive_stream:
+            logging.error(f"{log_prefix} Failed to download from GDrive: {gdrive_err}")
+            abort(500, f"Failed to retrieve file from temporary storage: {gdrive_err}")
+        
+        logging.info(f"{log_prefix} Successfully fetched from GDrive. Preparing to stream to client.")
+        response = Response(stream_with_context(generate_file_chunks(gdrive_stream, f"GDrive-{gdrive_id}")), mimetype=mime_type)
+        response.headers['Content-Disposition'] = f'attachment; filename="{original_filename}"'
+        return response
+
+    elif storage_location == "telegram":
+        from routes.utils import _find_best_telegram_file_id 
+        
+        tg_file_id_to_download = None
+        if file_info_in_batch.get("is_split_for_telegram"):
+            logging.error(f"{log_prefix} Direct streaming of split Telegram files not fully supported for simple download. Client should use preparation endpoint.")
+            abort(501, "Split files require download preparation. Cannot stream directly.")
+        else:
+            tg_file_id_to_download, _ = _find_best_telegram_file_id(file_info_in_batch.get("telegram_send_locations",[]), PRIMARY_TELEGRAM_CHAT_ID)
+
+        if not tg_file_id_to_download:
+            logging.error(f"{log_prefix} Telegram file ID missing in record for Telegram storage.")
+            abort(500, "File record inconsistent: Telegram file ID missing.")
+
+        logging.info(f"{log_prefix} Attempting to download from Telegram File ID: {tg_file_id_to_download}")
+        telegram_stream, tg_dl_error = download_telegram_file_content(tg_file_id_to_download)
+        if tg_dl_error or not telegram_stream:
+            logging.error(f"{log_prefix} Failed to download from Telegram: {tg_dl_error}")
+            abort(500, f"Failed to retrieve file from final storage: {tg_dl_error}")
+
+        logging.info(f"{log_prefix} Successfully fetched from Telegram. Preparing to stream to client.")
+        response = Response(stream_with_context(generate_file_chunks(telegram_stream, f"TG-{tg_file_id_to_download}")), mimetype=mime_type)
+        response.headers['Content-Disposition'] = f'attachment; filename="{original_filename}"'
+        return response
+        
+    # Corrected line breaking for Pylint
+    elif (storage_location == "mixed_gdrive_telegram_error" or
+          metadata.get("status_overall") == "telegram_processing_errors"):
+        logging.warning(f"{log_prefix} Telegram transfer had issues. Attempting to serve from GDrive fallback.")
+        gdrive_id = file_info_in_batch.get("gdrive_file_id")
+        if not gdrive_id:
+            logging.error(f"{log_prefix} GDrive ID missing for fallback.")
+            error_msg_fallback_no_id = (
+                "File unavailable: Telegram processing failed and GDrive copy is missing ID."
+            )
+            abort(500, error_msg_fallback_no_id)
+        
+        gdrive_stream, gdrive_err = download_from_gdrive(gdrive_id)
+        if gdrive_err or not gdrive_stream:
+            logging.error(f"{log_prefix} Failed to download from GDrive (fallback): {gdrive_err}")
+            error_msg_fallback_fail = (
+                "File unavailable: Telegram processing failed and GDrive copy "
+                f"could not be retrieved: {gdrive_err}"
+            )
+            abort(500, error_msg_fallback_fail)
+        
+        response = Response(stream_with_context(generate_file_chunks(gdrive_stream, f"GDrive-Fallback-{gdrive_id}")), mimetype=mime_type)
+        response.headers['Content-Disposition'] = f'attachment; filename="{original_filename}"'
+        return response
+    else:
+        logging.error(
+            f"{log_prefix} Unknown or error storage location: {storage_location} or "
+            f"status: {metadata.get('status_overall')}"
+        )
+        abort(500, f"File is in an unknown or error state. Storage: {storage_location}")
 
 def _prepare_download_and_generate_updates(prep_id: str) -> Generator[SseEvent, None, None]:
     log_prefix = f"[DLPrep-{prep_id}]"

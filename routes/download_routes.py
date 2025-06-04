@@ -741,6 +741,23 @@ def stream_download_by_access_id(access_id: str) -> Response:
 #             current_status = prep_data.get('status', 'unknown')
 #         logging.info(f"{log_prefix} Generator ended. Status: {current_status}")     
 
+def _get_gdrive_service_for_download_route():
+    # This is a placeholder. You should call the actual function from google_drive_api.py
+    # e.g., from google_drive_api import _get_drive_service; return _get_drive_service()
+    # For now, this shows the structure. Ensure you import and call your actual service getter.
+    try:
+        from google_drive_api import _get_drive_service as get_service_actual
+        service, err = get_service_actual() # Assuming your _get_drive_service returns (service, error)
+        if err:
+            raise ConnectionError(f"GDrive service error: {err}")
+        return service
+    except ImportError:
+        logging.error("Could not import _get_drive_service from google_drive_api.py for download route.")
+        raise ConnectionError("GDrive service unavailable (import error).")
+    except Exception as e:
+        logging.error(f"Failed to initialize GDrive service for download: {e}")
+        raise ConnectionError(f"Could not connect to GDrive: {e}")
+
 def _prepare_download_and_generate_updates(prep_id: str) -> Generator[SseEvent, None, None]:
     log_prefix = f"[DLPrep-{prep_id}]"
     prep_data = download_prep_data.get(prep_id)
@@ -1070,6 +1087,7 @@ def _prepare_download_and_generate_updates(prep_id: str) -> Generator[SseEvent, 
             current_status_final = prep_data.get('status', 'unknown')
         logging.info(f"{log_prefix} Generator ended. Status: {current_status_final}")
 
+
         
 def generate_stream_with_cleanup(path: str, temp_id_for_cleanup: str):
     """Generator to stream a file and ensure cleanup afterwards."""
@@ -1274,7 +1292,97 @@ def serve_temp_file(temp_id: str, filename: str) -> Response:
 #     logging.debug(f"{log_prefix} Prep data populated for SSE stream: {json.dumps(download_prep_data[prep_id], default=str)}")
 #     return Response(stream_with_context(_prepare_download_and_generate_updates(prep_id)), mimetype='text/event-stream')
 
-@download_sse_bp.route('/download-single/<access_id>/<path:filename>') # CHANGED from @download_bp.route
+# @download_sse_bp.route('/download-single/<access_id>/<path:filename>') # CHANGED from @download_bp.route
+# def download_single_file(access_id: str, filename: str):
+#     prep_id = str(uuid.uuid4())
+#     log_prefix = f"[SingleDLPrep-{prep_id}-{access_id}-{filename[:25]}]" 
+#     logging.info(f"{log_prefix} Request received to prepare SSE stream for downloading single file.")
+
+#     record_info, error_msg_find = find_metadata_by_access_id(access_id)
+
+#     if error_msg_find or not record_info:
+#         err_user_msg = error_msg_find or f"Record with Access ID '{access_id}' not found."
+#         logging.warning(f"{log_prefix} {err_user_msg}")
+#         def error_stream_not_found(): yield _yield_sse_event('error', {'message': err_user_msg})
+#         return Response(stream_with_context(error_stream_not_found()), mimetype='text/event-stream', status=404)
+
+#     files_in_record_array = record_info.get('files_in_batch', [])
+    
+#     if not files_in_record_array:
+#         err_user_msg = f"Record '{access_id}' has no processable file entries (files_in_batch is missing or empty)."
+#         logging.warning(f"{log_prefix} {err_user_msg}. Record details: {record_info}")
+#         def error_stream_no_files(): yield _yield_sse_event('error', {'message': err_user_msg})
+#         return Response(stream_with_context(error_stream_no_files()), mimetype='text/event-stream', status=400)
+
+#     target_file_metadata = next((f for f in files_in_record_array if f.get('original_filename') == filename and not f.get('skipped') and not f.get('failed')), None)
+
+#     if not target_file_metadata:
+#         err_user_msg = f"File '{filename}' not found, was skipped, or failed within record '{access_id}'."
+#         logging.warning(f"{log_prefix} {err_user_msg}. Available files: {[f.get('original_filename') for f in files_in_record_array]}")
+#         def error_stream_file_not_in_record(): yield _yield_sse_event('error', {'message': err_user_msg})
+#         return Response(stream_with_context(error_stream_file_not_in_record()), mimetype='text/event-stream', status=404)
+    
+#     # --- MODIFICATION FOR GDRIVE SOURCE ---
+#     prep_data_payload: Dict[str, Any] = {
+#         "prep_id": prep_id, "status": "initiated", "access_id": access_id, 
+#         "username": record_info.get('username'), 
+#         "requested_filename": filename, 
+#         "original_filename": target_file_metadata.get('original_filename'), 
+#         "is_item_from_batch": True, 
+#         "is_anonymous": record_info.get('is_anonymous', False), 
+#         "upload_timestamp": record_info.get('upload_timestamp'), 
+#         "final_expected_size": target_file_metadata.get('original_size', 0),
+#         "is_compressed": target_file_metadata.get('is_compressed_for_telegram', target_file_metadata.get('is_compressed', False)), # Prefer TG-specific compression flag
+#         "error": None, "final_temp_file_path": None, "final_file_size": 0, "start_time": time.time()
+#     }
+
+#     # Determine the source: Telegram or GDrive
+#     tg_send_status = target_file_metadata.get('telegram_send_status', 'unknown')
+#     record_storage_location = record_info.get('storage_location') # Overall record storage
+
+#     source_from_gdrive = False
+#     if tg_send_status in ['pending', 'failed_chunking_bg', 'failed_single_bg', 'error_processing_bg', 'skipped_bad_data_bg'] and \
+#        target_file_metadata.get('gdrive_file_id') and \
+#        record_storage_location in ['gdrive', 'mixed_gdrive_telegram_error', 'telegram_processing_background']:
+#         source_from_gdrive = True
+#         logging.info(f"{log_prefix} Telegram status is '{tg_send_status}' and GDrive ID exists. Will attempt to source from GDrive.")
+
+#     if source_from_gdrive:
+#         prep_data_payload["source_gdrive_id"] = target_file_metadata.get('gdrive_file_id')
+#         prep_data_payload["is_split"] = False # GDrive files are always treated as single stream for this prep
+#         prep_data_payload["chunks_meta"] = None
+#         prep_data_payload["telegram_file_id"] = None
+#         prep_data_payload["compressed_total_size"] = target_file_metadata.get('original_size', 0) # GDrive size is original
+#     else: # Attempt Telegram source
+#         final_is_split_for_telegram = target_file_metadata.get('is_split_for_telegram', target_file_metadata.get('is_split', False))
+#         prep_data_payload["is_split"] = final_is_split_for_telegram
+        
+#         if final_is_split_for_telegram:
+#             final_telegram_chunks_meta = target_file_metadata.get('telegram_chunks', target_file_metadata.get('chunks'))
+#             if not final_telegram_chunks_meta:
+#                 err_msg_chunks = f"File '{filename}' in record '{access_id}' is marked as split for Telegram but has no chunk information."
+#                 logging.error(f"{log_prefix} {err_msg_chunks} Details: {target_file_metadata}")
+#                 def err_s_chunks(): yield _yield_sse_event('error', {'message': err_msg_chunks})
+#                 return Response(stream_with_context(err_s_chunks()), mimetype='text/event-stream', status=500)
+#             prep_data_payload["chunks_meta"] = final_telegram_chunks_meta
+#             prep_data_payload["compressed_total_size"] = target_file_metadata.get('telegram_total_chunked_size', target_file_metadata.get('compressed_total_size', 0))
+#         else: # Not split for Telegram
+#             tg_send_locations = target_file_metadata.get('telegram_send_locations', target_file_metadata.get('send_locations', []))
+#             prep_telegram_file_id_single, _ = _find_best_telegram_file_id(tg_send_locations, PRIMARY_TELEGRAM_CHAT_ID)
+#             if not prep_telegram_file_id_single:
+#                 # This is the error you were seeing
+#                 err_msg_no_tg_src = f"No primary Telegram source found for file '{filename}' in record '{access_id}'. TG locations considered: {tg_send_locations}. TG Status: {tg_send_status}"
+#                 logging.error(f"{log_prefix} {err_msg_no_tg_src} File details: {json.dumps(target_file_metadata, default=str)}")
+#                 def err_s_no_src(): yield _yield_sse_event('error', {'message': err_msg_no_tg_src})
+#                 return Response(stream_with_context(err_s_no_src()), mimetype='text/event-stream', status=500)
+#             prep_data_payload["telegram_file_id"] = prep_telegram_file_id_single
+#             prep_data_payload["compressed_total_size"] = target_file_metadata.get('compressed_total_size', target_file_metadata.get('original_size', 0))
+
+#     download_prep_data[prep_id] = prep_data_payload
+#     logging.debug(f"{log_prefix} Prep data populated for SSE stream: {json.dumps(download_prep_data[prep_id], default=str)}")
+#     return Response(stream_with_context(_prepare_download_and_generate_updates(prep_id)), mimetype='text/event-stream')
+
+@download_sse_bp.route('/download-single/<access_id>/<path:filename>')
 def download_single_file(access_id: str, filename: str):
     prep_id = str(uuid.uuid4())
     log_prefix = f"[SingleDLPrep-{prep_id}-{access_id}-{filename[:25]}]" 
@@ -1304,7 +1412,6 @@ def download_single_file(access_id: str, filename: str):
         def error_stream_file_not_in_record(): yield _yield_sse_event('error', {'message': err_user_msg})
         return Response(stream_with_context(error_stream_file_not_in_record()), mimetype='text/event-stream', status=404)
     
-    # --- MODIFICATION FOR GDRIVE SOURCE ---
     prep_data_payload: Dict[str, Any] = {
         "prep_id": prep_id, "status": "initiated", "access_id": access_id, 
         "username": record_info.get('username'), 
@@ -1314,46 +1421,64 @@ def download_single_file(access_id: str, filename: str):
         "is_anonymous": record_info.get('is_anonymous', False), 
         "upload_timestamp": record_info.get('upload_timestamp'), 
         "final_expected_size": target_file_metadata.get('original_size', 0),
-        "is_compressed": target_file_metadata.get('is_compressed_for_telegram', target_file_metadata.get('is_compressed', False)), # Prefer TG-specific compression flag
+        # is_compressed will be set based on source below
         "error": None, "final_temp_file_path": None, "final_file_size": 0, "start_time": time.time()
     }
 
     # Determine the source: Telegram or GDrive
     tg_send_status = target_file_metadata.get('telegram_send_status', 'unknown')
-    record_storage_location = record_info.get('storage_location') # Overall record storage
+    gdrive_id_for_file = target_file_metadata.get('gdrive_file_id')
+    # Overall storage location of the record (batch/single upload)
+    record_storage_location = record_info.get('storage_location') 
+    
+    logging.info(f"{log_prefix} File TG Status: '{tg_send_status}', Record Storage: '{record_storage_location}', GDrive ID present: {bool(gdrive_id_for_file)}")
 
-    source_from_gdrive = False
-    if tg_send_status in ['pending', 'failed_chunking_bg', 'failed_single_bg', 'error_processing_bg', 'skipped_bad_data_bg'] and \
-       target_file_metadata.get('gdrive_file_id') and \
-       record_storage_location in ['gdrive', 'mixed_gdrive_telegram_error', 'telegram_processing_background']:
-        source_from_gdrive = True
-        logging.info(f"{log_prefix} Telegram status is '{tg_send_status}' and GDrive ID exists. Will attempt to source from GDrive.")
+    attempt_gdrive_source = False
+    if gdrive_id_for_file:
+        if record_storage_location == "gdrive": # Primary storage is GDrive
+            attempt_gdrive_source = True
+            logging.info(f"{log_prefix} Record storage is GDrive. Sourcing from GDrive.")
+        elif tg_send_status in ['pending', 'failed_chunking_bg', 'failed_single_bg', 'error_processing_bg', 'skipped_bad_data_bg'] and \
+             record_storage_location in ['mixed_gdrive_telegram_error', 'telegram_processing_background']:
+            attempt_gdrive_source = True
+            logging.info(f"{log_prefix} TG status '{tg_send_status}' and record storage '{record_storage_location}' indicate GDrive fallback.")
+        elif tg_send_status == 'unknown' and record_storage_location == 'gdrive_complete_pending_telegram':
+            # This specific combination implies it was just uploaded to GDrive, TG transfer is about to start or in very early stage
+            attempt_gdrive_source = True
+            logging.info(f"{log_prefix} Record status 'gdrive_complete_pending_telegram'. Sourcing from GDrive.")
 
-    if source_from_gdrive:
-        prep_data_payload["source_gdrive_id"] = target_file_metadata.get('gdrive_file_id')
-        prep_data_payload["is_split"] = False # GDrive files are always treated as single stream for this prep
+
+    if attempt_gdrive_source:
+        logging.info(f"{log_prefix} Using GDrive source for file '{filename}'. GDrive ID: {gdrive_id_for_file}")
+        prep_data_payload["source_gdrive_id"] = gdrive_id_for_file
+        prep_data_payload["is_split"] = False # GDrive files are treated as single stream for this prep
         prep_data_payload["chunks_meta"] = None
         prep_data_payload["telegram_file_id"] = None
-        prep_data_payload["compressed_total_size"] = target_file_metadata.get('original_size', 0) # GDrive size is original
-    else: # Attempt Telegram source
-        final_is_split_for_telegram = target_file_metadata.get('is_split_for_telegram', target_file_metadata.get('is_split', False))
+        # For GDrive source, 'is_compressed' refers to the original file's compression state when uploaded to GDrive
+        prep_data_payload["is_compressed"] = target_file_metadata.get('is_compressed', False) 
+        prep_data_payload["compressed_total_size"] = target_file_metadata.get('original_size', 0) 
+    else: 
+        # Attempt Telegram source (this is the path that was erroring out)
+        logging.info(f"{log_prefix} Using Telegram source for file '{filename}'.")
+        final_is_split_for_telegram = target_file_metadata.get('is_split_for_telegram', False)
         prep_data_payload["is_split"] = final_is_split_for_telegram
+        # For Telegram source, 'is_compressed' refers to 'is_compressed_for_telegram'
+        prep_data_payload["is_compressed"] = target_file_metadata.get('is_compressed_for_telegram', target_file_metadata.get('is_compressed', False))
         
         if final_is_split_for_telegram:
-            final_telegram_chunks_meta = target_file_metadata.get('telegram_chunks', target_file_metadata.get('chunks'))
+            final_telegram_chunks_meta = target_file_metadata.get('telegram_chunks')
             if not final_telegram_chunks_meta:
                 err_msg_chunks = f"File '{filename}' in record '{access_id}' is marked as split for Telegram but has no chunk information."
                 logging.error(f"{log_prefix} {err_msg_chunks} Details: {target_file_metadata}")
                 def err_s_chunks(): yield _yield_sse_event('error', {'message': err_msg_chunks})
                 return Response(stream_with_context(err_s_chunks()), mimetype='text/event-stream', status=500)
             prep_data_payload["chunks_meta"] = final_telegram_chunks_meta
-            prep_data_payload["compressed_total_size"] = target_file_metadata.get('telegram_total_chunked_size', target_file_metadata.get('compressed_total_size', 0))
+            prep_data_payload["compressed_total_size"] = target_file_metadata.get('telegram_total_chunked_size', 0)
         else: # Not split for Telegram
-            tg_send_locations = target_file_metadata.get('telegram_send_locations', target_file_metadata.get('send_locations', []))
+            tg_send_locations = target_file_metadata.get('telegram_send_locations', [])
             prep_telegram_file_id_single, _ = _find_best_telegram_file_id(tg_send_locations, PRIMARY_TELEGRAM_CHAT_ID)
             if not prep_telegram_file_id_single:
-                # This is the error you were seeing
-                err_msg_no_tg_src = f"No primary Telegram source found for file '{filename}' in record '{access_id}'. TG locations considered: {tg_send_locations}. TG Status: {tg_send_status}"
+                err_msg_no_tg_src = f"No primary Telegram source found for file '{filename}' in record '{access_id}'. TG locations considered: {tg_send_locations}. File TG Status: '{tg_send_status}'. Record Storage: '{record_storage_location}'."
                 logging.error(f"{log_prefix} {err_msg_no_tg_src} File details: {json.dumps(target_file_metadata, default=str)}")
                 def err_s_no_src(): yield _yield_sse_event('error', {'message': err_msg_no_tg_src})
                 return Response(stream_with_context(err_s_no_src()), mimetype='text/event-stream', status=500)
@@ -1361,7 +1486,7 @@ def download_single_file(access_id: str, filename: str):
             prep_data_payload["compressed_total_size"] = target_file_metadata.get('compressed_total_size', target_file_metadata.get('original_size', 0))
 
     download_prep_data[prep_id] = prep_data_payload
-    logging.debug(f"{log_prefix} Prep data populated for SSE stream: {json.dumps(download_prep_data[prep_id], default=str)}")
+    logging.debug(f"{log_prefix} Prep data for _prepare_download: {json.dumps(download_prep_data[prep_id], default=str)}")
     return Response(stream_with_context(_prepare_download_and_generate_updates(prep_id)), mimetype='text/event-stream')
 
 @download_bp.route('/initiate-download-all/<access_id>')

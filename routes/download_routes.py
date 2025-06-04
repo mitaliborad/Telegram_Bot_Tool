@@ -788,48 +788,196 @@ def serve_temp_file(temp_id: str, filename: str) -> Response:
         
     return response
 
-@download_bp.route('/download-single/<access_id>/<path:filename>')
+# @download_bp.route('/download-single/<access_id>/<path:filename>')
+# def download_single_file(access_id: str, filename: str):
+#     prep_id = str(uuid.uuid4())
+#     log_prefix = f"[SingleDLPrep-{prep_id}]"
+#     batch_info, error_msg = find_metadata_by_access_id(access_id)
+
+#     if error_msg or not batch_info or not batch_info.get('is_batch'):
+#         err_user = error_msg or f"Batch '{access_id}' not found or invalid."
+#         def err_s(): yield _yield_sse_event('error', {'message': err_user})
+#         return Response(stream_with_context(err_s()), mimetype='text/event-stream', status=404)
+
+#     target_file_info = next((f for f in batch_info.get('files_in_batch', []) if f.get('original_filename') == filename and not f.get('skipped') and not f.get('failed')), None)
+#     if not target_file_info:
+#         def err_s(): yield _yield_sse_event('error', {'message': f"File '{filename}' not found/unavailable."})
+#         return Response(stream_with_context(err_s()), mimetype='text/event-stream', status=404)
+
+#     prep_is_split = target_file_info.get('is_split', False)
+#     prep_chunks_meta = target_file_info.get('chunks') if prep_is_split else None
+#     prep_telegram_file_id = None
+#     if not prep_is_split:
+#         locations = target_file_info.get('send_locations', [])
+#         prep_telegram_file_id, _ = _find_best_telegram_file_id(locations, PRIMARY_TELEGRAM_CHAT_ID)
+#         if not prep_telegram_file_id:
+#             def err_s(): yield _yield_sse_event('error', {'message': f"No source for '{filename}'."})
+#             return Response(stream_with_context(err_s()), mimetype='text/event-stream', status=500)
+
+#     download_prep_data[prep_id] = {
+#         "prep_id": prep_id, "status": "initiated", "access_id": access_id, 
+#         "username": batch_info.get('username'), "requested_filename": filename, "original_filename": filename, 
+#         "telegram_file_id": prep_telegram_file_id, "is_split": prep_is_split, 
+#         "chunks_meta": prep_chunks_meta, 
+#         "is_compressed": target_file_info.get('is_compressed', False),
+#         "final_expected_size": target_file_info.get('original_size', 0),
+#         "compressed_total_size": target_file_info.get('compressed_total_size', 0),
+#         "is_item_from_batch": True, 
+#         "is_anonymous": batch_info.get('is_anonymous', False),
+#         "upload_timestamp": batch_info.get('upload_timestamp'),
+#         "error": None, "final_temp_file_path": None, "final_file_size": 0, "start_time": time.time()
+#     }
+#     logging.debug(f"{log_prefix} Prep data for single file from batch: {json.dumps(download_prep_data[prep_id], default=str)}")
+#     return Response(stream_with_context(_prepare_download_and_generate_updates(prep_id)), mimetype='text/event-stream')
+
+# @download_bp.route('/download-single/<access_id>/<path:filename>')
+# def download_single_file(access_id: str, filename: str):
+#     prep_id = str(uuid.uuid4())
+#     log_prefix = f"[SingleDLPrep-{prep_id}-{access_id}-{filename[:25]}]" # More descriptive log prefix
+#     logging.info(f"{log_prefix} Request received to prepare SSE stream for downloading single file.")
+
+#     record_info, error_msg_find = find_metadata_by_access_id(access_id)
+
+#     if error_msg_find or not record_info:
+#         err_user_msg = error_msg_find or f"Record with Access ID '{access_id}' not found."
+#         logging.warning(f"{log_prefix} {err_user_msg}")
+#         def error_stream_not_found(): yield _yield_sse_event('error', {'message': err_user_msg})
+#         return Response(stream_with_context(error_stream_not_found()), mimetype='text/event-stream', status=404)
+
+#     files_in_record_array = record_info.get('files_in_batch', [])
+    
+#     # This endpoint expects to find the file within the 'files_in_batch' array.
+#     # This covers both true batches and single file uploads (which also use this structure with one item).
+#     if not files_in_record_array:
+#         err_user_msg = f"Record '{access_id}' has no processable file entries (files_in_batch is missing or empty)."
+#         logging.warning(f"{log_prefix} {err_user_msg}. Record details: {record_info}")
+#         def error_stream_no_files(): yield _yield_sse_event('error', {'message': err_user_msg})
+#         return Response(stream_with_context(error_stream_no_files()), mimetype='text/event-stream', status=400) # 400 Bad Request as structure is wrong
+
+#     # Find the specific file's metadata within the record's files_in_batch array
+#     target_file_metadata = next((f for f in files_in_record_array if f.get('original_filename') == filename and not f.get('skipped') and not f.get('failed')), None)
+
+#     if not target_file_metadata:
+#         err_user_msg = f"File '{filename}' not found, was skipped, or failed within record '{access_id}'."
+#         logging.warning(f"{log_prefix} {err_user_msg}. Available files in record: {[f.get('original_filename') for f in files_in_record_array]}")
+#         def error_stream_file_not_in_record(): yield _yield_sse_event('error', {'message': err_user_msg})
+#         return Response(stream_with_context(error_stream_file_not_in_record()), mimetype='text/event-stream', status=404)
+    
+#     # Successfully found the target file metadata. Now prepare prep_data.
+    
+#     # Determine if the file (as stored in Telegram) is split, preferring Telegram-specific flags
+#     final_is_split_for_telegram = target_file_metadata.get('is_split_for_telegram', target_file_metadata.get('is_split', False))
+    
+#     final_telegram_chunks_meta = None
+#     prep_telegram_file_id_single = None
+
+#     if final_is_split_for_telegram:
+#         # If split, get chunk metadata (preferring Telegram-specific field)
+#         final_telegram_chunks_meta = target_file_metadata.get('telegram_chunks', target_file_metadata.get('chunks'))
+#         if not final_telegram_chunks_meta:
+#             err_msg_chunks = f"File '{filename}' in record '{access_id}' is marked as split for Telegram but has no chunk information."
+#             logging.error(f"{log_prefix} {err_msg_chunks} Details: {target_file_metadata}")
+#             def err_s_chunks(): yield _yield_sse_event('error', {'message': err_msg_chunks})
+#             return Response(stream_with_context(err_s_chunks()), mimetype='text/event-stream', status=500)
+#     else:
+#         # If not split, get single file ID (preferring Telegram-specific field)
+#         tg_send_locations = target_file_metadata.get('telegram_send_locations', target_file_metadata.get('send_locations', []))
+#         prep_telegram_file_id_single, _ = _find_best_telegram_file_id(tg_send_locations, PRIMARY_TELEGRAM_CHAT_ID)
+#         if not prep_telegram_file_id_single:
+#             # If no Telegram source, this SSE preparation route cannot proceed as intended
+#             err_msg_no_tg_src = f"No primary Telegram source found for file '{filename}' in record '{access_id}'. TG locations considered: {tg_send_locations}"
+#             logging.error(f"{log_prefix} {err_msg_no_tg_src} File details: {target_file_metadata}")
+#             def err_s_no_src(): yield _yield_sse_event('error', {'message': err_msg_no_tg_src})
+#             return Response(stream_with_context(err_s_no_src()), mimetype='text/event-stream', status=500)
+
+#     download_prep_data[prep_id] = {
+#         "prep_id": prep_id, "status": "initiated", "access_id": access_id, 
+#         "username": record_info.get('username'), 
+#         "requested_filename": filename, # Filename from URL, used for user reference
+#         "original_filename": target_file_metadata.get('original_filename'), # Actual filename from metadata
+#         "telegram_file_id": prep_telegram_file_id_single, # Will be None if final_is_split_for_telegram is true
+#         "is_split": final_is_split_for_telegram, 
+#         "chunks_meta": final_telegram_chunks_meta, # Will be None if not split
+#         "is_compressed": target_file_metadata.get('is_compressed_for_telegram', target_file_metadata.get('is_compressed', False)),
+#         "final_expected_size": target_file_metadata.get('original_size', 0),
+#         "compressed_total_size": target_file_metadata.get('telegram_total_chunked_size') if final_is_split_for_telegram else target_file_metadata.get('compressed_total_size', target_file_metadata.get('original_size', 0)), # Fallback to original if not compressed
+#         "is_item_from_batch": True, # This signals to _prepare_download that data is pre-populated
+#         "is_anonymous": record_info.get('is_anonymous', False), # From the top-level record
+#         "upload_timestamp": record_info.get('upload_timestamp'), # From the top-level record
+#         "error": None, "final_temp_file_path": None, "final_file_size": 0, "start_time": time.time()
+#     }
+#     logging.debug(f"{log_prefix} Prep data populated for SSE stream: {json.dumps(download_prep_data[prep_id], default=str)}")
+#     return Response(stream_with_context(_prepare_download_and_generate_updates(prep_id)), mimetype='text/event-stream')
+
+@download_sse_bp.route('/download-single/<access_id>/<path:filename>') # CHANGED from @download_bp.route
 def download_single_file(access_id: str, filename: str):
     prep_id = str(uuid.uuid4())
-    log_prefix = f"[SingleDLPrep-{prep_id}]"
-    batch_info, error_msg = find_metadata_by_access_id(access_id)
+    log_prefix = f"[SingleDLPrep-{prep_id}-{access_id}-{filename[:25]}]" 
+    logging.info(f"{log_prefix} Request received to prepare SSE stream for downloading single file.")
 
-    if error_msg or not batch_info or not batch_info.get('is_batch'):
-        err_user = error_msg or f"Batch '{access_id}' not found or invalid."
-        def err_s(): yield _yield_sse_event('error', {'message': err_user})
-        return Response(stream_with_context(err_s()), mimetype='text/event-stream', status=404)
+    record_info, error_msg_find = find_metadata_by_access_id(access_id)
 
-    target_file_info = next((f for f in batch_info.get('files_in_batch', []) if f.get('original_filename') == filename and not f.get('skipped') and not f.get('failed')), None)
-    if not target_file_info:
-        def err_s(): yield _yield_sse_event('error', {'message': f"File '{filename}' not found/unavailable."})
-        return Response(stream_with_context(err_s()), mimetype='text/event-stream', status=404)
+    if error_msg_find or not record_info:
+        err_user_msg = error_msg_find or f"Record with Access ID '{access_id}' not found."
+        logging.warning(f"{log_prefix} {err_user_msg}")
+        def error_stream_not_found(): yield _yield_sse_event('error', {'message': err_user_msg})
+        return Response(stream_with_context(error_stream_not_found()), mimetype='text/event-stream', status=404)
 
-    prep_is_split = target_file_info.get('is_split', False)
-    prep_chunks_meta = target_file_info.get('chunks') if prep_is_split else None
-    prep_telegram_file_id = None
-    if not prep_is_split:
-        locations = target_file_info.get('send_locations', [])
-        prep_telegram_file_id, _ = _find_best_telegram_file_id(locations, PRIMARY_TELEGRAM_CHAT_ID)
-        if not prep_telegram_file_id:
-            def err_s(): yield _yield_sse_event('error', {'message': f"No source for '{filename}'."})
-            return Response(stream_with_context(err_s()), mimetype='text/event-stream', status=500)
+    files_in_record_array = record_info.get('files_in_batch', [])
+    
+    if not files_in_record_array:
+        err_user_msg = f"Record '{access_id}' has no processable file entries (files_in_batch is missing or empty)."
+        logging.warning(f"{log_prefix} {err_user_msg}. Record details: {record_info}")
+        def error_stream_no_files(): yield _yield_sse_event('error', {'message': err_user_msg})
+        return Response(stream_with_context(error_stream_no_files()), mimetype='text/event-stream', status=400)
+
+    target_file_metadata = next((f for f in files_in_record_array if f.get('original_filename') == filename and not f.get('skipped') and not f.get('failed')), None)
+
+    if not target_file_metadata:
+        err_user_msg = f"File '{filename}' not found, was skipped, or failed within record '{access_id}'."
+        logging.warning(f"{log_prefix} {err_user_msg}. Available files in record: {[f.get('original_filename') for f in files_in_record_array]}")
+        def error_stream_file_not_in_record(): yield _yield_sse_event('error', {'message': err_user_msg})
+        return Response(stream_with_context(error_stream_file_not_in_record()), mimetype='text/event-stream', status=404)
+    
+    final_is_split_for_telegram = target_file_metadata.get('is_split_for_telegram', target_file_metadata.get('is_split', False))
+    
+    final_telegram_chunks_meta = None
+    prep_telegram_file_id_single = None
+
+    if final_is_split_for_telegram:
+        final_telegram_chunks_meta = target_file_metadata.get('telegram_chunks', target_file_metadata.get('chunks'))
+        if not final_telegram_chunks_meta:
+            err_msg_chunks = f"File '{filename}' in record '{access_id}' is marked as split for Telegram but has no chunk information."
+            logging.error(f"{log_prefix} {err_msg_chunks} Details: {target_file_metadata}")
+            def err_s_chunks(): yield _yield_sse_event('error', {'message': err_msg_chunks})
+            return Response(stream_with_context(err_s_chunks()), mimetype='text/event-stream', status=500)
+    else:
+        tg_send_locations = target_file_metadata.get('telegram_send_locations', target_file_metadata.get('send_locations', []))
+        prep_telegram_file_id_single, _ = _find_best_telegram_file_id(tg_send_locations, PRIMARY_TELEGRAM_CHAT_ID)
+        if not prep_telegram_file_id_single:
+            err_msg_no_tg_src = f"No primary Telegram source found for file '{filename}' in record '{access_id}'. TG locations considered: {tg_send_locations}"
+            logging.error(f"{log_prefix} {err_msg_no_tg_src} File details: {target_file_metadata}")
+            def err_s_no_src(): yield _yield_sse_event('error', {'message': err_msg_no_tg_src})
+            return Response(stream_with_context(err_s_no_src()), mimetype='text/event-stream', status=500)
 
     download_prep_data[prep_id] = {
         "prep_id": prep_id, "status": "initiated", "access_id": access_id, 
-        "username": batch_info.get('username'), "requested_filename": filename, "original_filename": filename, 
-        "telegram_file_id": prep_telegram_file_id, "is_split": prep_is_split, 
-        "chunks_meta": prep_chunks_meta, 
-        "is_compressed": target_file_info.get('is_compressed', False),
-        "final_expected_size": target_file_info.get('original_size', 0),
-        "compressed_total_size": target_file_info.get('compressed_total_size', 0),
+        "username": record_info.get('username'), 
+        "requested_filename": filename, 
+        "original_filename": target_file_metadata.get('original_filename'), 
+        "telegram_file_id": prep_telegram_file_id_single, 
+        "is_split": final_is_split_for_telegram, 
+        "chunks_meta": final_telegram_chunks_meta, 
+        "is_compressed": target_file_metadata.get('is_compressed_for_telegram', target_file_metadata.get('is_compressed', False)),
+        "final_expected_size": target_file_metadata.get('original_size', 0),
+        "compressed_total_size": target_file_metadata.get('telegram_total_chunked_size') if final_is_split_for_telegram else target_file_metadata.get('compressed_total_size', target_file_metadata.get('original_size', 0)),
         "is_item_from_batch": True, 
-        "is_anonymous": batch_info.get('is_anonymous', False),
-        "upload_timestamp": batch_info.get('upload_timestamp'),
+        "is_anonymous": record_info.get('is_anonymous', False), 
+        "upload_timestamp": record_info.get('upload_timestamp'), 
         "error": None, "final_temp_file_path": None, "final_file_size": 0, "start_time": time.time()
     }
-    logging.debug(f"{log_prefix} Prep data for single file from batch: {json.dumps(download_prep_data[prep_id], default=str)}")
+    logging.debug(f"{log_prefix} Prep data populated for SSE stream: {json.dumps(download_prep_data[prep_id], default=str)}")
     return Response(stream_with_context(_prepare_download_and_generate_updates(prep_id)), mimetype='text/event-stream')
-
 
 @download_bp.route('/initiate-download-all/<access_id>')
 def initiate_download_all(access_id: str):

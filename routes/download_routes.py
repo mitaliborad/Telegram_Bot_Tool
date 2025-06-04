@@ -435,6 +435,312 @@ def stream_download_by_access_id(access_id: str) -> Response:
         )
         abort(500, f"File is in an unknown or error state. Storage: {storage_location}")
 
+# def _prepare_download_and_generate_updates(prep_id: str) -> Generator[SseEvent, None, None]:
+#     log_prefix = f"[DLPrep-{prep_id}]"
+#     prep_data = download_prep_data.get(prep_id)
+#     if not prep_data:
+#         yield _yield_sse_event('error', {'message': 'Internal ServerError: Prep data lost.'})
+#         return
+#     prep_data['status'] = 'preparing'
+    
+#     is_anonymous_final: bool = prep_data.get('is_anonymous', False)
+#     upload_timestamp_str_final: Optional[str] = prep_data.get('upload_timestamp')
+#     original_filename_final: str = prep_data.get('original_filename', "download")
+#     final_expected_size_final: int = prep_data.get('final_expected_size', 0)
+    
+#     # Flags and data for Telegram source
+#     is_split_final: bool = prep_data.get('is_split', False) # This is now specific to Telegram splitting
+#     chunks_meta_final: Optional[List[Dict[str, Any]]] = prep_data.get('chunks_meta')
+#     telegram_file_id_final: Optional[str] = prep_data.get('telegram_file_id')
+#     compressed_total_size_final: int = prep_data.get('compressed_total_size', 0) # For split TG files
+    
+#     # NEW: GDrive source info
+#     source_gdrive_id_final: Optional[str] = prep_data.get('source_gdrive_id')
+#     is_compressed_for_gdrive_source: bool = prep_data.get('is_compressed', False) # General compression flag, useful for GDrive
+
+#     temp_reassembled_file_path: Optional[str] = None
+#     temp_final_file_path: Optional[str] = None
+#     download_executor: Optional[ThreadPoolExecutor] = None
+
+#     try:
+#         # --- DB LOOKUP LOGIC (largely unchanged, but now populates the new GDrive source flag if applicable) ---
+#         is_item_from_batch = prep_data.get("is_item_from_batch", False)
+#         needs_db_lookup = not is_item_from_batch and not source_gdrive_id_final # If GDrive ID already set, no DB lookup needed for source
+
+#         if needs_db_lookup and not prep_data.get('telegram_file_id_is_direct_source'): # `telegram_file_id_is_direct_source` is less relevant now
+#             logging.info(f"{log_prefix} DB lookup required for source details.")
+#             db_access_id = prep_data.get('access_id')
+#             db_username = prep_data.get('username') 
+#             db_requested_filename = prep_data.get('requested_filename')
+#             fetched_record_info: Optional[Dict[str, Any]] = None # This will be the top-level record
+#             fetched_file_item_info: Optional[Dict[str, Any]] = None # This is the specific file_in_batch item
+#             lookup_error_msg = ""
+
+#             if db_access_id: # This is the access_id of the batch/record
+#                 fetched_record_info, lookup_error_msg = find_metadata_by_access_id(db_access_id)
+#                 if fetched_record_info and db_requested_filename: # if filename is also provided
+#                      files_in_batch_arr = fetched_record_info.get('files_in_batch', [])
+#                      fetched_file_item_info = next((f for f in files_in_batch_arr if f.get('original_filename') == db_requested_filename), None)
+#                 elif fetched_record_info and not fetched_record_info.get('is_batch'): # Single file record
+#                     fetched_file_item_info = fetched_record_info.get('files_in_batch', [{}])[0] if fetched_record_info.get('files_in_batch') else fetched_record_info
+
+#             # ... (username-based lookup can be added if necessary, but access_id should be primary) ...
+            
+#             if lookup_error_msg or not fetched_record_info or not fetched_file_item_info:
+#                 err_msg_to_raise = lookup_error_msg or "File metadata not found in DB."
+#                 if not fetched_file_item_info and fetched_record_info:
+#                     err_msg_to_raise = f"File '{db_requested_filename}' not found within record '{db_access_id}'."
+#                 raise FileNotFoundError(err_msg_to_raise)
+
+#             # Update final variables from fetched_file_item_info and fetched_record_info
+#             original_filename_final = fetched_file_item_info.get('original_filename', db_requested_filename or 'unknown')
+#             final_expected_size_final = fetched_file_item_info.get('original_size', 0)
+#             is_anonymous_final = fetched_record_info.get('is_anonymous', False)
+#             upload_timestamp_str_final = fetched_record_info.get('upload_timestamp')
+#             is_compressed_for_gdrive_source = fetched_file_item_info.get('is_compressed', False) # General compression
+
+#             # Determine source: Telegram or GDrive
+#             db_tg_status = fetched_file_item_info.get('telegram_send_status', 'unknown')
+#             db_record_storage_loc = fetched_record_info.get('storage_location')
+
+#             attempt_gdrive_source_from_db = False
+#             if db_tg_status in ['pending', 'failed_chunking_bg', 'failed_single_bg', 'error_processing_bg', 'skipped_bad_data_bg'] and \
+#                fetched_file_item_info.get('gdrive_file_id') and \
+#                db_record_storage_loc in ['gdrive', 'mixed_gdrive_telegram_error', 'telegram_processing_background']:
+#                 attempt_gdrive_source_from_db = True
+            
+#             if attempt_gdrive_source_from_db:
+#                 source_gdrive_id_final = fetched_file_item_info.get('gdrive_file_id')
+#                 is_split_final = False # GDrive files are single stream here
+#                 chunks_meta_final = None
+#                 telegram_file_id_final = None
+#                 compressed_total_size_final = final_expected_size_final
+#                 logging.info(f"{log_prefix} DB lookup: Sourcing from GDrive ID {source_gdrive_id_final}")
+#             else: # Try Telegram source from DB
+#                 is_split_final = fetched_file_item_info.get('is_split_for_telegram', False)
+#                 if is_split_final:
+#                     chunks_meta_final = fetched_file_item_info.get('telegram_chunks')
+#                     if not chunks_meta_final: raise RuntimeError(f"DB record indicates split for Telegram but no telegram_chunks data.")
+#                     telegram_file_id_final = None
+#                     compressed_total_size_final = fetched_file_item_info.get('telegram_total_chunked_size', 0)
+#                 else:
+#                     tg_locs = fetched_file_item_info.get('telegram_send_locations', [])
+#                     tg_id_db, _ = _find_best_telegram_file_id(tg_locs, PRIMARY_TELEGRAM_CHAT_ID)
+#                     if not tg_id_db: raise ValueError(f"No primary Telegram file ID in DB for non-split file. Status: {db_tg_status}")
+#                     telegram_file_id_final = tg_id_db
+#                     chunks_meta_final = None
+#                     compressed_total_size_final = fetched_file_item_info.get('compressed_total_size', final_expected_size_final)
+#                 logging.info(f"{log_prefix} DB lookup: Sourcing from Telegram. Split: {is_split_final}")
+            
+#         # --- EXPIRATION CHECK (remains the same) ---
+#         if is_anonymous_final:
+#             # ... (your existing expiration check logic) ...
+#             logging.info(f"{log_prefix} Anonymous upload. Checking expiration. Timestamp string: '{upload_timestamp_str_final}'")
+#             if not upload_timestamp_str_final:
+#                 logging.warning(f"{log_prefix} Anonymous upload metadata for access_id '{prep_data.get('access_id', 'N/A')}' is missing 'upload_timestamp'.")
+#                 yield _yield_sse_event('error', {'message': 'File record is incomplete (missing timestamp). Cannot verify expiration.'})
+#                 if prep_id in download_prep_data:
+#                     download_prep_data[prep_id]['status'] = 'error'
+#                     download_prep_data[prep_id]['error'] = 'File record incomplete (timestamp missing).'
+#                 return
+
+#             try:
+#                 upload_datetime = parser.isoparse(upload_timestamp_str_final)
+#                 if upload_datetime.tzinfo is None or upload_datetime.tzinfo.utcoffset(upload_datetime) is None:
+#                     upload_datetime = upload_datetime.replace(tzinfo=timezone.utc)
+#                 expiration_limit = timedelta(days=5)
+#                 now_utc = datetime.now(timezone.utc)
+#                 if now_utc > (upload_datetime + expiration_limit):
+#                     logging.info(f"{log_prefix} Anonymous download link EXPIRED. Uploaded At: {upload_datetime}, Expires At: {upload_datetime + expiration_limit}, Current Time: {now_utc}")
+#                     yield _yield_sse_event('error', {'message': 'This download link has expired.'})
+#                     if prep_id in download_prep_data:
+#                         download_prep_data[prep_id]['status'] = 'error'
+#                         download_prep_data[prep_id]['error'] = 'Link expired.'
+#                     return 
+#                 else:
+#                     logging.info(f"{log_prefix} Anonymous download link still valid. Expires at: {upload_datetime + expiration_limit}")
+#             except ValueError as e: 
+#                 logging.error(f"{log_prefix} Error parsing upload_timestamp '{upload_timestamp_str_final}': {e}", exc_info=True)
+#                 yield _yield_sse_event('error', {'message': 'Error processing file metadata (invalid timestamp).'})
+#                 if prep_id in download_prep_data:
+#                     download_prep_data[prep_id]['status'] = 'error'
+#                     download_prep_data[prep_id]['error'] = 'Invalid timestamp in record.'
+#                 return
+#         else:
+#             logging.info(f"{log_prefix} Not an anonymous upload. Expiration check skipped.")
+#         # --- END OF EXPIRATION CHECK ---
+
+#         yield _yield_sse_event('filename', {'filename': original_filename_final})
+#         yield _yield_sse_event('totalSizeUpdate', {'totalSize': final_expected_size_final}) 
+#         yield _yield_sse_event('status', {'message': 'Preparing file...'})
+
+#         # --- MODIFIED: File Content Fetching (GDrive or Telegram) ---
+#         content_bytes: Optional[bytes] = None
+
+#         if source_gdrive_id_final:
+#             logging.info(f"{log_prefix} Fetching content from GDrive ID: {source_gdrive_id_final}")
+#             yield _yield_sse_event('status', {'message': 'Downloading from temporary storage...'})
+#             gdrive_stream, gdrive_err = download_from_gdrive(source_gdrive_id_final)
+#             if gdrive_err or not gdrive_stream:
+#                 raise IOError(f"GDrive download failed: {gdrive_err or 'No content stream'}")
+#             content_bytes = gdrive_stream.read()
+#             gdrive_stream.close()
+#             if not content_bytes:
+#                 raise ValueError("GDrive download returned empty content.")
+#             logging.info(f"{log_prefix} GDrive content downloaded. Size: {format_bytes(len(content_bytes))}")
+#             # For GDrive source, is_compressed_final should use the general flag
+#             is_compressed_final = is_compressed_for_gdrive_source # Use the flag relevant to GDrive source
+        
+#         elif is_split_final: # Telegram split file
+#             if not chunks_meta_final: raise RuntimeError(f"File is split for Telegram but no chunk metadata.")
+#             # ... (existing Telegram split file processing logic to reassemble into content_bytes) ...
+#             # This block should result in `content_bytes` being populated with the reassembled file.
+#             # For brevity, not repeating the whole chunk download loop here, but it writes to temp_reassembled_file_path.
+#             # We'll read from that temp file later. This section focuses on setting up for that.
+#             chunks_meta_final.sort(key=lambda c: int(c.get('part_number', 0)))
+#             num_chunks = len(chunks_meta_final)
+#             total_bytes_to_fetch = compressed_total_size_final or sum(c.get('size',0) for c in chunks_meta_final)
+            
+#             start_fetch_time = time.time(); fetched_bytes_count = 0; downloaded_chunk_count = 0
+#             download_executor = ThreadPoolExecutor(max_workers=MAX_DOWNLOAD_WORKERS, thread_name_prefix=f'DlPrep_{prep_id[:4]}')
+#             submitted_futures: List[Future] = []
+#             downloaded_content_map: Dict[int, bytes] = {}
+#             first_download_error: Optional[str] = None
+#             file_too_big_errors_count = 0
+
+#             for i, chunk_info in enumerate(chunks_meta_final):
+#                 part_num = chunk_info.get("part_number")
+#                 chunk_send_locations = chunk_info.get("send_locations", [])
+#                 if not chunk_send_locations: logging.warning(f"{log_prefix} Chunk {part_num} no send_locations, skipping."); continue
+#                 chunk_tg_file_id, _ = _find_best_telegram_file_id(chunk_send_locations, PRIMARY_TELEGRAM_CHAT_ID)
+#                 if not chunk_tg_file_id: logging.warning(f"{log_prefix} Chunk {part_num} no TG file_id, skipping."); continue
+#                 submitted_futures.append(download_executor.submit(_download_chunk_task, chunk_tg_file_id, part_num, prep_id))
+            
+#             yield _yield_sse_event('status', {'message': f'Downloading {num_chunks} file parts...'})
+#             for future in as_completed(submitted_futures):
+#                 # ... (same as_completed loop as before to populate downloaded_content_map) ...
+#                 try:
+#                     pnum_result, chunk_content_res, err_result = future.result()
+#                     if err_result:
+#                         if "file is too big" in err_result.lower(): file_too_big_errors_count += 1
+#                         if not first_download_error: first_download_error = f"Chunk {pnum_result}: {err_result}"
+#                     elif chunk_content_res:
+#                         downloaded_chunk_count += 1; fetched_bytes_count += len(chunk_content_res)
+#                         downloaded_content_map[pnum_result] = chunk_content_res
+#                         overall_perc = (downloaded_chunk_count / num_chunks) * 80.0 
+#                         yield _yield_sse_event('progress', _calculate_download_fetch_progress(start_fetch_time, fetched_bytes_count, total_bytes_to_fetch, downloaded_chunk_count, num_chunks, overall_perc, final_expected_size_final))
+#                     else: 
+#                         if not first_download_error: first_download_error = f"Chunk {pnum_result}: Internal task error (no content/error)."
+#                 except Exception as e_fut:
+#                     if not first_download_error: first_download_error = f"Processing future for chunk: {str(e_fut)}"
+
+
+#             if first_download_error:
+#                 error_to_raise = f"Download failed: {first_download_error}"
+#                 if file_too_big_errors_count > 0: error_to_raise = "Download failed: One or more file parts were too large."
+#                 raise ValueError(error_to_raise)
+#             if downloaded_chunk_count != num_chunks: raise SystemError(f"Chunk count mismatch. Expected:{num_chunks}, Got:{downloaded_chunk_count}.")
+            
+#             # Reassemble into a temporary file
+#             with tempfile.NamedTemporaryFile(delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"dl_reass_{prep_id}_") as tf_reassemble:
+#                 temp_reassembled_file_path = tf_reassemble.name
+#                 for pnum_write in range(1, num_chunks + 1):
+#                     chunk_content_to_write = downloaded_content_map.get(pnum_write)
+#                     if chunk_content_to_write is None: raise SystemError(f"Reassembly error: Chunk {pnum_write} missing.")
+#                     tf_reassemble.write(chunk_content_to_write)
+#             downloaded_content_map.clear()
+#             logging.info(f"{log_prefix} Telegram split file reassembled to: {temp_reassembled_file_path}")
+#             # `is_compressed_final` for split TG files refers to if the *original* was a zip before splitting for TG.
+
+#         elif telegram_file_id_final: # Single Telegram file
+#             yield _yield_sse_event('status', {'message': 'Downloading from final storage...'})
+#             content_bytes, err_msg = download_telegram_file_content(telegram_file_id_final)
+#             if err_msg: raise ValueError(f"TG download failed: {err_msg}")
+#             if not content_bytes: raise ValueError("TG download returned empty content.")
+#             logging.info(f"{log_prefix} Non-split TG file downloaded. Content length: {len(content_bytes)}")
+#             # `is_compressed_final` here refers to `is_compressed_for_telegram`
+#             is_compressed_final = prep_data.get('is_compressed', False) # Get the relevant compression flag
+#         else:
+#             raise RuntimeError("No valid source (GDrive or Telegram) determined for download.")
+
+#         # --- Decompression and Final Temp File Creation (common logic) ---
+#         # If content_bytes is not set (i.e., it was a split file reassembled to temp_reassembled_file_path)
+#         if temp_reassembled_file_path: # Indicates a reassembled (previously split for TG) file
+#             # The reassembled file IS the content. If it was a ZIP originally, temp_reassembled_file_path points to that ZIP.
+#             # No further decompression here for split files that were originally zips.
+#             temp_final_file_path = temp_reassembled_file_path
+#             if is_compressed_final: # Original was ZIP, reassembled to ZIP
+#                  yield _yield_sse_event('status', {'message': 'Reassembled ZIP ready.'})
+#             temp_reassembled_file_path = None # Mark as moved
+        
+#         elif content_bytes: # Came from GDrive or single TG file
+#             # Check if this content needs decompression
+#             # `is_compressed_final` should be correctly set based on source (GDrive or TG)
+#             if is_compressed_final and not original_filename_final.lower().endswith('.zip'):
+#                 logging.info(f"{log_prefix} Decompressing non-split file: {original_filename_final} (from {'GDrive' if source_gdrive_id_final else 'Telegram'})")
+#                 yield _yield_sse_event('status', {'message': 'Decompressing...'})
+#                 with tempfile.NamedTemporaryFile(delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"dl_final_extracted_{prep_id}_") as tf_extracted:
+#                     temp_final_file_path = tf_extracted.name
+#                 zf_source = None
+#                 try:
+#                     zip_buffer = io.BytesIO(content_bytes)
+#                     zf_source = zipfile.ZipFile(zip_buffer, 'r')
+#                     inner_filename_to_extract = _find_filename_in_zip(zf_source, original_filename_final, log_prefix)
+#                     with zf_source.open(inner_filename_to_extract, 'r') as inner_fs, open(temp_final_file_path, 'wb') as tf_out:
+#                         shutil.copyfileobj(inner_fs, tf_out)  
+#                 finally:
+#                     if zf_source: zf_source.close()
+#                 logging.info(f"{log_prefix} Decompression complete. Extracted to: {temp_final_file_path}")
+#             else: # Not compressed or already a .zip, write content_bytes directly
+#                 with tempfile.NamedTemporaryFile(delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"dl_final_{prep_id}_") as tf:
+#                     temp_final_file_path = tf.name
+#                     tf.write(content_bytes)
+#                 logging.info(f"{log_prefix} Content written to final temp file: {temp_final_file_path}")
+#         else:
+#             raise RuntimeError("No content available (neither bytes nor reassembled path).")
+
+#         yield _yield_sse_event('progress', {'percentage': 95})
+        
+#         # --- Finalization (common for all paths) ---
+#         # ... (rest of your existing finalization logic: getsize, update prep_data, yield ready) ...
+#         logging.info(f"{log_prefix} Preparing to finalize. Current temp_final_file_path: {temp_final_file_path}")
+        
+#         if not temp_final_file_path or not os.path.exists(temp_final_file_path):
+#             logging.error(f"{log_prefix} CRITICAL FAILURE: Final temp file path is invalid or file does not exist. Path: '{temp_final_file_path}'")
+#             raise RuntimeError(f"Failed to produce final temp file path. Check logs for path details.")
+        
+#         final_actual_size = os.path.getsize(temp_final_file_path)
+#         logging.info(f"{log_prefix} Final file ready. Path: {temp_final_file_path}, Actual Size: {format_bytes(final_actual_size)}")
+        
+#         prep_data['final_temp_file_path'] = temp_final_file_path
+#         prep_data['final_file_size'] = final_actual_size # Use actual size after all processing
+#         if final_expected_size_final == 0 and final_actual_size > 0 : # Update expected if it was unknown
+#              prep_data['final_expected_size'] = final_actual_size
+#         prep_data['status'] = 'ready'
+
+#         yield _yield_sse_event('progress', {'percentage': 100})
+#         yield _yield_sse_event('status', {'message': 'File ready!'})
+#         yield _yield_sse_event('ready', {'temp_file_id': prep_id, 'final_filename': original_filename_final})
+#         logging.info(f"{log_prefix} All 'ready' SSE events sent.")
+
+#     except Exception as e:
+#         error_message = f"Download prep failed: {str(e) or type(e).__name__}"
+#         logging.error(f"{log_prefix} {error_message}", exc_info=True) 
+#         yield _yield_sse_event('error', {'message': error_message})
+#         if prep_id in download_prep_data: 
+#             download_prep_data[prep_id]['status'] = 'error'
+#             download_prep_data[prep_id]['error'] = error_message
+#     finally:
+#         if download_executor: download_executor.shutdown(wait=False)
+#         # Ensure temp_reassembled_file_path is cleaned if it wasn't moved to temp_final_file_path
+#         if temp_reassembled_file_path and os.path.exists(temp_reassembled_file_path): 
+#             _safe_remove_file(temp_reassembled_file_path, log_prefix, "intermediate reassembled file in finally")
+        
+#         current_status = 'unknown (prep_data missing or cleaned up)'
+#         if prep_data and prep_id in download_prep_data : 
+#             current_status = prep_data.get('status', 'unknown')
+#         logging.info(f"{log_prefix} Generator ended. Status: {current_status}")     
+
 def _prepare_download_and_generate_updates(prep_id: str) -> Generator[SseEvent, None, None]:
     log_prefix = f"[DLPrep-{prep_id}]"
     prep_data = download_prep_data.get(prep_id)
@@ -443,132 +749,196 @@ def _prepare_download_and_generate_updates(prep_id: str) -> Generator[SseEvent, 
         return
     prep_data['status'] = 'preparing'
     
-    # Initialize from prep_data first
+    # Initialize with defaults or values from prep_data
     is_anonymous_final: bool = prep_data.get('is_anonymous', False)
     upload_timestamp_str_final: Optional[str] = prep_data.get('upload_timestamp')
-    is_split_final: bool = prep_data.get('is_split', False)
-    chunks_meta_final: Optional[List[Dict[str, Any]]] = prep_data.get('chunks_meta')
-    telegram_file_id_final: Optional[str] = prep_data.get('telegram_file_id')
     original_filename_final: str = prep_data.get('original_filename', "download")
-    is_compressed_final: bool = prep_data.get('is_compressed', False) 
     final_expected_size_final: int = prep_data.get('final_expected_size', 0)
-    compressed_total_size_final: int = prep_data.get('compressed_total_size', 0)
+    
+    # Source-specific flags, will be refined after DB lookup or from prep_data
+    is_split_for_telegram_source: bool = prep_data.get('is_split', False) 
+    chunks_meta_for_telegram_source: Optional[List[Dict[str, Any]]] = prep_data.get('chunks_meta')
+    telegram_file_id_for_telegram_source: Optional[str] = prep_data.get('telegram_file_id')
+    compressed_total_size_for_telegram_source: int = prep_data.get('compressed_total_size', 0)
+    is_compressed_for_telegram_source: bool = prep_data.get('is_compressed', False) 
+    
+    gdrive_id_source: Optional[str] = prep_data.get('source_gdrive_id')
+    is_compressed_for_gdrive_source_flag: bool = prep_data.get('is_compressed', False) 
+
+    # This will be the definitive compression flag for the chosen source
+    current_is_compressed: bool = False 
 
     temp_reassembled_file_path: Optional[str] = None
     temp_final_file_path: Optional[str] = None
     download_executor: Optional[ThreadPoolExecutor] = None
 
-    try: # Main try block for the whole preparation process
+    try:
         is_item_from_batch = prep_data.get("is_item_from_batch", False)
-        needs_db_lookup = not is_item_from_batch
-        
-        if needs_db_lookup and not prep_data.get('telegram_file_id_is_direct_source'):
-            logging.info(f"{log_prefix} DB lookup required.") # Added for clarity
+        # Determine if we need to look up details from DB or if prep_data is sufficient
+        needs_db_lookup_for_source_details = not is_item_from_batch and not gdrive_id_source and not telegram_file_id_for_telegram_source and not chunks_meta_for_telegram_source
+
+        if needs_db_lookup_for_source_details:
+            logging.info(f"{log_prefix} DB lookup required for source details.")
+            # ... (Existing DB lookup logic as before) ...
+            # Inside DB lookup, when fetched_file_item_info is available:
+            #   original_filename_final = ...
+            #   final_expected_size_final = ...
+            #   is_anonymous_final = ...
+            #   upload_timestamp_str_final = ...
+            #   
+            #   db_tg_status = fetched_file_item_info.get('telegram_send_status', 'unknown')
+            #   db_record_storage_loc = fetched_record_info.get('storage_location')
+            #   attempt_gdrive_source_from_db = (
+            #       db_tg_status in ['pending', 'failed_chunking_bg', 'failed_single_bg', 'error_processing_bg', 'skipped_bad_data_bg'] and
+            #       fetched_file_item_info.get('gdrive_file_id') and
+            #       db_record_storage_loc in ['gdrive', 'mixed_gdrive_telegram_error', 'telegram_processing_background']
+            #   )
+
+            #   if attempt_gdrive_source_from_db:
+            #       gdrive_id_source = fetched_file_item_info.get('gdrive_file_id')
+            #       is_split_for_telegram_source = False 
+            #       chunks_meta_for_telegram_source = None
+            #       telegram_file_id_for_telegram_source = None
+            #       current_is_compressed = fetched_file_item_info.get('is_compressed', False) # General compression for GDrive
+            #       compressed_total_size_for_telegram_source = final_expected_size_final
+            #       logging.info(f"{log_prefix} DB lookup: Sourcing from GDrive ID {gdrive_id_source}. current_is_compressed: {current_is_compressed}")
+            #   else: # Try Telegram source from DB
+            #       is_split_for_telegram_source = fetched_file_item_info.get('is_split_for_telegram', False)
+            #       current_is_compressed = fetched_file_item_info.get('is_compressed_for_telegram', fetched_file_item_info.get('is_compressed', False))
+            #       if is_split_for_telegram_source:
+            #           chunks_meta_for_telegram_source = fetched_file_item_info.get('telegram_chunks')
+            #           if not chunks_meta_for_telegram_source: raise RuntimeError("DB: Split for TG but no telegram_chunks.")
+            #           telegram_file_id_for_telegram_source = None
+            #           compressed_total_size_for_telegram_source = fetched_file_item_info.get('telegram_total_chunked_size', 0)
+            #       else:
+            #           tg_locs = fetched_file_item_info.get('telegram_send_locations', [])
+            #           tg_id_db, _ = _find_best_telegram_file_id(tg_locs, PRIMARY_TELEGRAM_CHAT_ID)
+            #           if not tg_id_db: raise ValueError(f"DB: No primary TG file ID. Status: {db_tg_status}")
+            #           telegram_file_id_for_telegram_source = tg_id_db
+            #           chunks_meta_for_telegram_source = None
+            #           compressed_total_size_for_telegram_source = fetched_file_item_info.get('compressed_total_size', final_expected_size_final)
+            #       logging.info(f"{log_prefix} DB lookup: Sourcing from Telegram. Split: {is_split_for_telegram_source}. current_is_compressed: {current_is_compressed}")
             db_access_id = prep_data.get('access_id')
-            db_username = prep_data.get('username') 
+            db_username = prep_data.get('username')
             db_requested_filename = prep_data.get('requested_filename')
-            fetched_file_info: Optional[Dict[str, Any]] = None
+            fetched_record_info: Optional[Dict[str, Any]] = None
+            fetched_file_item_info: Optional[Dict[str, Any]] = None
             lookup_error_msg = ""
 
             if db_access_id:
-                fetched_file_info, lookup_error_msg = find_metadata_by_access_id(db_access_id)
-            elif db_username and db_requested_filename:
-                all_user_files, lookup_error_msg = find_metadata_by_username(db_username)
-                if not lookup_error_msg and all_user_files:
-                    fetched_file_info = next((f for f in all_user_files if f.get('original_filename') == db_requested_filename or f.get('batch_display_name') == db_requested_filename), None)
+                fetched_record_info, lookup_error_msg = find_metadata_by_access_id(db_access_id)
+                if fetched_record_info and db_requested_filename:
+                     files_in_batch_arr = fetched_record_info.get('files_in_batch', [])
+                     fetched_file_item_info = next((f for f in files_in_batch_arr if f.get('original_filename') == db_requested_filename), None)
+                elif fetched_record_info and not fetched_record_info.get('is_batch'):
+                    files_in_batch_arr = fetched_record_info.get('files_in_batch', [])
+                    fetched_file_item_info = files_in_batch_arr[0] if files_in_batch_arr else fetched_record_info
             
-            if lookup_error_msg or not fetched_file_info:
-                raise FileNotFoundError(lookup_error_msg or "File metadata not found.")
+            if lookup_error_msg or not fetched_record_info or not fetched_file_item_info:
+                err_msg_to_raise = lookup_error_msg or "File metadata not found in DB."
+                if not fetched_file_item_info and fetched_record_info: err_msg_to_raise = f"File '{db_requested_filename}' not found in record '{db_access_id}'."
+                raise FileNotFoundError(err_msg_to_raise)
 
-            # Update final variables from fetched_file_info
-            if fetched_file_info:
-                original_filename_final = fetched_file_info.get('original_filename', fetched_file_info.get('batch_display_name', db_requested_filename or 'unknown'))
-                final_expected_size_final = fetched_file_info.get('original_size', 0)
-                is_split_final = fetched_file_info.get('is_split', False)
-                is_compressed_final = fetched_file_info.get('is_compressed', False) 
-                compressed_total_size_final = fetched_file_info.get('compressed_total_size', 0)
-                
-                # Crucially update these for the expiration check
-                is_anonymous_final = fetched_file_info.get('is_anonymous', False)
-                upload_timestamp_str_final = fetched_file_info.get('upload_timestamp')
-                
-                if is_split_final:
-                    chunks_meta_final = fetched_file_info.get('chunks')
-                    if not chunks_meta_final: raise RuntimeError(f"DB record split but no chunk data.")
-                    telegram_file_id_final = None 
-                else: 
-                    locations = fetched_file_info.get('send_locations', [])
-                    tg_id, _ = _find_best_telegram_file_id(locations, PRIMARY_TELEGRAM_CHAT_ID)
-                    if not tg_id: raise ValueError(f"No TG file ID in DB for non-split file.")
-                    telegram_file_id_final = tg_id
-                    chunks_meta_final = None
-                logging.info(f"{log_prefix} Metadata loaded from DB. is_anonymous_final: {is_anonymous_final}, upload_timestamp_str_final: {upload_timestamp_str_final}")
+            original_filename_final = fetched_file_item_info.get('original_filename', db_requested_filename or 'unknown')
+            final_expected_size_final = fetched_file_item_info.get('original_size', 0)
+            is_anonymous_final = fetched_record_info.get('is_anonymous', False)
+            upload_timestamp_str_final = fetched_record_info.get('upload_timestamp')
+            
+            # Determine source and compression from DB
+            db_tg_status = fetched_file_item_info.get('telegram_send_status', 'unknown')
+            db_record_storage_loc = fetched_record_info.get('storage_location')
+            attempt_gdrive_source_from_db = (
+                db_tg_status in ['pending', 'failed_chunking_bg', 'failed_single_bg', 'error_processing_bg', 'skipped_bad_data_bg'] and
+                fetched_file_item_info.get('gdrive_file_id') and
+                db_record_storage_loc in ['gdrive', 'mixed_gdrive_telegram_error', 'telegram_processing_background']
+            )
 
-        # This direct source part typically means telegram_file_id was passed directly, often for non-batched internal calls (if any)
-        # or if prep_data was sufficiently populated by the calling route (like download_single_file does now)
-        elif prep_data.get('telegram_file_id_is_direct_source') and not is_item_from_batch and not needs_db_lookup:
-            is_compressed_final = original_filename_final.lower().endswith('.zip')
-            logging.info(f"{log_prefix} Using direct source info. is_anonymous_final: {is_anonymous_final}, upload_timestamp_str_final: {upload_timestamp_str_final}")
+            if attempt_gdrive_source_from_db:
+                gdrive_id_source = fetched_file_item_info.get('gdrive_file_id')
+                is_split_for_telegram_source = False 
+                chunks_meta_for_telegram_source = None
+                telegram_file_id_for_telegram_source = None
+                current_is_compressed = fetched_file_item_info.get('is_compressed', False) # General compression for GDrive
+                compressed_total_size_for_telegram_source = final_expected_size_final
+                logging.info(f"{log_prefix} DB: Sourcing from GDrive ID {gdrive_id_source}. current_is_compressed: {current_is_compressed}")
+            else: 
+                is_split_for_telegram_source = fetched_file_item_info.get('is_split_for_telegram', False)
+                current_is_compressed = fetched_file_item_info.get('is_compressed_for_telegram', fetched_file_item_info.get('is_compressed', False))
+                if is_split_for_telegram_source:
+                    chunks_meta_for_telegram_source = fetched_file_item_info.get('telegram_chunks')
+                    if not chunks_meta_for_telegram_source: raise RuntimeError("DB: Split TG but no telegram_chunks.")
+                    telegram_file_id_for_telegram_source = None
+                    compressed_total_size_for_telegram_source = fetched_file_item_info.get('telegram_total_chunked_size', 0)
+                else:
+                    tg_locs = fetched_file_item_info.get('telegram_send_locations', [])
+                    tg_id_db, _ = _find_best_telegram_file_id(tg_locs, PRIMARY_TELEGRAM_CHAT_ID)
+                    if not tg_id_db: raise ValueError(f"DB: No primary TG file ID. Status: {db_tg_status}")
+                    telegram_file_id_for_telegram_source = tg_id_db
+                    chunks_meta_for_telegram_source = None
+                    compressed_total_size_for_telegram_source = fetched_file_item_info.get('compressed_total_size', final_expected_size_final)
+                logging.info(f"{log_prefix} DB: Sourcing from Telegram. Split: {is_split_for_telegram_source}. current_is_compressed: {current_is_compressed}")
 
-
-        # --- EXPIRATION CHECK --- (Moved to the correct location)
+        else: # Data is from prep_data (e.g., from download_single_file)
+            if gdrive_id_source:
+                current_is_compressed = is_compressed_for_gdrive_source_flag
+                logging.info(f"{log_prefix} PrepData: Sourcing from GDrive. current_is_compressed: {current_is_compressed}")
+            else: # Telegram source from prep_data
+                current_is_compressed = is_compressed_for_telegram_source
+                logging.info(f"{log_prefix} PrepData: Sourcing from Telegram. Split: {is_split_for_telegram_source}. current_is_compressed: {current_is_compressed}")
+        
+        # --- EXPIRATION CHECK (remains the same) ---
+        # ... uses is_anonymous_final and upload_timestamp_str_final ...
         if is_anonymous_final:
             logging.info(f"{log_prefix} Anonymous upload. Checking expiration. Timestamp string: '{upload_timestamp_str_final}'")
             if not upload_timestamp_str_final:
                 logging.warning(f"{log_prefix} Anonymous upload metadata for access_id '{prep_data.get('access_id', 'N/A')}' is missing 'upload_timestamp'.")
                 yield _yield_sse_event('error', {'message': 'File record is incomplete (missing timestamp). Cannot verify expiration.'})
-                if prep_id in download_prep_data:
-                    download_prep_data[prep_id]['status'] = 'error'
-                    download_prep_data[prep_id]['error'] = 'File record incomplete (timestamp missing).'
+                prep_data['status'] = 'error'; prep_data['error'] = 'File record incomplete (timestamp missing).'
                 return
-
             try:
                 upload_datetime = parser.isoparse(upload_timestamp_str_final)
                 if upload_datetime.tzinfo is None or upload_datetime.tzinfo.utcoffset(upload_datetime) is None:
                     upload_datetime = upload_datetime.replace(tzinfo=timezone.utc)
-                    
-                # expiration_limit = timedelta(seconds=30)
                 expiration_limit = timedelta(days=5)
-                # expiration_limit = timedelta(minutes=1) 
                 now_utc = datetime.now(timezone.utc)
-
                 if now_utc > (upload_datetime + expiration_limit):
-                    logging.info(f"{log_prefix} Anonymous download link EXPIRED. Uploaded At: {upload_datetime}, Expires At: {upload_datetime + expiration_limit}, Current Time: {now_utc}")
+                    logging.info(f"{log_prefix} Anonymous download link EXPIRED.")
                     yield _yield_sse_event('error', {'message': 'This download link has expired.'})
-                    if prep_id in download_prep_data:
-                        download_prep_data[prep_id]['status'] = 'error'
-                        download_prep_data[prep_id]['error'] = 'Link expired.'
+                    prep_data['status'] = 'error'; prep_data['error'] = 'Link expired.'
                     return 
                 else:
-                    logging.info(f"{log_prefix} Anonymous download link still valid. Expires at: {upload_datetime + expiration_limit}")
-
+                    logging.info(f"{log_prefix} Anonymous download link still valid.")
             except ValueError as e: 
                 logging.error(f"{log_prefix} Error parsing upload_timestamp '{upload_timestamp_str_final}': {e}", exc_info=True)
                 yield _yield_sse_event('error', {'message': 'Error processing file metadata (invalid timestamp).'})
-                if prep_id in download_prep_data:
-                    download_prep_data[prep_id]['status'] = 'error'
-                    download_prep_data[prep_id]['error'] = 'Invalid timestamp in record.'
+                prep_data['status'] = 'error'; prep_data['error'] = 'Invalid timestamp in record.'
                 return
         else:
-            logging.info(f"{log_prefix} Not an anonymous upload (is_anonymous_final is False). Expiration check skipped.")
-        # --- END OF EXPIRATION CHECK ---
+            logging.info(f"{log_prefix} Not an anonymous upload. Expiration check skipped.")
 
 
         yield _yield_sse_event('filename', {'filename': original_filename_final})
         yield _yield_sse_event('totalSizeUpdate', {'totalSize': final_expected_size_final}) 
         yield _yield_sse_event('status', {'message': 'Preparing file...'})
 
-        # ... (Rest of the file preparation logic: if is_split_final:, else: for non-split) ...
-        # This part of your code (downloading, reassembling, decompressing) remains the same.
-        # It should be within this main `try` block.
-        # For brevity, I'm not repeating that large block here, assuming it's correctly placed after this check.
+        content_bytes: Optional[bytes] = None
 
-        if is_split_final:
-            # ... (your existing split file processing logic) ...
-            if not chunks_meta_final: raise RuntimeError(f"File is split but no chunk metadata.")
-            chunks_meta_final.sort(key=lambda c: int(c.get('part_number', 0)))
-            num_chunks = len(chunks_meta_final)
-            total_bytes_to_fetch = compressed_total_size_final or sum(c.get('size',0) for c in chunks_meta_final)
+        if gdrive_id_source:
+            logging.info(f"{log_prefix} Fetching content from GDrive ID: {gdrive_id_source}")
+            yield _yield_sse_event('status', {'message': 'Downloading from temporary storage...'})
+            gdrive_stream, gdrive_err = download_from_gdrive(gdrive_id_source)
+            if gdrive_err or not gdrive_stream:
+                raise IOError(f"GDrive download failed: {gdrive_err or 'No content stream'}")
+            content_bytes = gdrive_stream.read()
+            gdrive_stream.close()
+            if not content_bytes: raise ValueError("GDrive download returned empty content.")
+            logging.info(f"{log_prefix} GDrive content downloaded. Size: {format_bytes(len(content_bytes))}")
+        
+        elif is_split_for_telegram_source:
+            if not chunks_meta_for_telegram_source: raise RuntimeError("File is split for Telegram but no chunk metadata.")
+            chunks_meta_for_telegram_source.sort(key=lambda c: int(c.get('part_number', 0)))
+            num_chunks = len(chunks_meta_for_telegram_source)
+            total_bytes_to_fetch = compressed_total_size_for_telegram_source or sum(c.get('size',0) for c in chunks_meta_for_telegram_source)
             
             start_fetch_time = time.time(); fetched_bytes_count = 0; downloaded_chunk_count = 0
             download_executor = ThreadPoolExecutor(max_workers=MAX_DOWNLOAD_WORKERS, thread_name_prefix=f'DlPrep_{prep_id[:4]}')
@@ -577,7 +947,7 @@ def _prepare_download_and_generate_updates(prep_id: str) -> Generator[SseEvent, 
             first_download_error: Optional[str] = None
             file_too_big_errors_count = 0
 
-            for i, chunk_info in enumerate(chunks_meta_final):
+            for i, chunk_info in enumerate(chunks_meta_for_telegram_source):
                 part_num = chunk_info.get("part_number")
                 chunk_send_locations = chunk_info.get("send_locations", [])
                 if not chunk_send_locations: logging.warning(f"{log_prefix} Chunk {part_num} no send_locations, skipping."); continue
@@ -588,19 +958,19 @@ def _prepare_download_and_generate_updates(prep_id: str) -> Generator[SseEvent, 
             yield _yield_sse_event('status', {'message': f'Downloading {num_chunks} file parts...'})
             for future in as_completed(submitted_futures):
                 try:
-                    pnum_result, content_result, err_result = future.result()
+                    pnum_result, chunk_content_res, err_result = future.result()
                     if err_result:
                         if "file is too big" in err_result.lower(): file_too_big_errors_count += 1
                         if not first_download_error: first_download_error = f"Chunk {pnum_result}: {err_result}"
-                    elif content_result:
-                        downloaded_chunk_count += 1; fetched_bytes_count += len(content_result)
-                        downloaded_content_map[pnum_result] = content_result
+                    elif chunk_content_res:
+                        downloaded_chunk_count += 1; fetched_bytes_count += len(chunk_content_res)
+                        downloaded_content_map[pnum_result] = chunk_content_res
                         overall_perc = (downloaded_chunk_count / num_chunks) * 80.0 
                         yield _yield_sse_event('progress', _calculate_download_fetch_progress(start_fetch_time, fetched_bytes_count, total_bytes_to_fetch, downloaded_chunk_count, num_chunks, overall_perc, final_expected_size_final))
                     else: 
-                        if not first_download_error: first_download_error = f"Chunk {pnum_result}: Internal task error (no content/error)."
-                except Exception as e:
-                    if not first_download_error: first_download_error = f"Processing future for chunk: {str(e)}"
+                        if not first_download_error: first_download_error = f"Chunk {pnum_result}: Internal task error."
+                except Exception as e_fut:
+                    if not first_download_error: first_download_error = f"Processing future for chunk: {str(e_fut)}"
 
             if first_download_error:
                 error_to_raise = f"Download failed: {first_download_error}"
@@ -610,62 +980,59 @@ def _prepare_download_and_generate_updates(prep_id: str) -> Generator[SseEvent, 
             
             with tempfile.NamedTemporaryFile(delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"dl_reass_{prep_id}_") as tf_reassemble:
                 temp_reassembled_file_path = tf_reassemble.name
-                logging.debug(f"{log_prefix} Created reassembly temp file: {temp_reassembled_file_path}")
                 for pnum_write in range(1, num_chunks + 1):
                     chunk_content_to_write = downloaded_content_map.get(pnum_write)
-                    if chunk_content_to_write is None:
-                        logging.error(f"{log_prefix} CRITICAL: Chunk {pnum_write} missing from map during reassembly!")
-                        raise SystemError(f"Reassembly error: Chunk {pnum_write} content missing from downloaded map.")
+                    if chunk_content_to_write is None: raise SystemError(f"Reassembly error: Chunk {pnum_write} missing.")
                     tf_reassemble.write(chunk_content_to_write)
-            downloaded_content_map.clear() 
-            
-            if os.path.exists(temp_reassembled_file_path):
-                reassembled_size = os.path.getsize(temp_reassembled_file_path)
-                logging.info(f"{log_prefix} Reassembly complete. Reassembled file: {temp_reassembled_file_path}, Size: {format_bytes(reassembled_size)}")
-            else:
-                logging.error(f"{log_prefix} CRITICAL: Reassembled temp file {temp_reassembled_file_path} does not exist after writing!")
-                raise RuntimeError("Reassembled file disappeared after creation.")
-                
-            temp_final_file_path = temp_reassembled_file_path
-            temp_reassembled_file_path = None 
-
-            if is_compressed_final: # If original was a ZIP and it was split
-                yield _yield_sse_event('status', {'message': 'Reassembled ZIP ready.'}) # Clarify it's a ZIP
-                logging.info(f"{log_prefix} Reassembled file is a ZIP (original type): {temp_final_file_path}. No further extraction for split ZIPs at this stage.")
-                # No tf_extracted or zf_reassembled logic needed here if we are serving the reassembled ZIP directly
-                yield _yield_sse_event('progress', {'percentage': 95})
-
-
-        else: # Non-split file logic
-            if not telegram_file_id_final: raise ValueError("Non-split file but no TG file ID.")
-            yield _yield_sse_event('status', {'message': 'Downloading...'})
-            content_bytes, err_msg = download_telegram_file_content(telegram_file_id_final)
+            downloaded_content_map.clear()
+            logging.info(f"{log_prefix} Telegram split file reassembled to: {temp_reassembled_file_path}")
+        
+        elif telegram_file_id_for_telegram_source:
+            yield _yield_sse_event('status', {'message': 'Downloading from final storage...'})
+            content_bytes, err_msg = download_telegram_file_content(telegram_file_id_for_telegram_source)
             if err_msg: raise ValueError(f"TG download failed: {err_msg}")
             if not content_bytes: raise ValueError("TG download returned empty content.")
-            logging.info(f"{log_prefix} Non-split file downloaded. Content length: {len(content_bytes) if content_bytes else 0}")
-            
-            if is_compressed_final and not original_filename_final.lower().endswith('.zip'):
+            logging.info(f"{log_prefix} Non-split TG file downloaded. Content length: {len(content_bytes)}")
+        else:
+            raise RuntimeError("No valid source (GDrive or Telegram) determined for download.")
+
+        # --- Decompression and Final Temp File Creation ---
+        if temp_reassembled_file_path: # Reassembled TG split file
+            temp_final_file_path = temp_reassembled_file_path # This IS the final content path
+            if current_is_compressed: # If original was a ZIP and it was split for TG
+                 yield _yield_sse_event('status', {'message': 'Reassembled ZIP ready.'})
+                 logging.info(f"{log_prefix} Reassembled file is a ZIP (original type): {temp_final_file_path}.")
+            temp_reassembled_file_path = None # Mark as moved/used
+        
+        elif content_bytes: # From GDrive or single TG file
+            if current_is_compressed and not original_filename_final.lower().endswith('.zip'):
                 logging.info(f"{log_prefix} Decompressing non-split file: {original_filename_final}")
                 yield _yield_sse_event('status', {'message': 'Decompressing...'})
-                with tempfile.NamedTemporaryFile(delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"dl_final_{prep_id}_") as tf:
-                    temp_final_file_path = tf.name
-                zf_single = None
+                # ... (decompression logic as before, writes to temp_final_file_path) ...
+                with tempfile.NamedTemporaryFile(delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"dl_final_extracted_{prep_id}_") as tf_extracted:
+                    temp_final_file_path = tf_extracted.name
+                zf_source = None
                 try:
                     zip_buffer = io.BytesIO(content_bytes)
-                    zf_single = zipfile.ZipFile(zip_buffer, 'r')
-                    inner_filename = _find_filename_in_zip(zf_single, original_filename_final, log_prefix)
-                    with zf_single.open(inner_filename, 'r') as inner_fs, open(temp_final_file_path, 'wb') as tf_out:
+                    zf_source = zipfile.ZipFile(zip_buffer, 'r')
+                    inner_filename_to_extract = _find_filename_in_zip(zf_source, original_filename_final, log_prefix)
+                    with zf_source.open(inner_filename_to_extract, 'r') as inner_fs, open(temp_final_file_path, 'wb') as tf_out:
                         shutil.copyfileobj(inner_fs, tf_out)  
                 finally:
-                    if zf_single: zf_single.close()
-                logging.info(f"{log_prefix} Decompression complete for non-split file. Extracted to: {temp_final_file_path}")
+                    if zf_source: zf_source.close()
+                logging.info(f"{log_prefix} Decompression complete. Extracted to: {temp_final_file_path}")
             else: 
                 with tempfile.NamedTemporaryFile(delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"dl_final_{prep_id}_") as tf:
                     temp_final_file_path = tf.name
                     tf.write(content_bytes)
-            yield _yield_sse_event('progress', {'percentage': 95})
+                logging.info(f"{log_prefix} Content written to final temp file: {temp_final_file_path}")
+        else:
+            raise RuntimeError("No content available (neither bytes nor reassembled path).")
 
-        # Finalization (common for both split and non-split paths)
+        yield _yield_sse_event('progress', {'percentage': 95})
+        
+        # --- Finalization ---
+        # ... (rest of finalization logic as before) ...
         logging.info(f"{log_prefix} Preparing to finalize. Current temp_final_file_path: {temp_final_file_path}")
         
         if not temp_final_file_path or not os.path.exists(temp_final_file_path):
@@ -676,7 +1043,9 @@ def _prepare_download_and_generate_updates(prep_id: str) -> Generator[SseEvent, 
         logging.info(f"{log_prefix} Final file ready. Path: {temp_final_file_path}, Actual Size: {format_bytes(final_actual_size)}")
         
         prep_data['final_temp_file_path'] = temp_final_file_path
-        prep_data['final_file_size'] = final_actual_size
+        prep_data['final_file_size'] = final_actual_size 
+        if final_expected_size_final == 0 and final_actual_size > 0 : 
+             prep_data['final_expected_size'] = final_actual_size
         prep_data['status'] = 'ready'
 
         yield _yield_sse_event('progress', {'percentage': 100})
@@ -685,7 +1054,6 @@ def _prepare_download_and_generate_updates(prep_id: str) -> Generator[SseEvent, 
         logging.info(f"{log_prefix} All 'ready' SSE events sent.")
 
     except Exception as e:
-        # This is the general exception handler for the entire preparation process
         error_message = f"Download prep failed: {str(e) or type(e).__name__}"
         logging.error(f"{log_prefix} {error_message}", exc_info=True) 
         yield _yield_sse_event('error', {'message': error_message})
@@ -697,14 +1065,11 @@ def _prepare_download_and_generate_updates(prep_id: str) -> Generator[SseEvent, 
         if temp_reassembled_file_path and os.path.exists(temp_reassembled_file_path): 
             _safe_remove_file(temp_reassembled_file_path, log_prefix, "intermediate reassembled file in finally")
         
-        current_status = 'unknown (prep_data missing or cleaned up)'
-        if prep_data and prep_id in download_prep_data : # Safely access prep_data
-            current_status = prep_data.get('status', 'unknown')
-        logging.info(f"{log_prefix} Generator ended. Status: {current_status}")
+        current_status_final = 'unknown (prep_data missing or cleaned up)' # Renamed variable
+        if prep_data and prep_id in download_prep_data : 
+            current_status_final = prep_data.get('status', 'unknown')
+        logging.info(f"{log_prefix} Generator ended. Status: {current_status_final}")
 
-# ... (rest of download_routes.py: generate_stream_with_cleanup, serve_temp_file, download_single_file, initiate_download_all, stream_download_all, _generate_zip_and_stream_progress) ...
-# The _generate_zip_and_stream_progress function already has the expiration check correctly placed at its beginning.
-# The functions download_single_file and initiate_download_all also correctly populate is_anonymous and upload_timestamp.       
         
 def generate_stream_with_cleanup(path: str, temp_id_for_cleanup: str):
     """Generator to stream a file and ensure cleanup afterwards."""
@@ -935,47 +1300,67 @@ def download_single_file(access_id: str, filename: str):
 
     if not target_file_metadata:
         err_user_msg = f"File '{filename}' not found, was skipped, or failed within record '{access_id}'."
-        logging.warning(f"{log_prefix} {err_user_msg}. Available files in record: {[f.get('original_filename') for f in files_in_record_array]}")
+        logging.warning(f"{log_prefix} {err_user_msg}. Available files: {[f.get('original_filename') for f in files_in_record_array]}")
         def error_stream_file_not_in_record(): yield _yield_sse_event('error', {'message': err_user_msg})
         return Response(stream_with_context(error_stream_file_not_in_record()), mimetype='text/event-stream', status=404)
     
-    final_is_split_for_telegram = target_file_metadata.get('is_split_for_telegram', target_file_metadata.get('is_split', False))
-    
-    final_telegram_chunks_meta = None
-    prep_telegram_file_id_single = None
-
-    if final_is_split_for_telegram:
-        final_telegram_chunks_meta = target_file_metadata.get('telegram_chunks', target_file_metadata.get('chunks'))
-        if not final_telegram_chunks_meta:
-            err_msg_chunks = f"File '{filename}' in record '{access_id}' is marked as split for Telegram but has no chunk information."
-            logging.error(f"{log_prefix} {err_msg_chunks} Details: {target_file_metadata}")
-            def err_s_chunks(): yield _yield_sse_event('error', {'message': err_msg_chunks})
-            return Response(stream_with_context(err_s_chunks()), mimetype='text/event-stream', status=500)
-    else:
-        tg_send_locations = target_file_metadata.get('telegram_send_locations', target_file_metadata.get('send_locations', []))
-        prep_telegram_file_id_single, _ = _find_best_telegram_file_id(tg_send_locations, PRIMARY_TELEGRAM_CHAT_ID)
-        if not prep_telegram_file_id_single:
-            err_msg_no_tg_src = f"No primary Telegram source found for file '{filename}' in record '{access_id}'. TG locations considered: {tg_send_locations}"
-            logging.error(f"{log_prefix} {err_msg_no_tg_src} File details: {target_file_metadata}")
-            def err_s_no_src(): yield _yield_sse_event('error', {'message': err_msg_no_tg_src})
-            return Response(stream_with_context(err_s_no_src()), mimetype='text/event-stream', status=500)
-
-    download_prep_data[prep_id] = {
+    # --- MODIFICATION FOR GDRIVE SOURCE ---
+    prep_data_payload: Dict[str, Any] = {
         "prep_id": prep_id, "status": "initiated", "access_id": access_id, 
         "username": record_info.get('username'), 
         "requested_filename": filename, 
         "original_filename": target_file_metadata.get('original_filename'), 
-        "telegram_file_id": prep_telegram_file_id_single, 
-        "is_split": final_is_split_for_telegram, 
-        "chunks_meta": final_telegram_chunks_meta, 
-        "is_compressed": target_file_metadata.get('is_compressed_for_telegram', target_file_metadata.get('is_compressed', False)),
-        "final_expected_size": target_file_metadata.get('original_size', 0),
-        "compressed_total_size": target_file_metadata.get('telegram_total_chunked_size') if final_is_split_for_telegram else target_file_metadata.get('compressed_total_size', target_file_metadata.get('original_size', 0)),
         "is_item_from_batch": True, 
         "is_anonymous": record_info.get('is_anonymous', False), 
         "upload_timestamp": record_info.get('upload_timestamp'), 
+        "final_expected_size": target_file_metadata.get('original_size', 0),
+        "is_compressed": target_file_metadata.get('is_compressed_for_telegram', target_file_metadata.get('is_compressed', False)), # Prefer TG-specific compression flag
         "error": None, "final_temp_file_path": None, "final_file_size": 0, "start_time": time.time()
     }
+
+    # Determine the source: Telegram or GDrive
+    tg_send_status = target_file_metadata.get('telegram_send_status', 'unknown')
+    record_storage_location = record_info.get('storage_location') # Overall record storage
+
+    source_from_gdrive = False
+    if tg_send_status in ['pending', 'failed_chunking_bg', 'failed_single_bg', 'error_processing_bg', 'skipped_bad_data_bg'] and \
+       target_file_metadata.get('gdrive_file_id') and \
+       record_storage_location in ['gdrive', 'mixed_gdrive_telegram_error', 'telegram_processing_background']:
+        source_from_gdrive = True
+        logging.info(f"{log_prefix} Telegram status is '{tg_send_status}' and GDrive ID exists. Will attempt to source from GDrive.")
+
+    if source_from_gdrive:
+        prep_data_payload["source_gdrive_id"] = target_file_metadata.get('gdrive_file_id')
+        prep_data_payload["is_split"] = False # GDrive files are always treated as single stream for this prep
+        prep_data_payload["chunks_meta"] = None
+        prep_data_payload["telegram_file_id"] = None
+        prep_data_payload["compressed_total_size"] = target_file_metadata.get('original_size', 0) # GDrive size is original
+    else: # Attempt Telegram source
+        final_is_split_for_telegram = target_file_metadata.get('is_split_for_telegram', target_file_metadata.get('is_split', False))
+        prep_data_payload["is_split"] = final_is_split_for_telegram
+        
+        if final_is_split_for_telegram:
+            final_telegram_chunks_meta = target_file_metadata.get('telegram_chunks', target_file_metadata.get('chunks'))
+            if not final_telegram_chunks_meta:
+                err_msg_chunks = f"File '{filename}' in record '{access_id}' is marked as split for Telegram but has no chunk information."
+                logging.error(f"{log_prefix} {err_msg_chunks} Details: {target_file_metadata}")
+                def err_s_chunks(): yield _yield_sse_event('error', {'message': err_msg_chunks})
+                return Response(stream_with_context(err_s_chunks()), mimetype='text/event-stream', status=500)
+            prep_data_payload["chunks_meta"] = final_telegram_chunks_meta
+            prep_data_payload["compressed_total_size"] = target_file_metadata.get('telegram_total_chunked_size', target_file_metadata.get('compressed_total_size', 0))
+        else: # Not split for Telegram
+            tg_send_locations = target_file_metadata.get('telegram_send_locations', target_file_metadata.get('send_locations', []))
+            prep_telegram_file_id_single, _ = _find_best_telegram_file_id(tg_send_locations, PRIMARY_TELEGRAM_CHAT_ID)
+            if not prep_telegram_file_id_single:
+                # This is the error you were seeing
+                err_msg_no_tg_src = f"No primary Telegram source found for file '{filename}' in record '{access_id}'. TG locations considered: {tg_send_locations}. TG Status: {tg_send_status}"
+                logging.error(f"{log_prefix} {err_msg_no_tg_src} File details: {json.dumps(target_file_metadata, default=str)}")
+                def err_s_no_src(): yield _yield_sse_event('error', {'message': err_msg_no_tg_src})
+                return Response(stream_with_context(err_s_no_src()), mimetype='text/event-stream', status=500)
+            prep_data_payload["telegram_file_id"] = prep_telegram_file_id_single
+            prep_data_payload["compressed_total_size"] = target_file_metadata.get('compressed_total_size', target_file_metadata.get('original_size', 0))
+
+    download_prep_data[prep_id] = prep_data_payload
     logging.debug(f"{log_prefix} Prep data populated for SSE stream: {json.dumps(download_prep_data[prep_id], default=str)}")
     return Response(stream_with_context(_prepare_download_and_generate_updates(prep_id)), mimetype='text/event-stream')
 

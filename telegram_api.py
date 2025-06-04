@@ -29,45 +29,142 @@ session.mount('http://', general_adapter)
 logging.info(f"Initialized requests.Session for Telegram API calls. Adapter configured with pool_maxsize={adapter_pool_maxsize}.")
 
 # --- Telegram API Interaction ---
+# def send_file_to_telegram(
+#     file_handle: IO[bytes],
+#     filename: str,
+#     target_chat_id: Union[str, int]
+# ) -> ApiResult:
+#     """
+#     Sends a file (from buffer or bytes) to a specific Telegram chat ID.
+#     Implements retries for transient network errors.
+
+#     Args:
+#         file_object: A file-like object opened in binary mode or raw bytes.
+#         filename: The desired filename for the uploaded document.
+#         target_chat_id: The target chat ID (string or integer).
+
+#     Returns:
+#         A tuple: (success: bool, message: str, response_json: Optional[dict])
+#     """
+#     api_url = f'https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendDocument'
+#     files_payload = {'document': (filename, file_handle)}
+#     data_payload = {'chat_id': str(target_chat_id)} 
+#     log_prefix = f"ChatID {target_chat_id}, File '{filename}'"
+#     logging.info(f"[{log_prefix}] Attempting send.")
+#     last_exception: Optional[Exception] = None
+#     response: Optional[requests.Response] = None
+
+#     for attempt in range(API_RETRY_ATTEMPTS + 1):
+#         response = None 
+#         try:
+#             if attempt > 0:
+#                 logging.info(f"[{log_prefix}] Retrying send (Attempt {attempt + 1}/{API_RETRY_ATTEMPTS + 1})...")
+#                 time.sleep(API_RETRY_DELAY)
+#                 try:
+#                     file_handle.seek(0)
+#                     logging.debug(f"[{log_prefix}] Reset file handle position for retry {attempt+1}.")
+                    
+                    
+#                 except Exception as seek_err:
+#                     logging.error(f"[{log_prefix}] Failed reset file pos for retry: {seek_err}")
+#                     return False, f"Error resetting file stream: {seek_err}", None
+#             response = session.post(
+#                 api_url,
+#                 data=data_payload,
+#                 files=files_payload,
+#                 timeout=(
+#                     TELEGRAM_API_TIMEOUTS['connect'],
+#                     TELEGRAM_API_TIMEOUTS.get('send_document', TELEGRAM_API_TIMEOUTS['read'])
+#                 )
+#             )
+#             response.raise_for_status() 
+#             response_json = response.json() 
+
+#             if response_json.get('ok'):
+#                 logging.info(f"[{log_prefix}] API success (Attempt {attempt+1}).")
+#                 return True, f"File '{filename}' sent successfully!", response_json
+#             else:
+#                 error_desc = response_json.get('description', 'Unknown Telegram error')
+#                 logging.error(f"[{log_prefix}] API Error (Attempt {attempt+1}): {error_desc} (Resp: {response.text})")
+#                 return False, f"Telegram API Error: {error_desc}", None 
+#         except requests.exceptions.HTTPError as e: # From raise_for_status()
+#             last_exception = e
+#             error_details = str(e)
+#             if e.response is not None:
+#                 error_details += f" | Status: {e.response.status_code} | Response: {e.response.text}"
+#             logging.error(f"[{log_prefix}] HTTP Error (Attempt {attempt+1}): {error_details}", exc_info=False) # exc_info can be True for more details
+#             # Non-retryable client errors (4xx except 408, 429)
+#             if e.response is not None and 400 <= e.response.status_code < 500 and e.response.status_code not in [408, 429]:
+#                 return False, f"Client-side HTTP error: {error_details}", None
+        
+#         except requests.exceptions.Timeout as e:
+#             last_exception = e; logging.warning(f"[{log_prefix}] Timeout attempt {attempt+1}: {e}")
+#         except requests.exceptions.ConnectionError as e:
+#             last_exception = e; logging.warning(f"[{log_prefix}] Connection error attempt {attempt+1}: {e}")
+#         except requests.exceptions.RequestException as e: 
+#             last_exception = e
+#             error_details = str(e)
+#             current_response = e.response if e.response is not None else response
+#             if current_response is not None:
+#                 error_details += f" | Status: {current_response.status_code} | Response: {current_response.text}"
+#                 logging.error(f"[{log_prefix}] Network/Request Error (Attempt {attempt+1}): {error_details}", exc_info=True)
+#                 return False, f"Network/Request Error: {error_details}", None
+#             else: 
+#                 logging.warning(f"[{log_prefix}] Network/Request Error no response (Attempt {attempt+1}): {error_details}", exc_info=True)
+
+#         except json.JSONDecodeError as e:
+#              status = response.status_code if response else 'N/A'
+#              body = response.text if response else 'N/A'
+#              logging.error(f"[{log_prefix}] Invalid JSON response. Status: {status}, Body: {body}", exc_info=True)
+#              return False, "Error: Received invalid JSON response from Telegram.", None 
+
+#         except Exception as e: 
+#              logging.error(f"[{log_prefix}] Unexpected error send attempt {attempt+1}: {e}", exc_info=True)
+#              return False, f"An unexpected error occurred: {e}", None 
+
+#         # --- Retry logic for Timeout/ConnectionError/RequestException without response ---
+#         if attempt < API_RETRY_ATTEMPTS : # If not the last attempt
+#              if last_exception: # And an exception occurred that didn't lead to an early return
+#                  #logging.info(f"[{log_prefix}] Retrying in {API_RETRY_DELAY}s...") # Moved delay to start of loop
+#                  # time.sleep(API_RETRY_DELAY) # Moved to start of loop
+#                  last_exception = None 
+#                  continue # Go to next attempt
+#              # If no exception but loop continues (e.g., 'ok':false was caught and returned), this won't be hit.
+#         elif last_exception: # Last attempt and there was an exception
+#              logging.error(f"[{log_prefix}] Send failed after {attempt+1} attempts.", exc_info=last_exception)
+#              return False, f"Failed after multiple attempts: {str(last_exception)}", None
+#     # Fallback if loop finishes unexpectedly (should not happen)
+#     logging.error(f"[{log_prefix}] Send file logic exited loop unexpectedly.")
+#     return False, "Unknown error during file sending.", None
+
 def send_file_to_telegram(
     file_handle: IO[bytes],
     filename: str,
     target_chat_id: Union[str, int]
 ) -> ApiResult:
-    """
-    Sends a file (from buffer or bytes) to a specific Telegram chat ID.
-    Implements retries for transient network errors.
-
-    Args:
-        file_object: A file-like object opened in binary mode or raw bytes.
-        filename: The desired filename for the uploaded document.
-        target_chat_id: The target chat ID (string or integer).
-
-    Returns:
-        A tuple: (success: bool, message: str, response_json: Optional[dict])
-    """
     api_url = f'https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendDocument'
     files_payload = {'document': (filename, file_handle)}
-    data_payload = {'chat_id': str(target_chat_id)} 
+    data_payload = {'chat_id': str(target_chat_id)}
     log_prefix = f"ChatID {target_chat_id}, File '{filename}'"
-    logging.info(f"[{log_prefix}] Attempting send.")
+    # Removed: logging.info(f"[{log_prefix}] Attempting send.") # Moved inside loop for retries
     last_exception: Optional[Exception] = None
     response: Optional[requests.Response] = None
 
-    for attempt in range(API_RETRY_ATTEMPTS + 1):
-        response = None 
+    for attempt in range(API_RETRY_ATTEMPTS + 1): # Corrected range to include 0 up to API_RETRY_ATTEMPTS
+        response = None
+        logging.info(f"[{log_prefix}] Attempting send (Attempt {attempt + 1}/{API_RETRY_ATTEMPTS + 1}).")
         try:
             if attempt > 0:
-                logging.info(f"[{log_prefix}] Retrying send (Attempt {attempt + 1}/{API_RETRY_ATTEMPTS + 1})...")
+                # General delay is handled here, specific Retry-After is handled in except HTTPError
+                logging.info(f"[{log_prefix}] Retrying after general delay {API_RETRY_DELAY}s...")
                 time.sleep(API_RETRY_DELAY)
                 try:
                     file_handle.seek(0)
                     logging.debug(f"[{log_prefix}] Reset file handle position for retry {attempt+1}.")
-                    
-                    
                 except Exception as seek_err:
                     logging.error(f"[{log_prefix}] Failed reset file pos for retry: {seek_err}")
                     return False, f"Error resetting file stream: {seek_err}", None
+            
             response = session.post(
                 api_url,
                 data=data_payload,
@@ -77,66 +174,99 @@ def send_file_to_telegram(
                     TELEGRAM_API_TIMEOUTS.get('send_document', TELEGRAM_API_TIMEOUTS['read'])
                 )
             )
-            response.raise_for_status() 
-            response_json = response.json() 
+            response.raise_for_status()
+            response_json = response.json()
 
             if response_json.get('ok'):
                 logging.info(f"[{log_prefix}] API success (Attempt {attempt+1}).")
                 return True, f"File '{filename}' sent successfully!", response_json
             else:
-                error_desc = response_json.get('description', 'Unknown Telegram error')
-                logging.error(f"[{log_prefix}] API Error (Attempt {attempt+1}): {error_desc} (Resp: {response.text})")
-                return False, f"Telegram API Error: {error_desc}", None 
-        except requests.exceptions.HTTPError as e: # From raise_for_status()
+                error_desc = response_json.get('description', 'Unknown Telegram error (ok=false)')
+                error_code = response_json.get('error_code')
+                full_error_msg = f"TG API Error (Code {error_code}): {error_desc}"
+                logging.error(f"[{log_prefix}] {full_error_msg} (Attempt {attempt+1}, Resp: {response.text})")
+                # Non-retryable based on 'ok: false' unless it's a known transient error code if any
+                return False, full_error_msg, response_json # Return response_json for further inspection if needed
+
+        except requests.exceptions.HTTPError as e:
             last_exception = e
             error_details = str(e)
             if e.response is not None:
-                error_details += f" | Status: {e.response.status_code} | Response: {e.response.text}"
-            logging.error(f"[{log_prefix}] HTTP Error (Attempt {attempt+1}): {error_details}", exc_info=False) # exc_info can be True for more details
-            # Non-retryable client errors (4xx except 408, 429)
-            if e.response is not None and 400 <= e.response.status_code < 500 and e.response.status_code not in [408, 429]:
-                return False, f"Client-side HTTP error: {error_details}", None
+                status_code = e.response.status_code
+                response_text = e.response.text
+                error_details += f" | Status: {status_code} | Response: {response_text[:200]}" # Log snippet
+                logging.error(f"[{log_prefix}] HTTP Error (Attempt {attempt+1}): {error_details}", exc_info=False)
+                
+                try:
+                    response_json_error = e.response.json()
+                    tg_error_desc = response_json_error.get('description', 'No description in JSON error')
+                    tg_error_code = response_json_error.get('error_code')
+                    logging.error(f"[{log_prefix}] Parsed Telegram API error details: Code {tg_error_code}, Desc: {tg_error_desc}")
+                    
+                    if status_code == 429: # Too Many Requests
+                        retry_after_val = response_json_error.get('parameters', {}).get('retry_after')
+                        if retry_after_val and attempt < API_RETRY_ATTEMPTS:
+                            wait_time = int(retry_after_val)
+                            logging.warning(f"[{log_prefix}] Received 429. Retrying after {wait_time}s (Attempt {attempt+1}).")
+                            time.sleep(wait_time)
+                            # seek(0) is handled at the start of the loop for next attempt
+                            continue # Continue to next attempt in the loop
+                        else:
+                            logging.error(f"[{log_prefix}] Received 429 but no retry_after or max retries reached. Failing.")
+                            return False, f"Telegram rate limit hit (429): {tg_error_desc}", response_json_error
+                except json.JSONDecodeError:
+                    logging.warning(f"[{log_prefix}] Could not parse JSON from HTTP error response body: {response_text[:200]}")
+
+                # For other 4xx client errors (that are not 408 for timeout or 429 handled above)
+                if 400 <= status_code < 500 and status_code not in [408, 429]:
+                    # Pass the more detailed error message if available from JSON parsing
+                    parsed_tg_msg = response_json_error.get('description') if 'response_json_error' in locals() else None
+                    final_err_msg = f"Client-side HTTP error ({status_code}): {parsed_tg_msg or response_text[:100]}"
+                    return False, final_err_msg, response_json_error if 'response_json_error' in locals() else None
+            else: # HTTPError without e.response (should be rare)
+                 logging.error(f"[{log_prefix}] HTTP Error (Attempt {attempt+1}) with no e.response: {error_details}", exc_info=False)
         
-        except requests.exceptions.Timeout as e:
-            last_exception = e; logging.warning(f"[{log_prefix}] Timeout attempt {attempt+1}: {e}")
-        except requests.exceptions.ConnectionError as e:
-            last_exception = e; logging.warning(f"[{log_prefix}] Connection error attempt {attempt+1}: {e}")
-        except requests.exceptions.RequestException as e: 
-            last_exception = e
-            error_details = str(e)
-            current_response = e.response if e.response is not None else response
-            if current_response is not None:
-                error_details += f" | Status: {current_response.status_code} | Response: {current_response.text}"
-                logging.error(f"[{log_prefix}] Network/Request Error (Attempt {attempt+1}): {error_details}", exc_info=True)
-                return False, f"Network/Request Error: {error_details}", None
-            else: 
-                logging.warning(f"[{log_prefix}] Network/Request Error no response (Attempt {attempt+1}): {error_details}", exc_info=True)
+        # ... (rest of the exception handlers: Timeout, ConnectionError, RequestException, JSONDecodeError, generic Exception remain the same)
+        except requests.exceptions.Timeout as e_timeout:
+            last_exception = e_timeout
+            logging.warning(f"[{log_prefix}] Timeout (Attempt {attempt+1}): {e_timeout}")
+        except requests.exceptions.ConnectionError as e_conn:
+            last_exception = e_conn
+            logging.warning(f"[{log_prefix}] Connection error (Attempt {attempt+1}): {e_conn}")
+        except requests.exceptions.RequestException as e_req:
+            last_exception = e_req
+            err_details_req = str(e_req)
+            # This part was problematic as it could return early without exhausting retries for network issues
+            # Let it fall through to the retry logic if attempts remain.
+            logging.error(f"[{log_prefix}] Network/Request Error (Attempt {attempt+1}): {err_details_req}", exc_info=True)
 
-        except json.JSONDecodeError as e:
-             status = response.status_code if response else 'N/A'
-             body = response.text if response else 'N/A'
-             logging.error(f"[{log_prefix}] Invalid JSON response. Status: {status}, Body: {body}", exc_info=True)
-             return False, "Error: Received invalid JSON response from Telegram.", None 
+        except json.JSONDecodeError as e_json:
+            # This means response.raise_for_status() didn't trigger, but response.json() failed.
+            # Should be rare if API is consistent. Likely implies non-JSON success response or malformed error.
+            status_code_json_err = response.status_code if response else 'N/A'
+            body_json_err = response.text if response else 'N/A'
+            logging.error(f"[{log_prefix}] Invalid JSON response. Status: {status_code_json_err}, Body: {body_json_err}", exc_info=True)
+            return False, "Error: Received invalid JSON response from Telegram.", None
 
-        except Exception as e: 
-             logging.error(f"[{log_prefix}] Unexpected error send attempt {attempt+1}: {e}", exc_info=True)
-             return False, f"An unexpected error occurred: {e}", None 
+        except Exception as e_generic:
+            last_exception = e_generic # Store for final error message
+            logging.error(f"[{log_prefix}] Unexpected error send (Attempt {attempt+1}): {e_generic}", exc_info=True)
+            # For truly unexpected errors, might be better to fail fast rather than retry,
+            # but current logic will retry. If it's the last attempt, it will fail.
 
-        # --- Retry logic for Timeout/ConnectionError/RequestException without response ---
-        if attempt < API_RETRY_ATTEMPTS : # If not the last attempt
-             if last_exception: # And an exception occurred that didn't lead to an early return
-                 #logging.info(f"[{log_prefix}] Retrying in {API_RETRY_DELAY}s...") # Moved delay to start of loop
-                 # time.sleep(API_RETRY_DELAY) # Moved to start of loop
-                 last_exception = None 
-                 continue # Go to next attempt
-             # If no exception but loop continues (e.g., 'ok':false was caught and returned), this won't be hit.
-        elif last_exception: # Last attempt and there was an exception
-             logging.error(f"[{log_prefix}] Send failed after {attempt+1} attempts.", exc_info=last_exception)
-             return False, f"Failed after multiple attempts: {str(last_exception)}", None
-    # Fallback if loop finishes unexpectedly (should not happen)
-    logging.error(f"[{log_prefix}] Send file logic exited loop unexpectedly.")
-    return False, "Unknown error during file sending.", None
+        # Check if we should break the loop or continue to the next retry
+        if attempt >= API_RETRY_ATTEMPTS: # If this was the last allowed attempt
+            break # Exit loop, will fall through to final error reporting
 
+    # After the loop (either completed all retries or broke out early from a non-retryable error return)
+    if last_exception:
+        final_err_msg = f"Failed after {API_RETRY_ATTEMPTS + 1} attempts. Last error: {str(last_exception)}"
+        logging.error(f"[{log_prefix}] {final_err_msg}", exc_info=last_exception) # Log with last exception details
+        return False, final_err_msg, None
+    
+    # Fallback if loop finishes unexpectedly without returning (should not happen with correct logic)
+    logging.error(f"[{log_prefix}] Send file logic exited loop unexpectedly without success or explicit failure.")
+    return False, "Unknown error during file sending after all attempts.", None
 
 # def download_telegram_file_content(file_id: str) -> Tuple[Optional[bytes], Optional[str]]:
 #     """

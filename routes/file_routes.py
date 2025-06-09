@@ -728,13 +728,16 @@ from database import (
 from config import app , PRIMARY_TELEGRAM_CHAT_ID
 from typing import Dict, Any, Tuple, Optional, List, Generator
 
-file_bp = Blueprint('file', __name__, template_folder='../templates/file')
+# file_bp = Blueprint('file', __name__, template_folder='../templates/file')
+file_bp = Blueprint('file_api', __name__)
 
-@file_bp.route('/files/<username>', methods=['GET', 'OPTIONS'])
+# @file_bp.route('/files/<username>', methods=['GET', 'OPTIONS'])
+# @jwt_required()
+@file_bp.route('/files/<username>', methods=['GET']) # FIX: Removed explicit OPTIONS handling
 @jwt_required()
 def list_user_files(username: str) -> Response:
-    if request.method == 'OPTIONS':
-        return make_response(), 204 # CORS preflight
+    # if request.method == 'OPTIONS':
+    #     return make_response(), 204 # CORS preflight
 
     log_prefix = f"[ListFiles-{username}]"
     current_user_jwt_identity = get_jwt_identity()
@@ -758,7 +761,7 @@ def list_user_files(username: str) -> Response:
     return jsonify(serializable_files)
 
 
-@file_bp.route('/browse-page/<username>')
+@file_bp.route('/browse-page/<username>', methods=['GET'])
 @jwt_required()
 def list_user_files_page(username: str):
     current_user_jwt_identity = get_jwt_identity()
@@ -1082,7 +1085,7 @@ def get_preview_details(access_id: str):
 
     if response_data["preview_type"] not in ['unsupported', 'expired', 'directory_listing']: # directory_listing doesn't need content URL
         response_data['preview_content_url'] = url_for(
-            'file.serve_raw_file_content', 
+            'file_api.serve_raw_file_content', 
             access_id=access_id, 
             filename=effective_filename_for_preview, # Pass the specific filename
             _external=False
@@ -1183,7 +1186,7 @@ def _get_final_file_content_for_preview(access_id: str, top_level_record: Dict[s
     
     return final_content_to_serve, None, filename_for_mime_type_final
 
-@file_bp.route('/file-content/<access_id>')
+@file_bp.route('/file-content/<access_id>', methods=['GET'])
 def serve_raw_file_content(access_id: str):
     # ... (largely as before, but ensure filename_from_query is passed to _get_final_file_content_for_preview)
     log_prefix = f"[ServeRawContent-{access_id}]"

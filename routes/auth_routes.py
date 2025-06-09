@@ -49,6 +49,7 @@ ChunkDataResult = Tuple[int, Optional[bytes], Optional[str]]
 # --- Constants ---
 DEFAULT_CHUNK_READ_SIZE = 4 * 1024 * 1024; STREAM_CHUNK_SIZE = 65536
 auth_bp = Blueprint('auth', __name__)
+admin_auth_bp = Blueprint('admin_auth', __name__)
 
 def _ensure_username_in_user_doc(user_doc: Optional[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
     if user_doc and 'username' not in user_doc:

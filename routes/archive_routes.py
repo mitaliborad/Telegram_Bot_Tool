@@ -14,13 +14,13 @@ from database import (
 
 )
 
-archive_bp = Blueprint('archive', __name__, url_prefix='/archive') 
+archive_bp = Blueprint('archive', __name__)
 
 @archive_bp.route('/list-files/<username>', methods=['GET', 'OPTIONS'])
 @jwt_required()
 def list_user_archived_files(username: str) -> Response:
-    if request.method == 'OPTIONS':
-        return make_response(), 204 # CORS preflight
+    # if request.method == 'OPTIONS':
+    #     return make_response(), 204 # CORS preflight
 
     log_prefix = f"[ListArchivedFiles-{username}]"
     current_user_jwt_identity = get_jwt_identity()
@@ -48,11 +48,11 @@ def list_user_archived_files(username: str) -> Response:
     return jsonify(archived_files or []) 
 
 
-@archive_bp.route('/restore-file/<access_id>', methods=['POST', 'OPTIONS'])
+@archive_bp.route('/restore-file/<access_id>', methods=['POST'])
 @jwt_required()
 def restore_archived_file(access_id: str) -> Response:
-    if request.method == 'OPTIONS':
-        return make_response(), 204 # CORS preflight
+    # if request.method == 'OPTIONS':
+    #     return make_response(), 204 # CORS preflight
 
     log_prefix = f"[RestoreFile-{access_id}]"
     current_user_jwt_identity = get_jwt_identity()

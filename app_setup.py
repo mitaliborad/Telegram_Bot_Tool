@@ -95,19 +95,18 @@ from routes.archive_routes import archive_bp
 # (Blueprint Instance, URL Prefix or None for root)
 blueprints_to_register_with_prefix = {
     'password_reset': (password_reset_bp, None),
-    'auth': (auth_bp, None), # Or '/auth' if you prefer
-    'upload': (upload_bp, None), # Or '/upload'
-    'download_prefixed': (download_prefixed_bp, '/download'), # This is download_bp from download_routes.py, now aliased
-    'download_sse': (download_sse_bp, None), # Routes like /download-single/... at root
-    'file_routes': (file_bp, '/api'), # Routes like /api/batch-details/...
-    'archive': (archive_bp, None), # Or '/archive'
+    'auth': (auth_bp, None),
+    'upload': (upload_bp, None),
+    'download_prefixed': (download_prefixed_bp, '/download'),
+    'download_sse': (download_sse_bp, None),
+    'file_routes': (file_bp, '/api'), 
+    'archive': (archive_bp, '/api/archive'), 
 }
 
 registered_blueprints_count = 0
 for name, config_tuple in blueprints_to_register_with_prefix.items():
     bp_instance, url_prefix = config_tuple
     if bp_instance:
-        # Check by the blueprint's actual name (first arg to Blueprint())
         if bp_instance.name in app.blueprints:
             logging.warning(f"Blueprint with internal name '{bp_instance.name}' (config key: '{name}') seems to be already registered or name conflicts. Skipping this registration entry.")
         else:
@@ -121,13 +120,6 @@ if registered_blueprints_count > 0:
     logging.info(f"Total of {registered_blueprints_count} blueprints registered via loop.")
 else:
     logging.warning("No new blueprints were registered via loop.")
-
-# --- REMOVE these individual registrations if handled by the loop above ---
-# app.register_blueprint(upload_bp)
-# app.register_blueprint(download_bp, url_prefix='/download') # This was line 290, likely causing error
-# app.register_blueprint(download_sse_bp)
-# app.register_blueprint(file_bp, url_prefix='/api')
-# ... and others if they are in the dictionary ...
 
 app.register_blueprint(admin_auth_bp, url_prefix='/admin')
 

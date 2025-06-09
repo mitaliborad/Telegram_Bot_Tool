@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{% if admin_view and admin_view.name %}{{ admin_view.name }} - {% endif %}Storage Admin{% endblock %}</title> {# <--- MODIFIED #}
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    {% block head_css %}{% endblock %}
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+        <a class="navbar-brand" href="{{ url_for('admin.index') if admin_view else url_for('admin_auth.login') }}">Storage Admin</a> {# <--- Consider fallback for brand link #}
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#adminNavbar" aria-controls="adminNavbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="adminNavbar">
+            <ul class="navbar-nav mr-auto">
+                {# Only show full admin menu if admin_view is defined (i.e., we are in a Flask-Admin managed page) #}
+                {% if admin_view and admin_menu_items %}  {# <--- ADDED CHECK #}
+                    {% for item in admin_menu_items %}
+                        {% if item.is_category() %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown-{{ item.name|lower|replace(' ', '-') }}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {{ item.name }}
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown-{{ item.name|lower|replace(' ', '-') }}">
+                                    {% for child in item.get_children() %}
+                                        {# Check for admin_view before using it with is_active #}
+                                        <a class="dropdown-item {% if admin_view and child.is_active(admin_view) %}active{% endif %}" href="{{ child.get_url() }}">{{ child.name }}</a>
+                                    {% endfor %}
+                                </div>
+                            </li>
+                        {% elif item.is_accessible() and item.is_visible() %}
+                            {# Check for admin_view before using it with is_active #}
+                            <li class="nav-item {% if admin_view and item.is_active(admin_view) %}active{% endif %}">
+                                <a class="nav-link" href="{{ item.get_url() }}">{{ item.name }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    {# Optionally, show a simplified menu or nothing on pages like login #}
+                    {# <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_auth.login') }}">Login</a></li> #}
+                {% endif %}
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                {% if current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <span class="navbar-text mr-3">Logged in as: {{ current_user.username }}</span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('admin_auth.logout') }}">Logout</a>
+                    </li>
+                {% else %}
+                    {# Only show login link if not already on the login page itself #}
+                    {% if request.endpoint != 'admin_auth.login' %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('admin_auth.login') }}">Login</a>
+                    </li>
+                    {% endif %}
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        {% block messages %}
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category if category else 'info' }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        {% endblock %}
+
+        {% block body %}{% endblock %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    {% block tail_js %}{% endblock %}
+    {% block tail %}{% endblock %}
+</body>
+</html>

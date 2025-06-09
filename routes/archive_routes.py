@@ -19,8 +19,8 @@ archive_bp = Blueprint('archive', __name__)
 @archive_bp.route('/list-files/<username>', methods=['GET', 'OPTIONS'])
 @jwt_required()
 def list_user_archived_files(username: str) -> Response:
-    # if request.method == 'OPTIONS':
-    #     return make_response(), 204 # CORS preflight
+    if request.method == 'OPTIONS':
+        return make_response()
 
     log_prefix = f"[ListArchivedFiles-{username}]"
     current_user_jwt_identity = get_jwt_identity()

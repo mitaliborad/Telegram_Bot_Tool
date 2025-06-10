@@ -2,7 +2,7 @@
 import logging
 from flask_admin.babel import gettext
 from flask_admin.base import BaseView, expose
-# from flask_login import current_user # Not strictly needed while security is off
+from flask_login import current_user # Not strictly needed while security is off
 from flask import redirect, url_for, request, flash # Keep flash for feedback
 from math import ceil
 import re
@@ -22,13 +22,15 @@ from bson import ObjectId
 class UserView(BaseView):
     def is_accessible(self):
         logging.warning("UserView is_accessible is temporarily returning True. REMOVE FOR PRODUCTION.")
-        return True
+        return current_user.is_authenticated and getattr(current_user, 'is_admin', False) 
 
     def inaccessible_callback(self, name, **kwargs):
-        logging.info(f"inaccessible_callback called for {name} in UserView, but is_accessible is True.")
-        flash(gettext('Access Denied (inaccessible_callback). This should not happen with current settings.'), 'warning')
-        # When security is on, this should redirect based on current_user state
-        return redirect(url_for('auth.login')) # Fallback redirect
+        if not current_user.is_authenticated:
+            flash('Please log in to access this page.', 'info')
+            return redirect(url_for('admin_auth.login', next=request.url))
+        else:
+            flash('You do not have permission to access this page.', 'danger')
+            return redirect(url_for('admin_auth.login'))
 
     # @expose('/')
     # def index(self):

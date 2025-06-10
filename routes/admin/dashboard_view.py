@@ -1,25 +1,27 @@
-# routes/admin/dashboard_view.py
 import logging
 from flask_admin import AdminIndexView, expose
-from flask_login import current_user # Will be used when security is back
-from flask import redirect, url_for, request
+from flask_login import current_user
+from flask import redirect, url_for, request, flash
 from database import get_all_users, get_all_file_metadata
+from .auth_routes import logout_user
 
 class MyAdminIndexView(AdminIndexView):
     def is_accessible(self):
         # --- TEMPORARILY MODIFIED FOR DEVELOPMENT ---
         logging.warning("MyAdminIndexView is_accessible is temporarily returning True. REMOVE FOR PRODUCTION.")
-        return True
-        # --- END OF TEMPORARY MODIFICATION ---
-
-        # Real check (when security is back on):
-        # if not current_user.is_authenticated or not getattr(current_user, 'is_admin', False):
-        #     return False
-        # return True
+        return current_user.is_authenticated and getattr(current_user, 'is_admin', False)
+        
 
     def inaccessible_callback(self, name, **kwargs):
-        logging.info(f"inaccessible_callback for MyAdminIndexView. Redirecting to login.")
-        return redirect(url_for('auth.login', next=request.url)) 
+        if not current_user.is_authenticated:
+            flash('Please log in to access the admin dashboard.', 'info')
+            return redirect(url_for('admin_auth.login', next=request.url))
+        else: # Authenticated but not an admin
+            flash('You do not have admin privileges to access the dashboard.', 'danger')
+            # Redirect to logout then login, or a safe non-admin page if you have one.
+            # Forcing logout then login can be a clear way to handle this.
+            logout_user() # Make sure logout_user is imported if used directly here, or redirect to logout route
+            return redirect(url_for('admin_auth.login')) 
 
     @expose('/')
     def index(self):

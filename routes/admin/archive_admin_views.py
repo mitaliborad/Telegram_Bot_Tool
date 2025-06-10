@@ -2,7 +2,7 @@
 import logging
 from flask_admin.babel import gettext
 from flask_admin.base import BaseView, expose
-from flask_login import current_user # For security later
+from flask_login import current_user 
 from flask import redirect, url_for, request, flash
 from math import ceil
 from database import (
@@ -16,25 +16,17 @@ class ArchivedFileView(BaseView):
     def is_accessible(self):
         # --- TEMPORARILY MODIFIED FOR DEVELOPMENT ---
         logging.warning("ArchivedFileView is_accessible is temporarily returning True. REMOVE FOR PRODUCTION.")
-        return True
-        # --- END OF TEMPORARY MODIFICATION ---
-
-        # Real check (when security is back on):
-        # if not current_user.is_authenticated or not getattr(current_user, 'is_admin', False):
-        #     return False
-        # return True
+        return current_user.is_authenticated and getattr(current_user, 'is_admin', False)
+        
 
     def inaccessible_callback(self, name, **kwargs):
         logging.info(f"inaccessible_callback for ArchivedFileView. Current is_accessible: True")
-        if hasattr(current_user, 'is_authenticated') and not current_user.is_authenticated: # Check if current_user has this attr
-            flash(gettext('Please log in to access this page.'), 'warning')
-            return redirect(url_for('auth.login', next=request.url))
+        if not current_user.is_authenticated:
+            flash('Please log in to access this page.', 'info')
+            return redirect(url_for('admin_auth.login', next=request.url))
         else:
-            flash(gettext('You do not have permission to access this page.'), 'danger')
-            if hasattr(current_user, 'username') and current_user.username:
-                 return redirect(url_for('file.list_user_files_page', username=current_user.username))
-            else:
-                 return redirect(url_for('auth.login')) # Fallback
+            flash('You do not have permission to access this page.', 'danger')
+            return redirect(url_for('admin_auth.login'))
 
     @expose('/')
     def index(self):

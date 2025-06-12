@@ -60,10 +60,9 @@ _drive_service = None
 #         raise ConnectionError(f"Could not connect to Google Drive API: {e}")
 
 def upload_to_gdrive_with_progress(
-    # Can accept either a file path or an in-memory stream
-    source: str | io.BytesIO, 
+    source: str | io.BytesIO,
     filename_in_gdrive: str,
-    operation_id_for_log: str # For logging context
+    operation_id_for_log: str
 ) -> Generator[Dict[str, Any], None, Tuple[Optional[str], Optional[str]]]:
     """
     Uploads a file (from path or stream) to Google Drive, yielding progress.
@@ -144,6 +143,7 @@ def upload_to_gdrive_with_progress(
             media_body=media_body,
             fields='id, name' # Only need id and name for confirmation
         )
+        gdrive_request = service.files().create(body=file_metadata, media_body=media_body, fields='id, name')
         
         response = None
         while response is None:
@@ -423,19 +423,14 @@ logging.info("Google Drive API module (google_drive_api.py) loaded.")
 
 
 
-
-
-#today's changes................
-
 def _get_drive_service():
     """
-    Authenticates and returns a Google Drive API service object.
-    Caches the service object for efficiency.
-    This version includes a long timeout and disables httplib2 redirect handling.
+    Authenticates and returns a new Google Drive API service object for each call.
+    This version is thread-safe.
     """
-    global _drive_service
-    if _drive_service:
-        return _drive_service
+    # global _drive_service  <-- REMOVE OR COMMENT OUT THIS LINE
+    # if _drive_service:     <-- REMOVE OR COMMENT OUT THIS LINE
+    #     return _drive_service <-- REMOVE OR COMMENT OUT THIS LINE
 
     if not SERVICE_ACCOUNT_FILE:
         logging.error("Google Drive API: SERVICE_ACCOUNT_FILE path is not set in environment variables.")
@@ -452,20 +447,59 @@ def _get_drive_service():
             SERVICE_ACCOUNT_FILE, scopes=SCOPES)
         
         http_client_with_timeout = httplib2.Http(timeout=600)
-
-        # --- MODIFICATION START ---
-        # Disable httplib2's automatic redirect handling.
-        # The Google API client library handles resumable upload redirects (308) itself.
-        # httplib2's interference causes the "RedirectMissingLocation" error.
         http_client_with_timeout.follow_redirects = False
-        # --- MODIFICATION END ---
 
         authed_http = AuthorizedHttp(creds, http=http_client_with_timeout)
         service = build('drive', 'v3', http=authed_http, cache_discovery=False)
-        _drive_service = service
         
-        logging.info("Google Drive API service initialized successfully (Timeout: 600s, Redirects: Disabled).")
+        # We no longer cache the service object in _drive_service
+        logging.info("Google Drive API service initialized successfully (Thread-Safe Mode).")
         return service
     except Exception as e:
         logging.error(f"Failed to initialize Google Drive service: {e}", exc_info=True)
         raise ConnectionError(f"Could not connect to Google Drive API: {e}")
+
+#today's changes................
+
+# def _get_drive_service():
+#     """
+#     Authenticates and returns a Google Drive API service object.
+#     Caches the service object for efficiency.
+#     This version includes a long timeout and disables httplib2 redirect handling.
+#     """
+#     global _drive_service
+#     if _drive_service:
+#         return _drive_service
+
+#     if not SERVICE_ACCOUNT_FILE:
+#         logging.error("Google Drive API: SERVICE_ACCOUNT_FILE path is not set in environment variables.")
+#         raise ValueError("Service account file path not configured.")
+#     if not os.path.exists(SERVICE_ACCOUNT_FILE):
+#         logging.error(f"Google Drive API: Service account file not found at '{SERVICE_ACCOUNT_FILE}'.")
+#         raise FileNotFoundError(f"Service account file not found: {SERVICE_ACCOUNT_FILE}")
+#     if not DRIVE_TEMP_FOLDER_ID:
+#         logging.error("Google Drive API: DRIVE_TEMP_FOLDER_ID is not set in environment variables.")
+#         raise ValueError("Google Drive temporary folder ID not configured.")
+
+#     try:
+#         creds = service_account.Credentials.from_service_account_file(
+#             SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+        
+#         http_client_with_timeout = httplib2.Http(timeout=600)
+
+#         # --- MODIFICATION START ---
+#         # Disable httplib2's automatic redirect handling.
+#         # The Google API client library handles resumable upload redirects (308) itself.
+#         # httplib2's interference causes the "RedirectMissingLocation" error.
+#         http_client_with_timeout.follow_redirects = False
+#         # --- MODIFICATION END ---
+
+#         authed_http = AuthorizedHttp(creds, http=http_client_with_timeout)
+#         service = build('drive', 'v3', http=authed_http, cache_discovery=False)
+#         _drive_service = service
+        
+#         logging.info("Google Drive API service initialized successfully (Timeout: 600s, Redirects: Disabled).")
+#         return service
+#     except Exception as e:
+#         logging.error(f"Failed to initialize Google Drive service: {e}", exc_info=True)
+#         raise ConnectionError(f"Could not connect to Google Drive API: {e}")

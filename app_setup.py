@@ -133,7 +133,7 @@ from routes.archive_routes import archive_bp
 blueprints_to_register_with_prefix = {
     'password_reset': (password_reset_bp, None),
     'auth': (auth_bp, None), # Assuming this is for main app auth, not admin
-    'upload': (upload_bp, None),
+    'upload': (upload_bp, '/upload'),
     'download_prefixed': (download_prefixed_bp, '/download'),
     'download_sse': (download_sse_bp, None),
     'file_routes': (file_bp, '/api'),
@@ -165,6 +165,10 @@ if 'admin_auth' not in app.blueprints: # Check if not already registered by mist
 else:
     logging.warning(f"Admin authentication blueprint '{admin_auth_bp.name}' appears to be already registered.")
 
+@app.route('/')
+def home():
+    # This function will run and return a simple string.
+    return "whelcome to my site!"
 
 # --- Application Runner ---
 if __name__ == '__main__':

@@ -32,131 +32,6 @@ _drive_service = None
 def upload_to_gdrive_with_progress(
     source: str | io.BytesIO,
     filename_in_gdrive: str,
-    operation_id_for_log: str
-) -> Generator[Dict[str, Any], None, Tuple[Optional[str], Optional[str]]]:
-    """
-    Uploads a file (from path or stream) to Google Drive, yielding progress.
-
-    Args:
-        source: File path (str) or BytesIO stream.
-        filename_in_gdrive: Name for the file in Google Drive.
-        operation_id_for_log: ID for logging.
-
-    Yields:
-        Progress dictionaries: {'type': 'progress', 'percentage': int}
-
-    Returns (via StopIteration):
-        A tuple (gdrive_file_id, error_message).
-    """
-    log_prefix = f"[GDriveUpload-{operation_id_for_log}-{filename_in_gdrive[:20]}]"
-    service = None
-    try:
-        service = _get_drive_service()
-        if not service:
-            logging.error(f"{log_prefix} Google Drive service not available for upload.")
-            # To make it a generator that signals error, we yield an error dict and then return
-            yield {"type": "error", "message": "Google Drive service not available."}
-            return None, "Google Drive service not available."
-
-        file_metadata = {
-            'name': filename_in_gdrive,
-            'parents': [DRIVE_TEMP_FOLDER_ID]
-        }
-        
-        media_body = None
-        file_size = 0
-
-        if isinstance(source, str) and os.path.exists(source): # It's a file path
-            file_size = os.path.getsize(source)
-            media_body = MediaFileUpload(
-                source,
-                mimetype=mimetypes.guess_type(filename_in_gdrive)[0] or 'application/octet-stream',
-                resumable=True,
-                chunksize=1024 * 1024 * 1 # 1MB chunk for more frequent progress for smaller files
-            )
-            logging.info(f"{log_prefix} Prepared MediaFileUpload from path: {source}, size: {file_size}")
-        elif isinstance(source, io.BytesIO):
-            source.seek(0)
-            file_size = len(source.getvalue())
-            source.seek(0)
-            media_body = MediaIoBaseUpload(
-                fd=source,
-                mimetype=mimetypes.guess_type(filename_in_gdrive)[0] or 'application/octet-stream',
-                chunksize=1024 * 1024 * 1,
-                resumable=True
-            )
-            logging.info(f"{log_prefix} Prepared MediaIoBaseUpload from stream, size: {file_size}")
-        else:
-            err_msg = "Invalid source type for GDrive upload. Must be file path or BytesIO."
-            logging.error(f"{log_prefix} {err_msg}")
-            yield {"type": "error", "message": err_msg}
-            return None, err_msg
-        
-        if file_size == 0:
-            logging.warning(f"{log_prefix} Source file/stream is empty. Skipping actual GDrive upload call, but will create an empty file placeholder if needed by logic.")
-            placeholder_metadata = {'name': filename_in_gdrive, 'parents': [DRIVE_TEMP_FOLDER_ID]}
-            # Create an empty file using just metadata
-            empty_file = service.files().create(body=placeholder_metadata, fields='id,name').execute()
-            gdrive_id = empty_file.get('id')
-            if gdrive_id:
-                logging.info(f"{log_prefix} Empty source. Created empty file placeholder in GDrive. ID: {gdrive_id}")
-                yield {"type": "progress", "percentage": 100}
-                return gdrive_id, None
-            else:
-                return None, "Failed to create empty file placeholder on GDrive."
-
-
-        logging.info(f"{log_prefix} Initiating resumable upload to Google Drive...")
-        
-        gdrive_request = service.files().create(
-            body=file_metadata,
-            media_body=media_body,
-            fields='id, name' # Only need id and name for confirmation
-        )
-        gdrive_request = service.files().create(body=file_metadata, media_body=media_body, fields='id, name')
-        
-        response = None
-        while response is None:
-            status, response = gdrive_request.next_chunk()
-            if status:
-                progress_percentage = int(status.progress() * 100)
-                logging.info(f"{log_prefix} GDrive Upload Progress: {progress_percentage}%")
-                yield {"type": "progress", "percentage": progress_percentage}
-        
-        # When loop finishes, response contains the completed file resource
-        uploaded_file_info = response
-
-        if uploaded_file_info and uploaded_file_info.get('id'):
-            gdrive_file_id = uploaded_file_info.get('id')
-            name = uploaded_file_info.get('name')
-            logging.info(f"{log_prefix} File '{name}' uploaded successfully to GDrive. ID: {gdrive_file_id}")
-            # Ensure 100% is yielded if not already
-            yield {"type": "progress", "percentage": 100} 
-            return gdrive_file_id, None # Return via StopIteration implicitly
-        else:
-            err_msg = "GDrive upload finished but no file ID returned in final response."
-            logging.error(f"{log_prefix} {err_msg} Response: {uploaded_file_info}")
-            yield {"type": "error", "message": err_msg}
-            return None, err_msg
-
-    except HttpError as error:
-        reason = getattr(error, '_get_reason', lambda: str(error))()
-        status_code = error.resp.status if hasattr(error, 'resp') else 'N/A'
-        logging.error(f"{log_prefix} GDrive API HTTP error: {status_code} - {reason}", exc_info=True)
-        yield {"type": "error", "message": f"Google Drive API HTTP error: {status_code} - {reason}"}
-        return None, f"Google Drive API HTTP error: {status_code} - {reason}"
-    except Exception as e:
-        logging.error(f"{log_prefix} Unexpected error during GDrive upload: {e}", exc_info=True)
-        yield {"type": "error", "message": f"Unexpected error uploading to GDrive: {str(e)}"}
-        return None, f"Unexpected error uploading to Google Drive: {str(e)}"
-    finally:
-        if isinstance(source, io.BytesIO): # Close stream only if we created it here conceptually
-            # source.close() # Caller of this generator should handle closing the source stream if it was passed in
-            pass
-
-def upload_to_gdrive_with_progress(
-    source: str | io.BytesIO,
-    filename_in_gdrive: str,
     operation_id_for_log: str # This is the key for upload_progress_data
 ) -> Generator[Dict[str, Any], None, Tuple[Optional[str], Optional[str]]]:
     """
@@ -230,8 +105,6 @@ def upload_to_gdrive_with_progress(
             if gdrive_file_id_final:
                 logging.info(f"{log_prefix} Empty source. Created empty file placeholder in GDrive. ID: {gdrive_file_id_final}")
                 yield {"type": "progress", "percentage": 100}
-                # Store the ID in upload_progress_data
-                # Check if upload_progress_data was imported correctly
                 if 'upload_progress_data' in globals() and isinstance(upload_progress_data, dict):
                     if operation_id_for_log in upload_progress_data:
                         upload_progress_data[operation_id_for_log]["gdrive_file_id_temp_result"] = gdrive_file_id_final
@@ -240,7 +113,6 @@ def upload_to_gdrive_with_progress(
                         logging.error(f"{log_prefix} upload_progress_data key '{operation_id_for_log}' not found for storing GDrive ID (empty file).")
                 else:
                     logging.error(f"{log_prefix} upload_progress_data not available/usable in google_drive_api.py (empty file).")
-
                 return gdrive_file_id_final, None
             else:
                 error_message_final = "Failed to create empty file placeholder on GDrive."
@@ -272,24 +144,20 @@ def upload_to_gdrive_with_progress(
             name = uploaded_file_info.get('name')
             logging.info(f"{log_prefix} File '{name}' uploaded successfully to GDrive. ID: {gdrive_file_id_final}")
             
-            # --- CRITICAL FIX: Store the gdrive_file_id in upload_progress_data ---
             if 'upload_progress_data' in globals() and isinstance(upload_progress_data, dict):
                 if operation_id_for_log in upload_progress_data:
                     upload_progress_data[operation_id_for_log]["gdrive_file_id_temp_result"] = gdrive_file_id_final
                     logging.info(f"{log_prefix} Stored gdrive_file_id_temp_result: {gdrive_file_id_final} for op: {operation_id_for_log}")
                 else:
-                    # This case should ideally not happen if initiate_upload sets up the entry correctly
                     logging.error(f"{log_prefix} upload_progress_data key '{operation_id_for_log}' not found. Cannot store GDrive ID.")
-                    # Yield an error because the next stage will fail
                     error_message_final = "Internal state error: upload session data missing for GDrive ID storage."
                     yield {"type": "error", "message": error_message_final}
-                    return None, error_message_final # This indicates a problem in the handoff
+                    return None, error_message_final
             else:
                 logging.critical(f"{log_prefix} upload_progress_data is not available or not a dict in google_drive_api.py. GDrive ID cannot be stored.")
                 error_message_final = "Server configuration error: shared upload state unavailable."
                 yield {"type": "error", "message": error_message_final}
                 return None, error_message_final
-
 
             yield {"type": "progress", "percentage": 100}
             return gdrive_file_id_final, None
@@ -391,10 +259,6 @@ def delete_from_gdrive(gdrive_file_id: str) -> Tuple[bool, Optional[str]]:
         return False, f"Unexpected error deleting from Google Drive: {str(e)}"
 
 logging.info("Google Drive API module (google_drive_api.py) loaded.")
-
-
-
-
 
 def _get_drive_service():
     """

@@ -1,15 +1,50 @@
+{# your_project/templates/admin/edit_user.html (or similar name) #}
 {% extends 'admin/master.html' %}
 {# Removed: {% from 'admin/lib.html' import render_field %} #}
 {# Removed: {% import "bootstrap/wtf.html" as wtf %} #}
 
-{% block body %}
+{# Changed from 'body' to 'page_body' to correctly fit into master.html's layout #}
+{% block page_body %}
+
+<style>
+  .btn-primary{
+      background-color:#006a43;
+      border:1px solid #006a43;
+
+      &:hover{
+         background-color:#d7fec8;
+      color:#006a43;
+       border:1px solid #006a43;
+      }
+
+      &:focus{
+      background-color:#d7fec8;
+      color:#006a43;
+       border:1px solid #006a43;
+       box-shadow:none;
+      }
+    }
+    
+    .back-to-user{
+      border:1px solid #006a43;
+      color:#006a43;
+
+      &:hover{
+        color:#006a43;
+      }
+
+      &:focus{
+        box-shadow:none;
+      }
+    }
+  </style>
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-8 offset-md-2">
         {# --- Ensure user_doc is available for the back button --- #}
         {# --- If user_doc might not exist (e.g. on initial create form later), add conditional logic --- #}
         {% if user_doc and user_doc._id %}
-        <a href="{{ url_for('.user_details_view', user_id_str=user_doc._id) }}" class="btn btn-default pull-right" style="margin-bottom: 15px;">
+        <a href="{{ url_for('.user_details_view', user_id_str=user_doc._id) }}" class="btn btn-default pull-right back-to-user" style="margin-bottom: 15px;">
           « Back to User Details
         </a>
         <h2>Edit User: <small>{{ user_doc.get('username', 'N/A') }}</small></h2>
@@ -84,4 +119,4 @@
       </div>
     </div>
   </div>
-{% endblock %}
+{% endblock page_body %}

@@ -1,3 +1,4 @@
+{# your_project/templates/admin/user_details.html (or similar name) #}
 {% extends 'admin/master.html' %}
 
 {% block head_tail %}
@@ -9,11 +10,46 @@
   </style>
 {% endblock %}
 
-{% block body %}
+{# Changed from 'body' to 'page_body' to correctly fit into master.html's layout #}
+{% block page_body %}
+
+<style>
+  .btn-primary{
+      background-color:#006a43;
+      border:1px solid #006a43;
+
+      &:hover{
+         background-color:#d7fec8;
+      color:#006a43;
+       border:1px solid #006a43;
+      }
+
+      &:focus{
+      background-color:#d7fec8;
+      color:#006a43;
+       border:1px solid #006a43;
+       box-shadow:none;
+      }
+    }
+  
+    .back-to-user{
+      border:1px solid #006a43;
+      color:#006a43;
+
+      &:hover{
+        color:#006a43;
+      }
+
+      &:focus{
+        box-shadow:none;
+      }
+    }
+  </style>
+
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
-        <a href="{{ url_for('.index', q=request.args.get('q', ''), page=request.args.get('page', '1')) }}" class="btn btn-default pull-right" style="margin-bottom: 15px;">
+        <a href="{{ url_for('.index', q=request.args.get('q', ''), page=request.args.get('page', '1')) }}" class="btn btn-default pull-right back-to-user" style="margin-bottom: 15px;">
           « Back to User List
         </a>
         <h2>
@@ -94,4 +130,4 @@
       </div>
     </div>
   </div>
-{% endblock %}
+{% endblock page_body %}

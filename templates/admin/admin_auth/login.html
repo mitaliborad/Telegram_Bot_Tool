@@ -1,51 +1,100 @@
-{% extends "admin/master.html" %} {# Or your base template if not using admin master for login page #}
+{# templates/admin/admin_auth/login.html #}
+{% extends "admin/master.html" %}
+
+{% block title %}Admin Login - Storage Admin{% endblock %}
 
 {% block head_css %}
-    {{ super() }}
+    {{ super() }} {# Inherit styles from master.html #}
     <style>
+        /* --- Styles specific to the LOGIN PAGE when extending admin/master.html --- */
+
+        /* Add a class to the body tag from this template using a new block */
+        /* This class will be used to target login-page specific styles */
+
+        body.on-login-page .admin-sidebar,
+        body.on-login-page .sidebar-overlay {
+            display: none !important; /* Hide the admin sidebar and its overlay */
+        }
+
+       body.on-login-page .admin-layout .main-admin-content-wrapper {
+    margin-left: 0 !important;
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+    background-color: #f8f9fa;
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+}
+        
+        body.on-login-page .main-admin-content {
+            padding: 0; /* Remove default padding if login-container handles it */
+            width:30%;
+        }
+
+        /* Hide the mobile sidebar toggler on the login page */
+        body.on-login-page .navbar-toggler#sidebarToggler {
+            display: none !important;
+        }
+        
+        /* --- Styles from your original login.html for the form itself --- */
         .login-container {
-            max-width: 400px;
-            margin: 50px auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: #f9f9f9;
+            padding: 30px 40px;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin:auto;
         }
-        .form-signin-heading {
-            margin-bottom: 20px;
-            text-align: center;
+        .form-signin-heading { margin-bottom: 30px; text-align: left; font-size: 28px; font-weight: 600; color: #333; }
+        .form-group { margin-bottom: 25px; }
+        .form-control-label { font-size: 14px; color: #555; margin-bottom: 8px; display: block; font-weight: 500; }
+        .form-control.form-control-lg { width: 100%; border: none; height: 20px; border-bottom: 1px solid #ced4da; padding: 15px 0; font-size: 16px; background-color: transparent; box-shadow: none !important; border-radius: 0; transition: border-color 0.2s ease; }
+        .form-control.form-control-lg:focus { outline: none; border-bottom-color: #28a745; }
+        .form-control.form-control-lg.is-invalid { border-bottom-color: #dc3545 !important; background-image: none; }
+        .invalid-feedback { display: block; color: #dc3545; font-size: 0.875em; margin-top: 5px; }
+        .form-check { margin-top: 15px; margin-bottom: 25px; padding-left: 0; }
+        .form-check-input { margin-top: 0.25rem; margin-left: 0; margin-right: 0.5rem; }
+        .form-check-label { font-size: 14px; color: #555; font-weight: normal; margin-left: 21px; }
+        .footer-content{ display:flex; justify-content:space-between; align-items: center; }
+        .btn.btn-primary { background-color: #006a43; border: 1px solid #006a43; color: #fff; padding: 10px 25px; font-size: 16px; font-weight: 500; border-radius: 4px; transition: background-color 0.2s ease, border-color 0.2s ease; }
+        .btn.btn-primary:hover { background-color: #d7fec8; color: #006a43; }
+        .login-button-container { text-align: right; margin-top: 10px; }
+        .alert .close { font-size: 1.2rem; }
+
+        @media (max-width: 992px) {
+            body.on-login-page .main-admin-content{
+                width:50%;
+            }
         }
+
+          @media (max-width: 767.98px){
+            .footer-content{ flex-direction: column; }
+            .login-button-container{ width: 100%; }
+            .btn.btn-primary{ width: 100%; }
+            .form-check{ margin-bottom:0px }
+            body.on-login-page .main-admin-content{
+                width:100%;
+            }
+          }
     </style>
 {% endblock %}
 
-{% block body %}
-<div class="container">
+{# This new block adds a class to the <body> tag in master.html #}
+{% block body_class %}on-login-page{% endblock %}
+
+{% block page_body %} {# THIS IS THE CORRECT BLOCK TO OVERRIDE from master.html #}
     <div class="login-container">
         <form method="POST" action="{{ url_for('admin_auth.login') }}{% if request.args.get('next') %}?next={{ request.args.get('next') | urlencode }}{% endif %}">
-            {{ form.hidden_tag() }} {# For CSRF token if you use Flask-WTF's CSRFProtect #}
-            <h2 class="form-signin-heading">Admin Panel Login</h2>
+            {{ form.hidden_tag() }}
+            <h2 class="form-signin-heading">Log in</h2>
 
-            {% with messages = get_flashed_messages(with_categories=true) %}
-              {% if messages %}
-                {% for category, message in messages %}
-                  <div class="alert alert-{{ category if category else 'info' }} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                      <span aria-hidden="true">×</span>
-                    </button>
-                  </div>
-                {% endfor %}
-              {% endif %}
-            {% endwith %}
+            {# Flash messages will be shown by the messages block in master.html, which is above the admin-layout #}
 
             <div class="form-group">
-                {{ form.username.label(class="form-control-label") }}
+                {{ form.username.label("UserName", class="form-control-label") }}
                 {% if form.username.errors %}
-                    {{ form.username(class="form-control form-control-lg is-invalid") }}
-                    <div class="invalid-feedback">
-                        {% for error in form.username.errors %}
-                            <span>{{ error }}</span>
-                        {% endfor %}
+                    {{ form.username(class="form-control form-control-lg is-invalid", **{'aria-describedby': form.username.id ~ '-errors'}) }}
+                    <div id="{{ form.username.id ~ '-errors' }}" class="invalid-feedback">
+                        {% for error in form.username.errors %}<span>{{ error }}</span>{% endfor %}
                     </div>
                 {% else %}
                     {{ form.username(class="form-control form-control-lg") }}
@@ -55,28 +104,30 @@
             <div class="form-group">
                 {{ form.password.label(class="form-control-label") }}
                 {% if form.password.errors %}
-                    {{ form.password(class="form-control form-control-lg is-invalid") }}
-                    <div class="invalid-feedback">
-                        {% for error in form.password.errors %}
-                            <span>{{ error }}</span>
-                        {% endfor %}
+                    {{ form.password(class="form-control form-control-lg is-invalid", **{'aria-describedby': form.password.id ~ '-errors'}) }}
+                    <div id="{{ form.password.id ~ '-errors' }}" class="invalid-feedback">
+                        {% for error in form.password.errors %}<span>{{ error }}</span>{% endfor %}
                     </div>
                 {% else %}
                     {{ form.password(class="form-control form-control-lg") }}
                 {% endif %}
             </div>
 
-            <div class="form-group form-check">
-                {{ form.remember(class="form-check-input") }}
-                {{ form.remember.label(class="form-check-label") }}
-            </div>
-
-            <div class="form-group">
-                {{ form.submit(class="btn btn-lg btn-primary btn-block") }}
+            <div class="footer-content">
+                <div class="form-group form-check">
+                    {{ form.remember(class="form-check-input", id=form.remember.id) }}
+                    {{ form.remember.label(class="form-check-label", for=form.remember.id) }}
+                </div>
+    
+                <div class="form-group login-button-container">
+                    {{ form.submit(value="Log in", class="btn btn-primary") }}
+                </div>
             </div>
         </form>
-        {# Optional: Link to a password reset or registration if applicable for admins #}
-        {# <p class="text-center"><a href="#">Forgot password?</a></p> #}
     </div>
-</div>
+{% endblock page_body %}
+
+{# Override tail_js if you don't want the admin sidebar's JS on the login page #}
+{% block tail_js %}
+    {# No sidebar-specific JS needed here, but Bootstrap JS is still loaded by master.html #}
 {% endblock %}

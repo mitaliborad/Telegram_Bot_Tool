@@ -3,91 +3,220 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}{% if admin_view and admin_view.name %}{{ admin_view.name }} - {% endif %}Storage Admin{% endblock %}</title> {# <--- MODIFIED #}
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}{% if admin_view and admin_view.name %}{{ admin_view.name }} - {% endif %}Storage Admin{% endblock %}</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    {% block head_css %}{% endblock %}
+    {% block head_css %}
+        <style>
+            html { height: 100%; }
+            /* Apply body_class block to the body tag */
+            body { height: 100%; padding-top: 56px; overflow: hidden; }
+            body.sidebar-open { /* overflow: hidden; already handled */ }
+
+            .navbar-dark.fixed-top { background-color: #177452; box-shadow: 0 2px 4px rgba(0,0,0,0.1); z-index: 1031; }
+
+            .admin-layout { display: flex; height: calc(100vh - 56px); }
+
+            .admin-sidebar { background-color: #006a43; color: #fff; padding-left: 0; padding-right: 0; z-index: 1030; display: flex; flex-direction: column; }
+            .admin-sidebar .sidebar-sticky { display: flex; flex-direction: column; flex-grow: 1; padding-top: 1.5rem; overflow-y: auto; }
+            .admin-sidebar .sidebar-sticky .nav-main { flex-grow: 1; }
+            .admin-sidebar .nav-link { font-weight: 500; color: #fff; padding: 0.75rem 1rem; }
+            .admin-sidebar .nav-link:hover,
+            .admin-sidebar .nav-link.active { color: #fff; background-color: #014a2f; }
+            .admin-sidebar h5 { padding: 0.5rem 1rem; margin-top: 0; color: #fff; font-size: 0.9rem; text-transform: uppercase; font-weight: 600; }
+            .admin-sidebar .close { color: white; opacity: 0.8; position: absolute; top: 10px; right: 15px; font-size: 1.8rem; line-height: 1; padding: 0.5rem; z-index: 10; }
+            .admin-sidebar .close:hover { opacity: 1; }
+            .feather { width: 16px; height: 16px; vertical-align: text-bottom; margin-right: 8px; }
+            .feather-user-nav { /* Specific style for navbar user icon */
+                width: 20px; /* Slightly larger for navbar */
+                height: 20px;
+                vertical-align: middle; /* Align better with caret */
+            }
+
+
+            .main-admin-content-wrapper { flex-grow: 1; height: 100%; overflow-y: auto; }
+            .main-admin-content { padding: 20px; }
+
+            /* User Dropdown Styling (Desktop) */
+            .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle {
+                color: #f8f9fa;
+                padding-left: 0.5rem; /* Reduce padding if icon is the main element */
+                padding-right: 0.5rem; /* Reduce padding */
+                display: flex; /* Align icon and caret */
+                align-items: center;
+            }
+            /* Ensure caret is visible and styled if needed */
+            .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle::after {
+                margin-left: 0.25rem; /* Space between icon and caret */
+                vertical-align: 0.1em; /* Align caret slightly better */
+                color: #f8f9fa; /* Make caret white */
+            }
+
+            .navbar-nav .dropdown-menu {
+                background-color: #177452;
+                border: 1px solid #014a2f;
+                min-width: 220px;
+                margin-top: 0.125rem;
+            }
+            .navbar-nav .dropdown-menu .dropdown-item {
+                color: #f8f9fa;
+                padding: .5rem 1rem;
+            }
+            .navbar-nav .dropdown-menu .dropdown-item:hover,
+            .navbar-nav .dropdown-menu .dropdown-item:focus {
+                background-color: #014a2f;
+                color: #fff;
+            }
+            .navbar-nav .dropdown-menu .dropdown-header {
+                color: #adb5bd;
+                padding: .5rem 1rem .25rem;
+                font-size: 0.8rem;
+                font-weight: 600;
+            }
+            .navbar-nav .dropdown-menu .dropdown-divider {
+                border-top: 1px solid #014a2f;
+            }
+
+             .form-control:focus {
+               box-shadow: rgba(58, 140, 110, 0.36) 0px 0px 0px 4px, rgba(34, 34, 34, 0.16) 0px 0px 0px;
+               border-color:unset;
+               border:0
+            }
+            
+            @media (min-width: 768px) { /* Desktop */
+                .admin-sidebar { flex: 0 0 250px; max-width: 250px; }
+                .navbar-toggler { display: none; }
+                .sidebar-overlay { display: none !important; } /* Overlay not needed for desktop */
+                .admin-sidebar .close.d-md-none { display: none !important; }
+            }
+            @media (max-width: 767.98px) { /* Mobile */
+                .admin-layout .admin-sidebar { position: fixed; top: 0; left: -280px; width: 280px; height: 100vh; transition: left 0.3s ease-in-out; box-shadow: 2px 0 5px rgba(0,0,0,0.1); }
+                .admin-layout .admin-sidebar.open { left: 0; }
+                .sidebar-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1029; opacity: 0; visibility: hidden; transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out; }
+                .sidebar-overlay.open { opacity: 1; visibility: visible; }
+                #adminSidebar.col-md-3, #adminSidebar.col-lg-2 { flex: none !important; max-width: none !important; padding-left: 0 !important; padding-right: 0 !important; }
+                .main-admin-content-wrapper.col-md-9, .main-admin-content-wrapper.col-lg-10, .main-admin-content-wrapper.ml-sm-auto { margin-left: 0 !important; flex: 0 0 100% !important; max-width: 100% !important; padding-left: 0 !important; padding-right: 0 !important; }
+                .main-admin-content h1 { font-size: 1.5rem; }
+                .main-admin-content p { font-size: 0.9rem; }
+                .navbar-nav .nav-item.dropdown.user-dropdown-desktop { display: none !important; }
+                .navbar-dark .navbar-toggler{ outline:none; }
+            }
+
+            /* dashboard_index.css - (condensed) */
+            .card.gradient-stat-card { position: relative; overflow: hidden; border: none; border-radius: 12px; color: #fff; padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.12); transition: transform 0.2s ease-in-out; }
+            .card.gradient-stat-card:hover { transform: translateY(-5px); }
+            .gradient-stat-card .card-header { background-color: transparent; border-bottom: none; padding: 0 0 5px 0; font-size: 0.85rem; font-weight: 500; opacity: 0.9; color: inherit; }
+            .gradient-stat-card .card-title { font-size: 2.2rem; font-weight: 700; margin-bottom: 8px; color: inherit; line-height: 1.2; }
+            .gradient-stat-card .card-text { font-size: 0.8rem; opacity: 0.8; margin-bottom: 15px; color: inherit; flex-grow: 1; }
+            .gradient-stat-card .btn-stat-card { background-color: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.3); color: #fff; font-size: 0.75rem; padding: 0.35rem 0.75rem; border-radius: 20px; text-transform: uppercase; font-weight: 500; letter-spacing: 0.5px; align-self: flex-start; }
+            .gradient-stat-card .btn-stat-card:hover { background-color: rgba(255, 255, 255, 0.3); border-color: rgba(255, 255, 255, 0.4); color: #fff; }
+            .gradient-color-1 { background-image: linear-gradient(135deg, #FF9A8B 0%, #FF6A88 100%); }
+            .gradient-color-2 { background-image: linear-gradient(135deg, #74EBD5 0%, #9FACE6 100%); }
+            .gradient-color-3 { background-image: linear-gradient(135deg, #2AFADF 0%, #4C83FF 100%); }
+            .gradient-color-4 { background-image: linear-gradient(135deg, #FFD86F 0%, #FC6262 100%); }
+            .gradient-color-5 { background-image: linear-gradient(135deg, #A2B2FC 0%, #FFF1C1 100%); }
+            .gradient-color-6 { background-image: linear-gradient(135deg, #F8CEEC 0%, #A74CF2 100%); }
+            .gradient-color-7 { background-image: linear-gradient(135deg, #62D34E 0%, #03ADC3 100%); }
+            .card.gradient-stat-card::before, .card.gradient-stat-card::after { content: ''; position: absolute; border-radius: 50%; background-color: rgba(255, 255, 255, 0.08); pointer-events: none; z-index: 0; }
+            .card.gradient-stat-card::before { width: 140px; height: 140px; bottom: -60px; right: -50px; }
+            .card.gradient-stat-card::after { width: 100px; height: 100px; bottom: -10px; right: 30px; }
+            .gradient-stat-card .card-header, .gradient-stat-card .card-body { position: relative; z-index: 1; }
+            /* ... */
+        </style>
+    {% endblock %}
     {% block head %}{% endblock %}
 </head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
-        <a class="navbar-brand" href="{{ url_for('admin.index') if admin_view else url_for('admin_auth.login') }}">Storage Admin</a> {# <--- Consider fallback for brand link #}
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#adminNavbar" aria-controls="adminNavbar" aria-expanded="false" aria-label="Toggle navigation">
+<body class="{% block body_class %}{% endblock %}"> {# MODIFIED: Added body_class block #}
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top">
+        <a class="navbar-brand" href="{{ url_for('admin.index') if admin_view and current_user.is_authenticated else url_for('admin_auth.login') }}">Storage Admin</a>
+        <button class="navbar-toggler" type="button" id="sidebarToggler" aria-label="Toggle sidebar">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="adminNavbar">
-            <ul class="navbar-nav mr-auto">
-                {# Only show full admin menu if admin_view is defined (i.e., we are in a Flask-Admin managed page) #}
-                {% if admin_view and admin_menu_items %}  {# <--- ADDED CHECK #}
-                    {% for item in admin_menu_items %}
-                        {% if item.is_category() %}
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown-{{ item.name|lower|replace(' ', '-') }}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    {{ item.name }}
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown-{{ item.name|lower|replace(' ', '-') }}">
-                                    {% for child in item.get_children() %}
-                                        {# Check for admin_view before using it with is_active #}
-                                        <a class="dropdown-item {% if admin_view and child.is_active(admin_view) %}active{% endif %}" href="{{ child.get_url() }}">{{ child.name }}</a>
-                                    {% endfor %}
-                                </div>
-                            </li>
-                        {% elif item.is_accessible() and item.is_visible() %}
-                            {# Check for admin_view before using it with is_active #}
-                            <li class="nav-item {% if admin_view and item.is_active(admin_view) %}active{% endif %}">
-                                <a class="nav-link" href="{{ item.get_url() }}">{{ item.name }}</a>
-                            </li>
-                        {% endif %}
-                    {% endfor %}
-                {% else %}
-                    {# Optionally, show a simplified menu or nothing on pages like login #}
-                    {# <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_auth.login') }}">Login</a></li> #}
-                {% endif %}
-            </ul>
+        <div class="collapse navbar-collapse" id="adminNavbarLinks">
             <ul class="navbar-nav ml-auto">
-                {% if current_user.is_authenticated %}
-                    <li class="nav-item">
-                        <span class="navbar-text mr-3">Logged in as: {{ current_user.username }}</span>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('admin_auth.logout') }}">Logout</a>
+                 {% if current_user.is_authenticated %}
+                    <li class="nav-item dropdown d-none d-md-block user-dropdown-desktop">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-user-nav"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                            <h6 class="dropdown-header">Logged in as: {{ current_user.username }}</h6>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{{ url_for('admin_auth.logout') }}">Logout</a>
+                        </div>
                     </li>
                 {% else %}
-                    {# Only show login link if not already on the login page itself #}
-                    {% if request.endpoint != 'admin_auth.login' %}
-                    <li class="nav-item">
+                    {# Optionally hide this Login link if on the login page itself #}
+                    {# {% if request.endpoint != 'admin_auth.login' %} #}
+                    <li class="nav-item d-none d-md-block">
                         <a class="nav-link" href="{{ url_for('admin_auth.login') }}">Login</a>
                     </li>
-                    {% endif %}
+                    {# {% endif %} #}
                 {% endif %}
             </ul>
         </div>
     </nav>
 
-    <div class="container-fluid">
-        {% block messages %}
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    {% for category, message in messages %}
-                        <div class="alert alert-{{ category if category else 'info' }} alert-dismissible fade show" role="alert">
-                            {{ message }}
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
-        {% endblock %}
+    {% block messages %}
+      {# ... messages block from previous response ... #}
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div style="position: fixed; top: 66px; left: 50%; transform: translateX(-50%); z-index: 1050; width: auto; min-width: 300px; max-width:90%;">
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category or 'info' }} alert-dismissible fade show" role="alert" style="margin-bottom: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            {% endfor %}
+            </div>
+        {% endif %}
+      {% endwith %}
+    {% endblock %}
 
-        {% block body %}{% endblock %}
+    <div class="admin-layout">
+        {% include 'admin/sidebar.html' %}
+        <div class="sidebar-overlay"></div> {# ADDED: For mobile sidebar functionality #}
+        <div class="main-admin-content-wrapper">
+            <main role="main" class="main-admin-content">
+                {% block page_body %}
+                    <p>Welcome to the admin area. Please select an option from the sidebar.</p>
+                {% endblock page_body %}
+            </main>
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    {% block tail_js %}{% endblock %}
+    {% block tail_js %}
+    <script>
+        $(document).ready(function () {
+            // Sidebar Toggler
+            $('#sidebarToggler').on('click', function () {
+                $('#adminSidebar').toggleClass('open');
+                $('.sidebar-overlay').toggleClass('open'); 
+                $('body').toggleClass('sidebar-open'); 
+            });
+
+            // Close sidebar via overlay click or close button inside sidebar
+            $('.sidebar-overlay, #closeAdminSidebar').on('click', function () {
+                $('#adminSidebar').removeClass('open');
+                $('.sidebar-overlay').removeClass('open');
+                $('body').removeClass('sidebar-open');
+            });
+
+            // Auto-dismiss flash messages after a delay
+            window.setTimeout(function() {
+                $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                    $(this).remove(); 
+                });
+            }, 5000); // 5 seconds
+        });
+    </script>
+    {% endblock %}
     {% block tail %}{% endblock %}
 </body>
 </html>

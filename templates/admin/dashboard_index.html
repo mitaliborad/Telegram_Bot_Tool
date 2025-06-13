@@ -1,6 +1,8 @@
+{# your_project/templates/admin/dashboard_index.html #}
 {% extends 'admin/master.html' %}
 
-{% block body %}
+{% block page_body %}
+  {# Your dashboard title area - keeping it as you had it #}
   <h1>Admin Dashboard</h1>
   <p class="lead">Welcome to the Storage Admin Panel!</p>
   <hr>
@@ -11,111 +13,91 @@
 
   {# --- Row 1: General Stats --- #}
   <div class="row mb-4">
-    <div class="col-md-6"> {# Adjusted to col-md-6 to make space, or keep col-md-4 if you prefer 3 per row #}
-      <div class="card text-white bg-primary h-100"> {# h-100 for equal height cards in a row #}
+    <div class="col-md-6 mb-4 mb-md-0">
+      <div class="card text-white h-100 gradient-stat-card gradient-color-1"> {# APPLIED NEW CLASSES #}
         <div class="card-header">Total Users</div>
-        <div class="card-body">
+        <div class="card-body d-flex flex-column">
           <h4 class="card-title">{{ user_count if user_count is not none else 'N/A' }}</h4>
           <p class="card-text">Registered users in the system.</p>
-          <a href="{{ url_for('users.index') }}" class="btn btn-light btn-sm">Manage All Users »</a>
+          <a href="{{ url_for('users.index') }}" class="btn btn-stat-card mt-auto">Manage All Users »</a>
         </div>
       </div>
     </div>
 
-    <div class="col-md-6"> {# Adjusted to col-md-6 #}
-      <div class="card text-white bg-secondary h-100"> {# Changed bg-info to bg-secondary for variety #}
+    <div class="col-md-6">
+      <div class="card text-white h-100 gradient-stat-card gradient-color-2"> {# APPLIED NEW CLASSES #}
         <div class="card-header">Total File/Batch Records</div>
-        <div class="card-body">
+        <div class="card-body d-flex flex-column">
           <h4 class="card-title">{{ file_record_count if file_record_count is not none else 'N/A' }}</h4>
           <p class="card-text">Uploaded file/batch metadata records.</p>
-          <a href="{{ url_for('files.index') }}" class="btn btn-light btn-sm">Manage All Files »</a>
+          <a href="{{ url_for('files.index') }}" class="btn btn-stat-card mt-auto">Manage All Files »</a>
         </div>
       </div>
     </div>
   </div>
 
-  {# --- Row 2: Premium User Stats --- #}
-  <h4 class="mt-4 mb-3">Premium Users & Files</h4>
+  <h4 class="mt-5 mb-3">Premium Users & Files</h4>
   <div class="row mb-4">
-    <div class="col-md-6">
-      <div class="card text-white bg-success h-100">
+    <div class="col-md-6 mb-4 mb-md-0">
+      <div class="card text-white h-100 gradient-stat-card gradient-color-3"> {# APPLIED NEW CLASSES, removed bg-success #}
         <div class="card-header">Premium Users</div>
-        <div class="card-body">
+        <div class="card-body d-flex flex-column">
           <h4 class="card-title">{{ premium_user_count if premium_user_count is not none else 'N/A' }}</h4>
           <p class="card-text">Total active premium users.</p>
-          {# Link will be updated later to filter for premium users #}
-          <a href="{{ url_for('users.index', role='Premium User') }}" class="btn btn-light btn-sm">View Premium Users »</a>
+          <a href="{{ url_for('users.index', role='Premium User') }}" class="btn btn-stat-card mt-auto">View Premium Users »</a>
         </div>
       </div>
     </div>
     <div class="col-md-6">
-      <div class="card text-dark bg-light h-100"> {# bg-light for files by premium #}
+      <div class="card text-white h-100 gradient-stat-card gradient-color-4"> {# APPLIED NEW CLASSES, removed bg-light, ensured text-white #}
         <div class="card-header">Files by Premium Users</div>
-        <div class="card-body">
+        <div class="card-body d-flex flex-column">
           <h4 class="card-title">{{ premium_user_file_count if premium_user_file_count is not none else 'N/A' }}</h4>
           <p class="card-text">Total files uploaded by premium users.</p>
-          {# Link will be updated later to filter for files by premium users #}
-          <a href="{{ url_for('files.index', user_type='Premium') }}" class="btn btn-secondary btn-sm">View Premium Files »</a>
+          <a href="{{ url_for('files.index', user_type='Premium') }}" class="btn btn-stat-card mt-auto">View Premium Files »</a>
         </div>
       </div>
     </div>
   </div>
 
-  {# --- Row 3: Free User Stats --- #}
   <h4 class="mt-4 mb-3">Free Users & Files</h4>
   <div class="row mb-4">
-    <div class="col-md-6">
-      <div class="card text-white bg-info h-100">
+    <div class="col-md-6 mb-4 mb-md-0">
+      <div class="card text-white h-100 gradient-stat-card gradient-color-5"> {# APPLIED NEW CLASSES, removed bg-info #}
         <div class="card-header">Free Users</div>
-        <div class="card-body">
+        <div class="card-body d-flex flex-column">
           <h4 class="card-title">{{ free_user_count if free_user_count is not none else 'N/A' }}</h4>
           <p class="card-text">Total active free users.</p>
-          {# Link will be updated later to filter for free users #}
-          <a href="{{ url_for('users.index', role='Free User') }}" class="btn btn-light btn-sm">View Free Users »</a>
+          <a href="{{ url_for('users.index', role='Free User') }}" class="btn btn-stat-card mt-auto">View Free Users »</a>
         </div>
       </div>
     </div>
     <div class="col-md-6">
-      <div class="card text-dark bg-light h-100"> {# bg-light for files by free #}
+      <div class="card text-white h-100 gradient-stat-card gradient-color-6"> {# APPLIED NEW CLASSES, removed bg-light, ensured text-white #}
         <div class="card-header">Files by Free Users</div>
-        <div class="card-body">
+        <div class="card-body d-flex flex-column">
           <h4 class="card-title">{{ free_user_file_count if free_user_file_count is not none else 'N/A' }}</h4>
           <p class="card-text">Total files uploaded by free users.</p>
-          {# Link will be updated later to filter for files by free users #}
-          <a href="{{ url_for('files.index', user_type='Free') }}" class="btn btn-secondary btn-sm">View Free Files »</a>
+          <a href="{{ url_for('files.index', user_type='Free') }}" class="btn btn-stat-card mt-auto">View Free Files »</a>
         </div>
       </div>
     </div>
   </div>
 
-  {# --- Row 4: Anonymous Upload Stats --- #}
   <h4 class="mt-4 mb-3">Anonymous Uploads</h4>
   <div class="row mb-4">
-    <div class="col-md-6"> {# Spans half width, or use col-md-12 for full width if only one card in this row #}
-      <div class="card text-white bg-warning h-100">
+    <div class="col-md-6">
+      <div class="card text-white h-100 gradient-stat-card gradient-color-7"> {# APPLIED NEW CLASSES, removed bg-warning #}
         <div class="card-header">Files by Anonymous Users</div>
-        <div class="card-body">
+        <div class="card-body d-flex flex-column">
           <h4 class="card-title">{{ anonymous_file_count if anonymous_file_count is not none else 'N/A' }}</h4>
           <p class="card-text">Total files uploaded anonymously.</p>
-          {# Link will be updated later to filter for anonymous files #}
-          <a href="{{ url_for('files.index', user_type='Anonymous') }}" class="btn btn-light btn-sm">View Anonymous Files »</a>
+          <a href="{{ url_for('files.index', user_type='Anonymous') }}" class="btn btn-stat-card mt-auto">View Anonymous Files »</a>
         </div>
       </div>
     </div>
-    {# You can add another card here if needed, or remove this col-md-6 if the above card is col-md-12 #}
     <div class="col-md-6">
-       {# Placeholder for another potential stat, or leave empty #}
+        {# Empty column or space for another card #}
     </div>
   </div>
-
-  <hr>
-  {# Quick Actions can remain or be updated as needed #}
-  <h4>Quick Actions</h4>
-  <ul>
-    <li><a href="{{ url_for('users.index') }}">View All Users</a></li>
-    <li><a href="{{ url_for('files.index') }}">View All File Uploads</a></li>
-    <li><a href="{{ url_for('archivedusers.index') }}">View Archived Users</a></li>
-    <li><a href="{{ url_for('archivedfiles.index') }}">View Archived Files</a></li>
-  </ul>
-
-{% endblock %}
+{% endblock page_body %}

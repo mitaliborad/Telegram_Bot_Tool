@@ -1,6 +1,146 @@
-{% extends 'admin/master.html' %} 
+{# your_project/templates/admin/user_list.html (or similar name) #}
+{% extends 'admin/master.html' %}
 
-{% block body %}
+{# Change 'body' to 'page_body' to fit into the main content area of master.html #}
+{% block page_body %}
+<style>
+    .user-list-table {
+        background-color: #ffffff;
+        border-collapse: collapse;
+        width: 100%;
+        margin-top: 20px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Subtle shadow like in new screenshot */
+        border-radius: 10px;
+    }
+
+    .user-list-table thead th {
+        background-color: #177452; /* Dark green from new screenshot */
+        color: white;
+        text-align: left;
+        padding: 12px 15px;
+        font-weight: 600;
+        
+        font-size: 0.9rem;
+        border-bottom: 2px solid #146045; /* Darker green for emphasis */
+    }
+
+    .user-list-table tbody td {
+        padding: 12px 15px;
+        border-bottom: 1px solid #eeeeee; /* Light grey for row separators */
+        text-align: left;
+        vertical-align: middle;
+        font-size: 0.875rem;
+        color: #333333;
+    }
+
+    .user-list-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    /* Status badge styling from new screenshot */
+    .status-badge {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: white !important;
+        border-radius: 4px;
+        display: inline-block;
+        line-height: 1;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+    }
+
+    .status-badge.status-active { /* For 'Premium User' if styled like 'Active' from first screenshot */
+        background-color: #2D9C60; /* Green */
+    }
+
+    .status-badge.status-warning { /* For 'Admin' - Red in new screenshot */
+        background-color: #EB5757;
+    }
+
+    .status-badge.status-info {    /* For 'Free User' - Blue-grey in new screenshot */
+        background-color: #546E7A;
+    }
+
+    .status-badge.status-secondary { /* Default/other roles */
+        background-color: #78909C; /* Lighter neutral grey */
+    }
+
+    /* Search form button styling */
+    form.form-inline button.btn-primary[type="submit"] {
+        background-color: #177452; /* Blue from screenshot */
+        border-color: #177452;
+        color: #ffffff;
+        padding: 0.375rem 0.75rem; /* Standard Bootstrap padding */
+        font-size: 1rem; /* Standard Bootstrap font size */
+        line-height: 1.5; /* Standard Bootstrap line height */
+        border-radius: 0.25rem; /* Standard Bootstrap border radius */
+    }
+    form.form-inline button.btn-primary[type="submit"]:hover {
+        background-color: #d7fec8; /* Darker blue for hover */
+        border-color: #177452;
+        color: #177452;
+    }
+    /* Ensure the search input and button align well */
+    form.form-inline .form-group {
+        margin-right: 0; /* Adjust if needed */
+    }
+    form.form-inline .form-control {
+        height: calc(1.5em + 0.75rem + 2px); /* Match button height */
+    }
+
+    /* Actions column buttons styling */
+    .actions-column .btn {
+        margin-right: 5px;
+        padding: 0.3rem 0.6rem; /* Slightly adjusted padding for visual balance */
+        font-size: 0.8rem;     /* Slightly smaller font for action buttons */
+        border-radius: 4px;
+        color: #fff; /* Default text color for action buttons */
+    }
+    .actions-column .btn:last-child {
+        margin-right: 0;
+    }
+
+    .actions-column .btn.btn-info { /* Details button */
+        background-color: #17A2B8; /* Teal color from new screenshot */
+        border-color: #17A2B8;
+    }
+    .actions-column .btn.btn-info:hover {
+        background-color: #117a8b; /* Darker teal for hover */
+        border-color: #10707f;
+    }
+
+    .actions-column .btn.btn-warning { /* Archive button */
+        background-color: #FFC107; /* Yellow color from new screenshot */
+        border-color: #FFC107;
+        color: #212529; /* Dark text for yellow button for contrast */
+    }
+    .actions-column .btn.btn-warning:hover {
+        background-color: #e0a800; /* Darker yellow for hover */
+        border-color: #d39e00;
+        color: #212529;
+    }
+
+    /* Styling for the h1 title to match screenshot */
+    h1 {
+        font-size: 2rem; /* Approximation from screenshot */
+        font-weight: 500;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+     @media (max-width: 767.98px) {
+      .form-inline{
+           flex-flow: nowrap;
+      }
+      .form-group{
+       margin-bottom:0px 
+      }
+     }
+
+</style>
+
   <h1>User List</h1>
 
   <form method="GET" action="{{ url_for('.index') }}" class="form-inline" style="margin-bottom: 20px;">
@@ -8,9 +148,10 @@
       <input type="text" name="q" class="form-control" placeholder="Search username or email..."
              value="{{ search_query if search_query is not none else '' }}">
     </div>
+    {# The button below will be styled by form.form-inline button.btn-primary[type="submit"] #}
     <button type="submit" class="btn btn-primary" style="margin-left: 10px;">Search</button>
     {% if search_query %}
-      <a href="{{ url_for('.index') }}" class="btn btn-default" style="margin-left: 5px;">Clear</a>
+      <a href="{{ url_for('.index', role=request.args.get('role', '')) }}" class="btn btn-default" style="margin-left: 5px;">Clear Search</a>
     {% endif %}
   </form>
 
@@ -39,7 +180,6 @@
           {% endif %}
         {% endfor %}
 
-
         {# Next Page Link #}
         <li class="page-item {% if current_page == total_pages %}disabled{% endif %}">
           <a class="page-link" href="{{ url_for(request.endpoint, page=current_page+1, **endpoint_args) if current_page < total_pages else '#' }}" aria-label="Next">
@@ -50,7 +190,7 @@
       </ul>
     </nav>
     <p class="text-center small">
-      Page {{ current_page }} of {{ total_pages }}. (Total {{ total_users if total_users is defined else total_records }} items)
+      Page {{ current_page }} of {{ total_pages }}. (Total {{ total_users if total_users is defined else (total_records if total_records is defined else 'N/A') }} items)
     </p>
   {% endif %}
 {% endmacro %}
@@ -62,16 +202,15 @@
   {% endif %}
 
   {% if users %}
-    <table class="table table-striped table-bordered">
+    <table class="user-list-table">
       <thead>
         <tr>
           <th>ID</th>
              <th>Username</th>
              <th>Email</th>
-             <th>User Role</th>   
+             <th>User Role</th>
              <th>Created At</th>
              <th>Actions</th>
-
         </tr>
       </thead>
       <tbody>
@@ -81,31 +220,35 @@
       <td>{{ user.username }}</td>
       <td>{{ user.email }}</td>
       <td>
-        {# --- MODIFIED SECTION FOR ROLE DISPLAY --- #}
-        {% set display_role = user.role %} {# user.role is now reliably set by the backend #}
-
+        {% set display_role = user.role %}
+        {# Badge classes are styled above to match new screenshot #}
         {% if display_role == "Admin" %}
-            <span class="badge badge-danger">{{ display_role }}</span>
+            <span class="status-badge status-warning">{{ display_role }}</span>
         {% elif display_role == "Premium User" %}
-            <span class="badge badge-success">{{ display_role }}</span>
-        {% elif display_role == "Free User" %}  {# This will now catch all free users correctly #}
-            <span class="badge badge-info">{{ display_role }}</span>
+            <span class="status-badge status-active">{{ display_role }}</span>
+        {% elif display_role == "Free User" %}
+            <span class="status-badge status-info">{{ display_role }}</span>
         {% else %}
-            {# Fallback for any truly unexpected role value not covered above, 
-               or if display_role somehow ended up None or empty despite backend logic.
-               The default('N/A', true) makes sure something is shown.
-            #}
-            <span class="badge badge-secondary">{{ display_role | default('N/A', true) }}</span>
+            <span class="status-badge status-secondary">{{ display_role | default('N/A', true) }}</span>
         {% endif %}
-        {# --- END OF MODIFIED SECTION --- #}
       </td>
       <td>
-          {% if user.created_at %}{{ user.created_at.strftime('%Y-%m-%d %H:%M:%S') if user.created_at and not user.created_at is string else user.created_at }}{% else %}N/A{% endif %}
+          {# Ensuring Created At format from new screenshot (YYYY-MM-DD HH:MM:SS) #}
+          {% if user.created_at %}
+              {% if user.created_at is string %}
+                  {{ user.created_at }} {# Assuming string is already formatted #}
+              {% else %}
+                  {{ user.created_at.strftime('%Y-%m-%d %H:%M:%S') }}
+              {% endif %}
+          {% else %}
+              N/A
+          {% endif %}
       </td>
       <td class="actions-column" style="min-width: 250px; white-space: nowrap;">
-        <a href="{{ url_for('.user_details_view', user_id_str=user._id, q=request.args.get('q', ''), page=request.args.get('page', '1'), role=request.args.get('role')) }}" class="btn btn-xs btn-info" style="margin-right: 5px;">Details</a>
+        {# Action buttons (Details, Archive) are styled above using .actions-column .btn.btn-info and .btn.btn-warning #}
+        <a href="{{ url_for('.user_details_view', user_id_str=user._id, q=request.args.get('q', ''), page=request.args.get('page', '1'), role=request.args.get('role', '')) }}" class="btn btn-xs btn-info">Details</a>
 
-        <form method="POST" action="{{ url_for('.delete_user_view', user_id_str=user._id, q=request.args.get('q', ''), page=request.args.get('page', '1'), role=request.args.get('role')) }}" style="display: inline-block;">
+        <form method="POST" action="{{ url_for('.delete_user_view', user_id_str=user._id, q=request.args.get('q', ''), page=request.args.get('page', '1'), role=request.args.get('role', '')) }}" style="display: inline-block;">
             <button type="submit" class="btn btn-xs btn-warning"
                     onclick="return confirm('Are you sure you want to archive user {{ user.username }} (ID: {{ user._id }})?');">
               Archive
@@ -116,26 +259,24 @@
   {% endfor %}
 </tbody>
     </table>
-    
+
   {% elif not error_message %}
-  {% elif search_query and role_filter %}
-    <p>No users found matching your search for "<strong>{{ search_query }}</strong>" with the role "<strong>{{ role_filter }}</strong>".</p>
-  {% elif search_query %}                 {# << EXISTING: Only Search active #}
-    <p>No users found matching your search for "<strong>{{ search_query }}</strong>".</p>
-  {% elif role_filter %}                  {# << NEW CONDITION: Only Role Filter active #}
-    <p>No users found with the role "<strong>{{ role_filter }}</strong>".</p>
-  {% else %}                               {# << Default: No users at all, no filters/search #}
-    <p>No users found in the system.</p>
+    {% if search_query and role_filter %}
+        <p>No users found matching your search for "<strong>{{ search_query }}</strong>" with the role "<strong>{{ role_filter }}</strong>".</p>
+    {% elif search_query %}
+        <p>No users found matching your search for "<strong>{{ search_query }}</strong>".</p>
+    {% elif role_filter %}
+        <p>No users found with the role "<strong>{{ role_filter }}</strong>".</p>
+    {% else %}
+        <p>No users found in the system.</p>
+    {% endif %}
   {% endif %}
 
-  <!-- {% if users %}
-    {# ... (table definition) ... #}
-  {% elif search_query %}
-     <p>No users found matching your search for "<strong>{{ search_query }}</strong>".</p>
-  {% elif not error_message %}
-    <p>No users found in the system.</p>
-  {% endif %} -->
 
-  {{ render_pagination(current_page, total_pages, endpoint_args=endpoint_args if endpoint_args is defined else {}) }}
+  {% set current_endpoint_args = {} %}
+  {% if request.args.get('q') %}{% set _ = current_endpoint_args.update({'q': request.args.get('q')}) %}{% endif %}
+  {% if request.args.get('role') %}{% set _ = current_endpoint_args.update({'role': request.args.get('role')}) %}{% endif %}
 
-{% endblock %}
+  {{ render_pagination(current_page, total_pages, endpoint_args=current_endpoint_args) }}
+
+{% endblock page_body %}

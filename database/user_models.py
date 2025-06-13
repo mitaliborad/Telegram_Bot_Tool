@@ -38,38 +38,6 @@ class User(UserMixin):
     def is_admin(self) -> bool:
         return self.role == "Admin"
 
-# --- User Data Access Functions ---
-
-# def get_all_users(search_query: Optional[str] = None) -> Tuple[Optional[List[Dict[str, Any]]], str]:
-#     collection, error = get_userinfo_collection()
-#     if error or collection is None:
-#         logging.error(f"Failed to get userinfo collection for get_all_users: {error}")
-#         return None, f"Database error: {error}"
-#     query_filter = {}
-#     if search_query and search_query.strip():
-#         search_term = search_query.strip()
-#         escaped_query = re.escape(search_term)
-#         regex_pattern = re.compile(escaped_query, re.IGNORECASE)
-#         query_filter["$or"] = [
-#             {"username": {"$regex": regex_pattern}},
-#             {"email": {"$regex": regex_pattern}}
-#         ]
-#         logging.info(f"Searching users with query: '{search_term}' using filter: {query_filter}")
-#     else:
-#         logging.info("Fetching all users (no search query / empty search query).")
-#     try:
-#         users_cursor = collection.find(query_filter).sort("username", 1)
-#         users_list = list(users_cursor)
-#         for user in users_list:
-#             if '_id' in user and isinstance(user['_id'], ObjectId):
-#                 user['_id'] = str(user['_id'])
-#             if 'password_hash' in user: # Remove password hash for safety when listing users
-#                 del user['password_hash']
-#             user['role'] = user.get('role', 'Free User')
-#         return users_list, ""
-#     except PyMongoError as e: error_msg = f"PyMongoError fetching users: {e}"; logging.error(error_msg, exc_info=True); return None, error_msg
-#     except Exception as e: error_msg = f"Unexpected error fetching users: {e}"; logging.error(error_msg, exc_info=True); return None, error_msg
-
 def get_all_users(search_query: Optional[str] = None, role_filter: Optional[str] = None) -> Tuple[Optional[List[Dict[str, Any]]], str]:
     collection, error = get_userinfo_collection()
     if error or collection is None:
@@ -236,11 +204,6 @@ def update_user_password(user_id: ObjectId, new_password: str) -> Tuple[bool, st
     except PyMongoError as e: logging.error(f"Database error updating password for user ID {user_id}: {e}", exc_info=True); return False, "Database error during password update."
     except Exception as e: logging.error(f"Unexpected error updating password for user ID {user_id}: {e}", exc_info=True); return False, "Server error during password update."
 
-# Note on delete_user_by_id:
-# This function performs a PERMANENT deletion of a user from the 'userinfo' (active users) collection.
-# With the introduction of the user archiving system, the admin UI's "Delete" button
-# for users will typically call `database.archive_user_account` instead of this function directly.
-# This function remains for low-level permanent deletion if explicitly needed.
 def delete_user_by_id(user_id_str: str) -> Tuple[int, str]:
     collection, error = get_userinfo_collection()
     if error or collection is None:

@@ -29,36 +29,6 @@ SCOPES = ['https://www.googleapis.com/auth/drive']
 # Global variable to cache the Drive service object
 _drive_service = None
 
-# def _get_drive_service():
-#     """
-#     Authenticates and returns a Google Drive API service object.
-#     Caches the service object for efficiency.
-#     """
-#     global _drive_service
-#     if _drive_service:
-#         return _drive_service
-
-#     if not SERVICE_ACCOUNT_FILE:
-#         logging.error("Google Drive API: SERVICE_ACCOUNT_FILE path is not set in environment variables.")
-#         raise ValueError("Service account file path not configured.")
-#     if not os.path.exists(SERVICE_ACCOUNT_FILE):
-#         logging.error(f"Google Drive API: Service account file not found at '{SERVICE_ACCOUNT_FILE}'.")
-#         raise FileNotFoundError(f"Service account file not found: {SERVICE_ACCOUNT_FILE}")
-#     if not DRIVE_TEMP_FOLDER_ID:
-#         logging.error("Google Drive API: DRIVE_TEMP_FOLDER_ID is not set in environment variables.")
-#         raise ValueError("Google Drive temporary folder ID not configured.")
-
-#     try:
-#         creds = service_account.Credentials.from_service_account_file(
-#             SERVICE_ACCOUNT_FILE, scopes=SCOPES)
-#         service = build('drive', 'v3', credentials=creds, cache_discovery=False)
-#         _drive_service = service
-#         logging.info("Google Drive API service initialized successfully.")
-#         return service
-#     except Exception as e:
-#         logging.error(f"Failed to initialize Google Drive service: {e}", exc_info=True)
-#         raise ConnectionError(f"Could not connect to Google Drive API: {e}")
-
 def upload_to_gdrive_with_progress(
     source: str | io.BytesIO,
     filename_in_gdrive: str,
@@ -286,12 +256,15 @@ def upload_to_gdrive_with_progress(
         )
 
         response = None
+        last_reported_percentage = -1
         while response is None:
             status, response = gdrive_request.next_chunk()
             if status:
                 progress_percentage = int(status.progress() * 100)
-                logging.info(f"{log_prefix} GDrive Upload Progress: {progress_percentage}%")
-                yield {"type": "progress", "percentage": progress_percentage}
+                if progress_percentage > last_reported_percentage:
+                    logging.info(f"{log_prefix} GDrive Upload Progress: {progress_percentage}%")
+                    yield {"type": "progress", "percentage": progress_percentage}
+                    last_reported_percentage = progress_percentage
 
         uploaded_file_info = response
         if uploaded_file_info and uploaded_file_info.get('id'):
@@ -458,48 +431,3 @@ def _get_drive_service():
     except Exception as e:
         logging.error(f"Failed to initialize Google Drive service: {e}", exc_info=True)
         raise ConnectionError(f"Could not connect to Google Drive API: {e}")
-
-#today's changes................
-
-# def _get_drive_service():
-#     """
-#     Authenticates and returns a Google Drive API service object.
-#     Caches the service object for efficiency.
-#     This version includes a long timeout and disables httplib2 redirect handling.
-#     """
-#     global _drive_service
-#     if _drive_service:
-#         return _drive_service
-
-#     if not SERVICE_ACCOUNT_FILE:
-#         logging.error("Google Drive API: SERVICE_ACCOUNT_FILE path is not set in environment variables.")
-#         raise ValueError("Service account file path not configured.")
-#     if not os.path.exists(SERVICE_ACCOUNT_FILE):
-#         logging.error(f"Google Drive API: Service account file not found at '{SERVICE_ACCOUNT_FILE}'.")
-#         raise FileNotFoundError(f"Service account file not found: {SERVICE_ACCOUNT_FILE}")
-#     if not DRIVE_TEMP_FOLDER_ID:
-#         logging.error("Google Drive API: DRIVE_TEMP_FOLDER_ID is not set in environment variables.")
-#         raise ValueError("Google Drive temporary folder ID not configured.")
-
-#     try:
-#         creds = service_account.Credentials.from_service_account_file(
-#             SERVICE_ACCOUNT_FILE, scopes=SCOPES)
-        
-#         http_client_with_timeout = httplib2.Http(timeout=600)
-
-#         # --- MODIFICATION START ---
-#         # Disable httplib2's automatic redirect handling.
-#         # The Google API client library handles resumable upload redirects (308) itself.
-#         # httplib2's interference causes the "RedirectMissingLocation" error.
-#         http_client_with_timeout.follow_redirects = False
-#         # --- MODIFICATION END ---
-
-#         authed_http = AuthorizedHttp(creds, http=http_client_with_timeout)
-#         service = build('drive', 'v3', http=authed_http, cache_discovery=False)
-#         _drive_service = service
-        
-#         logging.info("Google Drive API service initialized successfully (Timeout: 600s, Redirects: Disabled).")
-#         return service
-#     except Exception as e:
-#         logging.error(f"Failed to initialize Google Drive service: {e}", exc_info=True)
-#         raise ConnectionError(f"Could not connect to Google Drive API: {e}")

@@ -1,9 +1,0 @@
-2025-04-28 14:10:35,275 - INFO - [<module>] - Logging configured. Log file: Selenium-Logs\app_20250428_141035.log
-2025-04-28 14:10:35,275 - INFO - [<module>] - Configuration loaded.
-2025-04-28 14:10:35,276 - INFO - [<module>] - Utility functions defined.
-2025-04-28 14:10:35,277 - INFO - [<module>] - Quart application initialized.
-2025-04-28 14:10:35,277 - INFO - [<module>] - Global state variables initialized.
-2025-04-28 14:10:35,321 - INFO - [<module>] - Async Telegram API functions defined.
-2025-04-28 14:10:35,814 - INFO - [<module>] - Quart async routes defined.
-2025-04-28 14:10:35,815 - INFO - [<module>] - Quart app instance created and routes imported in main.py
-2025-04-28 14:10:35,817 - INFO - [info] - Running on http://0.0.0.0:5000 (CTRL + C to quit)

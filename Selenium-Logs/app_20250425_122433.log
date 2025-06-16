@@ -1,6 +1,0 @@
-2025-04-25 12:24:33,589 - INFO - [setup_logging] - Logging configured. Log file: Selenium-Logs\app_20250425_122433.log
-2025-04-25 12:24:33,594 - INFO - [<module>] - Registered routes blueprint.
-2025-04-25 12:24:33,595 - INFO - [<module>] - Starting Flask development server...
-2025-04-25 12:24:33,633 - WARNING - [_log] -  * Debugger is active!
-2025-04-25 12:24:33,641 - INFO - [_log] -  * Debugger PIN: 107-410-311
-2025-04-25 12:24:45,874 - INFO - [_log] -  * Detected change in 'E:\\Telegram_tool\\Telegram_Bot_Tool\\routes.py', reloading

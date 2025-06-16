@@ -163,12 +163,16 @@ def gdrive_upload_and_db_save_task(operation_id, user_info, filename, file_size,
         if gdrive_file_id: delete_from_gdrive(gdrive_file_id)
         upload_progress_data[operation_id] = {"type": "error", "message": str(e)}
 
-@upload_bp.route('/initiate-batch', methods=['POST'])
+@upload_bp.route('/initiate-batch', methods=['POST', 'OPTIONS'])
 @jwt_required(optional=True)
 def initiate_batch_upload():
     """
     Phase 1: Creates a placeholder "batch" record in the database.
     """
+    # This check handles the preflight OPTIONS request from the browser.
+    if request.method == 'OPTIONS':
+        return make_response(("OK", 200))
+        
     operation_id = str(uuid.uuid4())
     log_prefix = f"[BatchInitiate-{operation_id}]"
     
@@ -212,17 +216,23 @@ def stream_file_to_batch():
     """
     if request.method == 'OPTIONS':
         return make_response(("OK", 200))
-        
-    batch_id = request.headers.get('X-Batch-Id')
+    
+    # ==========================================================================
+    #  THE FIX IS HERE: Read from query parameters instead of headers.
+    # ==========================================================================
+    batch_id = request.args.get('batch_id')
     if not batch_id:
-        return jsonify({"error": "Request is missing the 'X-Batch-Id' header."}), 400
+        # Updated error message for clarity
+        return jsonify({"error": "Request is missing the 'batch_id' query parameter."}), 400
 
     log_prefix = f"[StreamForBatch-{batch_id}]"
     
-    filename = secure_filename(request.headers.get('X-Filename', ''))
-    file_size = int(request.headers.get('X-Filesize', 0))
+    filename = secure_filename(request.args.get('filename', ''))
+    # File size can be retrieved from the Content-Length header for streaming POSTs
+    file_size = int(request.headers.get('Content-Length', 0))
     if not filename:
-        return jsonify({"error": "Filename header missing."}), 400
+        return jsonify({"error": "Filename parameter missing."}), 400
+    # ==========================================================================
 
     gdrive_op_id = f"{batch_id}-{uuid.uuid4().hex[:6]}"
     upload_progress_data[gdrive_op_id] = {}
@@ -231,22 +241,18 @@ def stream_file_to_batch():
     gdrive_file_id, upload_error = None, None
 
     try:
-        # ==========================================================================
-        #  THE FIX IS HERE: Manually consume the generator with next()
-        # ==========================================================================
+        # Consume the upload_to_gdrive_with_progress generator
         upload_generator = upload_to_gdrive_with_progress(in_memory_stream, filename, gdrive_op_id)
         
         while True:
             try:
-                # We don't need to do anything with the progress events here,
-                # just consume them to drive the upload.
+                # We just need to consume the generator to drive the upload
                 next(upload_generator)
             except StopIteration as e:
                 # When the generator is done, its return value is in `e.value`
                 gdrive_file_id, upload_error = e.value
                 logging.info(f"{log_prefix} Generator finished for '{filename}'. GDrive ID: {gdrive_file_id}, Error: {upload_error}")
                 break # Exit the while loop
-        # ==========================================================================
 
         if upload_error: raise Exception(upload_error)
         if not gdrive_file_id: raise Exception("GDrive upload complete but no file ID returned.")
@@ -268,6 +274,7 @@ def stream_file_to_batch():
         if gdrive_op_id in upload_progress_data: del upload_progress_data[gdrive_op_id]
 
     return jsonify({"message": f"File '{filename}' streamed successfully."}), 200
+
 
 @upload_bp.route('/finalize-batch/<batch_id>', methods=['POST'])
 @jwt_required(optional=True)
@@ -446,7 +453,8 @@ def run_gdrive_to_telegram_transfer(access_id: str):
         
         logging.info(f"{log_prefix} Background transfer finished and all cleanup is complete.")
 
-@upload_bp.route('/stream', methods=['POST', 'OPTIONS'])
+
+@upload_bp.route('/stream-legacy', methods=['POST', 'OPTIONS']) # Renamed to avoid confusion
 @jwt_required(optional=True) 
 def stream_upload_to_gdrive():
     # The OPTIONS check is correct and stays here.
@@ -478,7 +486,7 @@ def stream_upload_to_gdrive():
             logging.info(f"{log_prefix} Streaming file '{filename}' (Size: {format_bytes(file_size)}) to GDrive.")
             
             # ==========================================================================
-            #  THE FIX IS HERE: Initialize the dictionary entry for this operation
+            #  Initialize the dictionary entry for this operation
             # ==========================================================================
             upload_progress_data[operation_id] = {}
             # ==========================================================================
@@ -537,4 +545,3 @@ def stream_upload_to_gdrive():
                 del upload_progress_data[operation_id]
 
     return Response(stream_with_context(generate_events()), mimetype='text/event-stream')
-

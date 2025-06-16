@@ -24,7 +24,7 @@ SERVICE_ACCOUNT_FILE = os.getenv('GDRIVE_SERVICE_ACCOUNT_FILE')
 DRIVE_TEMP_FOLDER_ID = os.getenv('GDRIVE_TEMP_FOLDER_ID')
 SCOPES = ['https://www.googleapis.com/auth/drive']
 
-ONE_MB = 1 * 1024 * 1024
+ONE_MB = 8 * 1024 * 1024
 
 def upload_to_gdrive_with_progress(
     source: str | io.BytesIO,

@@ -5,7 +5,8 @@
   {{ super() }}
   <style>
     .details-table th {
-      width: 25%;
+      width: 25%; /* This can sometimes cause issues with responsiveness if not handled carefully */
+                  /* Consider removing it or using a more flexible approach if it contributes to overflow */
       font-weight: bold;
       background-color: #f9f9f9;
     }
@@ -14,7 +15,7 @@
     }
 
     .active-record{
-         gap: 20px;
+    gap: 20px;
     display: flex;
     margin-bottom: 20px;
     }
@@ -29,7 +30,12 @@
       @media (max-width: 767.98px) {
         h2 { font-size: 1.5rem; }
         h2 small { font-size: 1.25rem; }
-
+        /* If .details-table th width: 25% is an issue, you can override it for mobile */
+        /*
+        .details-table th {
+          width: auto;
+        }
+        */
       }
   </style>
 {% endblock %}
@@ -55,6 +61,40 @@
       display:flex;
       gap:10px;
       margin-bottom:20px;
+     align-items: center;
+    }
+
+    h2{
+      margin-bottom: 25px;
+      font-size:30px;
+    }
+    .badge-info{
+      background-color: #c8d1df;
+      color: #475569;
+      border:1px solid #CBD5E1;
+      padding: 7px;
+    }
+    .anonymous_user{
+      background-color: #D1FAE5;
+      color: #047857;
+      border:1px solid #A7F3D0;
+    }
+    .failed{
+     background-color: #FEE2E2;
+     color: #B91C1C;
+     border:1px solid #FECACA;
+    }
+    .badge-secondary{
+     background-color: #E2E8F0;
+     color: #475569;
+     padding: 7px;
+     border:1px solid #CBD5E1;
+    }
+
+    @media (max-width: 767.98px) {
+       h2{
+      font-size:22px;
+    }
     }
   </style>
 
@@ -79,150 +119,142 @@
         {% endif %}
 
         {% if record %}
-          <table class="table table-bordered table-striped details-table">
-            <tbody>
-              <tr><th>Access ID</th><td>{{ record.get('access_id', 'N/A') }}</td></tr>
-              <tr><th>Username</th><td>{{ record.get('username', 'N/A') }}</td></tr>
-              <tr>
-                <th>Type</th>
-                <td>
-                  {% if record.get('is_batch') %}
-                    <span class="badge badge-info">Batch</span>
-                  {% else %}
-                    <span class="badge badge-secondary">Single File</span>
-                  {% endif %}
-                </td>
-              </tr>
-              <tr><th>Batch Display Name</th><td>{{ record.get('batch_display_name', 'N/A (not a batch or no display name)') }}</td></tr>
-              <tr><th>Original Filename (for single file)</th><td>{{ record.get('original_filename', 'N/A') }}</td></tr>
-              <tr>
-                 <th>Upload Timestamp</th>
-                 <td>{{ record.get('upload_timestamp', 'N/A') }}</td> {# Displays string as is #}
-              </tr>
-              <tr>
-                 <th>Total Original Size</th>
-                 <td>
-                     {% set total_size = record.get('total_original_size') %}
-                     {% set single_size = record.get('original_size') %}
-                     {% if total_size is not none %}{{ total_size | format_bytes }}{% elif single_size is not none %}{{ single_size | format_bytes }}{% else %}N/A{% endif %}
-                 </td>
-              </tr>
-              <tr><th>Total Upload Duration (seconds)</th><td>{{ record.get('total_upload_duration_seconds', 'N/A') }}</td></tr>
-              <tr>
-                 <th>Is Anonymous</th>
-                 <td>
-                     {% if record.get('is_anonymous') %}
-                         <span class="badge badge-warning">Yes</span>
-                         {% if record.get('anonymous_id') %}(ID: {{ record.anonymous_id }}){% endif %}
-                     {% else %}
-                         <span class="badge badge-success">No</span>
-                     {% endif %}
-                 </td>
-              </tr>
-              <tr><th>Database _id</th><td>{{ record.get('_id', 'N/A') }}</td></tr>
-
-              {# Displaying complex fields like send_locations or chunks as pretty JSON #}
-              {% if not record.get('is_batch') and record.get('send_locations') %}
+          {# --- MODIFICATION 1: Wrap the main details table --- #}
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped details-table">
+              <tbody>
+                <tr><th>Access ID</th><td>{{ record.get('access_id', 'N/A') }}</td></tr>
+                <tr><th>Username</th><td>{{ record.get('username', 'N/A') }}</td></tr>
                 <tr>
-                  <th>Send Locations (Single File)</th>
-                  <td><pre>{{ json.dumps(record.get('send_locations'), indent=2) }}</pre></td>
-                </tr>
-              {% endif %}
-
-              {# Displaying files_in_batch for batch uploads #}
-              {% if record.get('is_batch') and record.get('files_in_batch') %}
-                <tr>
-                  <th colspan="2" style="background-color: #e9ecef; text-align:center;">Files in Batch ({{ record.get('files_in_batch') | length }})</th>
-                </tr>
-                <tr>
-                  <td colspan="2">
-                    <div style="max-height: 400px; overflow-y: auto;">
-                      <table class="table table-sm table-inner">
-                        <thead>
-                          <tr>
-                            <th>Original Filename</th>
-                            <th>Original Size</th>
-                            <th>Split?</th>
-                            <th>Compressed?</th>
-                            <th>Failed?</th>
-                            <th>Reason</th>
-                            <th>Chunks/Locations (Summary)</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                             {% for file_item in record.get('files_in_batch', []) %}
-                               {% set item_id_suffix = loop.index %} {# Create a unique ID for collapse elements #}
-                               <tr>
-                                 <td>{{ file_item.get('original_filename', 'N/A') }}</td>
-                                 <td>{{ file_item.get('original_size', 0) | format_bytes }}</td>
-                                 <td>{{ 'Yes' if file_item.get('is_split') else 'No' }}</td>
-                                 <td>{{ 'Yes' if file_item.get('is_compressed') else 'No' }}</td>
-                                 <td>
-                                   {% if file_item.get('failed') %} <span class="badge badge-danger">Yes</span>
-                                   {% elif file_item.get('skipped') %} <span class="badge badge-warning">Skipped</span>
-                                   {% else %} <span class="badge badge-success">No</span>
-                                   {% endif %}
-                                 </td>
-                                 <td>{{ file_item.get('reason', '') }}</td>
-                                 <td>
-                                   {% set chunks = file_item.get('chunks') %}
-                                   {% set locations = file_item.get('send_locations') %}
-
-                                   {% if file_item.get('is_split') and chunks %}
-                                     {{ chunks | length }} chunk(s)
-                                     <a class="btn btn-link btn-sm p-0" data-toggle="collapse" href="#collapseChunks{{ item_id_suffix }}" role="button" aria-expanded="false" aria-controls="collapseChunks{{ item_id_suffix }}">
-                                       Show/Hide
-                                     </a>
-                                     <div class="collapse" id="collapseChunks{{ item_id_suffix }}">
-                                       <pre style="font-size: 0.8em; max-height:150px; overflow-y:auto;">{{ json.dumps(chunks, indent=1) }}</pre>
-                                     </div>
-                                   {% elif locations %}
-                                     {{ locations | length }} location(s)
-                                     <a class="btn btn-link btn-sm p-0" data-toggle="collapse" href="#collapseLocations{{ item_id_suffix }}" role="button" aria-expanded="false" aria-controls="collapseLocations{{ item_id_suffix }}">
-                                       Show/Hide
-                                     </a>
-                                     <div class="collapse" id="collapseLocations{{ item_id_suffix }}">
-                                       <pre style="font-size: 0.8em; max-height:150px; overflow-y:auto;">{{ json.dumps(locations, indent=1) }}</pre>
-                                     </div>
-                                   {% else %}
-                                     N/A
-                                   {% endif %}
-                                 </td>
-                               </tr>
-                             {% endfor %}
-                           </tbody>
-                      </table>
-                    </div>
+                  <th>Type</th>
+                  <td>
+                    {% if record.get('is_batch') %}
+                      <span class="badge badge-info">Batch</span>
+                    {% else %}
+                      <span class="badge badge-secondary">Single File</span>
+                    {% endif %}
                   </td>
                 </tr>
-                {# This was an hr and Actions section, ensuring it's still logically placed #}
-                {# It seems it was inside the `if record.get('is_batch') ...` block #}
-                {# Correcting the original code's structure for the actions, it should be outside the files_in_batch table display, but still within the `if record` block.
-                   The original placement was correct for batch actions.
-                   However, the screenshot shows a general page, so perhaps this action should be outside the batch-specific part.
-                   Given the request "no other changes should be made to the code and logic", I will keep it as it was in the original template.
-                #}
-                {# The form below was correctly inside `if record.get('is_batch') ...` in the provided code.
-                   If it's a general action for any record, it should be outside that specific `if record.get('is_batch')` block,
-                   but still inside the main `if record` block.
-                   The original code had <hr> and <h4>Actions</h4> and the form *inside* the `if record.get('is_batch') ...` block.
-                   I will keep this original logic.
-                #}
-                 <hr> {# This was inside the batch block #}
-                 <div class="active-record">
-                   <h4>Actions</h4> {# This was inside the batch block #}
-                   <form method="POST" action="{{ url_for('.delete_view', access_id=record.access_id) }}" style="display: inline-block;">
-                       <button type="submit" class="btn btn-danger"
-                               onclick="return confirm('Are you sure you want to delete this record (Access ID: {{ record.access_id }})? This action cannot be undone.');">
-                         Archive This Record
-                       </button>
-                   </form>
-                 </div>
-              {% endif %} {# End of if record.get('is_batch') and record.get('files_in_batch') #}
+                <tr><th>Batch Display Name</th><td>{{ record.get('batch_display_name', 'N/A (not a batch or no display name)') }}</td></tr>
+                <tr><th>Original Filename (for single file)</th><td>{{ record.get('original_filename', 'N/A') }}</td></tr>
+                <tr>
+                   <th>Upload Timestamp</th>
+                   <td>{{ record.get('upload_timestamp', 'N/A') }}</td> {# Displays string as is #}
+                </tr>
+                <tr>
+                   <th>Total Original Size</th>
+                   <td>
+                       {% set total_size = record.get('total_original_size') %}
+                       {% set single_size = record.get('original_size') %}
+                       {% if total_size is not none %}{{ total_size | format_bytes }}{% elif single_size is not none %}{{ single_size | format_bytes }}{% else %}N/A{% endif %}
+                   </td>
+                </tr>
+                <tr><th>Total Upload Duration (seconds)</th><td>{{ record.get('total_upload_duration_seconds', 'N/A') }}</td></tr>
+                <tr>
+                   <th>Is Anonymous</th>
+                   <td>
+                       {% if record.get('is_anonymous') %}
+                           <span class="badge badge-warning anonymous_user">Yes</span>
+                           {% if record.get('anonymous_id') %}(ID: {{ record.anonymous_id }}){% endif %}
+                       {% else %}
+                           <span class="badge badge-success failed">No</span>
+                       {% endif %}
+                   </td>
+                </tr>
+                <tr><th>Database _id</th><td>{{ record.get('_id', 'N/A') }}</td></tr>
 
-            </tbody>
+                {# Displaying complex fields like send_locations or chunks as pretty JSON #}
+                {% if not record.get('is_batch') and record.get('send_locations') %}
+                  <tr>
+                    <th>Send Locations (Single File)</th>
+                    <td><pre>{{ json.dumps(record.get('send_locations'), indent=2) }}</pre></td>
+                  </tr>
+                {% endif %}
 
-          </table>
+                {# Displaying files_in_batch for batch uploads #}
+                {% if record.get('is_batch') and record.get('files_in_batch') %}
+                  <tr>
+                    <th colspan="2" style="background-color: #e9ecef; text-align:center;">Files in Batch ({{ record.get('files_in_batch') | length }})</th>
+                  </tr>
+                  <tr>
+                    <td colspan="2">
+                      {# --- MODIFICATION 2: Wrap the inner batch files table --- #}
+                      <div class="table-responsive">
+                        <div style="max-height: 400px; overflow-y: auto;"> {# Keep this for vertical scroll if content is too long #}
+                          <table class="table table-sm table-inner">
+                            <thead>
+                              <tr>
+                                <th>Original Filename</th>
+                                <th>Original Size</th>
+                                <th>Split?</th>
+                                <th>Compressed?</th>
+                                <th>Failed?</th>
+                                <th>Reason</th>
+                                <th>Chunks/Locations (Summary)</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                               {% for file_item in record.get('files_in_batch', []) %}
+                                 {% set item_id_suffix = loop.index %} {# Create a unique ID for collapse elements #}
+                                 <tr>
+                                   <td>{{ file_item.get('original_filename', 'N/A') }}</td>
+                                   <td>{{ file_item.get('original_size', 0) | format_bytes }}</td>
+                                   <td>{{ 'Yes' if file_item.get('is_split') else 'No' }}</td>
+                                   <td>{{ 'Yes' if file_item.get('is_compressed') else 'No' }}</td>
+                                   <td>
+                                     {% if file_item.get('failed') %} <span class="badge badge-danger">Yes</span>
+                                     {% elif file_item.get('skipped') %} <span class="badge badge-warning">Skipped</span>
+                                     {% else %} <span class="badge badge-success failed">No</span>
+                                     {% endif %}
+                                   </td>
+                                   <td>{{ file_item.get('reason', '') }}</td>
+                                   <td>
+                                     {% set chunks = file_item.get('chunks') %}
+                                     {% set locations = file_item.get('send_locations') %}
+
+                                     {% if file_item.get('is_split') and chunks %}
+                                       {{ chunks | length }} chunk(s)
+                                       <a class="btn btn-link btn-sm p-0" data-toggle="collapse" href="#collapseChunks{{ item_id_suffix }}" role="button" aria-expanded="false" aria-controls="collapseChunks{{ item_id_suffix }}">
+                                         Show/Hide
+                                       </a>
+                                       <div class="collapse" id="collapseChunks{{ item_id_suffix }}">
+                                         <pre style="font-size: 0.8em; max-height:150px; overflow-y:auto;">{{ json.dumps(chunks, indent=1) }}</pre>
+                                       </div>
+                                     {% elif locations %}
+                                       {{ locations | length }} location(s)
+                                       <a class="btn btn-link btn-sm p-0" data-toggle="collapse" href="#collapseLocations{{ item_id_suffix }}" role="button" aria-expanded="false" aria-controls="collapseLocations{{ item_id_suffix }}">
+                                         Show/Hide
+                                       </a>
+                                       <div class="collapse" id="collapseLocations{{ item_id_suffix }}">
+                                         <pre style="font-size: 0.8em; max-height:150px; overflow-y:auto;">{{ json.dumps(locations, indent=1) }}</pre>
+                                       </div>
+                                     {% else %}
+                                       N/A
+                                     {% endif %}
+                                   </td>
+                                 </tr>
+                               {% endfor %}
+                             </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                   <hr>
+                   <div class="active-record">
+                     <h4>Actions</h4>
+                     <form method="POST" action="{{ url_for('.delete_view', access_id=record.access_id) }}" style="display: inline-block;">
+                         <button type="submit" class="btn btn-danger"
+                                 onclick="return confirm('Are you sure you want to delete this record (Access ID: {{ record.access_id }})? This action cannot be undone.');">
+                           Archive This Record
+                         </button>
+                     </form>
+                   </div>
+                {% endif %} {# End of if record.get('is_batch') and record.get('files_in_batch') #}
+
+              </tbody>
+            </table>
+          </div> {# --- END OF MODIFICATION 1 --- #}
         {% elif not error_message %}
           <p>Could not load record details.</p>
         {% endif %}

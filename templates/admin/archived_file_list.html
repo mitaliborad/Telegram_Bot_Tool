@@ -15,7 +15,7 @@
         {% set page_window = 2 %}
         {% for p in range(1, total_pages + 1) %}
           {% if p == 1 or p == total_pages or (p >= current_page - page_window and p <= current_page + page_window) %}
-            {% if loop.previtem is defined and p > loop.previtem + 1 and p > current_page - page-window -1 %}
+            {% if loop.previtem is defined and p > loop.previtem + 1 and p > current_page - page_window -1 %}
               <li class="page-item disabled"><span class="page-link">...</span></li>
             {% endif %}
             <li class="page-item {% if p == current_page %}active{% endif %}">
@@ -70,7 +70,7 @@
     .custom-styled-table tbody td {
         padding: 10px 15px; /* Adjusted padding */
         border-bottom: 1px solid #eeeeee; /* Light grey for row separators */
-        text-align: left;
+        text-align: center; /* Original value, kept as requested */
         vertical-align: middle;
         font-size: 0.875rem;
         color: #333333;
@@ -99,19 +99,25 @@
         padding: 6px 12px;
         font-size: 0.8rem;
         font-weight: 500;
-        color: white !important;
+        color: white;
         border-radius: 4px;
         display: inline-block;
         line-height: 1;
         text-align: center;
         white-space: nowrap;
         vertical-align: middle;
+        border-width: 1px;
+        border-style: solid;
     }
     .status-badge.status-single-custom { /* For 'Single File' */
-        background-color: #778899; /* LightSlateGray - similar to screenshot */
+        background-color: #E2E8F0;
+        color: #475569;
+        border-color: #CBD5E1; /* LightSlateGray - similar to screenshot */
     }
     .status-badge.status-batch-custom { /* For 'Batch' */
-        background-color: #546E7A; /* Darker Blue-Grey - similar to screenshot */
+       background-color: #c8d1df;
+       color: #475569;
+       border-color: #CBD5E1; /* Darker Blue-Grey - similar to screenshot */
     }
 
 
@@ -152,10 +158,10 @@
            flex-flow: nowrap;
       }
       .form-group{
-       margin-bottom:0px 
+       margin-bottom:0px
       }
      }
-     
+
 
 </style>
 
@@ -179,72 +185,75 @@
   {% endif %}
 
   {% if records %}
-    <table class="custom-styled-table"> {# Changed class #}
-      <thead>
-        <tr>
-          <th>Access ID</th>
-          <th>Original Uploader</th>
-          <th>Display Name / Original Filename</th>
-          <th>Type</th>
-          <th>Archived Date</th>
-          <th>Archived By</th>
-          <th>Original Size</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for record in records %}
+    {# --- MODIFICATION: Added div with .table-responsive --- #}
+    <div class="table-responsive">
+      <table class="custom-styled-table"> {# Changed class #}
+        <thead>
           <tr>
-            <td>{{ record.get('access_id', 'N/A') }}</td>
-            <td>{{ record.get('username', 'N/A') }}</td>
-            <td>
-                {% if record.get('is_batch') %}{{ record.get('batch_display_name', 'N/A') }}
-                {% elif record.get('original_filename') %}{{ record.get('original_filename', 'N/A') }}
-                {% else %}N/A{% endif %}
-            </td>
-            <td>
-                {# Updated badge classes for new styling #}
-                {% if record.get('is_batch') %}<span class="status-badge status-batch-custom">Batch</span>
-                {% else %}<span class="status-badge status-single-custom">Single File</span>{% endif %}
-            </td>
-            <td>
-                {% set adt = record.get('archived_timestamp') %}
-                {% if adt is string %}
-                    {{ adt }}
-                {% elif adt %}
-                    {# Format to match YYYY-MM-DDTHH:MM:SSZ from screenshot #}
-                    {{ adt.strftime('%Y-%m-%dT%H:%M:%SZ') }}
-                {% else %}
-                    N/A
-                {% endif %}
-            </td>
-            <td>{{ record.get('archived_by_username', 'N/A') }}</td>
-            <td>
-                {% set total_size = record.get('total_original_size') %}
-                {% set single_size = record.get('original_size') %}
-                {% if total_size is defined and total_size is not none %}{{ total_size | format_bytes }}
-                {% elif single_size is defined and single_size is not none %}{{ single_size | format_bytes }}
-                {% else %}N/A{% endif %}
-            </td>
-            <td style="white-space: nowrap;">
-              {# Buttons styled by CSS rules above #}
-              <form method="POST" action="{{ url_for('.restore_file_action', access_id=record.access_id, q=request.args.get('q'), page=request.args.get('page')) }}" style="display: inline-block;">
-                <button type="submit" class="btn btn-xs btn-success"
-                          onclick="return confirm('Are you sure you want to restore this record (Access ID: {{ record.access_id }})?');">
-                    Restore
-                </button>
-              </form>
-              <form method="POST" action="{{ url_for('.permanently_delete_view', access_id=record.access_id, q=request.args.get('q'), page=request.args.get('page')) }}" style="display: inline-block;">
-                  <button type="submit" class="btn btn-xs btn-danger"
-                          onclick="return confirm('PERMANENTLY DELETE record (Access ID: {{ record.access_id }})? This cannot be undone.');">
-                    Delete Permanently
-                  </button>
-              </form>
-            </td>
+            <th>Access ID</th>
+            <th>Original Uploader</th>
+            <th>Display Name / Original Filename</th>
+            <th>Type</th>
+            <th>Archived Date</th>
+            <th>Archived By</th>
+            <th>Original Size</th>
+            <th>Actions</th>
           </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {% for record in records %}
+            <tr>
+              <td>{{ record.get('access_id', 'N/A') }}</td>
+              <td>{{ record.get('username', 'N/A') }}</td>
+              <td>
+                  {% if record.get('is_batch') %}{{ record.get('batch_display_name', 'N/A') }}
+                  {% elif record.get('original_filename') %}{{ record.get('original_filename', 'N/A') }}
+                  {% else %}N/A{% endif %}
+              </td>
+              <td>
+                  {# Updated badge classes for new styling #}
+                  {% if record.get('is_batch') %}<span class="status-badge status-batch-custom">Batch</span>
+                  {% else %}<span class="status-badge status-single-custom">Single File</span>{% endif %}
+              </td>
+              <td>
+                  {% set adt = record.get('archived_timestamp') %}
+                  {% if adt is string %}
+                      {{ adt }}
+                  {% elif adt %}
+                      {# Format to match YYYY-MM-DDTHH:MM:SSZ from screenshot #}
+                      {{ adt.strftime('%Y-%m-%dT%H:%M:%SZ') }}
+                  {% else %}
+                      N/A
+                  {% endif %}
+              </td>
+              <td>{{ record.get('archived_by_username', 'N/A') }}</td>
+              <td>
+                  {% set total_size = record.get('total_original_size') %}
+                  {% set single_size = record.get('original_size') %}
+                  {% if total_size is defined and total_size is not none %}{{ total_size | format_bytes }}
+                  {% elif single_size is defined and single_size is not none %}{{ single_size | format_bytes }}
+                  {% else %}N/A{% endif %}
+              </td>
+              <td style="white-space: nowrap;">
+                {# Buttons styled by CSS rules above #}
+                <form method="POST" action="{{ url_for('.restore_file_action', access_id=record.access_id, q=request.args.get('q'), page=request.args.get('page')) }}" style="display: inline-block;">
+                  <button type="submit" class="btn btn-xs btn-success"
+                            onclick="return confirm('Are you sure you want to restore this record (Access ID: {{ record.access_id }})?');">
+                      Restore
+                  </button>
+                </form>
+                <form method="POST" action="{{ url_for('.permanently_delete_view', access_id=record.access_id, q=request.args.get('q'), page=request.args.get('page')) }}" style="display: inline-block;">
+                    <button type="submit" class="btn btn-xs btn-danger"
+                            onclick="return confirm('PERMANENTLY DELETE record (Access ID: {{ record.access_id }})? This cannot be undone.');">
+                      Delete Permanently
+                    </button>
+                </form>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div> {# --- END OF .table-responsive WRAPPER --- #}
 
     {% set current_endpoint_args = {} %}
     {% if request.args.get('q') %}{% set _ = current_endpoint_args.update({'q': request.args.get('q')}) %}{% endif %}

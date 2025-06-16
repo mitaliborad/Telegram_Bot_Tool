@@ -49,7 +49,7 @@
         border-collapse: collapse;
         width: 100%;
         margin-top: 20px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1); 
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
 
     .custom-styled-table thead th {
@@ -65,12 +65,12 @@
     .custom-styled-table tbody td {
         padding: 12px 15px;
         border-bottom: 1px solid #eeeeee; /* Light grey for row separators */
-        text-align: left;
+        text-align: center; /* This was original, keeping it */
         vertical-align: middle;
         font-size: 0.875rem;
         color: #333333;
-          height: 68px;
-          overflow: hidden;
+        height: 68px; /* This was original, keeping it */
+        overflow: hidden; /* This was original, keeping it */
     }
 
     .custom-styled-table tbody tr:last-child td {
@@ -82,29 +82,39 @@
         padding: 6px 12px;
         font-size: 0.8rem;
         font-weight: 500;
-        color: white !important;
+        color: white;
         border-radius: 4px; /* Rounded corners as seen in screenshot */
         display: inline-block;
         line-height: 1;
         text-align: center;
         white-space: nowrap;
         vertical-align: middle;
+        border-width: 1px;
+        border-style: solid;
     }
 
     .status-badge.status-active { /* Green - like 'Active' in screenshot */
-        background-color: #2D9C60;
+         background-color: #FEE2E2;
+        color: #B91C1C;
+       border-color: #FECACA;
     }
 
     .status-badge.status-failed { /* Red - like 'Failed' in screenshot */
-        background-color: #EB5757;
+        background-color: #D1FAE5;
+        color: #047857;
+        border-color: #A7F3D0;
     }
 
     /* Custom colors for 'Batch' and 'Single File' as they don't have direct screenshot equivalents */
     .status-badge.status-info-custom { /* For Batch */
-        background-color: #546E7A; /* Neutral blue-grey */
+        background-color: #c8d1df;
+        color: #475569;
+        border-color: #CBD5E1; /* Neutral blue-grey */
     }
     .status-badge.status-secondary-custom { /* For Single File */
-        background-color: #78909C; /* Lighter neutral grey */
+      background-color: #E2E8F0;
+      color: #475569;
+      border-color: #CBD5E1;/* Lighter neutral grey */
     }
 
     /* Action buttons styling (optional, can be inherited or customized further) */
@@ -170,7 +180,7 @@
            flex-flow: nowrap;
       }
       .form-group{
-       margin-bottom:0px 
+       margin-bottom:0px
       }
       .actions-column {
         flex-direction:column;
@@ -206,79 +216,82 @@
   {% endif %}
 
   {% if records %}
-    <table class="custom-styled-table"> {# Changed class here #}
-      <thead>
-        <tr>
-          <th>Access ID</th>
-          <th>Username</th>
-          <th>Display Name / Original Filename</th>
-          <th>Type</th>
-          <th>Upload Date</th>
-          <th>Total Original Size</th>
-          <th>Anonymous</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-             {% for record in records %}
-               <tr>
-                 <td>
-                   {{ record.access_id }}
-                 </td>
-                 <td>{{ record.username | default('N/A', true) }}</td>
-                 <td>
-                     {% if record.is_batch %}{{ record.batch_display_name }}
-                     {% elif record.original_filename %}{{ record.original_filename }}
-                     {% else %}N/A{% endif %}
-                 </td>
-                 <td>
-                     {# Updated badge classes for new styling #}
-                     {% if record.is_batch %}
-                         <span class="status-badge status-info-custom">Batch</span>
-                     {% else %}
-                         <span class="status-badge status-secondary-custom">Single File</span>
-                     {% endif %}
-                 </td>
-                 <td>
-                     {# Assuming upload_timestamp is a datetime object. Changed format to match screenshot. #}
-                     {% if record.upload_timestamp %}
-                        {% if record.upload_timestamp is string %}
-                            {{ record.upload_timestamp }} {# Assuming pre-formatted string if it is a string #}
-                        {% else %}
-                            {{ record.upload_timestamp.strftime('%m/%d/%y') if record.upload_timestamp else 'N/A' }}
-                        {% endif %}
-                     {% else %}
-                        N/A
-                     {% endif %}
-                 </td>
-                 <td>
-                     {% set total_size = record.get('total_original_size') %}
-                     {% set single_size = record.get('original_size') %}
-                     {% if total_size is defined and total_size is not none %}{{ total_size | format_bytes }}
-                     {% elif single_size is defined and single_size is not none %}{{ single_size | format_bytes }}
-                     {% else %}N/A{% endif %}
-                 </td>
-                 <td>
-                     {# Updated badge classes for new styling #}
-                     {% if record.is_anonymous %}
-                         <span class="status-badge status-failed">Yes</span>{% if record.anonymous_id %}({{ record.anonymous_id[:8] }}...){% endif %}
-                     {% else %}
-                         <span class="status-badge status-active">No</span>
-                     {% endif %}
-                 </td>
-                 <td class="actions-column"> {# Added class for potentially specific button styling #}
-                   <a href="{{ url_for('.details_view', access_id=record.access_id, q=request.args.get('q'), page=request.args.get('page'), user_type=request.args.get('user_type')) }}" class="btn btn-xs btn-info">Details</a>
-                   <form method="POST" action="{{ url_for('.delete_view', access_id=record.access_id, q=request.args.get('q'), page=request.args.get('page'), user_type=request.args.get('user_type')) }}" style="display: inline-block;">
-                      <button type="submit" class="btn btn-xs btn-danger"
-                              onclick="return confirm('Are you sure you want to archive this record (Access ID: {{ record.access_id }})? This action cannot be undone.');">
-                        Archive
-                      </button>
-                  </form>
-                 </td>
-               </tr>
-             {% endfor %}
-           </tbody>
-    </table>
+    {# --- MODIFICATION: Added div with class table-responsive --- #}
+    <div class="table-responsive">
+      <table class="custom-styled-table"> {# Changed class here #}
+        <thead>
+          <tr>
+            <th>Access ID</th>
+            <th>Username</th>
+            <th>Display Name / Original Filename</th>
+            <th>Type</th>
+            <th>Upload Date</th>
+            <th>Total Original Size</th>
+            <th>Anonymous</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+               {% for record in records %}
+                 <tr>
+                   <td>
+                     {{ record.access_id }}
+                   </td>
+                   <td>{{ record.username | default('N/A', true) }}</td>
+                   <td>
+                       {% if record.is_batch %}{{ record.batch_display_name }}
+                       {% elif record.original_filename %}{{ record.original_filename }}
+                       {% else %}N/A{% endif %}
+                   </td>
+                   <td>
+                       {# Updated badge classes for new styling #}
+                       {% if record.is_batch %}
+                           <span class="status-badge status-info-custom">Batch</span>
+                       {% else %}
+                           <span class="status-badge status-secondary-custom">Single File</span>
+                       {% endif %}
+                   </td>
+                   <td>
+                       {# Assuming upload_timestamp is a datetime object. Changed format to match screenshot. #}
+                       {% if record.upload_timestamp %}
+                          {% if record.upload_timestamp is string %}
+                              {{ record.upload_timestamp }} {# Assuming pre-formatted string if it is a string #}
+                          {% else %}
+                              {{ record.upload_timestamp.strftime('%m/%d/%y') if record.upload_timestamp else 'N/A' }}
+                          {% endif %}
+                       {% else %}
+                          N/A
+                       {% endif %}
+                   </td>
+                   <td>
+                       {% set total_size = record.get('total_original_size') %}
+                       {% set single_size = record.get('original_size') %}
+                       {% if total_size is defined and total_size is not none %}{{ total_size | format_bytes }}
+                       {% elif single_size is defined and single_size is not none %}{{ single_size | format_bytes }}
+                       {% else %}N/A{% endif %}
+                   </td>
+                   <td>
+                       {# Updated badge classes for new styling #}
+                       {% if record.is_anonymous %}
+                           <span class="status-badge status-failed">Yes</span>{% if record.anonymous_id %}({{ record.anonymous_id[:8] }}...){% endif %}
+                       {% else %}
+                           <span class="status-badge status-active">No</span>
+                       {% endif %}
+                   </td>
+                   <td class="actions-column"> {# Added class for potentially specific button styling #}
+                     <a href="{{ url_for('.details_view', access_id=record.access_id, q=request.args.get('q'), page=request.args.get('page'), user_type=request.args.get('user_type')) }}" class="btn btn-xs btn-info">Details</a>
+                     <form method="POST" action="{{ url_for('.delete_view', access_id=record.access_id, q=request.args.get('q'), page=request.args.get('page'), user_type=request.args.get('user_type')) }}" style="display: inline-block;">
+                        <button type="submit" class="btn btn-xs btn-danger"
+                                onclick="return confirm('Are you sure you want to archive this record (Access ID: {{ record.access_id }})? This action cannot be undone.');">
+                          Archive
+                        </button>
+                    </form>
+                   </td>
+                 </tr>
+               {% endfor %}
+             </tbody>
+      </table>
+    </div> {# --- END OF MODIFICATION --- #}
 
     {% set current_endpoint_args = {} %}
     {% if request.args.get('q') %}{% set _ = current_endpoint_args.update({'q': request.args.get('q')}) %}{% endif %}

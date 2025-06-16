@@ -14,20 +14,81 @@
             body { height: 100%; padding-top: 56px; overflow: hidden; }
             body.sidebar-open { /* overflow: hidden; already handled */ }
 
-            .navbar-dark.fixed-top { background-color: #177452; box-shadow: 0 2px 4px rgba(0,0,0,0.1); z-index: 1031; }
+            .navbar-dark.fixed-top { 
+                background-color: #fff;
+                 box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                 z-index: 1031; 
+            }
+
+            .navbar-dark .navbar-brand {
+                color:#006a43;
+            }
+
+            .navbar-dark .navbar-toggler-icon {
+                background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23006a43' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+            }
 
             .admin-layout { display: flex; height: calc(100vh - 56px); }
 
-            .admin-sidebar { background-color: #006a43; color: #fff; padding-left: 0; padding-right: 0; z-index: 1030; display: flex; flex-direction: column; }
-            .admin-sidebar .sidebar-sticky { display: flex; flex-direction: column; flex-grow: 1; padding-top: 1.5rem; overflow-y: auto; }
-            .admin-sidebar .sidebar-sticky .nav-main { flex-grow: 1; }
-            .admin-sidebar .nav-link { font-weight: 500; color: #fff; padding: 0.75rem 1rem; }
+            .admin-sidebar { 
+                background-color: #fff; 
+                color: #fff; padding-left: 0;
+                padding-right: 0; 
+                z-index: 1030;
+                display: flex; 
+                flex-direction: column;
+                border-width: 0 1px 0 0;
+                border-color: rgba(0, 0, 0, .05);
+             }
+            .admin-sidebar .sidebar-sticky { 
+                display: flex; 
+                flex-direction: column; 
+                flex-grow: 1; 
+                padding-top: 1.5rem; 
+                overflow-y: auto; 
+                padding-left:24px;
+                padding-right:24px;
+            }
+            .admin-sidebar .sidebar-sticky .nav-main { 
+                flex-grow: 1;
+             }
+
+            .admin-sidebar .nav-link { 
+                font-weight: 500; 
+                color: #006a43; 
+                padding: 0.75rem 1rem;
+             }
             .admin-sidebar .nav-link:hover,
-            .admin-sidebar .nav-link.active { color: #fff; background-color: #014a2f; }
-            .admin-sidebar h5 { padding: 0.5rem 1rem; margin-top: 0; color: #fff; font-size: 0.9rem; text-transform: uppercase; font-weight: 600; }
-            .admin-sidebar .close { color: white; opacity: 0.8; position: absolute; top: 10px; right: 15px; font-size: 1.8rem; line-height: 1; padding: 0.5rem; z-index: 10; }
-            .admin-sidebar .close:hover { opacity: 1; }
-            .feather { width: 16px; height: 16px; vertical-align: text-bottom; margin-right: 8px; }
+            .admin-sidebar .nav-link.active { 
+                color: #014a2f; 
+             }
+            .admin-sidebar h5 { 
+                padding: 0.5rem 1rem; 
+                margin-top: 0; 
+                color: #014a2f; 
+                font-size: 0.9rem; 
+                text-transform: uppercase; 
+                font-weight: 600; 
+                }
+            .admin-sidebar .close { 
+            color: white; 
+            opacity: 0.8; 
+            position: absolute; 
+            top: 10px; 
+            right: 15px; 
+            font-size: 1.8rem; 
+            line-height: 1; 
+            padding: 0.5rem; 
+            z-index: 10; 
+            }
+            .admin-sidebar .close:hover {
+             opacity: 1; 
+             }
+            .feather { width: 16px; 
+            height: 16px; 
+            vertical-align: text-bottom; 
+            margin-right: 8px; 
+            }
             .feather-user-nav { /* Specific style for navbar user icon */
                 width: 20px; /* Slightly larger for navbar */
                 height: 20px;
@@ -35,12 +96,19 @@
             }
 
 
-            .main-admin-content-wrapper { flex-grow: 1; height: 100%; overflow-y: auto; }
-            .main-admin-content { padding: 20px; }
+            .main-admin-content-wrapper { 
+            flex-grow: 1; 
+            height: 100%; 
+            overflow-y: auto; 
+            background-color:#f8f9fe;
+            }
+            .main-admin-content { 
+            padding: 20px;
+             }
 
             /* User Dropdown Styling (Desktop) */
             .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle {
-                color: #f8f9fa;
+                color: #006a43;
                 padding-left: 0.5rem; /* Reduce padding if icon is the main element */
                 padding-right: 0.5rem; /* Reduce padding */
                 display: flex; /* Align icon and caret */
@@ -54,28 +122,44 @@
             }
 
             .navbar-nav .dropdown-menu {
-                background-color: #177452;
-                border: 1px solid #014a2f;
+                background-color: #fff;
+                /* border: 1px solid #014a2f; */
                 min-width: 220px;
                 margin-top: 0.125rem;
+                transform: translateX(0);
+                top: 44px;
+                right: 10px;
+                box-shadow: 0 5px 15px #0000001a, 0 2px 5px #0000000d;
+                border:none;
             }
+
+            .logout-btn{
+                display:flex;
+                align-items: center;
+                justify-content: center;
+            }
+
             .navbar-nav .dropdown-menu .dropdown-item {
-                color: #f8f9fa;
+                color: #006a43;
                 padding: .5rem 1rem;
+                border:1px solid #006a43;
+                width: 83px;
+               border-radius: 5px;
+
+               &:hover{
+                background-color:#d7fec8;
+               }
             }
-            .navbar-nav .dropdown-menu .dropdown-item:hover,
-            .navbar-nav .dropdown-menu .dropdown-item:focus {
-                background-color: #014a2f;
-                color: #fff;
-            }
+           
             .navbar-nav .dropdown-menu .dropdown-header {
-                color: #adb5bd;
+                color: #006a43;
                 padding: .5rem 1rem .25rem;
                 font-size: 0.8rem;
                 font-weight: 600;
+                text-align:center;
             }
             .navbar-nav .dropdown-menu .dropdown-divider {
-                border-top: 1px solid #014a2f;
+                border-top: 1px solid #e8eaed;
             }
 
              .form-control:focus {
@@ -100,29 +184,53 @@
                 .main-admin-content h1 { font-size: 1.5rem; }
                 .main-admin-content p { font-size: 0.9rem; }
                 .navbar-nav .nav-item.dropdown.user-dropdown-desktop { display: none !important; }
-                .navbar-dark .navbar-toggler{ outline:none; }
+                .navbar-dark .navbar-toggler{ 
+                    outline:none;
+                    color:#006a43;
+                 }
+                h2{
+                    font-size:24px;
+                }
             }
 
             /* dashboard_index.css - (condensed) */
-            .card.gradient-stat-card { position: relative; overflow: hidden; border: none; border-radius: 12px; color: #fff; padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.12); transition: transform 0.2s ease-in-out; }
+            .card.gradient-stat-card { position: relative; 
+                overflow: hidden;
+                 border: none; 
+                 border-radius: 12px; color: #fff; 
+                 padding: 20px;
+                 box-shadow: 0 5px 15px rgba(0,0,0,0.12); 
+                 transition: transform 0.2s ease-in-out;
+             }
             .card.gradient-stat-card:hover { transform: translateY(-5px); }
             .gradient-stat-card .card-header { background-color: transparent; border-bottom: none; padding: 0 0 5px 0; font-size: 0.85rem; font-weight: 500; opacity: 0.9; color: inherit; }
             .gradient-stat-card .card-title { font-size: 2.2rem; font-weight: 700; margin-bottom: 8px; color: inherit; line-height: 1.2; }
             .gradient-stat-card .card-text { font-size: 0.8rem; opacity: 0.8; margin-bottom: 15px; color: inherit; flex-grow: 1; }
-            .gradient-stat-card .btn-stat-card { background-color: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.3); color: #fff; font-size: 0.75rem; padding: 0.35rem 0.75rem; border-radius: 20px; text-transform: uppercase; font-weight: 500; letter-spacing: 0.5px; align-self: flex-start; }
+            .gradient-stat-card .btn-stat-card { 
+                background-color: rgba(255, 255, 255, 0.2); 
+                border: 1px solid rgba(255, 255, 255, 0.3); 
+                color: #fff; font-size: 0.75rem; 
+                padding: 0.35rem 0.75rem; 
+                border-radius: 20px; 
+                text-transform: uppercase; 
+                font-weight: 500; 
+                letter-spacing: 0.5px; 
+                align-self: flex-start; 
+            }
             .gradient-stat-card .btn-stat-card:hover { background-color: rgba(255, 255, 255, 0.3); border-color: rgba(255, 255, 255, 0.4); color: #fff; }
-            .gradient-color-1 { background-image: linear-gradient(135deg, #FF9A8B 0%, #FF6A88 100%); }
-            .gradient-color-2 { background-image: linear-gradient(135deg, #74EBD5 0%, #9FACE6 100%); }
-            .gradient-color-3 { background-image: linear-gradient(135deg, #2AFADF 0%, #4C83FF 100%); }
-            .gradient-color-4 { background-image: linear-gradient(135deg, #FFD86F 0%, #FC6262 100%); }
-            .gradient-color-5 { background-image: linear-gradient(135deg, #A2B2FC 0%, #FFF1C1 100%); }
-            .gradient-color-6 { background-image: linear-gradient(135deg, #F8CEEC 0%, #A74CF2 100%); }
+            .gradient-color-1 { background-image: linear-gradient(135deg, #db5946 0%, #c12040 100%); }
+            .gradient-color-2 { background-image: linear-gradient(135deg, #30b89e 0%, #6276d0 100%); }
+            .gradient-color-3 { background-image: linear-gradient(135deg, #219d8d 0%, #315cbc 100%); }
+            .gradient-color-4 { background-image: linear-gradient(135deg, #e4be55 0%, #FC6262 100%) }
+            .gradient-color-5 { background-image: linear-gradient(135deg, #3756e9 0%, #fddd6d 100%); }
+            .gradient-color-6 { background-image: linear-gradient(135deg, #d26cb6 0%, #883bc7 100%); }
             .gradient-color-7 { background-image: linear-gradient(135deg, #62D34E 0%, #03ADC3 100%); }
             .card.gradient-stat-card::before, .card.gradient-stat-card::after { content: ''; position: absolute; border-radius: 50%; background-color: rgba(255, 255, 255, 0.08); pointer-events: none; z-index: 0; }
             .card.gradient-stat-card::before { width: 140px; height: 140px; bottom: -60px; right: -50px; }
             .card.gradient-stat-card::after { width: 100px; height: 100px; bottom: -10px; right: 30px; }
             .gradient-stat-card .card-header, .gradient-stat-card .card-body { position: relative; z-index: 1; }
             /* ... */
+            
         </style>
     {% endblock %}
     {% block head %}{% endblock %}
@@ -143,15 +251,17 @@
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                             <h6 class="dropdown-header">Logged in as: {{ current_user.username }}</h6>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{{ url_for('admin_auth.logout') }}">Logout</a>
+                            <div class="logout-btn">
+                              <a class="dropdown-item" href="{{ url_for('admin_auth.logout') }}">Logout</a>
+                            </div>
                         </div>
                     </li>
                 {% else %}
                     {# Optionally hide this Login link if on the login page itself #}
                     {# {% if request.endpoint != 'admin_auth.login' %} #}
-                    <li class="nav-item d-none d-md-block">
+                    {#  <li class="nav-item d-none d-md-block">
                         <a class="nav-link" href="{{ url_for('admin_auth.login') }}">Login</a>
-                    </li>
+                    </li>  #}
                     {# {% endif %} #}
                 {% endif %}
             </ul>

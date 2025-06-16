@@ -41,11 +41,11 @@
 
         {# START: Login/Logout links for MOBILE sidebar view ONLY #}
         <div class="mt-auto px-3 pb-3 d-md-none"> {# d-md-none is crucial here #}
-            <hr style="border-top: 1px solid rgba(255,255,255,0.2);">
+            <hr style="border-top: 1px solid #e8eaed;">
             <ul class="nav flex-column">
                 {% if current_user.is_authenticated %}
                     <li class="nav-item">
-                        <span class="nav-link" style="color: rgba(255,255,255,0.7); font-size: 0.85rem; padding-left:1rem; padding-right:1rem;">
+                        <span class="nav-link" style="color: #006a43; font-size: 0.85rem; padding-left:1rem; padding-right:1rem;">
                             Logged in: {{ current_user.username }}
                         </span>
                     </li>

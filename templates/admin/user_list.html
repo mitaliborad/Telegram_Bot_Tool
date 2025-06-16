@@ -7,26 +7,26 @@
     .user-list-table {
         background-color: #ffffff;
         border-collapse: collapse;
-        width: 100%;
+        width: 100%; /* Table will try to be 100% of its container. If content is wider, table-responsive handles scroll. */
         margin-top: 20px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Subtle shadow like in new screenshot */
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         border-radius: 10px;
     }
 
     .user-list-table thead th {
-        background-color: #177452; /* Dark green from new screenshot */
+        background-color: #177452;
         color: white;
         text-align: left;
         padding: 12px 15px;
         font-weight: 600;
-        
         font-size: 0.9rem;
-        border-bottom: 2px solid #146045; /* Darker green for emphasis */
+        border-bottom: 2px solid #146045;
+        white-space: nowrap; /* Keep headers on one line */
     }
 
     .user-list-table tbody td {
         padding: 12px 15px;
-        border-bottom: 1px solid #eeeeee; /* Light grey for row separators */
+        border-bottom: 1px solid #eeeeee;
         text-align: left;
         vertical-align: middle;
         font-size: 0.875rem;
@@ -37,64 +37,74 @@
         border-bottom: none;
     }
 
-    /* Status badge styling from new screenshot */
+    /* Status badge styling (light background, dark text) */
     .status-badge {
-        padding: 6px 12px;
-        font-size: 0.8rem;
+        padding: 4px 10px; /* Consistent with other detail pages */
+        font-size: 0.78rem;
         font-weight: 500;
-        color: white !important;
         border-radius: 4px;
         display: inline-block;
-        line-height: 1;
+        line-height: 1.2;
         text-align: center;
         white-space: nowrap;
         vertical-align: middle;
+        border-width: 1px;
+        border-style: solid;
+        /* color property will be set by specific badge types */
     }
 
-    .status-badge.status-active { /* For 'Premium User' if styled like 'Active' from first screenshot */
-        background-color: #2D9C60; /* Green */
+    .status-badge.status-active { /* Premium User */
+        background-color: #D1FAE5;
+        color: #047857;
+        border-color: #A7F3D0;
     }
 
-    .status-badge.status-warning { /* For 'Admin' - Red in new screenshot */
-        background-color: #EB5757;
+    .status-badge.status-warning { /* Admin */
+        background-color: #FEE2E2;
+        color: #B91C1C;
+        border-color: #FECACA;
     }
 
-    .status-badge.status-info {    /* For 'Free User' - Blue-grey in new screenshot */
-        background-color: #546E7A;
+    .status-badge.status-info {    /* Free User */
+      background-color: #E2E8F0;
+        color: #475569;
+        border-color: #CBD5E1;
     }
 
     .status-badge.status-secondary { /* Default/other roles */
-        background-color: #78909C; /* Lighter neutral grey */
+       background-color: #F3F4F6;
+        color: #374151;
+        border-color: #D1D5DB;
     }
 
     /* Search form button styling */
     form.form-inline button.btn-primary[type="submit"] {
-        background-color: #177452; /* Blue from screenshot */
+        background-color: #177452;
         border-color: #177452;
         color: #ffffff;
-        padding: 0.375rem 0.75rem; /* Standard Bootstrap padding */
-        font-size: 1rem; /* Standard Bootstrap font size */
-        line-height: 1.5; /* Standard Bootstrap line height */
-        border-radius: 0.25rem; /* Standard Bootstrap border radius */
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        border-radius: 0.25rem;
     }
     form.form-inline button.btn-primary[type="submit"]:hover {
-        background-color: #d7fec8; /* Darker blue for hover */
+        background-color: #d7fec8;
         border-color: #177452;
         color: #177452;
     }
-    /* Ensure the search input and button align well */
     form.form-inline .form-group {
-        margin-right: 0; /* Adjust if needed */
+        margin-right: 0; /* Bootstrap default, adjust if needed */
     }
     form.form-inline .form-control {
         height: calc(1.5em + 0.75rem + 2px); /* Match button height */
+        width: 100%; /* Make input take full width of its group */
     }
 
     /* Actions column buttons styling */
     .actions-column .btn {
         margin-right: 5px;
-        padding: 0.3rem 0.6rem; /* Slightly adjusted padding for visual balance */
-        font-size: 0.8rem;     /* Slightly smaller font for action buttons */
+        padding: 0.3rem 0.6rem;
+        font-size: 0.8rem;
         border-radius: 4px;
         color: #fff; /* Default text color for action buttons */
     }
@@ -102,29 +112,28 @@
         margin-right: 0;
     }
 
-    .actions-column .btn.btn-info { /* Details button */
-        background-color: #17A2B8; /* Teal color from new screenshot */
+    .actions-column .btn.btn-info {
+        background-color: #17A2B8;
         border-color: #17A2B8;
     }
     .actions-column .btn.btn-info:hover {
-        background-color: #117a8b; /* Darker teal for hover */
+        background-color: #117a8b;
         border-color: #10707f;
     }
 
-    .actions-column .btn.btn-warning { /* Archive button */
-        background-color: #FFC107; /* Yellow color from new screenshot */
+    .actions-column .btn.btn-warning {
+        background-color: #FFC107;
         border-color: #FFC107;
-        color: #212529; /* Dark text for yellow button for contrast */
+        color: #212529;
     }
     .actions-column .btn.btn-warning:hover {
-        background-color: #e0a800; /* Darker yellow for hover */
+        background-color: #e0a800;
         border-color: #d39e00;
         color: #212529;
     }
 
-    /* Styling for the h1 title to match screenshot */
     h1 {
-        font-size: 2rem; /* Approximation from screenshot */
+        font-size: 2rem;
         font-weight: 500;
         margin-bottom: 20px;
         color: #333;
@@ -132,55 +141,65 @@
 
      @media (max-width: 767.98px) {
       .form-inline{
-           flex-flow: nowrap;
+           flex-flow: nowrap; /* Keep search input and button on one line */
+      }
+      /* .form-group might not need margin-bottom:0 if its parent .form-inline has margin-bottom */
+
+      h1 { font-size: 1.5rem; } /* Smaller H1 for mobile */
+
+      .actions-column {
+          /* The inline style min-width and white-space:nowrap will make this column wide. */
+          /* table-responsive will handle it. For further mobile optimization of this column, */
+          /* you'd need to change its content structure (e.g., stack buttons). */
+      }
+      .pagination {
+          flex-wrap: wrap; /* Allow pagination items to wrap */
       }
       .form-group{
-       margin-bottom:0px 
+        margin-bottom:0;
       }
      }
-
 </style>
 
   <h1>User List</h1>
 
   <form method="GET" action="{{ url_for('.index') }}" class="form-inline" style="margin-bottom: 20px;">
-    <div class="form-group">
+    <div class="form-group"> {# This div will use flex-grow:1 from CSS #}
       <input type="text" name="q" class="form-control" placeholder="Search username or email..."
-             value="{{ search_query if search_query is not none else '' }}">
+             value="{{ search_query if search_query is not none else '' }}"> {# form-control has width:100% #}
     </div>
-    {# The button below will be styled by form.form-inline button.btn-primary[type="submit"] #}
     <button type="submit" class="btn btn-primary" style="margin-left: 10px;">Search</button>
     {% if search_query %}
-      <a href="{{ url_for('.index', role=request.args.get('role', '')) }}" class="btn btn-default" style="margin-left: 5px;">Clear Search</a>
+      <a href="{{ url_for('.index', role=request.args.get('role', '')) }}" class="btn btn-light" style="margin-left: 5px;">Clear</a> {# Changed to btn-light for better visibility on white bg #}
     {% endif %}
   </form>
 
   {% macro render_pagination(current_page, total_pages, endpoint_args={}) %}
   {% if total_pages > 1 %}
     <nav aria-label="Page navigation">
-      <ul class="pagination justify-content-center">
-        {# Previous Page Link #}
+      <ul class="pagination justify-content-center"> {# flex-wrap is applied via CSS media query #}
         <li class="page-item {% if current_page == 1 %}disabled{% endif %}">
           <a class="page-link" href="{{ url_for(request.endpoint, page=current_page-1, **endpoint_args) if current_page > 1 else '#' }}" aria-label="Previous">
             <span aria-hidden="true">«</span>
             <span class="sr-only">Previous</span>
           </a>
         </li>
-
-        {# Page Number Links - simplified for brevity, can be more complex #}
-        {% set page_window = 2 %} {# How many pages to show around current page #}
+        {% set page_window = 1 %} {# More compact for mobile, expands well on desktop #}
+        {% set printed_ellipsis_start = false %}
+        {% set printed_ellipsis_end = false %}
         {% for p in range(1, total_pages + 1) %}
           {% if p == 1 or p == total_pages or (p >= current_page - page_window and p <= current_page + page_window) %}
-            {% if loop.previtem is defined and p > loop.previtem + 1 and p > current_page - page_window -1 %}
-              <li class="page-item disabled"><span class="page-link">...</span></li>
-            {% endif %}
             <li class="page-item {% if p == current_page %}active{% endif %}">
               <a class="page-link" href="{{ url_for(request.endpoint, page=p, **endpoint_args) }}">{{ p }}</a>
             </li>
+          {% elif p < current_page - page_window and not printed_ellipsis_start %}
+            <li class="page-item disabled"><span class="page-link">...</span></li>
+            {% set printed_ellipsis_start = true %}
+          {% elif p > current_page + page_window and not printed_ellipsis_end %}
+            <li class="page-item disabled"><span class="page-link">...</span></li>
+            {% set printed_ellipsis_end = true %}
           {% endif %}
         {% endfor %}
-
-        {# Next Page Link #}
         <li class="page-item {% if current_page == total_pages %}disabled{% endif %}">
           <a class="page-link" href="{{ url_for(request.endpoint, page=current_page+1, **endpoint_args) if current_page < total_pages else '#' }}" aria-label="Next">
             <span aria-hidden="true">»</span>
@@ -202,63 +221,62 @@
   {% endif %}
 
   {% if users %}
-    <table class="user-list-table">
-      <thead>
-        <tr>
-          <th>ID</th>
-             <th>Username</th>
-             <th>Email</th>
-             <th>User Role</th>
-             <th>Created At</th>
-             <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-  {% for user in users %}
-        <tr>
-      <td>{{ user._id }}</td>
-      <td>{{ user.username }}</td>
-      <td>{{ user.email }}</td>
-      <td>
-        {% set display_role = user.role %}
-        {# Badge classes are styled above to match new screenshot #}
-        {% if display_role == "Admin" %}
-            <span class="status-badge status-warning">{{ display_role }}</span>
-        {% elif display_role == "Premium User" %}
-            <span class="status-badge status-active">{{ display_role }}</span>
-        {% elif display_role == "Free User" %}
-            <span class="status-badge status-info">{{ display_role }}</span>
-        {% else %}
-            <span class="status-badge status-secondary">{{ display_role | default('N/A', true) }}</span>
-        {% endif %}
-      </td>
-      <td>
-          {# Ensuring Created At format from new screenshot (YYYY-MM-DD HH:MM:SS) #}
-          {% if user.created_at %}
-              {% if user.created_at is string %}
-                  {{ user.created_at }} {# Assuming string is already formatted #}
-              {% else %}
-                  {{ user.created_at.strftime('%Y-%m-%d %H:%M:%S') }}
-              {% endif %}
+    {# --- MODIFICATION: Wrap the table with .table-responsive --- #}
+    <div class="table-responsive">
+      <table class="user-list-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>User Role</th>
+            <th>Created At</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+    {% for user in users %}
+          <tr>
+        <td>{{ user._id }}</td> {# word-break applied via CSS by :first-child #}
+        <td>{{ user.username }}</td>
+        <td>{{ user.email }}</td> {# word-break applied via CSS by :nth-child(3) #}
+        <td>
+          {% set display_role = user.role %}
+          {% if display_role == "Admin" %}
+              <span class="status-badge status-warning">{{ display_role }}</span>
+          {% elif display_role == "Premium User" %}
+              <span class="status-badge status-active">{{ display_role }}</span>
+          {% elif display_role == "Free User" %}
+              <span class="status-badge status-info">{{ display_role }}</span>
           {% else %}
-              N/A
+              <span class="status-badge status-secondary">{{ display_role | default('N/A', true) }}</span>
           {% endif %}
-      </td>
-      <td class="actions-column" style="min-width: 250px; white-space: nowrap;">
-        {# Action buttons (Details, Archive) are styled above using .actions-column .btn.btn-info and .btn.btn-warning #}
-        <a href="{{ url_for('.user_details_view', user_id_str=user._id, q=request.args.get('q', ''), page=request.args.get('page', '1'), role=request.args.get('role', '')) }}" class="btn btn-xs btn-info">Details</a>
-
-        <form method="POST" action="{{ url_for('.delete_user_view', user_id_str=user._id, q=request.args.get('q', ''), page=request.args.get('page', '1'), role=request.args.get('role', '')) }}" style="display: inline-block;">
-            <button type="submit" class="btn btn-xs btn-warning"
-                    onclick="return confirm('Are you sure you want to archive user {{ user.username }} (ID: {{ user._id }})?');">
-              Archive
-            </button>
-        </form>
-      </td>
-    </tr>
-  {% endfor %}
-</tbody>
-    </table>
+        </td>
+        <td>
+            {% if user.created_at %}
+                {% if user.created_at is string %}
+                    {{ user.created_at }}
+                {% else %}
+                    {{ user.created_at.strftime('%Y-%m-%d %H:%M:%S') }}
+                {% endif %}
+            {% else %}
+                N/A
+            {% endif %}
+        </td>
+        <td class="actions-column" style="min-width: 180px; white-space: nowrap;"> {# Reduced min-width slightly but nowrap will force width #}
+          <a href="{{ url_for('.user_details_view', user_id_str=user._id, q=request.args.get('q', ''), page=request.args.get('page', '1'), role=request.args.get('role', '')) }}" class="btn btn-xs btn-info">Details</a>
+          <form method="POST" action="{{ url_for('.delete_user_view', user_id_str=user._id, q=request.args.get('q', ''), page=request.args.get('page', '1'), role=request.args.get('role', '')) }}" style="display: inline-block;">
+              <button type="submit" class="btn btn-xs btn-warning"
+                      onclick="return confirm('Are you sure you want to archive user {{ user.username }} (ID: {{ user._id }})?');">
+                Archive
+              </button>
+          </form>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+      </table>
+    </div> {# --- END OF .table-responsive WRAPPER --- #}
 
   {% elif not error_message %}
     {% if search_query and role_filter %}

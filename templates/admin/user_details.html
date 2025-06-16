@@ -4,9 +4,21 @@
 {% block head_tail %}
   {{ super() }}
   <style>
-    .details-table th { width: 25%; font-weight: bold; background-color: #f9f9f9; }
+    .details-table th {
+      width: 25%; /* Consider removing or adjusting for mobile if it causes issues */
+      font-weight: bold;
+      background-color: #f9f9f9;
+    }
     .details-table td { word-break: break-all; }
-    /* Add other styles if needed */
+
+    /* Optional: Override th width for mobile if needed */
+    @media (max-width: 767.98px) {
+      /*
+      .details-table th {
+        width: auto;
+      }
+      */
+    }
   </style>
 {% endblock %}
 
@@ -31,7 +43,7 @@
        box-shadow:none;
       }
     }
-  
+
     .back-to-user{
       border:1px solid #006a43;
       color:#006a43;
@@ -44,6 +56,25 @@
         box-shadow:none;
       }
     }
+
+  .badge-info{
+   background-color: #E2E8F0;
+   color: #475569;
+   border:1px solid #CBD5E1;
+   padding: 7px;
+  }
+  .badge-danger{
+    background-color: #FEE2E2;
+    color: #B91C1C;
+    border:1px solid #FECACA;
+    padding: 7px;
+  }
+  .badge-success{
+    background-color: #D1FAE5;
+    color: #047857;
+    border:1px solid #A7F3D0;
+    padding: 7px;
+  }
   </style>
 
   <div class="container-fluid">
@@ -62,54 +93,57 @@
         {% endif %}
 
         {% if user_doc %}
-          <table class="table table-bordered table-striped details-table">
-            <tbody>
-              <tr><th>User ID (DB _id)</th><td>{{ user_doc.get('_id', 'N/A') }}</td></tr>
-              <tr><th>Username</th><td>{{ user_doc.get('username', 'N/A') }}</td></tr>
-              <tr><th>Email</th><td>{{ user_doc.get('email', 'N/A') }}</td></tr>
-              <tr>
-                <th>User Role</th>
-                <td>
-                  {% set role = user_doc.get('role', 'Free User') %} {# Default if somehow missing after DB fetch #}
-                  {% if role == "Admin" %}
-                    <span class="badge badge-danger">{{ role }}</span>
-                  {% elif role == "Premium User" %}
-                    <span class="badge badge-success">{{ role }}</span>
-                  {% elif role == "Free User" %}
-                    <span class="badge badge-info">{{ role }}</span>
-                  {% else %}
-                    <span class="badge badge-secondary">{{ role | default('N/A', true) }}</span>
-                  {% endif %}
-                </td>
-              </tr>
-              <tr>
-                <th>Created At</th>
-                <td>
-                  {% set created_at_val = user_doc.get('created_at') %}
-                  {% if created_at_val %}
-                    {{ created_at_val.strftime('%Y-%m-%d %H:%M:%S UTC') if created_at_val and not created_at_val is string else created_at_val }}
-                  {% else %}
-                    N/A
-                  {% endif %}
-                </td>
-              </tr>
-              <tr><th>Agreed to Terms?</th><td>{{ 'Yes' if user_doc.get('agreed_terms') else 'No' }}</td></tr>
-              <tr><th>Understands Privacy?</th><td>{{ 'Yes' if user_doc.get('understand_privacy') else 'No' }}</td></tr>
-              {# Add any other user fields you store and want to display #}
-              {# Example for a complex field if you had one, e.g., login_history (list of dicts) #}
-              {# {% if user_doc.get('login_history') %}
-              <tr>
-                  <th>Login History (Last 5)</th>
-                  <td><pre>{{ json.dumps(user_doc.get('login_history')[-5:], indent=2) }}</pre></td>
-              </tr>
-              {% endif %} #}
-            </tbody>
-          </table>
+          {# --- MODIFICATION: Wrap the table with table-responsive div --- #}
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped details-table">
+              <tbody>
+                <tr><th>User ID (DB _id)</th><td>{{ user_doc.get('_id', 'N/A') }}</td></tr>
+                <tr><th>Username</th><td>{{ user_doc.get('username', 'N/A') }}</td></tr>
+                <tr><th>Email</th><td>{{ user_doc.get('email', 'N/A') }}</td></tr>
+                <tr>
+                  <th>User Role</th>
+                  <td>
+                    {% set role = user_doc.get('role', 'Free User') %} {# Default if somehow missing after DB fetch #}
+                    {% if role == "Admin" %}
+                      <span class="badge badge-danger">{{ role }}</span>
+                    {% elif role == "Premium User" %}
+                      <span class="badge badge-success">{{ role }}</span>
+                    {% elif role == "Free User" %}
+                      <span class="badge badge-info">{{ role }}</span>
+                    {% else %}
+                      <span class="badge badge-secondary">{{ role | default('N/A', true) }}</span>
+                    {% endif %}
+                  </td>
+                </tr>
+                <tr>
+                  <th>Created At</th>
+                  <td>
+                    {% set created_at_val = user_doc.get('created_at') %}
+                    {% if created_at_val %}
+                      {{ created_at_val.strftime('%Y-%m-%d %H:%M:%S UTC') if created_at_val and not created_at_val is string else created_at_val }}
+                    {% else %}
+                      N/A
+                    {% endif %}
+                  </td>
+                </tr>
+                <tr><th>Agreed to Terms?</th><td>{{ 'Yes' if user_doc.get('agreed_terms') else 'No' }}</td></tr>
+                <tr><th>Understands Privacy?</th><td>{{ 'Yes' if user_doc.get('understand_privacy') else 'No' }}</td></tr>
+                {# Add any other user fields you store and want to display #}
+                {# Example for a complex field if you had one, e.g., login_history (list of dicts) #}
+                {# {% if user_doc.get('login_history') %}
+                <tr>
+                    <th>Login History (Last 5)</th>
+                    <td><pre>{{ json.dumps(user_doc.get('login_history')[-5:], indent=2) }}</pre></td>
+                </tr>
+                {% endif %} #}
+              </tbody>
+            </table>
+          </div> {# --- END OF MODIFICATION --- #}
 
           <hr>
           <h4>Actions</h4>
 
-          <a href="{{ url_for('.edit_user_view', user_id_str=user_doc._id) }}" class="btn btn-primary" style="margin-right: 10px;">Edit User</a> 
+          <a href="{{ url_for('.edit_user_view', user_id_str=user_doc._id) }}" class="btn btn-primary" style="margin-right: 10px;">Edit User</a>
 
           <!-- <form method="POST" action="{{ url_for('.toggle_admin_view', user_id_str=user_doc._id) }}" style="display: inline-block; margin-right: 5px;">
               <button type="submit" class="btn {{ 'btn-warning' if user_doc.is_admin else 'btn-success' }}">

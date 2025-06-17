@@ -1,60 +1,76 @@
+# google_drive_api.py – OAuth-user version (free Gmail)
+# --------------------------------------------------------------
+# Auth flow now uses an OAuth2 refresh-token tied to your personal
+# Gmail account instead of a service account, so uploads count
+# against your main Drive quota.  Service-account imports have
+# been removed and _get_drive_service() now builds a Credentials
+# object from CLIENT_ID / CLIENT_SECRET / REFRESH_TOKEN.
+
 import os
 import io
 import logging
+import mimetypes
 from typing import Optional, Tuple, Generator, Dict, Any
-from googleapiclient.http import MediaIoBaseUpload, MediaFileUpload, MediaIoBaseDownload
-from google.oauth2 import service_account
+
+from dotenv import load_dotenv
+from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-from dotenv import load_dotenv
+from googleapiclient.http import (
+    MediaFileUpload,
+    MediaIoBaseUpload,
+    MediaIoBaseDownload,
+)
 from google_auth_httplib2 import AuthorizedHttp
 import httplib2
-import mimetypes
 
-# This try/except block is kept for safety, but this module should no longer
-# be directly manipulating the upload_progress_data dictionary.
-try:
-    from extensions import upload_progress_data
-except ImportError:
-    logging.warning("Could not import upload_progress_data from extensions in google_drive_api.py.")
-    upload_progress_data = {}
-
+# ---------------------------------------------------------------------------
+# Environment & constants
+# ---------------------------------------------------------------------------
 load_dotenv()
-SERVICE_ACCOUNT_FILE = os.getenv('GDRIVE_SERVICE_ACCOUNT_FILE')
-DRIVE_TEMP_FOLDER_ID = os.getenv('GDRIVE_TEMP_FOLDER_ID')
-SCOPES = ['https://www.googleapis.com/auth/drive']
 
+GDRIVE_CLIENT_ID = os.getenv("GDRIVE_CLIENT_ID")
+GDRIVE_CLIENT_SECRET = os.getenv("GDRIVE_CLIENT_SECRET")
+GDRIVE_REFRESH_TOKEN = os.getenv("GDRIVE_REFRESH_TOKEN")
+
+DRIVE_TEMP_FOLDER_ID = os.getenv("GDRIVE_TEMP_FOLDER_ID")  # optional target folder
+
+SCOPES = ["https://www.googleapis.com/auth/drive"]
 ONE_MB = 8 * 1024 * 1024
+
+try:
+    from extensions import upload_progress_data  # noqa: F401  (optional)
+except ImportError:
+    pass
+
+# ---------------------------------------------------------------------------
+# Public helpers – upload / download / delete
+# ---------------------------------------------------------------------------
 
 def upload_to_gdrive_with_progress(
     source: str | io.BytesIO,
     filename_in_gdrive: str,
-    operation_id_for_log: str
+    operation_id_for_log: str,
 ) -> Generator[Dict[str, Any], None, Tuple[Optional[str], Optional[str]]]:
-    """
-    Uploads a file to Google Drive, yielding progress events.
-    """
+    """Upload *source* into your Drive with progress events."""
+
     log_prefix = f"[GDriveUpload-{operation_id_for_log}-{filename_in_gdrive[:20]}]"
-    
+
     try:
         service = _get_drive_service()
-        if not service:
-            error_message = "Google Drive service not available."
-            logging.error(f"{log_prefix} {error_message}")
-            yield {"type": "error", "message": error_message}
-            return None, error_message
+        file_metadata = {"name": filename_in_gdrive}
+        if DRIVE_TEMP_FOLDER_ID:
+            file_metadata["parents"] = [DRIVE_TEMP_FOLDER_ID]
 
-        file_metadata = {'name': filename_in_gdrive, 'parents': [DRIVE_TEMP_FOLDER_ID]}
-        media_body = None
-        file_size = 0
-
+        # Choose correct media wrapper
         if isinstance(source, str) and os.path.exists(source):
             file_size = os.path.getsize(source)
             media_body = MediaFileUpload(
                 source,
-                mimetype=mimetypes.guess_type(filename_in_gdrive)[0] or 'application/octet-stream',
+                mimetype=mimetypes.guess_type(filename_in_gdrive)[0]
+                or "application/octet-stream",
                 resumable=True,
-                chunksize=ONE_MB
+                chunksize=ONE_MB,
             )
         elif isinstance(source, io.BytesIO):
             source.seek(0)
@@ -62,152 +78,130 @@ def upload_to_gdrive_with_progress(
             source.seek(0)
             media_body = MediaIoBaseUpload(
                 fd=source,
-                mimetype=mimetypes.guess_type(filename_in_gdrive)[0] or 'application/octet-stream',
+                mimetype=mimetypes.guess_type(filename_in_gdrive)[0]
+                or "application/octet-stream",
                 resumable=True,
-                chunksize=ONE_MB
+                chunksize=ONE_MB,
             )
         else:
-            error_message = "Invalid source type for GDrive upload."
-            logging.error(f"{log_prefix} {error_message}")
-            yield {"type": "error", "message": error_message}
-            return None, error_message
+            err = "Invalid source type for GDrive upload."
+            logging.error(f"{log_prefix} {err}")
+            yield {"type": "error", "message": err}
+            return None, err
 
+        # Edge-case: zero-byte placeholder
         if file_size == 0:
-            logging.warning(f"{log_prefix} Source is empty. Creating an empty file placeholder in Drive.")
-            empty_file = service.files().create(body=file_metadata, fields='id').execute()
-            gdrive_file_id = empty_file.get('id')
-            if gdrive_file_id:
+            empty = service.files().create(body=file_metadata, fields="id").execute()
+            gid = empty.get("id")
+            if gid:
                 yield {"type": "progress", "percentage": 100, "bytes_sent": 0}
-                return gdrive_file_id, None
-            else:
-                error_message = "Failed to create empty file placeholder."
-                yield {"type": "error", "message": error_message}
-                return None, error_message
+                return gid, None
+            err = "Failed to create empty file placeholder."
+            yield {"type": "error", "message": err}
+            return None, err
 
-        gdrive_request = service.files().create(
+        request = service.files().create(
             body=file_metadata,
             media_body=media_body,
-            fields='id, name'
+            fields="id,name",
         )
 
         response = None
-        last_reported_percentage = -1
+        last_pct = -1
         while response is None:
-            status, response = gdrive_request.next_chunk()
+            status, response = request.next_chunk()
             if status:
-                progress_percentage = int(status.progress() * 100)
-                bytes_sent = int(status.resumable_progress)
-                
-                if progress_percentage > last_reported_percentage:
-                    logging.info(f"{log_prefix} GDrive Upload Progress: {progress_percentage}%")
+                pct = int(status.progress() * 100)
+                if pct > last_pct:
+                    logging.info(f"{log_prefix} {pct}%")
                     yield {
                         "type": "progress",
-                        "percentage": progress_percentage,
-                        "bytes_sent": bytes_sent
+                        "percentage": pct,
+                        "bytes_sent": int(status.resumable_progress),
                     }
-                    last_reported_percentage = progress_percentage
+                    last_pct = pct
 
-        if response and response.get('id'):
-            gdrive_file_id = response.get('id')
-            logging.info(f"{log_prefix} Upload successful. GDrive ID: {gdrive_file_id}")
-            return gdrive_file_id, None
-        else:
-            error_message = "GDrive upload finished but no file ID was returned."
-            logging.error(f"{log_prefix} {error_message} Response: {response}")
-            yield {"type": "error", "message": error_message}
-            return None, error_message
+        gid = response.get("id") if response else None
+        if gid:
+            logging.info(f"{log_prefix} Upload successful. ID: {gid}")
+            return gid, None
 
-    except HttpError as error:
-        reason = getattr(error, '_get_reason', lambda: str(error))()
-        error_message = f"Google Drive API HTTP error: {reason}"
-        logging.error(f"{log_prefix} {error_message}", exc_info=True)
-        yield {"type": "error", "message": error_message}
-        return None, error_message
+        err = "Upload finished but no Drive ID returned."
+        logging.error(f"{log_prefix} {err}")
+        yield {"type": "error", "message": err}
+        return None, err
+
+    except HttpError as e:
+        reason = getattr(e, "_get_reason", lambda: str(e))()
+        err = f"Google Drive API HTTP error: {reason}"
+        logging.error(f"{log_prefix} {err}")
+        yield {"type": "error", "message": err}
+        return None, err
     except Exception as e:
-        error_message = f"An unexpected error occurred during GDrive upload: {str(e)}"
-        logging.error(f"{log_prefix} {error_message}", exc_info=True)
-        yield {"type": "error", "message": error_message}
-        return None, error_message
+        err = f"Unexpected upload error: {str(e)}"
+        logging.error(f"{log_prefix} {err}", exc_info=True)
+        yield {"type": "error", "message": err}
+        return None, err
 
-def download_from_gdrive(gdrive_file_id: str) -> Tuple[Optional[io.BytesIO], Optional[str]]:
-    """
-    Downloads a file from Google Drive by its ID.
-    """
+
+def download_from_gdrive(gid: str) -> Tuple[Optional[io.BytesIO], Optional[str]]:
+    """Download a file by ID from Drive."""
     try:
         service = _get_drive_service()
-        if not service:
-            return None, "Google Drive service not available."
-
-        request = service.files().get_media(fileId=gdrive_file_id)
-        file_content_stream = io.BytesIO()
-        downloader = MediaIoBaseDownload(file_content_stream, request)
-        
+        request = service.files().get_media(fileId=gid)
+        buf = io.BytesIO()
+        downloader = MediaIoBaseDownload(buf, request)
         done = False
         while not done:
             status, done = downloader.next_chunk()
             if status:
-                logging.info(f"GDrive Download Progress for '{gdrive_file_id}': {int(status.progress() * 100)}%")
-        
-        file_content_stream.seek(0)
-        return file_content_stream, None
-
-    except HttpError as error:
-        err_reason = error._get_reason() if hasattr(error, '_get_reason') else str(error)
-        if error.resp.status == 404:
-            return None, f"File not found on Google Drive (ID: {gdrive_file_id})."
-        return None, f"Google Drive API HTTP error: {error.resp.status} - {err_reason}"
+                logging.info(f"Download {gid}: {int(status.progress() * 100)}%")
+        buf.seek(0)
+        return buf, None
+    except HttpError as e:
+        if e.resp.status == 404:
+            return None, f"File ID {gid} not found."
+        return None, f"Drive HTTP error {e.resp.status}: {e._get_reason()}"
     except Exception as e:
-        return None, f"Unexpected error downloading from Google Drive: {str(e)}"
+        return None, f"Unexpected error downloading {gid}: {str(e)}"
 
-def delete_from_gdrive(gdrive_file_id: str) -> Tuple[bool, Optional[str]]:
-    """
-    Deletes a file from Google Drive by its ID.
-    """
+
+def delete_from_gdrive(gid: str) -> Tuple[bool, Optional[str]]:
+    """Delete file permanently."""
     try:
         service = _get_drive_service()
-        if not service:
-            return False, "Google Drive service not available."
-
-        service.files().delete(fileId=gdrive_file_id).execute()
+        service.files().delete(fileId=gid).execute()
         return True, None
-
-    except HttpError as error:
-        if error.resp.status == 404:
-            logging.warning(f"File '{gdrive_file_id}' not found for deletion (already deleted?).")
-            return True, None # Treat as success
-        err_reason = error._get_reason() if hasattr(error, '_get_reason') else str(error)
-        return False, f"Google Drive API HTTP error: {error.resp.status} - {err_reason}"
+    except HttpError as e:
+        if e.resp.status == 404:
+            return True, None  # already gone
+        return False, f"Drive HTTP error {e.resp.status}: {e._get_reason()}"
     except Exception as e:
-        return False, f"Unexpected error deleting from Google Drive: {str(e)}"
+        return False, f"Unexpected delete error: {str(e)}"
+
+# ---------------------------------------------------------------------------
+# Private – OAuth credentials helper
+# ---------------------------------------------------------------------------
 
 def _get_drive_service():
-    """
-    Authenticates and returns a new Google Drive API service object for each call.
-    This is thread-safe.
-    """
-    if not SERVICE_ACCOUNT_FILE or not os.path.exists(SERVICE_ACCOUNT_FILE):
-        raise ValueError("Service account file not configured or not found.")
-    if not DRIVE_TEMP_FOLDER_ID:
-        raise ValueError("Google Drive temporary folder ID not configured.")
-        
-    try:
-        creds = service_account.Credentials.from_service_account_file(
-            SERVICE_ACCOUNT_FILE, scopes=SCOPES)
-        
-        # Use a new httplib2.Http object for each service instance
-        http_client_with_timeout = httplib2.Http(timeout=600)
-        # ====================================================================
-        # === THE FIX IS HERE: Disable automatic redirects in httplib2     ===
-        # ====================================================================
-        http_client_with_timeout.follow_redirects = False
-        
-        authed_http = AuthorizedHttp(creds, http=http_client_with_timeout)
-        service = build('drive', 'v3', http=authed_http, cache_discovery=False)
-        
-        logging.info("Google Drive API service initialized successfully (Thread-Safe Mode).")
-        return service
-    except Exception as e:
-        logging.error(f"Failed to initialize Google Drive service: {e}", exc_info=True)
-        raise ConnectionError(f"Could not connect to Google Drive API: {e}")
+    """Return a Drive service authenticated with user-refresh token."""
+    if not (GDRIVE_CLIENT_ID and GDRIVE_CLIENT_SECRET and GDRIVE_REFRESH_TOKEN):
+        raise ValueError("OAuth env vars missing (CLIENT_ID/SECRET/REFRESH_TOKEN).")
 
-logging.info("Google Drive API module (google_drive_api.py) loaded.")
+    creds = Credentials(
+        token=None,
+        refresh_token=GDRIVE_REFRESH_TOKEN,
+        client_id=GDRIVE_CLIENT_ID,
+        client_secret=GDRIVE_CLIENT_SECRET,
+        token_uri="https://oauth2.googleapis.com/token",
+        scopes=SCOPES,
+    )
+
+    http = httplib2.Http(timeout=600)
+    http.follow_redirects = False
+    authed_http = AuthorizedHttp(creds, http=http)
+    service = build("drive", "v3", http=authed_http, cache_discovery=False)
+    return service
+
+
+logging.info("Google Drive API module loaded – OAuth user mode.")

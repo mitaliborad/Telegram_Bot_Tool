@@ -5,6 +5,7 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 from flask_admin import Admin
 from flask_login import LoginManager # Keep this import
+from flask import Flask, jsonify, send_from_directory
 
 # Import your admin views
 from routes.admin.user_admin_views import UserView

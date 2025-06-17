@@ -25,14 +25,9 @@ from typing import Dict, Any, Tuple, Optional, List, Generator
 # file_bp = Blueprint('file', __name__, template_folder='../templates/file')
 file_bp = Blueprint('file_api', __name__)
 
-# @file_bp.route('/files/<username>', methods=['GET', 'OPTIONS'])
-# @jwt_required()
-@file_bp.route('/files/<username>', methods=['GET']) # FIX: Removed explicit OPTIONS handling
+@file_bp.route('/files/<username>', methods=['GET']) 
 @jwt_required()
 def list_user_files(username: str) -> Response:
-    # if request.method == 'OPTIONS':
-    #     return make_response(), 204 # CORS preflight
-
     log_prefix = f"[ListFiles-{username}]"
     current_user_jwt_identity = get_jwt_identity()
     user_doc, error = find_user_by_id(ObjectId(current_user_jwt_identity))
@@ -191,27 +186,21 @@ def delete_batch_record(access_id: str) -> Response:
 
 @file_bp.route('/api/file-details/<access_id>', methods=['GET'])
 def api_get_single_file_details(access_id: str):
-    # This route is fine if it's intended strictly for records where is_batch is false.
-    # However, the frontend currently seems to use /api/batch-details for both.
     file_info, error_msg = find_metadata_by_access_id(access_id)
     if error_msg: return jsonify({"error": "Server error."}), 500
     if not file_info: return jsonify({"error": f"File ID '{access_id}' not found."}), 404
-    
-    # If this endpoint should ONLY serve non-batch items:
+
     if file_info.get('is_batch'): 
         return jsonify({"error": "This ID is for a batch. Use /api/batch-details."}), 400
     
     response_data = {
         "access_id": access_id,
-        # Prefer original_filename from files_in_batch if it exists, even for single "non-batch" records
-        # as per the structure created by upload_routes
         "filename_to_preview": file_info.get("files_in_batch", [{}])[0].get("original_filename") or \
                                file_info.get('original_filename', 'Unknown'),
         "original_size": file_info.get("files_in_batch", [{}])[0].get("original_size") or \
                          file_info.get('original_size', 0),
         "upload_timestamp": file_info.get('upload_timestamp'),
         "username": file_info.get('username', 'N/A'),
-        # is_compressed and is_split would typically be on the file_info_in_batch level
         "is_compressed": file_info.get("files_in_batch", [{}])[0].get('is_compressed', False),
         "is_split": file_info.get("files_in_batch", [{}])[0].get('is_split', False),
     }
@@ -228,44 +217,27 @@ def api_get_batch_details(access_id: str):
         logging.warning(f"{log_prefix} Record not found.")
         return jsonify({"error": f"Record ID '{access_id}' not found."}), 404
 
-    # --- MODIFICATION ---
-    # Allow this endpoint to serve details even if 'is_batch' is False,
-    # as long as 'files_in_batch' exists and has items.
-    # The frontend component (batch-file-browser) can display a "batch" of one file.
     files_in_record = batch_info.get('files_in_batch', [])
-    
-    # if not batch_info.get('is_batch') and not files_in_record: # Old check
-    # This check means if it's NOT a batch AND it has no files, then it's an issue.
-    # Or, if it IS a batch, but has no files, it's also an issue.
-    # A single file upload will have is_batch: false, but files_in_batch: [{...}]
-    # A true batch will have is_batch: true, and files_in_batch: [{...}, {...}]
-    
-    # Let's simplify: if there are no files in `files_in_batch`, it's problematic for this endpoint.
     if not files_in_record:
         logging.warning(f"{log_prefix} Record '{access_id}' has no files in 'files_in_batch'. is_batch flag: {batch_info.get('is_batch')}")
         return jsonify({"error": "Record contains no file information."}), 400
-    # The `is_batch` flag in the response will tell the frontend if it was *intended* as a batch.
-    # --- END MODIFICATION ---
 
     response_data = {
         "batch_name": batch_info.get('batch_display_name', f"Files for {access_id}"),
         "username": batch_info.get('username', 'N/A'),
         "upload_date": batch_info.get('upload_timestamp'),
         "total_size": batch_info.get('total_original_size', 0),
-        "files": files_in_record, # Use the files_in_record obtained above
+        "files": files_in_record, 
         "access_id": access_id,
         "is_anonymous": batch_info.get('is_anonymous', False),
         "upload_timestamp_raw": batch_info.get('upload_timestamp'),
-        "is_batch": batch_info.get('is_batch', False) # Explicitly pass the original is_batch flag
+        "is_batch": batch_info.get('is_batch', False) 
     }
     
-    # Process files to ensure default values (this part is good)
     processed_files = []
     for f_item in response_data["files"]:
         processed_f_item = f_item.copy()
-        # Ensure 'original_filename' exists or provide a sensible default.
         processed_f_item.setdefault('original_filename', "Unknown File")
-        # 'filename_to_preview' might be redundant if 'original_filename' is always primary
         processed_f_item.setdefault('filename_to_preview', processed_f_item['original_filename'])
         processed_f_item.setdefault('original_size', 0)
         processed_f_item.setdefault('skipped', False)
@@ -277,13 +249,8 @@ def api_get_batch_details(access_id: str):
     logging.info(f"{log_prefix} Successfully retrieved batch details for access_id: {access_id}")
     return jsonify(response_data)
 
-@file_bp.route('/preview-details/<access_id>', methods=['GET'])
+@file_bp.route('/preview-details/<access_id>', methods=['GET', 'OPTIONS'])
 def get_preview_details(access_id: str):
-    # ... (This function was already quite robust for handling single vs batch-of-one)
-    # The key is that `filename_to_preview_query` MUST be provided if the `access_id`
-    # points to a record that is a true multi-file batch.
-    # If `access_id` points to a single file record (is_batch=false, files_in_batch[0]),
-    # then `filename_to_preview_query` should match `files_in_batch[0].original_filename`.
     log_prefix = f"[PreviewDetails-{access_id}]"
     filename_to_preview_query = request.args.get('filename')
     if filename_to_preview_query:
@@ -292,26 +259,24 @@ def get_preview_details(access_id: str):
 
     top_level_record, error_msg_db = find_metadata_by_access_id(access_id)
 
-    if error_msg_db: # ... (error handling)
+    if error_msg_db: 
         logging.error(f"{log_prefix} Database error: {error_msg_db}")
         return jsonify({"error": "Server error while fetching file information."}), 500
-    if not top_level_record: # ... (error handling)
+    if not top_level_record:
         logging.warning(f"{log_prefix} File or batch not found (access_id: {access_id}).")
         return jsonify({"error": "File or batch not found."}), 404
 
     target_file_info: Optional[Dict[str, Any]] = None
-    effective_filename_for_preview: Optional[str] = None # This will be the filename whose MIME is checked
+    effective_filename_for_preview: Optional[str] = None
 
     files_in_record_arr = top_level_record.get('files_in_batch', [])
 
-    if not files_in_record_arr: # Should not happen if upload logic is correct
+    if not files_in_record_arr: 
         logging.error(f"{log_prefix} Record {access_id} has no 'files_in_batch' array or it's empty.")
         return jsonify({"error": "Record contains no file information."}), 400
 
-    if top_level_record.get('is_batch', False): # Intended as a batch
+    if top_level_record.get('is_batch', False): 
         if not filename_to_preview_query:
-            # If it's a batch AND no specific file is requested for preview, this is an issue.
-            # The batch-view should list files, and clicking one provides filename_to_preview_query.
             logging.warning(f"{log_prefix} Accessing preview for a batch record without specifying a file.")
             return jsonify({"error": "Please select a file from the batch to preview."}), 400
         
@@ -320,16 +285,15 @@ def get_preview_details(access_id: str):
             logging.warning(f"{log_prefix} File '{filename_to_preview_query}' not found in batch {access_id}.")
             return jsonify({"error": f"File '{filename_to_preview_query}' not found in batch."}), 404
         effective_filename_for_preview = filename_to_preview_query
-    else: # Not a batch (is_batch is False). Should contain one file in files_in_batch.
+    else: 
         if len(files_in_record_arr) != 1:
             logging.error(f"{log_prefix} Record {access_id} marked as non-batch but files_in_batch count is not 1.")
             return jsonify({"error": "Inconsistent single file record."}), 500
         target_file_info = files_in_record_arr[0]
         effective_filename_for_preview = target_file_info.get('original_filename')
-        # If filename_to_preview_query is provided for a non-batch, it should match
         if filename_to_preview_query and filename_to_preview_query != effective_filename_for_preview:
             logging.warning(f"{log_prefix} Query filename '{filename_to_preview_query}' does not match single file record's filename '{effective_filename_for_preview}'.")
-            # You might choose to error here or just use the record's filename. Let's use record's.
+
 
     if not target_file_info or not effective_filename_for_preview:
         logging.error(f"{log_prefix} Could not determine target file info or effective filename for preview.")
@@ -338,13 +302,13 @@ def get_preview_details(access_id: str):
     mime_type = target_file_info.get('mime_type')
     if not mime_type:
         mime_type, _ = mimetypes.guess_type(effective_filename_for_preview)
-        mime_type = mime_type or 'application/octet-stream' # Fallback
+        mime_type = mime_type or 'application/octet-stream' 
         logging.info(f"{log_prefix} Guessed MIME type for '{effective_filename_for_preview}': {mime_type}")
 
     preview_type_str = get_preview_type(mime_type, effective_filename_for_preview)
     response_data = {
         "access_id": access_id,
-        "filename": effective_filename_for_preview, # The actual name of the file being previewed
+        "filename": effective_filename_for_preview, 
         "size": target_file_info.get('original_size', 0),
         "mime_type": mime_type,
         "preview_type": preview_type_str,
@@ -354,14 +318,12 @@ def get_preview_details(access_id: str):
         "preview_data": None,
     }
 
-    # Expiration Check ... (remains the same)
     if response_data["is_anonymous"] and response_data["upload_timestamp"]:
         logging.info(f"{log_prefix} Anonymous upload. Checking expiration. Timestamp: '{response_data['upload_timestamp']}'")
         try:
             upload_datetime = dateutil_parser.isoparse(response_data["upload_timestamp"])
             if upload_datetime.tzinfo is None or upload_datetime.tzinfo.utcoffset(upload_datetime) is None:
                 upload_datetime = upload_datetime.replace(tzinfo=timezone.utc)
-            # Ensure ANONYMOUS_LINK_EXPIRATION_DAYS is defined in your Flask app.config
             expiration_days = app.config.get('ANONYMOUS_LINK_EXPIRATION_DAYS', 5)
             expiration_limit = timedelta(days=expiration_days) 
             if datetime.now(timezone.utc) > (upload_datetime + expiration_limit):
@@ -370,10 +332,10 @@ def get_preview_details(access_id: str):
                 return jsonify(response_data), 410
             else:
                 logging.info(f"{log_prefix} Anonymous download link still valid.")
-        except ValueError as e_parse: # ... (error handling)
+        except ValueError as e_parse:
             logging.error(f"{log_prefix} Error parsing upload_timestamp '{response_data['upload_timestamp']}': {e_parse}", exc_info=True)
             return jsonify({"error": "Error processing file metadata (invalid timestamp format)."}), 500
-        except Exception as e_exp: # ... (error handling)
+        except Exception as e_exp: 
             logging.error(f"{log_prefix} Unexpected error during expiration check: {e_exp}", exc_info=True)
             return jsonify({"error": "Server error during file validation."}), 500
 
@@ -381,7 +343,7 @@ def get_preview_details(access_id: str):
         response_data['preview_content_url'] = url_for(
             'file_api.serve_raw_file_content', 
             access_id=access_id, 
-            filename=effective_filename_for_preview, # Pass the specific filename
+            filename=effective_filename_for_preview, 
             _external=False
         )
         logging.info(f"{log_prefix} Preview content URL set to: {response_data['preview_content_url']}")
@@ -397,45 +359,38 @@ def _get_final_file_content_for_preview(access_id: str, top_level_record: Dict[s
 
     logging.info(f"{log_prefix_helper} Attempting to get final content.")
     actual_file_to_process_meta: Optional[Dict[str, Any]] = None
-    effective_filename_for_processing: Optional[str] = None # This is the name of the file whose content we'll get
-
+    effective_filename_for_processing: Optional[str] = None
     files_in_record_arr = top_level_record.get('files_in_batch', [])
     if not files_in_record_arr:
         return None, "Record contains no file information for content retrieval.", None
 
     if top_level_record.get('is_batch', False):
         if not specific_filename_from_query:
-            if len(files_in_record_arr) == 1: # Batch of one, no specific filename needed
+            if len(files_in_record_arr) == 1: 
                 actual_file_to_process_meta = files_in_record_arr[0]
                 effective_filename_for_processing = actual_file_to_process_meta.get('original_filename')
             else:
                 return None, "Multi-file batch: specific filename required to get content.", None
-        else: # Specific filename provided for a batch
+        else: 
             actual_file_to_process_meta = next((f for f in files_in_record_arr if f.get('original_filename') == specific_filename_from_query), None)
             if not actual_file_to_process_meta:
                 return None, f"File '{specific_filename_from_query}' not found in batch.", None
             effective_filename_for_processing = specific_filename_from_query
-    else: # Single file record (is_batch is False)
-        actual_file_to_process_meta = files_in_record_arr[0] # Should be the only one
+    else: 
+        actual_file_to_process_meta = files_in_record_arr[0] 
         effective_filename_for_processing = actual_file_to_process_meta.get('original_filename')
         if specific_filename_from_query and specific_filename_from_query != effective_filename_for_processing:
             logging.warning(f"{log_prefix_helper} Query filename '{specific_filename_from_query}' for non-batch record differs from actual filename '{effective_filename_for_processing}'. Using actual.")
-            # No error, just use the one from the record.
-
     if not actual_file_to_process_meta or not effective_filename_for_processing:
         return None, "Could not determine target file metadata or filename for content.", None
     
     logging.info(f"{log_prefix_helper} Determined target file for content: '{effective_filename_for_processing}'")
-
-    # ... (rest of _get_final_file_content_for_preview logic for fetching from TG, reassembling, decompressing)
-    # Make sure it uses `actual_file_to_process_meta` and `effective_filename_for_processing` correctly.
-    # For example:
-    is_split = actual_file_to_process_meta.get('is_split', False) # Use is_split from actual_file_to_process_meta
+    is_split = actual_file_to_process_meta.get('is_split', False) 
     raw_downloaded_content: Optional[bytes] = None
 
     if is_split:
         logging.info(f"{log_prefix_helper} File '{effective_filename_for_processing}' is split. Reassembling...")
-        chunks_meta = actual_file_to_process_meta.get('chunks') # or telegram_chunks
+        chunks_meta = actual_file_to_process_meta.get('chunks') 
         if not chunks_meta:
             return None, "Split file metadata missing chunk information.", effective_filename_for_processing
         
@@ -454,7 +409,7 @@ def _get_final_file_content_for_preview(access_id: str, top_level_record: Dict[s
         
         raw_downloaded_content = reassembled_buffer.getvalue()
         reassembled_buffer.close()
-    else: # Not split
+    else: 
         send_locations = actual_file_to_process_meta.get('send_locations') or actual_file_to_process_meta.get('telegram_send_locations')
         tg_file_id, _ = _find_best_telegram_file_id(send_locations, PRIMARY_TELEGRAM_CHAT_ID)
         if not tg_file_id:
@@ -462,8 +417,6 @@ def _get_final_file_content_for_preview(access_id: str, top_level_record: Dict[s
         raw_downloaded_content, err_download = download_telegram_file_content(tg_file_id)
         if err_download or not raw_downloaded_content:
             return None, f"Error downloading/empty content for non-split file: {err_download}", effective_filename_for_processing
-
-    # Decompression logic based on 'is_compressed' and actual filename for MIME
     final_content_to_serve: bytes = raw_downloaded_content
     filename_for_mime_type_final: str = effective_filename_for_processing
 
@@ -472,7 +425,6 @@ def _get_final_file_content_for_preview(access_id: str, top_level_record: Dict[s
         logging.info(f"{log_prefix_helper} Decompressing '{effective_filename_for_processing}' (was compressed by uploader).")
         try:
             with zipfile.ZipFile(io.BytesIO(raw_downloaded_content), 'r') as zf:
-                # Assuming the original filename is the name of the single file inside the zip
                 entry_name_to_extract = _find_filename_in_zip(zf, effective_filename_for_processing, log_prefix_helper)
                 final_content_to_serve = zf.read(entry_name_to_extract)
         except Exception as e_zip:
@@ -482,9 +434,8 @@ def _get_final_file_content_for_preview(access_id: str, top_level_record: Dict[s
 
 @file_bp.route('/file-content/<access_id>', methods=['GET'])
 def serve_raw_file_content(access_id: str):
-    # ... (largely as before, but ensure filename_from_query is passed to _get_final_file_content_for_preview)
     log_prefix = f"[ServeRawContent-{access_id}]"
-    filename_from_query = request.args.get('filename') # Crucial for batch items
+    filename_from_query = request.args.get('filename') 
     if filename_from_query:
         log_prefix += f"-File-{filename_from_query[:20]}"
     logging.info(f"{log_prefix} Request received to serve raw content.")
@@ -492,8 +443,6 @@ def serve_raw_file_content(access_id: str):
     top_level_record, error_msg_db = find_metadata_by_access_id(access_id)
     if error_msg_db or not top_level_record:
         return make_response(f"Error fetching record: {error_msg_db or 'Not found'}", 500 if error_msg_db else 404)
-
-    # Expiration check... (remains the same)
     if top_level_record.get("is_anonymous") and top_level_record.get("upload_timestamp"):
         logging.info(f"{log_prefix} Anonymous upload. Checking expiration. Timestamp: '{top_level_record['upload_timestamp']}'")
         try:
@@ -513,7 +462,7 @@ def serve_raw_file_content(access_id: str):
     content_bytes, error_msg_content, filename_for_mime = _get_final_file_content_for_preview(
         access_id, 
         top_level_record, 
-        filename_from_query # Pass the specific filename from query
+        filename_from_query 
     )
 
     if error_msg_content:
@@ -525,8 +474,6 @@ def serve_raw_file_content(access_id: str):
     if not filename_for_mime:
         filename_for_mime = filename_from_query or "unknown.dat"
         logging.warning(f"{log_prefix} Filename for MIME type determination is missing, using fallback: {filename_for_mime}")
-
-
     final_mime_type, _ = mimetypes.guess_type(filename_for_mime)
     final_mime_type = final_mime_type or 'application/octet-stream'
     

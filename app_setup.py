@@ -22,34 +22,15 @@ from database import find_user_by_id_str, User
 load_dotenv()
 
 # --- App and Mail are imported from config.py ---
-# This means Flask app instance is created in config.py
 from config import app, mail, format_bytes, format_time, LOG_DIR
-
 logging.info("app_setup.py: Started application setup.")
 
-# --- Ensure correct template folder for the app instance ---
-# Flask's default template_folder is 'templates' in the application root.
-# If your app_setup.py is at the root and 'templates' folder is also at the root,
-# this should be implicitly correct.
-# However, to be absolutely sure, especially since 'app' is imported:
-# import os
-# app_root_path = os.path.dirname(os.path.abspath(__file__)) # Gets directory of app_setup.py
-# expected_template_folder = os.path.join(app_root_path, 'templates')
-
-# if app.template_folder != expected_template_folder:
-#     logging.warning(f"App's current template folder '{app.template_folder}' "
-#                     f"differs from expected '{expected_template_folder}'. Attempting to set.")
-#     # Note: Modifying app.template_folder after instantiation might have limitations
-#     # or might not be the most robust way. It's best set during Flask() instantiation.
-#     # However, if 'app' is created in 'config.py', this is an attempt to align it.
-#     app.template_folder = 'templates' # Set it relative to app.root_path
-#     # Or, if you want to be very explicit with an absolute path:
-#     # app.template_folder = expected_template_folder
-#     logging.info(f"DEBUG: app.template_folder set to: {app.template_folder}")
-#     logging.info(f"DEBUG: app.root_path is: {app.root_path}")
-# else:
-#     logging.info(f"DEBUG: app.template_folder ('{app.template_folder}') matches expected. app.root_path is: '{app.root_path}'")
-
+@app.route('/health')
+def health_check():
+    """
+    A simple health check endpoint that the pinger service will hit.
+    """
+    return jsonify(status="ok"), 200
 
 # --- Flask-Login Setup ---
 # Initialize LoginManager here as it's specific to this app setup
@@ -82,8 +63,6 @@ logging.info("Flask-Login initialized and user_loader configured.")
 
 
 # --- Flask-Admin Setup ---
-# Ensure 'admin.index' or a similar valid endpoint is used if MyAdminIndexView needs it internally
-# For Flask-Admin itself, the index_view's `url` and `endpoint` are primary.
 admin_dashboard_view = MyAdminIndexView(name="Dashboard", endpoint='admin', url='/admin') # Flask-Admin's main endpoint is 'admin' by default for its index.
 admin = Admin(app, name='Storage Admin', template_mode='bootstrap4', url='/admin', index_view=admin_dashboard_view)
 logging.info("Flask-Admin initialized with custom dashboard. Accessible at /admin")
@@ -114,14 +93,11 @@ CORS(app, origins=allowed_origins_config, supports_credentials=True, methods=["G
 logging.info(f"Flask-CORS initialized. Allowing origins: {allowed_origins_config}")
 
 # --- Other Extensions Initialization ---
-# Assuming jwt is an initialized instance from extensions.py
-# If extensions.py contains 'jwt = JWTManager()', then 'jwt.init_app(app)' is correct here.
 from extensions import jwt
 jwt.init_app(app)
 logging.info("Flask-JWT-Extended initialized.")
 
 # --- Import and Register Blueprints ---
-# Your existing blueprints
 from routes.password_reset_routes import password_reset_bp
 from routes.auth_routes import auth_bp
 from routes.upload_routes import upload_bp

@@ -25,9 +25,11 @@ from typing import Dict, Any, Tuple, Optional, List, Generator
 # file_bp = Blueprint('file', __name__, template_folder='../templates/file')
 file_bp = Blueprint('file_api', __name__)
 
-@file_bp.route('/files/<username>', methods=['GET']) 
+@file_bp.route('/files/<username>', methods=['GET', 'OPTIONS'])
 @jwt_required()
 def list_user_files(username: str) -> Response:
+    if request.method == 'OPTIONS':
+        return make_response(), 200
     log_prefix = f"[ListFiles-{username}]"
     current_user_jwt_identity = get_jwt_identity()
     user_doc, error = find_user_by_id(ObjectId(current_user_jwt_identity))
@@ -64,9 +66,11 @@ def list_user_files_page(username: str):
 
     return render_template('file/browse_files.html', username=username, files=user_files_data or [])
 
-@file_bp.route('/delete-file/<username>/<path:access_id_from_path>', methods=['DELETE'])
+@file_bp.route('/delete-file/<username>/<path:access_id_from_path>', methods=['DELETE', 'OPTIONS'])
 @jwt_required()
 def delete_file_record(username: str, access_id_from_path: str) -> Response:
+    if request.method == 'OPTIONS':
+        return make_response(), 200
     log_prefix = f"[ArchiveFile-{access_id_from_path}]"
     try:
         current_user_jwt_identity = get_jwt_identity()

@@ -10,7 +10,7 @@ import os
 import io
 import logging
 import mimetypes
-from typing import Optional, Tuple, Generator, Dict, Any
+from typing import Optional, Tuple, Generator, Dict, Any, Union
 
 from dotenv import load_dotenv
 from google.oauth2.credentials import Credentials

@@ -26,13 +26,6 @@ load_dotenv()
 from config import app, mail, format_bytes, format_time, LOG_DIR
 logging.info("app_setup.py: Started application setup.")
 
-@app.route('/health', methods=['GET', 'HEAD']) # <-- ADD THIS PART
-def health_check():
-    """
-    A simple health check endpoint that the pinger service will hit.
-    """
-    return jsonify(status="ok"), 200
-
 # --- Flask-Login Setup ---
 # Initialize LoginManager here as it's specific to this app setup
 login_manager = LoginManager()

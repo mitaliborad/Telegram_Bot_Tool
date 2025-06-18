@@ -83,7 +83,14 @@ if env_frontend_url_setting:
         allowed_origins_config = [url.strip() for url in env_frontend_url_setting.split(',') if url.strip()]
 else:
     logging.warning("FRONTEND_URL environment variable not set. Defaulting CORS to allow all origins ('*').")
-CORS(app, origins=allowed_origins_config, supports_credentials=True, methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
+CORS(
+    app,
+    origins=allowed_origins_config,
+    supports_credentials=True,
+    methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization", "X-Requested-With"],
+    expose_headers=["Content-Disposition"]
+)
 logging.info(f"Flask-CORS initialized. Allowing origins: {allowed_origins_config}")
 
 # --- Other Extensions Initialization ---

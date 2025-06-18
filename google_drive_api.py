@@ -47,6 +47,9 @@ except ImportError:
 # Public helpers – upload / download / delete
 # ---------------------------------------------------------------------------
 
+
+
+
 def upload_to_gdrive_with_progress(
     source: Union[str, io.BytesIO],
     filename_in_gdrive: str,
@@ -205,3 +208,27 @@ def _get_drive_service():
 
 
 logging.info("Google Drive API module loaded – OAuth user mode.")
+
+
+# ADD THIS NEW FUNCTION
+def download_from_gdrive_to_file(gid: str, destination_path: str) -> Tuple[bool, Optional[str]]:
+    """Downloads a file by ID from Drive directly to a file path."""
+    try:
+        service = _get_drive_service()
+        request = service.files().get_media(fileId=gid)
+        
+        with open(destination_path, "wb") as fh:
+            downloader = MediaIoBaseDownload(fh, request)
+            done = False
+            while not done:
+                status, done = downloader.next_chunk()
+                if status:
+                    logging.info(f"Download to file {gid}: {int(status.progress() * 100)}%")
+        
+        return True, None
+    except HttpError as e:
+        if e.resp.status == 404:
+            return False, f"File ID {gid} not found."
+        return False, f"Drive HTTP error {e.resp.status}: {e._get_reason()}"
+    except Exception as e:
+        return False, f"Unexpected error downloading {gid} to file: {str(e)}"

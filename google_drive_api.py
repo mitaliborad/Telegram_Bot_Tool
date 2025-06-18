@@ -48,7 +48,7 @@ except ImportError:
 # ---------------------------------------------------------------------------
 
 def upload_to_gdrive_with_progress(
-    source: Union[str, io.BytesIO]
+    source: Union[str, io.BytesIO],
     filename_in_gdrive: str,
     operation_id_for_log: str,
 ) -> Generator[Dict[str, Any], None, Tuple[Optional[str], Optional[str]]]:

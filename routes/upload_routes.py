@@ -246,6 +246,93 @@ def initiate_batch_upload():
 #     upload_progress_data[batch_id] = {"type": "status", "message": f"Completed: {filename}"}
 #     return jsonify({"message": f"File '{filename}' streamed successfully."}), 200
 
+# @upload_bp.route('/stream', methods=['POST', 'OPTIONS'])
+# @jwt_required(optional=True)
+# def stream_file_to_batch():
+#     if request.method == 'OPTIONS':
+#         return make_response(("OK", 200))
+    
+#     batch_id = request.args.get('batch_id')
+#     if not batch_id:
+#         return jsonify({"error": "Request is missing the 'batch_id' query parameter."}), 400
+
+#     log_prefix = f"[StreamForBatch-{batch_id}]"
+    
+#     filename = secure_filename(request.args.get('filename', ''))
+#     file_size = int(request.headers.get('Content-Length', 0))
+#     if not filename:
+#         return jsonify({"error": "Filename parameter missing."}), 400
+
+#     # --- START OF THE FIX ---
+#     # Instead of reading into memory, we create a temporary file on disk.
+#     temp_file_for_gdrive = None
+#     gdrive_file_id = None
+    
+#     try:
+#         # Create a temporary file to write the stream to.
+#         # UPLOADS_TEMP_DIR must exist.
+#         with tempfile.NamedTemporaryFile(delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"gdrive_up_{batch_id}_") as tf:
+#             temp_file_for_gdrive = tf.name
+#             # Read the request stream in chunks and write to the temp file
+#             shutil.copyfileobj(request.stream, tf)
+        
+#         logging.info(f"{log_prefix} Finished streaming upload to temporary file: {temp_file_for_gdrive}")
+
+#         # Now, use the temporary file path as the source for the GDrive upload.
+#         # The google_drive_api function already knows how to handle a file path.
+#         upload_generator = upload_to_gdrive_with_progress(
+#             source=temp_file_for_gdrive, 
+#             filename_in_gdrive=filename, 
+#             operation_id_for_log=batch_id
+#         )
+        
+#         # This part of the logic remains the same.
+#         while True:
+#             try:
+#                 progress_event = next(upload_generator)
+#                 progress_event['filename'] = filename
+#                 upload_progress_data[batch_id] = progress_event
+#             except StopIteration as e:
+#                 gdrive_file_id, upload_error = e.value
+#                 logging.info(f"{log_prefix} GDrive upload finished for '{filename}'. GDrive ID: {gdrive_file_id}, Error: {upload_error}")
+#                 break
+
+#         if upload_error: 
+#             raise Exception(upload_error)
+#         if not gdrive_file_id: 
+#             raise Exception("GDrive upload complete but no file ID was returned.")
+    
+#         file_details = {
+#             "original_filename": filename, 
+#             "gdrive_file_id": gdrive_file_id, 
+#             "original_size": file_size, 
+#             "mime_type": mimetypes.guess_type(filename)[0] or 'application/octet-stream', 
+#             "telegram_send_status": "pending"
+#         }
+#         coll, db_error = get_metadata_collection()
+#         if db_error: raise Exception(db_error)
+        
+#         result = coll.update_one({"access_id": batch_id}, {"$push": {"files_in_batch": file_details}})
+#         if result.matched_count == 0:
+#             delete_from_gdrive(gdrive_file_id) # Clean up the orphaned GDrive file
+#             raise Exception(f"Batch ID '{batch_id}' not found in database.")
+            
+#     except Exception as e:
+#         if gdrive_file_id: 
+#             delete_from_gdrive(gdrive_file_id)
+#         logging.error(f"{log_prefix} Streaming to disk/GDrive failed for file '{filename}': {e}", exc_info=True)
+#         upload_progress_data[batch_id] = {"type": "error", "message": str(e)}
+#         return jsonify({"error": f"Failed to upload '{filename}': {str(e)}"}), 500
+#     finally:
+#         # --- IMPORTANT CLEANUP ---
+#         # Always delete the temporary file from the server's disk.
+#         if temp_file_for_gdrive:
+#             _safe_remove_file(temp_file_for_gdrive, log_prefix, "temp gdrive upload file")
+#     # --- END OF THE FIX ---
+
+#     upload_progress_data[batch_id] = {"type": "status", "message": f"Completed: {filename}"}
+#     return jsonify({"message": f"File '{filename}' streamed successfully."}), 200
+
 @upload_bp.route('/stream', methods=['POST', 'OPTIONS'])
 @jwt_required(optional=True)
 def stream_file_to_batch():
@@ -262,46 +349,45 @@ def stream_file_to_batch():
     file_size = int(request.headers.get('Content-Length', 0))
     if not filename:
         return jsonify({"error": "Filename parameter missing."}), 400
-
-    # --- START OF THE FIX ---
-    # Instead of reading into memory, we create a temporary file on disk.
-    temp_file_for_gdrive = None
-    gdrive_file_id = None
     
-    try:
-        # Create a temporary file to write the stream to.
-        # UPLOADS_TEMP_DIR must exist.
-        with tempfile.NamedTemporaryFile(delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"gdrive_up_{batch_id}_") as tf:
-            temp_file_for_gdrive = tf.name
-            # Read the request stream in chunks and write to the temp file
-            shutil.copyfileobj(request.stream, tf)
-        
-        logging.info(f"{log_prefix} Finished streaming upload to temporary file: {temp_file_for_gdrive}")
+    in_memory_stream = io.BytesIO(request.stream.read())
+    gdrive_file_id, upload_error = None, None
 
-        # Now, use the temporary file path as the source for the GDrive upload.
-        # The google_drive_api function already knows how to handle a file path.
+    try:
+        # 1. Create the generator instance. This doesn't start the upload yet.
         upload_generator = upload_to_gdrive_with_progress(
-            source=temp_file_for_gdrive, 
+            source=in_memory_stream, 
             filename_in_gdrive=filename, 
             operation_id_for_log=batch_id
         )
         
-        # This part of the logic remains the same.
+        # 2. Use a while loop to consume the generator. This is the only way to
+        #    get both the yielded progress values AND the final return value.
         while True:
             try:
+                # Get the next yielded item (a progress dictionary). This drives the upload.
                 progress_event = next(upload_generator)
+                
+                # Add filename so the UI knows which file is currently uploading
                 progress_event['filename'] = filename
+                
+                # Publish the progress event to the shared dictionary for the SSE stream
                 upload_progress_data[batch_id] = progress_event
+
             except StopIteration as e:
+                # This 'except' block is triggered when the generator finishes.
+                # The 'return' value from the generator is stored in the exception's 'value' attribute.
                 gdrive_file_id, upload_error = e.value
                 logging.info(f"{log_prefix} GDrive upload finished for '{filename}'. GDrive ID: {gdrive_file_id}, Error: {upload_error}")
-                break
+                break # Exit the while loop
 
+        # 3. After the loop, check the results.
         if upload_error: 
             raise Exception(upload_error)
         if not gdrive_file_id: 
             raise Exception("GDrive upload complete but no file ID was returned.")
     
+        # 4. Save metadata to the database.
         file_details = {
             "original_filename": filename, 
             "gdrive_file_id": gdrive_file_id, 
@@ -319,19 +405,16 @@ def stream_file_to_batch():
             
     except Exception as e:
         if gdrive_file_id: 
-            delete_from_gdrive(gdrive_file_id)
-        logging.error(f"{log_prefix} Streaming to disk/GDrive failed for file '{filename}': {e}", exc_info=True)
+            delete_from_gdrive(gdrive_file_id) # Clean up GDrive file if DB save fails
+        logging.error(f"{log_prefix} Streaming to GDrive failed for file '{filename}': {e}", exc_info=True)
+        # Report the error back via the SSE stream for the frontend
         upload_progress_data[batch_id] = {"type": "error", "message": str(e)}
         return jsonify({"error": f"Failed to upload '{filename}': {str(e)}"}), 500
-    finally:
-        # --- IMPORTANT CLEANUP ---
-        # Always delete the temporary file from the server's disk.
-        if temp_file_for_gdrive:
-            _safe_remove_file(temp_file_for_gdrive, log_prefix, "temp gdrive upload file")
-    # --- END OF THE FIX ---
 
+    # Report completion of this specific file to the SSE stream
     upload_progress_data[batch_id] = {"type": "status", "message": f"Completed: {filename}"}
     return jsonify({"message": f"File '{filename}' streamed successfully."}), 200
+
 
 # ==============================================================================
 # --- The rest of the file is unchanged ---

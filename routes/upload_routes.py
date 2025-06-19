@@ -1,3 +1,6 @@
+
+
+
 import logging
 import mimetypes
 import os
@@ -169,15 +172,17 @@ def stream_file_to_batch():
     gdrive_file_id = None
     
     try:
-        # Save to disk to avoid memory errors with large files
+        # Save to disk to create a seekable file source for Google Drive's resumable upload.
+        # This is where 'No space left on device' can occur, which is an environmental limit.
         with tempfile.NamedTemporaryFile(delete=False, dir=UPLOADS_TEMP_DIR, prefix=f"gdrive_up_{batch_id}_") as tf:
             temp_file_for_gdrive = tf.name
             shutil.copyfileobj(request.stream, tf)
         
         file_size = os.path.getsize(temp_file_for_gdrive)
-        logging.info(f"{log_prefix} File '{filename}' saved to temp path. Starting GDrive upload.")
+        logging.info(f"{log_prefix} File '{filename}' saved to temp path '{temp_file_for_gdrive}'. Starting GDrive upload.")
 
-        # This is now a blocking, synchronous operation as per your requirement.
+        # This is now a blocking, synchronous operation.
+        # We pass the file path, which is a seekable source.
         upload_generator = upload_to_gdrive_with_progress(
             source=temp_file_for_gdrive, 
             filename_in_gdrive=filename, 
@@ -213,10 +218,11 @@ def stream_file_to_batch():
             
     except Exception as e:
         if gdrive_file_id: delete_from_gdrive(gdrive_file_id)
-        logging.error(f"{log_prefix} Synchronous GDrive upload failed for '{filename}': {e}", exc_info=True)
+        logging.error(f"{log_prefix} GDrive upload process failed for '{filename}': {e}", exc_info=True)
         upload_progress_data[batch_id] = {"type": "error", "message": str(e)}
         return jsonify({"error": f"Failed to upload '{filename}': {str(e)}"}), 500
     finally:
+        # Crucially, clean up the temp file from the disk.
         _safe_remove_file(temp_file_for_gdrive, log_prefix, "temp gdrive upload file")
 
     upload_progress_data[batch_id] = {"type": "status", "message": f"Completed: {filename}"}
@@ -246,113 +252,6 @@ def finalize_batch_upload(batch_id: str):
         "message": "Batch finalized and transfer to secure storage has begun.",
         "access_id": batch_id, "download_url": download_url
     }), 202
-
-# def run_gdrive_to_telegram_transfer(access_id: str):
-#     """Background task to download files from GDrive and upload them to Telegram."""
-#     log_prefix = f"[BG-TG-{access_id}]"
-#     logging.info(f"{log_prefix} Background GDrive-to-Telegram process started.")
-    
-#     db_record, db_error = find_metadata_by_access_id(access_id)
-#     if db_error or not db_record:
-#         logging.error(f"{log_prefix} Failed to fetch DB record: {db_error or 'Not found'}")
-#         return
-
-#     try:
-#         if db_record.get("status_overall") != "gdrive_complete_pending_telegram":
-#             return
-
-#         db_record["status_overall"] = "telegram_processing_background"
-#         save_file_metadata(db_record)
-
-#         files_to_process = db_record.get("files_in_batch", [])
-#         processed_files_for_db = []
-#         batch_tg_success = True
-        
-#         with ThreadPoolExecutor(max_workers=MAX_UPLOAD_WORKERS, thread_name_prefix=f'TgSend_{access_id[:4]}') as tg_send_executor:
-#             for file_detail in files_to_process:
-#                 original_filename = file_detail.get("original_filename")
-#                 gdrive_file_id = file_detail.get("gdrive_file_id")
-#                 updated_file_meta = file_detail.copy()
-#                 local_temp_file_for_tg: Optional[str] = None
-                
-#                 try:
-#                     if not original_filename or not gdrive_file_id:
-#                         raise ValueError("File detail missing data.")
-
-#                     current_file_log_prefix = f"{log_prefix} File '{original_filename}'"
-                    
-#                     with tempfile.NamedTemporaryFile(delete=False, dir=UPLOADS_TEMP_DIR, suffix=os.path.splitext(original_filename)[1]) as temp_f:
-#                         local_temp_file_for_tg = temp_f.name
-                    
-#                     download_success, dl_err = download_from_gdrive_to_file(gdrive_file_id, local_temp_file_for_tg)
-#                     if not download_success: raise Exception(f"GDrive download failed: {dl_err}")
-
-#                     current_file_size = os.path.getsize(local_temp_file_for_tg)
-                    
-#                     if current_file_size > TELEGRAM_MAX_CHUNK_SIZE_BYTES:
-#                         chunk_futures, chunk_num = {}, 1
-#                         with open(local_temp_file_for_tg, 'rb') as f_handle:
-#                             while True:
-#                                 chunk_data = f_handle.read(TELEGRAM_MAX_CHUNK_SIZE_BYTES)
-#                                 if not chunk_data: break
-#                                 chunk_filename = f"{original_filename}.{str(chunk_num).zfill(3)}"
-#                                 for chat_id in TELEGRAM_CHAT_IDS:
-#                                     future = tg_send_executor.submit(_send_chunk_task, chunk_data, chunk_filename, str(chat_id), access_id, chunk_num)
-#                                     chunk_futures[future] = {"chat_id": str(chat_id), "chunk_num": chunk_num}
-#                                 chunk_num += 1
-                        
-#                         raw_results = [future.result() for future in as_completed(chunk_futures)]
-#                         # Simplified result processing
-#                         if all(res[1][0] for res in raw_results if res[0] == PRIMARY_TELEGRAM_CHAT_ID):
-#                             updated_file_meta["telegram_send_status"] = "success_chunked"
-#                         else:
-#                             raise Exception("Primary Telegram chunked upload failed.")
-
-#                     else:
-#                         single_futures = {tg_send_executor.submit(_send_single_file_task, local_temp_file_for_tg, original_filename, str(chat_id), access_id): str(chat_id) for chat_id in TELEGRAM_CHAT_IDS}
-#                         single_results = []
-#                         for future in as_completed(single_futures):
-#                              _, api_result = future.result()
-#                              single_results.append({"chat_id": single_futures[future], "success": api_result[0], "message": api_result[1], "tg_response": api_result[2]})
-                        
-#                         parsed_locations = _parse_send_results(current_file_log_prefix, single_results)
-#                         if any(res.get("success") for res in parsed_locations if str(res.get("chat_id")) == str(PRIMARY_TELEGRAM_CHAT_ID)):
-#                             updated_file_meta["telegram_send_status"] = "success_single"
-#                             updated_file_meta["telegram_send_locations"] = parsed_locations
-#                         else:
-#                             raise Exception("Primary Telegram upload failed.")
-
-#                     if updated_file_meta.get("telegram_send_status", "").startswith("success"):
-#                         logging.info(f"{current_file_log_prefix} Sent to Telegram. Deleting from GDrive.")
-#                         delete_from_gdrive(gdrive_file_id)
-#                     else:
-#                         batch_tg_success = False
-#                         logging.warning(f"{current_file_log_prefix} Failed Telegram send.")
-
-#                 except Exception as e:
-#                     logging.error(f"{current_file_log_prefix} Error processing for Telegram: {e}", exc_info=True)
-#                     updated_file_meta["telegram_send_status"] = "error_processing_bg"
-#                     updated_file_meta["reason_telegram"] = str(e)
-#                     batch_tg_success = False
-#                 finally:
-#                     _safe_remove_file(local_temp_file_for_tg, current_file_log_prefix, "temp for TG send")
-                
-#                 processed_files_for_db.append(updated_file_meta)
-
-#         db_record["files_in_batch"] = processed_files_for_db
-#         db_record["storage_location"] = "telegram" if batch_tg_success else "mixed_gdrive_telegram_error"
-#         db_record["status_overall"] = "telegram_complete" if batch_tg_success else "telegram_processing_errors"
-#         save_file_metadata(db_record)
-#         logging.info(f"{log_prefix} Final DB record updated.")
-
-#     except Exception as e_bg:
-#         logging.error(f"{log_prefix} Unhandled exception in background transfer: {e_bg}", exc_info=True)
-#         if db_record: 
-#             db_record["status_overall"] = "error_telegram_processing_unhandled_bg"
-#             db_record["last_error"] = f"Unhandled background error: {str(e_bg)}"
-#             save_file_metadata(db_record)
-#     finally:
-#         logging.info(f"{log_prefix} Background transfer finished.")
 
 def run_gdrive_to_telegram_transfer(access_id: str):
     """Background task to download files from GDrive and upload them to Telegram."""
@@ -548,7 +447,9 @@ def stream_upload_to_gdrive():
                 delete_from_gdrive(gdrive_file_id)
                 raise Exception(f"Failed to save file record: {save_msg}")
             
-            background_executor.submit(run_gdrive_to_telegram_transfer, operation_id)
+            # This route uses a different executor name, which is fine, but for consistency `telegram_transfer_executor` could be used.
+            # Assuming `background_executor` exists and is appropriate.
+            # telegram_transfer_executor.submit(run_gdrive_to_telegram_transfer, operation_id)
             
             frontend_base_url = os.environ.get('FRONTEND_URL', '').rstrip('/')
             download_url = f"{frontend_base_url}/batch-view/{operation_id}" if frontend_base_url else url_for('download_prefixed.stream_download_by_access_id', access_id=operation_id, _external=True)

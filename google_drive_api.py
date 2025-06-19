@@ -233,7 +233,6 @@
 #     except Exception as e:
 #         return False, f"Unexpected error downloading {gid} to file: {str(e)}"
 
-
 # google_drive_api.py – OAuth-user version (free Gmail)
 # --------------------------------------------------------------
 # Auth flow now uses an OAuth2 refresh-token tied to your personal
@@ -245,8 +244,8 @@
 import os
 import io
 import logging
-import mimetypes # type: ignore
-from typing import Optional, Tuple, Generator, Dict, Any, Union, IO
+import mimetypes
+from typing import Optional, Tuple, Generator, Dict, Any, Union
 
 from dotenv import load_dotenv
 from google.oauth2.credentials import Credentials
@@ -284,11 +283,12 @@ except ImportError:
 # ---------------------------------------------------------------------------
 
 
+
+
 def upload_to_gdrive_with_progress(
-    source: Union[str, IO[bytes]],
+    source: Union[str, io.BytesIO],
     filename_in_gdrive: str,
     operation_id_for_log: str,
-    file_size: Optional[int] = None,
 ) -> Generator[Dict[str, Any], None, Tuple[Optional[str], Optional[str]]]:
     """Upload *source* into your Drive with progress events."""
 
@@ -301,44 +301,37 @@ def upload_to_gdrive_with_progress(
             file_metadata["parents"] = [DRIVE_TEMP_FOLDER_ID]
 
         media_body = None
-        # Choose correct media wrapper
+        file_size = 0
+
+        # Choose correct media wrapper based on seekable source type
         if isinstance(source, str) and os.path.exists(source):
-            if file_size is None:
-                file_size = os.path.getsize(source)
+            file_size = os.path.getsize(source)
             media_body = MediaFileUpload(
                 source,
-                mimetype=mimetypes.guess_type(filename_in_gdrive)[0] # type: ignore
+                mimetype=mimetypes.guess_type(filename_in_gdrive)[0]
                 or "application/octet-stream",
                 resumable=True,
                 chunksize=ONE_MB,
             )
-        elif hasattr(source, 'read'):
-            if file_size is None:
-                if isinstance(source, io.BytesIO):
-                    source.seek(0, io.SEEK_END)
-                    file_size = source.tell()
-                    source.seek(0)
-                else:
-                    err = "File size must be provided for stream-based uploads."
-                    logging.error(f"{log_prefix} {err}")
-                    yield {"type": "error", "message": err}
-                    return None, err
+        elif isinstance(source, io.BytesIO):
+            source.seek(0, io.SEEK_END)
+            file_size = source.tell()
+            source.seek(0)
             media_body = MediaIoBaseUpload(
                 fd=source,
-                mimetype=mimetypes.guess_type(filename_in_gdrive)[0] # type: ignore
+                mimetype=mimetypes.guess_type(filename_in_gdrive)[0]
                 or "application/octet-stream",
                 resumable=True,
                 chunksize=ONE_MB,
             )
         else:
-            err = "Invalid source type for GDrive upload. Must be a file path or a readable stream."
+            err = "Invalid source type for GDrive upload. Must be a file path or io.BytesIO."
             logging.error(f"{log_prefix} {err}")
             yield {"type": "error", "message": err}
             return None, err
 
         # Edge-case: zero-byte placeholder
-        if file_size is not None and file_size == 0:
-            logging.info(f"{log_prefix} Handling zero-byte file.")
+        if file_size == 0:
             empty = service.files().create(body=file_metadata, fields="id").execute()
             gid = empty.get("id")
             if gid:

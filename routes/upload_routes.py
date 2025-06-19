@@ -28,6 +28,11 @@ from config import (
     UPLOADS_TEMP_DIR, MAX_UPLOAD_WORKERS, TELEGRAM_MAX_CHUNK_SIZE_BYTES,
     format_bytes
 )
+from google_drive_api import (
+    delete_from_gdrive,
+    upload_to_gdrive_with_progress,
+    download_from_gdrive_to_file  # Import the correct streaming download function
+)
 from telegram_api import send_file_to_telegram
 from flask import stream_with_context
 from google_drive_api import delete_from_gdrive, upload_to_gdrive_with_progress, download_from_gdrive_to_file
@@ -161,7 +166,7 @@ def stream_upload_progress(batch_id: str):
                 if time.time() - last_heartbeat_time > heartbeat_interval:
                     # SSE comments start with a colon. The browser will ignore this.
                     # This tells Gunicorn and Nginx the connection is not dead.
-                    yield ": heartbeat\n\n"
+                    yield ": heartbeat\n\n" 
                     last_heartbeat_time = time.time()
                     logging.debug(f"{log_prefix} Sent SSE heartbeat to keep connection alive.")
                 # --- END OF THE FIX ---

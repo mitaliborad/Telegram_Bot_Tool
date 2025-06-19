@@ -247,6 +247,113 @@ def finalize_batch_upload(batch_id: str):
         "access_id": batch_id, "download_url": download_url
     }), 202
 
+# def run_gdrive_to_telegram_transfer(access_id: str):
+#     """Background task to download files from GDrive and upload them to Telegram."""
+#     log_prefix = f"[BG-TG-{access_id}]"
+#     logging.info(f"{log_prefix} Background GDrive-to-Telegram process started.")
+    
+#     db_record, db_error = find_metadata_by_access_id(access_id)
+#     if db_error or not db_record:
+#         logging.error(f"{log_prefix} Failed to fetch DB record: {db_error or 'Not found'}")
+#         return
+
+#     try:
+#         if db_record.get("status_overall") != "gdrive_complete_pending_telegram":
+#             return
+
+#         db_record["status_overall"] = "telegram_processing_background"
+#         save_file_metadata(db_record)
+
+#         files_to_process = db_record.get("files_in_batch", [])
+#         processed_files_for_db = []
+#         batch_tg_success = True
+        
+#         with ThreadPoolExecutor(max_workers=MAX_UPLOAD_WORKERS, thread_name_prefix=f'TgSend_{access_id[:4]}') as tg_send_executor:
+#             for file_detail in files_to_process:
+#                 original_filename = file_detail.get("original_filename")
+#                 gdrive_file_id = file_detail.get("gdrive_file_id")
+#                 updated_file_meta = file_detail.copy()
+#                 local_temp_file_for_tg: Optional[str] = None
+                
+#                 try:
+#                     if not original_filename or not gdrive_file_id:
+#                         raise ValueError("File detail missing data.")
+
+#                     current_file_log_prefix = f"{log_prefix} File '{original_filename}'"
+                    
+#                     with tempfile.NamedTemporaryFile(delete=False, dir=UPLOADS_TEMP_DIR, suffix=os.path.splitext(original_filename)[1]) as temp_f:
+#                         local_temp_file_for_tg = temp_f.name
+                    
+#                     download_success, dl_err = download_from_gdrive_to_file(gdrive_file_id, local_temp_file_for_tg)
+#                     if not download_success: raise Exception(f"GDrive download failed: {dl_err}")
+
+#                     current_file_size = os.path.getsize(local_temp_file_for_tg)
+                    
+#                     if current_file_size > TELEGRAM_MAX_CHUNK_SIZE_BYTES:
+#                         chunk_futures, chunk_num = {}, 1
+#                         with open(local_temp_file_for_tg, 'rb') as f_handle:
+#                             while True:
+#                                 chunk_data = f_handle.read(TELEGRAM_MAX_CHUNK_SIZE_BYTES)
+#                                 if not chunk_data: break
+#                                 chunk_filename = f"{original_filename}.{str(chunk_num).zfill(3)}"
+#                                 for chat_id in TELEGRAM_CHAT_IDS:
+#                                     future = tg_send_executor.submit(_send_chunk_task, chunk_data, chunk_filename, str(chat_id), access_id, chunk_num)
+#                                     chunk_futures[future] = {"chat_id": str(chat_id), "chunk_num": chunk_num}
+#                                 chunk_num += 1
+                        
+#                         raw_results = [future.result() for future in as_completed(chunk_futures)]
+#                         # Simplified result processing
+#                         if all(res[1][0] for res in raw_results if res[0] == PRIMARY_TELEGRAM_CHAT_ID):
+#                             updated_file_meta["telegram_send_status"] = "success_chunked"
+#                         else:
+#                             raise Exception("Primary Telegram chunked upload failed.")
+
+#                     else:
+#                         single_futures = {tg_send_executor.submit(_send_single_file_task, local_temp_file_for_tg, original_filename, str(chat_id), access_id): str(chat_id) for chat_id in TELEGRAM_CHAT_IDS}
+#                         single_results = []
+#                         for future in as_completed(single_futures):
+#                              _, api_result = future.result()
+#                              single_results.append({"chat_id": single_futures[future], "success": api_result[0], "message": api_result[1], "tg_response": api_result[2]})
+                        
+#                         parsed_locations = _parse_send_results(current_file_log_prefix, single_results)
+#                         if any(res.get("success") for res in parsed_locations if str(res.get("chat_id")) == str(PRIMARY_TELEGRAM_CHAT_ID)):
+#                             updated_file_meta["telegram_send_status"] = "success_single"
+#                             updated_file_meta["telegram_send_locations"] = parsed_locations
+#                         else:
+#                             raise Exception("Primary Telegram upload failed.")
+
+#                     if updated_file_meta.get("telegram_send_status", "").startswith("success"):
+#                         logging.info(f"{current_file_log_prefix} Sent to Telegram. Deleting from GDrive.")
+#                         delete_from_gdrive(gdrive_file_id)
+#                     else:
+#                         batch_tg_success = False
+#                         logging.warning(f"{current_file_log_prefix} Failed Telegram send.")
+
+#                 except Exception as e:
+#                     logging.error(f"{current_file_log_prefix} Error processing for Telegram: {e}", exc_info=True)
+#                     updated_file_meta["telegram_send_status"] = "error_processing_bg"
+#                     updated_file_meta["reason_telegram"] = str(e)
+#                     batch_tg_success = False
+#                 finally:
+#                     _safe_remove_file(local_temp_file_for_tg, current_file_log_prefix, "temp for TG send")
+                
+#                 processed_files_for_db.append(updated_file_meta)
+
+#         db_record["files_in_batch"] = processed_files_for_db
+#         db_record["storage_location"] = "telegram" if batch_tg_success else "mixed_gdrive_telegram_error"
+#         db_record["status_overall"] = "telegram_complete" if batch_tg_success else "telegram_processing_errors"
+#         save_file_metadata(db_record)
+#         logging.info(f"{log_prefix} Final DB record updated.")
+
+#     except Exception as e_bg:
+#         logging.error(f"{log_prefix} Unhandled exception in background transfer: {e_bg}", exc_info=True)
+#         if db_record: 
+#             db_record["status_overall"] = "error_telegram_processing_unhandled_bg"
+#             db_record["last_error"] = f"Unhandled background error: {str(e_bg)}"
+#             save_file_metadata(db_record)
+#     finally:
+#         logging.info(f"{log_prefix} Background transfer finished.")
+
 def run_gdrive_to_telegram_transfer(access_id: str):
     """Background task to download files from GDrive and upload them to Telegram."""
     log_prefix = f"[BG-TG-{access_id}]"
@@ -290,24 +397,58 @@ def run_gdrive_to_telegram_transfer(access_id: str):
                     current_file_size = os.path.getsize(local_temp_file_for_tg)
                     
                     if current_file_size > TELEGRAM_MAX_CHUNK_SIZE_BYTES:
-                        chunk_futures, chunk_num = {}, 1
+                        logging.info(f"{current_file_log_prefix} File is large, proceeding with chunked upload.")
+                        updated_file_meta['is_split_for_telegram'] = True
+                        updated_file_meta['telegram_chunks'] = []
+                        total_chunked_size = 0
+                        chunk_num = 1
+                        all_chunks_successful_to_primary = True
+
                         with open(local_temp_file_for_tg, 'rb') as f_handle:
                             while True:
                                 chunk_data = f_handle.read(TELEGRAM_MAX_CHUNK_SIZE_BYTES)
-                                if not chunk_data: break
+                                if not chunk_data:
+                                    break
+                                
                                 chunk_filename = f"{original_filename}.{str(chunk_num).zfill(3)}"
-                                for chat_id in TELEGRAM_CHAT_IDS:
-                                    future = tg_send_executor.submit(_send_chunk_task, chunk_data, chunk_filename, str(chat_id), access_id, chunk_num)
-                                    chunk_futures[future] = {"chat_id": str(chat_id), "chunk_num": chunk_num}
+                                chunk_size = len(chunk_data)
+                                total_chunked_size += chunk_size
+                                logging.info(f"{current_file_log_prefix} Sending chunk {chunk_num} ({format_bytes(chunk_size)})")
+
+                                # Submit tasks for THIS chunk to all chats and wait for them to complete
+                                chunk_send_futures = {
+                                    tg_send_executor.submit(_send_chunk_task, chunk_data, chunk_filename, str(chat_id), access_id, chunk_num): str(chat_id)
+                                    for chat_id in TELEGRAM_CHAT_IDS
+                                }
+                                
+                                chunk_send_results = []
+                                for future in as_completed(chunk_send_futures):
+                                    chat_id_res = chunk_send_futures[future]
+                                    _, api_result = future.result()
+                                    chunk_send_results.append({"chat_id": chat_id_res, "success": api_result[0], "message": api_result[1], "tg_response": api_result[2]})
+                                
+                                parsed_chunk_locations = _parse_send_results(f"{current_file_log_prefix} C{chunk_num}", chunk_send_results)
+                                
+                                primary_chat_success_for_chunk = any(
+                                    res.get("success") for res in parsed_chunk_locations if str(res.get("chat_id")) == str(PRIMARY_TELEGRAM_CHAT_ID)
+                                )
+
+                                if not primary_chat_success_for_chunk:
+                                    all_chunks_successful_to_primary = False
+                                    logging.error(f"{current_file_log_prefix} Failed to upload chunk {chunk_num} to primary chat ID. Aborting sends for this file.")
+                                    break
+
+                                updated_file_meta['telegram_chunks'].append({
+                                    "part_number": chunk_num, "chunk_size": chunk_size,
+                                    "chunk_filename": chunk_filename, "send_locations": parsed_chunk_locations
+                                })
                                 chunk_num += 1
                         
-                        raw_results = [future.result() for future in as_completed(chunk_futures)]
-                        # Simplified result processing
-                        if all(res[1][0] for res in raw_results if res[0] == PRIMARY_TELEGRAM_CHAT_ID):
+                        if all_chunks_successful_to_primary:
                             updated_file_meta["telegram_send_status"] = "success_chunked"
+                            updated_file_meta["telegram_total_chunked_size"] = total_chunked_size
                         else:
-                            raise Exception("Primary Telegram chunked upload failed.")
-
+                            raise Exception(f"Chunked upload failed at chunk {chunk_num}. File transfer aborted.")
                     else:
                         single_futures = {tg_send_executor.submit(_send_single_file_task, local_temp_file_for_tg, original_filename, str(chat_id), access_id): str(chat_id) for chat_id in TELEGRAM_CHAT_IDS}
                         single_results = []

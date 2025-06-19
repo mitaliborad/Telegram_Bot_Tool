@@ -91,12 +91,59 @@ def _send_chunk_task(chunk_data: bytes, filename: str, chat_id: str, upload_id: 
         logging.error(f"{log_prefix} Unexpected error sending TG chunk: {e}", exc_info=True)
         return str(chat_id), (False, f"Thread error processing TG chunk: {e}", None)
 
+# @upload_bp.route('/progress-stream/<batch_id>', methods=['GET'])
+# def stream_upload_progress(batch_id: str):
+#      def generate_events(batch_id: str):
+#         last_event_data = None
+#         log_prefix = f"[ProgressStream-{batch_id}]"
+#         logging.info(f"{log_prefix} SSE connection opened.")
+        
+#         # --- START OF THE FIX ---
+#         last_heartbeat_time = time.time()
+#         heartbeat_interval = 15  # Send a heartbeat every 15 seconds
+#         # --- END OF THE FIX ---
+        
+#         try:
+#             while True:
+#                 current_event_data = upload_progress_data.get(batch_id)
+#                 if current_event_data and current_event_data != last_event_data:
+#                     event_type = current_event_data.get("type", "status")
+#                     yield _yield_sse_event(event_type, current_event_data)
+#                     last_event_data = current_event_data
+#                     last_heartbeat_time = time.time()
+#                     if current_event_data.get("type") in ["complete", "error", "finalized"]:
+#                         logging.info(f"{log_prefix} Received final event type '{current_event_data.get('type')}'. Closing stream.")
+#                         break
+                    
+#                 if time.time() - last_heartbeat_time > heartbeat_interval:
+#                     # SSE comments start with a colon. The browser will ignore this.
+#                     # This tells Gunicorn and Nginx the connection is not dead.
+#                     yield ": heartbeat\n\n"
+#                     last_heartbeat_time = time.time()
+#                     logging.debug(f"{log_prefix} Sent SSE heartbeat to keep connection alive.")
+                
+#                 time.sleep(0.2)
+#         except GeneratorExit:
+#             logging.info(f"{log_prefix} Client disconnected. Closing stream.")
+#         finally:
+#             if batch_id in upload_progress_data:
+#                 time.sleep(1)
+#                 del upload_progress_data[batch_id]
+#                 logging.info(f"{log_prefix} Cleaned up progress data key.")
+#     return Response(stream_with_context(generate_events()), mimetype='text/event-stream')
+
 @upload_bp.route('/progress-stream/<batch_id>', methods=['GET'])
 def stream_upload_progress(batch_id: str):
-    def generate_events():
+    def generate_events(batch_id: str):
         last_event_data = None
         log_prefix = f"[ProgressStream-{batch_id}]"
         logging.info(f"{log_prefix} SSE connection opened.")
+        
+        # --- START OF THE FIX ---
+        last_heartbeat_time = time.time()
+        heartbeat_interval = 15  # Send a heartbeat every 15 seconds
+        # --- END OF THE FIX ---
+
         try:
             while True:
                 current_event_data = upload_progress_data.get(batch_id)
@@ -104,18 +151,35 @@ def stream_upload_progress(batch_id: str):
                     event_type = current_event_data.get("type", "status")
                     yield _yield_sse_event(event_type, current_event_data)
                     last_event_data = current_event_data
+                    last_heartbeat_time = time.time() # Reset heartbeat timer on real activity
                     if current_event_data.get("type") in ["complete", "error", "finalized"]:
-                        logging.info(f"{log_prefix} Received final event type '{current_event_data.get('type')}'. Closing stream.")
+                        logging.info(f"{log_prefix} Received final event type '{event_type}'. Closing stream.")
                         break
+                
+                # --- START OF THE FIX ---
+                # Check if it's time to send a heartbeat to keep the connection alive
+                if time.time() - last_heartbeat_time > heartbeat_interval:
+                    # SSE comments start with a colon. The browser will ignore this.
+                    # This tells Gunicorn and Nginx the connection is not dead.
+                    yield ": heartbeat\n\n"
+                    last_heartbeat_time = time.time()
+                    logging.debug(f"{log_prefix} Sent SSE heartbeat to keep connection alive.")
+                # --- END OF THE FIX ---
+
                 time.sleep(0.2)
         except GeneratorExit:
             logging.info(f"{log_prefix} Client disconnected. Closing stream.")
         finally:
             if batch_id in upload_progress_data:
-                time.sleep(1)
-                del upload_progress_data[batch_id]
-                logging.info(f"{log_prefix} Cleaned up progress data key.")
-    return Response(stream_with_context(generate_events()), mimetype='text/event-stream')
+                time.sleep(1) # Give a moment for any final messages
+                try:
+                    del upload_progress_data[batch_id]
+                    logging.info(f"{log_prefix} Cleaned up progress data key.")
+                except KeyError:
+                    pass # It might have been deleted by another process, which is fine
+                    
+    return Response(stream_with_context(generate_events(batch_id)), mimetype='text/event-stream')
+
 
 @upload_bp.route('/initiate-batch', methods=['POST', 'OPTIONS'])
 @jwt_required(optional=True)
@@ -161,9 +225,7 @@ def initiate_batch_upload():
     logging.info(f"{log_prefix} Batch placeholder created for user '{user_info['username']}'.")
     return jsonify({"message": "Batch initiated successfully.", "batch_id": batch_id}), 201
 
-# ==============================================================================
-# === THE MAIN FIX IS HERE =======================================================
-# ==============================================================================
+
 # @upload_bp.route('/stream', methods=['POST', 'OPTIONS'])
 # @jwt_required(optional=True)
 # def stream_file_to_batch():

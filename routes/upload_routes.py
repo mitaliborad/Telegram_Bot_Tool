@@ -419,15 +419,42 @@ def stream_file_to_batch():
 # ==============================================================================
 # --- The rest of the file is unchanged ---
 # ==============================================================================
+# @upload_bp.route('/finalize-batch/<batch_id>', methods=['POST'])
+# @jwt_required(optional=True)
+# def finalize_batch_upload(batch_id: str):
+#     log_prefix = f"[BatchFinalize-{batch_id}]"
+    
+#     upload_progress_data[batch_id] = {"type": "finalized", "message": "Finalizing transfer..."}
+    
+#     coll, db_error = get_metadata_collection()
+#     if db_error: return jsonify({"error": "DB connection error"}), 500
+    
+#     update_result = coll.update_one({"access_id": batch_id}, {"$set": {"status_overall": "gdrive_complete_pending_telegram"}})
+#     if update_result.matched_count == 0:
+#         upload_progress_data[batch_id] = {"type": "error", "message": "Batch record not found."}
+#         return jsonify({"error": "Batch record not found."}), 404
+
+#     logging.info(f"{log_prefix} Batch finalized. Submitting background task.")
+#     background_executor.submit(run_gdrive_to_telegram_transfer, batch_id)
+
+#     frontend_base_url = os.environ.get('FRONTEND_URL', '').rstrip('/')
+#     download_url = f"{frontend_base_url}/batch-view/{batch_id}"
+
+#     return jsonify({"message": "Batch finalized.", "access_id": batch_id, "download_url": download_url}), 200
+
+
+# In routes/upload_routes.py
+
 @upload_bp.route('/finalize-batch/<batch_id>', methods=['POST'])
 @jwt_required(optional=True)
 def finalize_batch_upload(batch_id: str):
     log_prefix = f"[BatchFinalize-{batch_id}]"
     
+    # This part is fine, it's fast.
     upload_progress_data[batch_id] = {"type": "finalized", "message": "Finalizing transfer..."}
-    
     coll, db_error = get_metadata_collection()
-    if db_error: return jsonify({"error": "DB connection error"}), 500
+    if db_error: 
+        return jsonify({"error": "DB connection error"}), 500
     
     update_result = coll.update_one({"access_id": batch_id}, {"$set": {"status_overall": "gdrive_complete_pending_telegram"}})
     if update_result.matched_count == 0:
@@ -435,12 +462,22 @@ def finalize_batch_upload(batch_id: str):
         return jsonify({"error": "Batch record not found."}), 404
 
     logging.info(f"{log_prefix} Batch finalized. Submitting background task.")
+    
+    # --- START OF THE FIX ---
+    # 1. Start the long-running task in the background.
     background_executor.submit(run_gdrive_to_telegram_transfer, batch_id)
 
+    # 2. IMMEDIATELY respond to the frontend. DO NOT WAIT.
     frontend_base_url = os.environ.get('FRONTEND_URL', '').rstrip('/')
     download_url = f"{frontend_base_url}/batch-view/{batch_id}"
 
-    return jsonify({"message": "Batch finalized.", "access_id": batch_id, "download_url": download_url}), 200
+    logging.info(f"{log_prefix} Responding to frontend immediately while transfer runs in background.")
+    return jsonify({
+        "message": "Batch finalized and transfer to secure storage has begun.",
+        "access_id": batch_id, 
+        "download_url": download_url
+    }), 202 # Use status 202 Accepted to indicate the request was accepted for processing.
+    # --- END OF THE FIX ---
 
 # def run_gdrive_to_telegram_transfer(access_id: str):
 #     log_prefix = f"[BG-TG-{access_id}]"

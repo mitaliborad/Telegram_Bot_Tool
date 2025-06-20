@@ -35,7 +35,8 @@ from .file_models import (
     delete_metadata_by_filename,
     find_metadata_by_email,
     delete_metadata_by_access_id,
-    get_all_file_metadata
+    get_all_file_metadata,
+    get_file_chunks_data
 )
 
 # --- Re-export Archived File model functions ---

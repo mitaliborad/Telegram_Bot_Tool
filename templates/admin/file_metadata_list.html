@@ -278,15 +278,11 @@
                            <span class="status-badge status-active">No</span>
                        {% endif %}
                    </td>
-                   <td class="actions-column"> {# Added class for potentially specific button styling #}
-                     <a href="{{ url_for('.details_view', access_id=record.access_id, q=request.args.get('q'), page=request.args.get('page'), user_type=request.args.get('user_type')) }}" class="btn btn-xs btn-info">Details</a>
-                     <form method="POST" action="{{ url_for('.delete_view', access_id=record.access_id, q=request.args.get('q'), page=request.args.get('page'), user_type=request.args.get('user_type')) }}" style="display: inline-block;">
-                        <button type="submit" class="btn btn-xs btn-danger"
-                                onclick="return confirm('Are you sure you want to archive this record (Access ID: {{ record.access_id }})? This action cannot be undone.');">
-                          Archive
-                        </button>
-                    </form>
-                   </td>
+                   <td>
+    {% if list_view.column_formatters and 'actions' in list_view.column_formatters %}
+        {{ admin_view._actions_formatter(None, record, 'actions') | safe }}
+    {% endif %}
+    </td>
                  </tr>
                {% endfor %}
              </tbody>

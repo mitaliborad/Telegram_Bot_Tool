@@ -4,10 +4,11 @@ from typing import Optional, Dict, Any, List, Tuple
 from bson import ObjectId
 from pymongo.errors import PyMongoError, OperationFailure
 import json
-
+from telegram_api import download_telegram_file_content
 # Import the function to get the metadata collection (user_files)
 from .connection import get_metadata_collection
 from .user_models import get_all_users
+from config import PRIMARY_TELEGRAM_CHAT_ID
 
 def save_file_metadata(record: Dict[str, Any]) -> Tuple[bool, str]:
     collection, error = get_metadata_collection()
@@ -251,3 +252,87 @@ def get_all_file_metadata(search_query: Optional[str] = None, user_type_filter: 
     except Exception as e: error_msg = f"Unexpected error fetching file metadata: {e}"; logging.error(error_msg, exc_info=True); return None, error_msg
 
 logging.info("Active file models module (database/file_models.py) initialized.")
+
+
+
+def _find_best_file_id(locations: list, primary_chat_id: str) -> Optional[str]:
+    """Helper to find the file_id from the primary chat, with a fallback."""
+    primary_file_id = None
+    fallback_file_id = None
+    for loc in locations:
+        if loc.get('success') and loc.get('tg_response'):
+            file_id = loc.get('tg_response', {}).get('result', {}).get('document', {}).get('file_id')
+            if file_id:
+                if str(loc.get('chat_id')) == str(primary_chat_id):
+                    primary_file_id = file_id
+                    break  # Found the best one
+                if not fallback_file_id:
+                    fallback_file_id = file_id
+    return primary_file_id or fallback_file_id
+
+def get_file_chunks_data(batch_id: str, filename: str) -> Tuple[Optional[List[bytes]], str]:
+    """
+    Finds a batch record, then finds the specific file within it,
+    and intelligently parses its location data to download all chunks.
+    This is designed to work with the existing upload_routes.py logic.
+    """
+    # 1. Fetch the main batch record
+    batch_record, error = find_metadata_by_access_id(batch_id)
+    if error or not batch_record:
+        return None, error or "Batch record not found."
+
+    # 2. Find the specific file's details within the batch
+    file_detail_to_process = None
+    for f in batch_record.get("files_in_batch", []):
+        if f.get("original_filename") == filename:
+            file_detail_to_process = f
+            break
+    
+    if not file_detail_to_process:
+        return None, f"File '{filename}' not found within batch '{batch_id}'."
+
+    # 3. Intelligently parse the location data to get a list of file_ids
+    list_of_file_ids_to_download = []
+    
+    # Case A: It's a large, chunked file
+    if file_detail_to_process.get('is_split_for_telegram'):
+        telegram_chunks = file_detail_to_process.get('telegram_chunks', [])
+        if not telegram_chunks:
+            return None, "Record is marked as chunked but is missing 'telegram_chunks' data."
+            
+        for chunk in sorted(telegram_chunks, key=lambda c: c.get('part_number', 0)):
+            best_id = _find_best_file_id(chunk.get('send_locations', []), PRIMARY_TELEGRAM_CHAT_ID)
+            if not best_id:
+                return None, f"Could not find a valid file_id for chunk number {chunk.get('part_number')}."
+            list_of_file_ids_to_download.append(best_id)
+
+    # Case B: It's a small, single file
+    elif file_detail_to_process.get('telegram_send_locations'):
+        locations = file_detail_to_process.get('telegram_send_locations', [])
+        best_id = _find_best_file_id(locations, PRIMARY_TELEGRAM_CHAT_ID)
+        if not best_id:
+            return None, "Could not find a valid file_id in 'telegram_send_locations'."
+        list_of_file_ids_to_download.append(best_id)
+
+    # Case C: The record is incomplete
+    else:
+        return None, "Record is incomplete; it has neither 'telegram_chunks' nor 'telegram_send_locations'."
+
+    if not list_of_file_ids_to_download:
+        return None, "Successfully parsed record, but found no valid file_ids to download."
+
+    # 4. Download all the parts we found
+    try:
+        all_chunks_data = []
+        for i, file_id in enumerate(list_of_file_ids_to_download):
+            chunk_data, dl_error = download_telegram_file_content(file_id)
+            if dl_error:
+                logging.error(f"Failed to download chunk {i+1} (file_id: {file_id}) for '{filename}': {dl_error}")
+                return None, f"Failed to download part {i+1}: {dl_error}"
+            all_chunks_data.append(chunk_data)
+        
+        logging.info(f"Successfully downloaded {len(all_chunks_data)} parts for file '{filename}'.")
+        return all_chunks_data, ""
+    except Exception as e:
+        logging.error(f"Unexpected error during download phase for '{filename}': {e}", exc_info=True)
+        return None, "An unexpected error occurred during content download."

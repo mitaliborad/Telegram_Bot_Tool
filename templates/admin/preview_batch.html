@@ -1,0 +1,99 @@
+{% extends 'admin/base.html' %}
+
+{% block body %}
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="action-bar" style="margin-bottom: 20px;">
+          <a href="{{ url_for('.index') }}" class="btn btn-default">
+            <i class="fa fa-chevron-left"></i> Back to List
+          </a>
+        </div>
+
+        <!-- SECTION 1: BATCH DETAILS -->
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title">Batch Details</h3>
+          </div>
+          <div class="panel-body">
+            <dl class="dl-horizontal">
+              <dt>Batch Display Name</dt>
+              <dd>{{ batch_details.batch_display_name }}</dd>
+
+              <dt>Access ID</dt>
+              <dd><code>{{ batch_details.access_id }}</code></dd>
+              
+              <dt>Uploaded By</dt>
+              <dd>{{ batch_details.username }}</dd>
+
+              <dt>Upload Timestamp</dt>
+              <dd>{{ batch_details.upload_timestamp.strftime('%Y-%m-%d %H:%M:%S') if batch_details.upload_timestamp else 'N/A' }} UTC</dd>
+
+              <dt>Total Size</dt>
+              <dd>{{ batch_details.total_size }} ({{ batch_details.file_count }} file(s))</dd>
+
+              <dt>Is Anonymous</dt>
+              <dd>
+                {% if batch_details.is_anonymous %}
+                  <span class="status-badge status-failed">Yes</span>
+                {% else %}
+                  <span class="status-badge status-active">No</span>
+                {% endif %}
+              </dd>
+            </dl>
+          </div>
+        </div>
+
+        <!-- SECTION 2: FILE CONTENT LIST -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Files in this Batch</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                      <tr>
+                        <th>Filename</th>
+                        <th>Size</th>
+                        <th>MIME Type</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for file in files_in_batch %}
+                      <tr>
+                        <td><i class="fa fa-file-o" style="margin-right: 8px;"></i>{{ file.original_filename }}</td>
+                        <td>{{ file.total_original_size | format_bytes }}</td>
+                        <td>{{ file.mime_type }}</td>
+                        <td>
+                        {# This is the column for the 'Actions' button #}
+                        {% if file.original_filename %}
+                            <a href="{{ url_for('.view_file_content', batch_id=batch_details.access_id, filename=file.original_filename) }}"
+                            target="_blank"
+                            class="btn btn-xs btn-primary">
+                            View Content
+                            </a>
+                        {% else %}
+                            {# If there is no filename, show a disabled button and a tooltip #}
+                            <a href="#"
+                            class="btn btn-xs btn-default disabled"
+                            title="Cannot preview: Filename is missing in the database record.">
+                            No Filename
+                            </a>
+                        {% endif %}
+                        </td>
+                      </tr>
+                      {% else %}
+                      <tr>
+                        <td colspan="4" class="text-center">No individual file records found for this batch.</td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+            </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+{% endblock %}

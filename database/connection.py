@@ -33,16 +33,11 @@ def _connect_to_db() -> Tuple[Optional[MongoClient], str]:
     global _client
 
     if _client is not None:
-        # PyMongo's MongoClient is designed to be thread-safe and handles
-        # connection pooling and auto-reconnection internally.
-        # Returning the cached client is standard practice.
         return _client, ""
 
     ATLAS_USER = os.getenv("ATLAS_USER")
     ATLAS_PASSWORD = os.getenv("ATLAS_PASSWORD")
     ATLAS_CLUSTER_HOST = os.getenv("ATLAS_CLUSTER_HOST")
-
-    # Debugging block from original code - this is helpful
     logging.info(f"--- DEBUGGING DB CONNECTION ATTEMPT ---")
     logging.info(f"Read ATLAS_USER: '{ATLAS_USER}'")
     logging.info(f"Read ATLAS_PASSWORD: {'******' if ATLAS_PASSWORD else 'NOT FOUND'}")
@@ -66,39 +61,30 @@ def _connect_to_db() -> Tuple[Optional[MongoClient], str]:
         encoded_password = urllib.parse.quote_plus(ATLAS_PASSWORD)
         
         # Construct connection string
-        # The appName parameter is optional but can be useful for server-side logging/metrics.
         CONNECTION_STRING = f"mongodb+srv://{encoded_user}:{encoded_password}@{ATLAS_CLUSTER_HOST}/?retryWrites=true&w=majority&appName=Telegrambot"
-        
-        # Log connection attempt (mask password for security)
-        # safe_connection_string_log = f"mongodb+srv://{encoded_user}:******@{ATLAS_CLUSTER_HOST}/?retryWrites=true&w=majority&appName=Telegrambot"
-        # logging.info(f"Attempting to connect to MongoDB Atlas host: {ATLAS_CLUSTER_HOST} using connection string: {safe_connection_string_log}")
-
-        # Initialize the MongoClient with ServerApi
         client_instance = MongoClient(CONNECTION_STRING, server_api=ServerApi('1'))
 
         # Ping to confirm a successful connection.
         client_instance.admin.command('ping')
         logging.info("✅ Successfully connected and pinged MongoDB Atlas!")
-        
-        _client = client_instance # Cache the client
+        _client = client_instance 
         return _client, ""
 
     except ConnectionFailure as cf:
         error_msg = (f"MongoDB Connection Failure: {cf}. "
                      f"Hints: Check network connectivity to '{ATLAS_CLUSTER_HOST}', "
                      f"IP whitelist configuration on Atlas, and Atlas cluster status.")
-        logging.error(error_msg, exc_info=True) # Log with traceback
+        logging.error(error_msg, exc_info=True) 
         return None, error_msg
     except OperationFailure as of:
         error_msg = (f"MongoDB Operation Failure: {of}. "
                      f"Hints: Check authentication credentials (user/password), "
                      f"database/collection permissions, or if the cluster supports Stable API features used.")
-        logging.error(error_msg, exc_info=True) # Log with traceback
+        logging.error(error_msg, exc_info=True)
         return None, error_msg
     except Exception as e:
-        # Catch any other unexpected errors during connection
         error_msg = f"An unexpected error occurred during MongoDB connection: {e}"
-        logging.error(error_msg, exc_info=True) # Log with traceback for unexpected errors
+        logging.error(error_msg, exc_info=True)
         return None, error_msg
 
 def get_db() -> Tuple[Optional[Database], str]:
@@ -223,7 +209,6 @@ def close_db_connection():
         except Exception as e:
             logging.error(f"Error closing MongoDB connection: {e}", exc_info=True)
         finally:
-            # Reset all cached instances regardless of close success/failure
             _client = None
             _db = None
             _userinfo_collection = None

@@ -5,7 +5,6 @@ from bson import ObjectId
 from pymongo.errors import PyMongoError, OperationFailure
 import json
 from telegram_api import download_telegram_file_content
-# Import the function to get the metadata collection (user_files)
 from .connection import get_metadata_collection
 from .user_models import get_all_users
 from config import PRIMARY_TELEGRAM_CHAT_ID
@@ -23,11 +22,7 @@ def save_file_metadata(record: Dict[str, Any]) -> Tuple[bool, str]:
     log_prefix_save = f"[SaveMeta-{access_id_for_log}]"
 
     try:
-        update_payload = record.copy()
-        
-        # --- DETAILED LOGGING ADDED HERE ---
-        # logging.info(f"{log_prefix_save} Original record passed to save_file_metadata: {json.dumps(record, default=str, indent=2)}") # Can be very verbose for large records
-        
+        update_payload = record.copy()    
         has_id_before_del = '_id' in update_payload
         id_value_before_del = str(update_payload.get('_id')) if has_id_before_del else "N/A"
         logging.info(f"{log_prefix_save} Update payload *before* _id removal. Has _id: {has_id_before_del}. _id value: {id_value_before_del}")
@@ -37,9 +32,6 @@ def save_file_metadata(record: Dict[str, Any]) -> Tuple[bool, str]:
             logging.info(f"{log_prefix_save} Removed '_id' from update_payload.")
         else:
             logging.info(f"{log_prefix_save} '_id' was not in update_payload to begin with (likely an initial insert).")
-        
-        # logging.info(f"{log_prefix_save} Final update_payload for $set: {json.dumps(update_payload, default=str, indent=2)}") # Verbose
-        # --- END OF DETAILED LOGGING ---
 
         result = collection.update_one(
             {"access_id": record["access_id"]},
@@ -80,10 +72,8 @@ def find_metadata_by_username(username: str) -> Tuple[Optional[List[Dict[str, An
     if error or collection is None:
         return None, f"Failed to get collection: {error}"
     try:
-        # Consider adding sorting, e.g., by upload_timestamp
         records_cursor = collection.find({"username": username}).sort("upload_timestamp", -1)
         records_list = list(records_cursor)
-        # Convert ObjectId to str for JSON serialization if necessary (often done in routes)
         for record in records_list:
             if '_id' in record and isinstance(record['_id'], ObjectId):
                 record['_id'] = str(record['_id'])
@@ -102,7 +92,7 @@ def find_metadata_by_access_id(access_id: str) -> Tuple[Optional[Dict[str, Any]]
     try:
         record = collection.find_one({"access_id": access_id})
         if record:
-            if '_id' in record and isinstance(record['_id'], ObjectId): # Good practice for consistency
+            if '_id' in record and isinstance(record['_id'], ObjectId): 
                 record['_id'] = str(record['_id'])
             logging.info(f"Found active metadata record for access_id: {access_id}")
             return record, ""
@@ -187,11 +177,7 @@ def get_all_file_metadata(search_query: Optional[str] = None, user_type_filter: 
         if cleaned_user_type == "Anonymous":
             query_conditions.append({"is_anonymous": True})
         elif cleaned_user_type == "Premium" or cleaned_user_type == "Free":
-            # Determine role to filter users by
             role_for_usernames = "Premium User" if cleaned_user_type == "Premium" else "Free User"
-            
-            # Get all users matching that role (or implicit Free User logic)
-            # The get_all_users function already handles the implicit "Free User" logic
             users_of_type, users_err = get_all_users(role_filter=role_for_usernames)
             
             if users_err:
@@ -201,34 +187,30 @@ def get_all_file_metadata(search_query: Optional[str] = None, user_type_filter: 
             if users_of_type:
                 usernames = [user['username'] for user in users_of_type if user.get('username')]
                 if usernames:
-                    query_conditions.append({"username": {"$in": usernames}, "is_anonymous": {"$ne": True}}) # Also ensure not anonymous
+                    query_conditions.append({"username": {"$in": usernames}, "is_anonymous": {"$ne": True}}) 
                 else:
                     logging.info(f"No usernames found for role '{role_for_usernames}'. No files will match this user_type.")
-                    return [], "" # Return empty list immediately if no users of this type
+                    return [], ""
             else:
                 logging.info(f"No users found with role '{role_for_usernames}'. No files will match this user_type.")
-                return [], "" # Return empty list immediately
+                return [], ""
         else:
             logging.warning(f"Unknown user_type_filter: '{cleaned_user_type}'. Ignoring this filter.")
-
-    # query_filter = {}
     if search_query and search_query.strip():
         search_term = search_query.strip()
-        # Simple case-insensitive substring search.
-        # If you used re.escape before, ensure 're' is imported.
         try:
-            import re # Ensure re is available
+            import re 
             escaped_search_term = re.escape(search_term)
             regex_pattern = re.compile(escaped_search_term, re.IGNORECASE)
-        except ImportError: # Fallback if re is not available for some reason
-            regex_pattern = search_term # This would make it a simple substring match, potentially less safe for special chars
+        except ImportError: 
+            regex_pattern = search_term 
 
         search_condition = {
             "$or": [
                 {"access_id": {"$regex": regex_pattern}},
                 {"original_filename": {"$regex": regex_pattern}},
                 {"batch_display_name": {"$regex": regex_pattern}},
-                {"username": {"$regex": regex_pattern}} # Search username even if filtering by user type
+                {"username": {"$regex": regex_pattern}} 
             ]
         }
         query_conditions.append(search_condition)
@@ -255,27 +237,6 @@ def get_all_file_metadata(search_query: Optional[str] = None, user_type_filter: 
 
 logging.info("Active file models module (database/file_models.py) initialized.")
 
-
-
-# def _find_best_file_id(locations: list, primary_chat_id: str) -> Optional[str]:
-#     """Helper to find the file_id from the primary chat, with a fallback."""
-#     primary_file_id = None
-#     fallback_file_id = None
-#     for loc in locations:
-#         if loc.get('success') and loc.get('tg_response'):
-#             file_id = loc.get('tg_response', {}).get('result', {}).get('document', {}).get('file_id')
-#             if file_id:
-#                 if str(loc.get('chat_id')) == str(primary_chat_id):
-#                     primary_file_id = file_id
-#                     break  # Found the best one
-#                 if not fallback_file_id:
-#                     fallback_file_id = file_id
-#     return primary_file_id or fallback_file_id
-
-# In database/file_models.py
-
-# In database/file_models.py
-
 def _find_best_file_id(locations: list, primary_chat_id: str) -> Optional[str]:
     """
     Helper to find the file_id from the primary chat, with a fallback.
@@ -290,19 +251,12 @@ def _find_best_file_id(locations: list, primary_chat_id: str) -> Optional[str]:
     for loc in locations:
         if not isinstance(loc, dict):
             continue
-
-        # --- START OF THE REAL FIX ---
-        # The 'file_id' is at the top level of the location dictionary, not nested.
         file_id = loc.get('file_id')
-        # --- END OF THE REAL FIX ---
 
         if file_id:
-            # If we found a file_id, check if it's from the primary chat
             if str(loc.get('chat_id')) == str(primary_chat_id):
                 primary_file_id = file_id
-                break  # Found the best possible ID, stop searching.
-            
-            # If not primary, keep the first one we find as a fallback.
+                break 
             if not fallback_file_id:
                 fallback_file_id = file_id
                 

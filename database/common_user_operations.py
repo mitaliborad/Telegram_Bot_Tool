@@ -2,11 +2,11 @@
 import logging
 from typing import Tuple, Optional, Dict, Any
 from datetime import datetime, timezone
-from bson import ObjectId # For converting string ID back to ObjectId for userinfo
+from bson import ObjectId 
 from pymongo.errors import PyMongoError
 
 from .connection import get_userinfo_collection, get_archived_users_collection
-from .user_models import find_user_by_email, find_user_by_username # For conflict checking during restore
+from .user_models import find_user_by_email, find_user_by_username 
 
 def archive_user_account(user_id_to_archive_str: str, admin_username: str) -> Tuple[bool, str]:
     """
@@ -45,15 +45,12 @@ def archive_user_account(user_id_to_archive_str: str, admin_username: str) -> Tu
 
         # 2. Prepare the record for the 'archived_users' collection
         archived_user_data = user_to_archive_doc.copy() # Make a copy
-
-        # Add/update archive-specific fields
         archived_user_data["original_user_id"] = str(user_to_archive_doc["_id"]) # Store original _id as string
         archived_user_data["original_username"] = user_to_archive_doc.get("username")
         archived_user_data["original_email"] = user_to_archive_doc.get("email")
         archived_user_data["archived_at"] = datetime.now(timezone.utc)
         archived_user_data["archived_by"] = admin_username
-        
-        # Remove the MongoDB _id from the copied dict, so a new one is generated for the archive record
+
         if '_id' in archived_user_data:
             del archived_user_data['_id']
 
@@ -70,7 +67,6 @@ def archive_user_account(user_id_to_archive_str: str, admin_username: str) -> Tu
         # 4. Delete from the original 'userinfo' collection
         delete_result = userinfo_coll.delete_one({"_id": user_oid})
         if delete_result.deleted_count == 0:
-            # This is a critical state: copied but not deleted from original.
             logging.critical(f"CRITICAL: User {user_oid} archived (archive_record_id: {archive_record_id}) "
                              f"BUT failed to delete from userinfo. Manual cleanup needed.")
             return False, "User archived but failed to remove original. Please contact support."
@@ -109,18 +105,15 @@ def restore_user_account(original_user_id_str: str, admin_username: str) -> Tupl
 
     try:
         # 1. Find the user record in the 'archived_users' collection using their original_user_id
-        # We expect 'original_user_id' to be stored as a string.
         archived_user_doc = archived_users_coll.find_one({"original_user_id": original_user_id_str})
         if not archived_user_doc:
             logging.warning(f"Archived user with original_user_id '{original_user_id_str}' not found to restore.")
             return False, f"Archived user with original ID '{original_user_id_str}' not found."
 
-        archive_record_actual_id = archived_user_doc["_id"] # This is the _id of the document in archived_users
+        archive_record_actual_id = archived_user_doc["_id"]
 
         # 2. Prepare the record for 'userinfo' collection
         user_to_restore_data = archived_user_doc.copy()
-
-        # Convert original_user_id back to ObjectId for the _id field in userinfo
         try:
             user_to_restore_data["_id"] = ObjectId(original_user_id_str)
         except Exception as e:
@@ -129,8 +122,6 @@ def restore_user_account(original_user_id_str: str, admin_username: str) -> Tupl
             
         restored_username = user_to_restore_data.get("original_username")
         restored_email = user_to_restore_data.get("original_email")
-
-        # Remove archive-specific fields
         fields_to_remove_from_restored_doc = [
             "original_user_id", "original_username", "original_email",
             "archived_at", "archived_by"
@@ -138,14 +129,11 @@ def restore_user_account(original_user_id_str: str, admin_username: str) -> Tupl
         for field in fields_to_remove_from_restored_doc:
             if field in user_to_restore_data:
                 del user_to_restore_data[field]
-        
-        # Ensure 'username' and 'email' fields are present (they should be if 'original_username' and 'original_email' were)
         if restored_username: user_to_restore_data['username'] = restored_username
         if restored_email: user_to_restore_data['email'] = restored_email
 
 
         # 3. CONFLICT CHECK: Before inserting into userinfo, check for username/email conflicts
-        # Check if another *different* active user already has this username or email
         if restored_username:
             conflicting_user_by_name, _ = find_user_by_username(restored_username)
             if conflicting_user_by_name and conflicting_user_by_name["_id"] != user_to_restore_data["_id"]:
@@ -161,13 +149,8 @@ def restore_user_account(original_user_id_str: str, admin_username: str) -> Tupl
                 return False, msg
 
         # 4. Insert into 'userinfo' collection (using the original _id)
-        # We use insert_one because we expect the _id to be unique. If it's not (which means
-        # something went wrong or a user with that _id already exists and wasn't caught by conflict check),
-        # MongoDB will raise a DuplicateKeyError.
         insert_result_userinfo = userinfo_coll.insert_one(user_to_restore_data)
         if not insert_result_userinfo.inserted_id or insert_result_userinfo.inserted_id != user_to_restore_data["_id"]:
-            # This is an unexpected scenario if insert_one completes without error
-            # but has no inserted_id or a different one.
             logging.error(f"Failed to insert user (orig_id: {original_user_id_str}) into userinfo "
                           f"(no/mismatched inserted_id from MongoDB). Expected: {user_to_restore_data['_id']}")
             return False, "Failed to insert user into active users (unexpected DB response)."
@@ -188,8 +171,7 @@ def restore_user_account(original_user_id_str: str, admin_username: str) -> Tupl
         return True, "User account restored successfully."
 
     except PyMongoError as e:
-        # Check for duplicate key error specifically if insert_one to userinfo failed
-        if e.code == 11000: # Duplicate key error code
+        if e.code == 11000: 
              logging.error(f"PyMongoError (Duplicate Key) during restore user (orig_id: {original_user_id_str}): {e}", exc_info=True)
              return False, "Failed to restore user: A user with this ID, username, or email might already exist."
         logging.error(f"PyMongoError during restoring user (orig_id: {original_user_id_str}): {e}", exc_info=True)

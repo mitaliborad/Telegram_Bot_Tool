@@ -6,11 +6,8 @@ from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from bson import ObjectId
 from pymongo.errors import PyMongoError, OperationFailure
-
-# Import the function to get the userinfo collection from connection.py
 from .connection import get_userinfo_collection
 
-# User class definition (directly from your original database.py)
 class User(UserMixin):
     """Represents a user for Flask-Login."""
     def __init__(self, user_data: Dict[str, Any]):
@@ -25,7 +22,7 @@ class User(UserMixin):
             logging.error(f"User data missing essential fields during User object creation: {user_data}")
             raise ValueError("User data from database is missing required fields (_id, username, email, password_hash).")
 
-    def get_id(self): # Already provided by UserMixin if self.id is set, but explicit is fine.
+    def get_id(self): 
         return self.id
 
     def check_password(self, password_to_check: str) -> bool:
@@ -44,7 +41,7 @@ def get_all_users(search_query: Optional[str] = None, role_filter: Optional[str]
         logging.error(f"Failed to get userinfo collection for get_all_users: {error}")
         return None, f"Database error: {error}"
     
-    query_conditions = [] # List to hold individual conditions
+    query_conditions = [] 
 
     if search_query and search_query.strip():
         search_term = search_query.strip()
@@ -60,39 +57,28 @@ def get_all_users(search_query: Optional[str] = None, role_filter: Optional[str]
         logging.info(f"Searching users with query: '{search_term}'")
 
     if role_filter and role_filter.strip():
-        # Ensure role_filter matches exactly how roles are stored (e.g., "Premium User", "Free User")
         cleaned_role_filter = role_filter.strip()
         logging.info(f"Attempting to filter users by role: '{cleaned_role_filter}'")
-        # logging.info(f"Filtering users by role: '{role_filter.strip()}'")
         if cleaned_role_filter == "Free User":
-            # Implicit Free User: role is NOT Admin AND NOT Premium User
-            # This also correctly includes users where 'role' field might be null or not exist.
             role_condition = {
                 "role": { "$nin": ["Admin", "Premium User"] }
             }
             logging.info(f"Applying implicit 'Free User' filter: role not in ['Admin', 'Premium User']")
         elif cleaned_role_filter == "Premium User":
-            # Explicit Premium User
             role_condition = {"role": "Premium User"}
             logging.info(f"Applying explicit 'Premium User' filter.")
         elif cleaned_role_filter == "Admin":
-             # Explicit Admin User (though typically admins aren't listed this way from dashboard, good to have)
             role_condition = {"role": "Admin"}
             logging.info(f"Applying explicit 'Admin' filter.")
         else:
-            # For any other specific role string, do an exact match (if you add more roles later)
             role_condition = {"role": cleaned_role_filter}
             logging.info(f"Applying explicit filter for role: '{cleaned_role_filter}'.")
         query_conditions.append(role_condition)
-
-    # Combine conditions with $and if multiple exist, otherwise use the single condition or empty for all
     final_query = {}
     if len(query_conditions) > 1:
         final_query = {"$and": query_conditions}
     elif len(query_conditions) == 1:
         final_query = query_conditions[0]
-    # If query_conditions is empty, final_query remains {} which means find all.
-
     logging.info(f"Final user query: {final_query}")
 
     try:
@@ -119,7 +105,6 @@ def find_user_by_id(user_id: ObjectId) -> Tuple[Optional[Dict[str, Any]], Option
         return None, "Invalid user ID format provided."
     try:
         user_doc = collection.find_one({"_id": user_id})
-        # Do NOT delete password_hash here. This function is used for authentication.
         return (user_doc, None) if user_doc else (None, None)
     except PyMongoError as e: logging.error(f"Database error finding user by ID {user_id}: {e}", exc_info=True); return None, f"Database error finding user: {e}"
     except Exception as e: logging.error(f"Error finding user by ID {user_id}: {e}", exc_info=True); return None, f"Error finding user: {e}"
@@ -127,7 +112,6 @@ def find_user_by_id(user_id: ObjectId) -> Tuple[Optional[Dict[str, Any]], Option
 def find_user_by_id_str(user_id_str: str) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
     try:
         user_oid = ObjectId(user_id_str)
-        # Calls the find_user_by_id function which now correctly keeps password_hash
         return find_user_by_id(user_oid)
     except Exception as e:
         logging.error(f"Invalid ObjectId format in find_user_by_id_str for '{user_id_str}': {e}")
@@ -135,12 +119,11 @@ def find_user_by_id_str(user_id_str: str) -> Tuple[Optional[Dict[str, Any]], Opt
 
 def find_user_by_email(email: str) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
     collection, error = get_userinfo_collection()
-    if error or collection is None: # Added check for collection
+    if error or collection is None:
         logging.error(f"DB error in find_user_by_email: {error}")
         return None, str(error or "Collection not available for find_user_by_email")
     try:
         user_doc = collection.find_one({"email": email.lower()})
-        # Do NOT delete password_hash here. This function is used for authentication.
         return (user_doc, None) if user_doc else (None, None)
     except PyMongoError as e: logging.error(f"Database error finding user by email {email}: {e}", exc_info=True); return None, f"Database error finding user: {e}"
     except Exception as e: logging.error(f"Error finding user by email {email}: {e}", exc_info=True); return None, f"Error finding user: {e}"
@@ -152,8 +135,6 @@ def find_user_by_username(username: str) -> Tuple[Optional[Dict[str, Any]], str]
         return None, f"Failed to get userinfo collection: {error}"
     try:
         user = collection.find_one({"username": username})
-        # Do NOT delete password_hash here if this might be used in an auth flow.
-        # If purely for checking existence or non-sensitive display, can delete. Assume auth potential.
         return (user, "") if user else (None, "")
     except PyMongoError as e: error_msg = f"PyMongoError finding user by username '{username}': {e}"; logging.exception(error_msg); return None, error_msg
     except Exception as e: error_msg = f"Unexpected error finding user by username '{username}': {e}"; logging.exception(error_msg); return None, error_msg
@@ -165,9 +146,8 @@ def save_user(user_data: Dict[str, Any]) -> Tuple[bool, str]:
     if "email" not in user_data or "password_hash" not in user_data:
         return False, "User data is missing required email or password_hash fields."
     try:
-        user_data["email"] = user_data["email"].lower() # Ensure email is stored lowercase
-        user_data.setdefault('role', 'Free User') # Ensure 'role' has a default if not provided
-        # user_data.setdefault('created_at', datetime.now(timezone.utc)) # Usually handled in auth_routes
+        user_data["email"] = user_data["email"].lower() 
+        user_data.setdefault('role', 'Free User')
 
         result = collection.insert_one(user_data)
         if result.inserted_id:
@@ -179,7 +159,7 @@ def save_user(user_data: Dict[str, Any]) -> Tuple[bool, str]:
     except OperationFailure as of:
         error_msg = f"Database operation failed saving user: {of}"
         logging.exception(error_msg)
-        if "E11000" in str(of): # Check for duplicate key error
+        if "E11000" in str(of): 
             if 'email_1' in str(of): return False, "Email address already exists."
             if 'username_1' in str(of): return False, "Username already exists."
             return False, "A user with this email or username already exists."
@@ -198,7 +178,6 @@ def update_user_password(user_id: ObjectId, new_password: str) -> Tuple[bool, st
         hashed_pw = generate_password_hash(new_password, method='pbkdf2:sha256')
         result = collection.update_one({"_id": user_id}, {"$set": {"password_hash": hashed_pw}})
         if result.matched_count == 0: return False, "User not found."
-        # modified_count can be 0 if password is the same, still consider it a success.
         logging.info(f"Successfully updated password for user ID {user_id}.")
         return True, "Password updated successfully."
     except PyMongoError as e: logging.error(f"Database error updating password for user ID {user_id}: {e}", exc_info=True); return False, "Database error during password update."
@@ -280,7 +259,7 @@ def update_user_details(user_id_str: str, update_data: Dict[str, Any]) -> Tuple[
         logging.info(f"User {user_oid} details updated. Payload: {update_payload}. Modified: {result.modified_count}")
         return True, "User details updated successfully."
     except PyMongoError as e:
-        if hasattr(e, 'code') and e.code == 11000: # Duplicate key error
+        if hasattr(e, 'code') and e.code == 11000: 
             if 'email_1' in str(e).lower(): return False, "Email address is already in use."
             if 'username_1' in str(e).lower(): return False, "Username is already in use."
             return False, f"Database constraint violation: A unique field value is already taken."

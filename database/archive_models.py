@@ -3,13 +3,7 @@ import logging
 from typing import Optional, Dict, Any, List, Tuple
 from bson import ObjectId
 from pymongo.errors import PyMongoError, OperationFailure
-# datetime and timezone are not directly used in the functions below,
-# but they were in your original `archive_file_record_by_access_id`,
-# so keeping them if other archive-specific logic might need them.
-# If not, they can be removed.
 from datetime import datetime, timezone
-
-# Import the function to get the archived_files collection
 from .connection import get_archived_files_collection
 
 # --- Archived File Metadata (archived_files collection) Functions ---

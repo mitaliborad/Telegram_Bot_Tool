@@ -58,7 +58,20 @@ logging.info("Flask-Login initialized and user_loader configured.")
 
 # --- Flask-Admin Setup ---
 admin_dashboard_view = MyAdminIndexView(name="Dashboard", endpoint='admin', url='/admin') # Flask-Admin's main endpoint is 'admin' by default for its index.
-admin = Admin(app, name='Storage Admin', template_mode='bootstrap4', url='/admin', index_view=admin_dashboard_view)
+#admin = Admin(app, name='Storage Admin', template_mode='bootstrap4', url='/admin', index_view=admin_dashboard_view)
+JQUERY_FULL_URL = 'https://code.jquery.com/jquery-3.5.1.min.js'
+
+admin = Admin(
+    app, 
+    name='Storage Admin', 
+    template_mode='bootstrap4', 
+    url='/admin', 
+    index_view=admin_dashboard_view,
+    # --- START OF THE FIX ---
+    # This tells Flask-Admin to use our custom template as the base for all its pages.
+    base_template='admin/my_admin_base.html'
+    # --- END OF THE FIX ---
+)
 logging.info("Flask-Admin initialized with custom dashboard. Accessible at /admin")
 
 admin.add_view(UserView(name='Manage Users', endpoint='users', menu_icon_type='glyph', menu_icon_value='glyphicon-user'))

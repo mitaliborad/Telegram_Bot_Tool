@@ -9,6 +9,8 @@ from telegram_api import download_telegram_file_content
 from .connection import get_metadata_collection
 from .user_models import get_all_users
 from config import PRIMARY_TELEGRAM_CHAT_ID
+import io
+import mimetypes
 
 def save_file_metadata(record: Dict[str, Any]) -> Tuple[bool, str]:
     collection, error = get_metadata_collection()
@@ -255,20 +257,57 @@ logging.info("Active file models module (database/file_models.py) initialized.")
 
 
 
+# def _find_best_file_id(locations: list, primary_chat_id: str) -> Optional[str]:
+#     """Helper to find the file_id from the primary chat, with a fallback."""
+#     primary_file_id = None
+#     fallback_file_id = None
+#     for loc in locations:
+#         if loc.get('success') and loc.get('tg_response'):
+#             file_id = loc.get('tg_response', {}).get('result', {}).get('document', {}).get('file_id')
+#             if file_id:
+#                 if str(loc.get('chat_id')) == str(primary_chat_id):
+#                     primary_file_id = file_id
+#                     break  # Found the best one
+#                 if not fallback_file_id:
+#                     fallback_file_id = file_id
+#     return primary_file_id or fallback_file_id
+
+# In database/file_models.py
+
+# In database/file_models.py
+
 def _find_best_file_id(locations: list, primary_chat_id: str) -> Optional[str]:
-    """Helper to find the file_id from the primary chat, with a fallback."""
+    """
+    Helper to find the file_id from the primary chat, with a fallback.
+    This version correctly parses the flattened data structure saved by _parse_send_results.
+    """
     primary_file_id = None
     fallback_file_id = None
+    
+    if not isinstance(locations, list):
+        return None
+
     for loc in locations:
-        if loc.get('success') and loc.get('tg_response'):
-            file_id = loc.get('tg_response', {}).get('result', {}).get('document', {}).get('file_id')
-            if file_id:
-                if str(loc.get('chat_id')) == str(primary_chat_id):
-                    primary_file_id = file_id
-                    break  # Found the best one
-                if not fallback_file_id:
-                    fallback_file_id = file_id
+        if not isinstance(loc, dict):
+            continue
+
+        # --- START OF THE REAL FIX ---
+        # The 'file_id' is at the top level of the location dictionary, not nested.
+        file_id = loc.get('file_id')
+        # --- END OF THE REAL FIX ---
+
+        if file_id:
+            # If we found a file_id, check if it's from the primary chat
+            if str(loc.get('chat_id')) == str(primary_chat_id):
+                primary_file_id = file_id
+                break  # Found the best possible ID, stop searching.
+            
+            # If not primary, keep the first one we find as a fallback.
+            if not fallback_file_id:
+                fallback_file_id = file_id
+                
     return primary_file_id or fallback_file_id
+
 
 def get_file_chunks_data(batch_id: str, filename: str) -> Tuple[Optional[List[bytes]], str]:
     """

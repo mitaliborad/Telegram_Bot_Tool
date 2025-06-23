@@ -1,5 +1,5 @@
 {# templates/admin/file_metadata_list.html #}
-{% extends 'admin/master.html' %}
+{% extends 'admin/my_admin_base.html' %}
 {# Assuming your pagination_widget from lib.html is similar to the macro defined here.
    If it's different, you might prefer to use the macro below or adapt.
    For simplicity, I'll use the macro defined in this template.
@@ -42,7 +42,7 @@
 {% endmacro %}
 
 {# Change 'body' to 'page_body' to fit into the main content area of master.html #}
-{% block page_body %}
+{% block body %}
 <style>
     .custom-styled-table {
         background-color: #ffffff;
@@ -306,4 +306,4 @@
         <p>No file/batch upload records found in the system.</p>
     {% endif %}
   {% endif %}
-{% endblock page_body %}
+{% endblock %}

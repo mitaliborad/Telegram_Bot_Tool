@@ -174,9 +174,11 @@
 import logging
 from flask_admin.babel import gettext
 from flask_admin.base import BaseView, expose
-from flask import redirect, url_for, request, flash
+from flask import redirect, url_for, request, flash, Response
 from markupsafe import Markup  # <-- ADD THIS IMPORT
 import json
+import io
+import mimetypes
 from flask_login import current_user
 from datetime import datetime
 from math import ceil
@@ -184,7 +186,8 @@ from database import (
     get_all_file_metadata,
     find_metadata_by_access_id,
     archive_file_record_by_access_id,
-    get_file_chunks_data
+    get_file_chunks_data,
+    get_metadata_collection # <-- ADD THIS LINE
 )
 
 class FileMetadataView(BaseView):

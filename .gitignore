@@ -189,6 +189,7 @@ output/
 out/
 logs/
 *.log # More general log files
+client_secret.json
 
 # Local instance-specific data (e.g., SQLite databases for development)
 # *.sqlite

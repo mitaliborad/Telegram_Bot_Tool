@@ -1,5 +1,6 @@
-{% extends 'admin/base.html' %}
+{% extends 'admin/my_admin_base.html' %}
 
+{# --- The body block starts here and contains ONLY the HTML --- #}
 {% block body %}
   <div class="container-fluid">
     <div class="row">
@@ -10,90 +11,147 @@
           </a>
         </div>
 
-        <!-- SECTION 1: BATCH DETAILS -->
+        <!-- BATCH DETAILS -->
         <div class="panel panel-primary">
-          <div class="panel-heading">
-            <h3 class="panel-title">Batch Details</h3>
-          </div>
+          <div class="panel-heading"><h3 class="panel-title">Batch Details</h3></div>
           <div class="panel-body">
             <dl class="dl-horizontal">
-              <dt>Batch Display Name</dt>
-              <dd>{{ batch_details.batch_display_name }}</dd>
-
-              <dt>Access ID</dt>
-              <dd><code>{{ batch_details.access_id }}</code></dd>
-              
-              <dt>Uploaded By</dt>
-              <dd>{{ batch_details.username }}</dd>
-
-              <dt>Upload Timestamp</dt>
-              <dd>{{ batch_details.upload_timestamp.strftime('%Y-%m-%d %H:%M:%S') if batch_details.upload_timestamp else 'N/A' }} UTC</dd>
-
-              <dt>Total Size</dt>
-              <dd>{{ batch_details.total_size }} ({{ batch_details.file_count }} file(s))</dd>
-
+              <dt>Batch Display Name</dt><dd>{{ batch_details.batch_display_name }}</dd>
+              <dt>Access ID</dt><dd><code>{{ batch_details.access_id }}</code></dd>
+              <dt>Uploaded By</dt><dd>{{ batch_details.username }}</dd>
+              <dt>Upload Timestamp</dt><dd>{{ batch_details.upload_timestamp.strftime('%Y-%m-%d %H:%M:%S') if batch_details.upload_timestamp else 'N/A' }} UTC</dd>
+              <dt>Total Size</dt><dd>{{ batch_details.total_size }} ({{ batch_details.file_count }} file(s))</dd>
               <dt>Is Anonymous</dt>
               <dd>
-                {% if batch_details.is_anonymous %}
-                  <span class="status-badge status-failed">Yes</span>
-                {% else %}
-                  <span class="status-badge status-active">No</span>
-                {% endif %}
+                {% if batch_details.is_anonymous %}<span class="status-badge status-failed">Yes</span>
+                {% else %}<span class="status-badge status-active">No</span>{% endif %}
               </dd>
             </dl>
           </div>
         </div>
 
-        <!-- SECTION 2: FILE CONTENT LIST -->
+        <!-- FILES IN BATCH -->
         <div class="panel panel-default">
-            <div class="panel-heading">
-              <h3 class="panel-title">Files in this Batch</h3>
-            </div>
+            <div class="panel-heading"><h3 class="panel-title">Files in this Batch</h3></div>
             <div class="panel-body">
                 <table class="table table-bordered table-striped table-hover">
-                    <thead>
-                      <tr>
-                        <th>Filename</th>
-                        <th>Size</th>
-                        <th>MIME Type</th>
-                        <th>Actions</th>
-                      </tr>
-                    </thead>
+                    <thead><tr><th>Filename</th><th>Size</th><th>MIME Type</th><th>Actions</th></tr></thead>
                     <tbody>
                       {% for file in files_in_batch %}
                       <tr>
-                        <td><i class="fa fa-file-o" style="margin-right: 8px;"></i>{{ file.original_filename }}</td>
+                        <td><i class="fa fa-file-o" style="margin-right: 8px;"></i>{{ file.original_filename or '[No Filename]' }}</td>
                         <td>{{ file.total_original_size | format_bytes }}</td>
-                        <td>{{ file.mime_type }}</td>
+                        <td>{{ file.mime_type or 'N/A' }}</td>
                         <td>
-                        {# This is the column for the 'Actions' button #}
                         {% if file.original_filename %}
-                            <a href="{{ url_for('.view_file_content', batch_id=batch_details.access_id, filename=file.original_filename) }}"
-                            target="_blank"
-                            class="btn btn-xs btn-primary">
-                            View Content
-                            </a>
+                          <button type="button" class="btn btn-xs btn-primary view-content-btn" data-toggle="modal" data-target="#filePreviewModal" data-filename="{{ file.original_filename }}" data-batch-id="{{ batch_details.access_id }}">View Content</button>
                         {% else %}
-                            {# If there is no filename, show a disabled button and a tooltip #}
-                            <a href="#"
-                            class="btn btn-xs btn-default disabled"
-                            title="Cannot preview: Filename is missing in the database record.">
-                            No Filename
-                            </a>
+                          <button type="button" class="btn btn-xs btn-default" disabled>No Filename</button>
                         {% endif %}
                         </td>
                       </tr>
                       {% else %}
-                      <tr>
-                        <td colspan="4" class="text-center">No individual file records found for this batch.</td>
-                      </tr>
+                      <tr><td colspan="4" class="text-center">No individual file records found for this batch.</td></tr>
                       {% endfor %}
                     </tbody>
                   </table>
             </div>
         </div>
-
       </div>
     </div>
   </div>
+  
+  <!-- MODAL HTML (Correctly placed inside the body block) -->
+  <div class="modal fade" id="filePreviewModal" tabindex="-1" role="dialog" aria-labelledby="filePreviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="filePreviewModalLabel">File Preview</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body" id="filePreviewModalBody"><p class="text-center">Loading...</p></div>
+            <div class="modal-footer"><button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button></div>
+        </div>
+    </div>
+  </div>
+{% endblock %} {# <-- The body block ENDS here #}
+
+
+{# --- The tail_js block is now OUTSIDE and SEPARATE from the body block --- #}
+{% block tail_js %}
+  {{ super() }}
+  <script>
+    $('#filePreviewModal').on('show.bs.modal', function(event) {
+        var button = $(event.relatedTarget);
+        var filename = button.data('filename');
+        var batchId = button.data('batch-id');
+        var modal = $(this);
+        var modalBody = modal.find('#filePreviewModalBody');
+
+        modal.find('.modal-title').text('Preview: ' + filename);
+        modalBody.html('<p class="text-center"><em>Loading content...</em></p>');
+
+        var contentUrl = "{{ url_for('.view_file_content', batch_id='__BATCH_ID__', filename='__FILENAME__') }}"
+            .replace('__BATCH_ID__', batchId)
+            .replace('__FILENAME__', encodeURIComponent(filename));
+
+        console.log("Fetching content for:", filename, "from URL:", contentUrl);
+
+        fetch(contentUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Server responded with status: ' + response.status);
+                }
+                return Promise.all([response.blob(), response.headers.get('Content-Type')]);
+            })
+            .then(([blob, contentType]) => {
+                console.log("Received data. Blob size:", blob.size, "bytes. Content-Type:", contentType);
+                modalBody.empty();
+
+                var effectiveContentType = contentType;
+                if (!effectiveContentType || effectiveContentType === 'application/octet-stream') {
+                    if (filename.toLowerCase().endsWith('.jpg') || filename.toLowerCase().endsWith('.jpeg')) {
+                        effectiveContentType = 'image/jpeg';
+                    } else if (filename.toLowerCase().endsWith('.png')) {
+                        effectiveContentType = 'image/png';
+                    } else if (filename.toLowerCase().endsWith('.pdf')) {
+                        effectiveContentType = 'application/pdf';
+                    } else if (filename.toLowerCase().startsWith('text/')) {
+                        effectiveContentType = 'text/plain';
+                    }
+                    console.log("Guessed Content-Type from filename:", effectiveContentType);
+                }
+
+                if (effectiveContentType.startsWith('image/')) {
+                    var imageUrl = URL.createObjectURL(blob);
+                    modalBody.html('<img src="' + imageUrl + '" class="img-fluid" alt="Image preview">');
+                    console.log("Rendering as image.");
+                } else if (effectiveContentType === 'application/pdf') {
+                    var pdfUrl = URL.createObjectURL(blob);
+                    modalBody.html('<embed src="' + pdfUrl + '" type="application/pdf" width="100%" height="650px" />');
+                    console.log("Rendering as PDF.");
+                } else if (effectiveContentType.startsWith('text/')) {
+                    blob.text().then(function(textContent) {
+                        var pre = $('<pre></pre>').css({"white-space": "pre-wrap", "word-wrap": "break-word", "max-height": "70vh", "overflow-y": "auto"});
+                        pre.text(textContent);
+                        modalBody.append(pre);
+                        console.log("Rendering as text.");
+                    });
+                } else {
+                    console.log("Unsupported type. Showing download link.");
+                    modalBody.html(
+                        '<div class="alert alert-warning">' +
+                        '  <h4>Preview Not Available</h4>' +
+                        '  <p>Preview is not supported for this file type (<code>' + (contentType || 'unknown') + '</code>).</p>' +
+                        '  <a href="' + contentUrl + '" class="btn btn-primary" download="' + filename + '">Download File</a>' +
+                        '</div>'
+                    );
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching file for preview:', error);
+                modalBody.html('<div class="alert alert-danger"><strong>Error:</strong> Could not load file preview. Check the browser console.</div>');
+            });
+    });
+  </script>
 {% endblock %}

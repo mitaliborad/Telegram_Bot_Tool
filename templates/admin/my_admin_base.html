@@ -1,0 +1,9 @@
+{# In templates/admin/my_admin_base.html #}
+
+{% extends 'admin/base.html' %}
+
+{# This is the block where Flask-Admin loads its JavaScript in the <head> #}
+{% block head_js %}
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  {{ super() }}
+{% endblock %}

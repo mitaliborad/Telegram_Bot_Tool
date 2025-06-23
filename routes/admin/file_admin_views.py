@@ -328,66 +328,62 @@ class FileMetadataView(BaseView):
     def preview_batch_view(self, access_id):
         """
         This view handles the display of the batch preview page.
-        It fetches all files related to a single access_id and aggregates their details.
+        It fetches the main batch record and then extracts the list of
+        individual files from its 'files_in_batch' field.
         """
         try:
-            result, error = find_metadata_by_access_id(access_id)
+            # --- START OF THE FIX ---
+            # 1. Fetch the main batch document using its access_id.
+            batch_record, error = find_metadata_by_access_id(access_id)
             
             if error:
                 flash(f"Database error: {error}", 'danger')
                 return redirect(url_for('.index'))
             
-            files_in_batch = []
-            if isinstance(result, list):
-                files_in_batch = result
-            elif isinstance(result, dict):
-                files_in_batch.append(result)
-
-            if not files_in_batch:
-                flash(f"No records found for Access ID: {access_id}", 'warning')
+            if not batch_record:
+                flash(f"No batch record found for Access ID: {access_id}", 'warning')
                 return redirect(url_for('.index'))
 
-            first_file = files_in_batch[0]
-            
-            # --- START OF CORRECTIVE STEP 2.2 ---
-            # Convert the timestamp string to a datetime object for formatting.
-            upload_datetime = None
-            timestamp_str = first_file.get('upload_timestamp')
-            if isinstance(timestamp_str, str):
-                try:
-                    # Attempt to parse the ISO 8601 format with 'Z' for UTC
-                    upload_datetime = datetime.fromisoformat(timestamp_str.replace('Z', '+00:00'))
-                except ValueError:
-                    # Fallback for other potential formats or if parsing fails
-                    logging.warning(f"Could not parse timestamp string: {timestamp_str}")
-                    upload_datetime = None 
-            elif isinstance(timestamp_str, datetime):
-                # If it's already a datetime object, use it directly
-                upload_datetime = timestamp_str
-            # --- END OF CORRECTIVE STEP 2.2 ---
+            # 2. Extract the list of files from WITHIN the batch record.
+            # This is the crucial step.
+            files_in_batch_list = batch_record.get('files_in_batch', [])
 
-            total_size_bytes = sum(f.get('total_original_size', 0) for f in files_in_batch)
+            # 3. Aggregate the top-level batch details for display.
+            total_size_bytes = batch_record.get('total_original_size', 0)
             from config import format_bytes
             
+            upload_datetime = None
+            timestamp_str = batch_record.get('upload_timestamp')
+            if isinstance(timestamp_str, str):
+                try:
+                    upload_datetime = datetime.fromisoformat(timestamp_str.replace('Z', '+00:00'))
+                except ValueError:
+                    upload_datetime = None
+            elif isinstance(timestamp_str, datetime):
+                upload_datetime = timestamp_str
+
             batch_details = {
-                'batch_display_name': first_file.get('batch_display_name', 'N/A'),
-                'access_id': first_file.get('access_id'),
-                'username': first_file.get('username', 'Anonymous'),
-                # Use the converted datetime object here
+                'batch_display_name': batch_record.get('batch_display_name', 'N/A'),
+                'access_id': batch_record.get('access_id'),
+                'username': batch_record.get('username', 'Anonymous'),
                 'upload_timestamp': upload_datetime,
                 'total_size': format_bytes(total_size_bytes),
-                'is_anonymous': first_file.get('is_anonymous', False),
-                'file_count': len(files_in_batch)
+                'is_anonymous': batch_record.get('is_anonymous', False),
+                # We get the count from the list we just extracted.
+                'file_count': len(files_in_batch_list) 
             }
-
+            
+            # 4. Render the template, passing the batch details AND the extracted list of files.
             return self.render('admin/preview_batch.html', 
                                 batch_details=batch_details,
-                                files_in_batch=files_in_batch)
+                                files_in_batch=files_in_batch_list) # Pass the list here
+            # --- END OF THE FIX ---
 
         except Exception as e:
             logging.error(f"Error in preview_batch_view for access_id {access_id}: {e}", exc_info=True)
             flash("An unexpected error occurred while loading the preview page.", 'danger')
             return redirect(url_for('.index'))
+        
 
     @expose('/archive/<record_id>', methods=('POST',))
     def archive_action(self, record_id):

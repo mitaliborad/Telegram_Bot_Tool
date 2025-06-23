@@ -4,7 +4,7 @@ import os
 from flask_cors import CORS
 from dotenv import load_dotenv
 from flask_admin import Admin
-from flask_login import LoginManager # Keep this import
+from flask_login import LoginManager 
 from flask import Flask, jsonify, send_from_directory
 
 # Import your admin views
@@ -23,13 +23,10 @@ from database import find_user_by_id_str, User
 load_dotenv()
 
 # --- App and Mail are imported from config.py ---
-from config import app, mail, format_bytes, format_time, LOG_DIR
+from config import app, mail, format_bytes, format_time
 logging.info("app_setup.py: Started application setup.")
-
-# --- Flask-Login Setup ---
-# Initialize LoginManager here as it's specific to this app setup
 login_manager = LoginManager()
-login_manager.init_app(app) # Configure it for the imported 'app'
+login_manager.init_app(app) 
 
 @login_manager.user_loader
 def load_user(user_id_str):
@@ -40,24 +37,22 @@ def load_user(user_id_str):
     user_doc, _ = find_user_by_id_str(user_id_str)
     if user_doc:
         try:
-            return User(user_doc) # Create a User instance
+            return User(user_doc) 
         except ValueError as e:
-            # Use app.logger for consistency if Flask app context is available
-            # otherwise, fallback to standard logging
             logger = app.logger if hasattr(app, 'logger') else logging
             logger.error(f"Error creating User object for user_id {user_id_str} in user_loader: {e}")
             return None
     return None
 
 # Configure login view and message
-login_manager.login_view = 'admin_auth.login' # Points to the login route in admin_auth_bp
+login_manager.login_view = 'admin_auth.login' 
 login_manager.login_message = "You must be logged in as an admin to access this page."
 login_manager.login_message_category = "info"
 logging.info("Flask-Login initialized and user_loader configured.")
 
 
 # --- Flask-Admin Setup ---
-admin_dashboard_view = MyAdminIndexView(name="Dashboard", endpoint='admin', url='/admin') # Flask-Admin's main endpoint is 'admin' by default for its index.
+admin_dashboard_view = MyAdminIndexView(name="Dashboard", endpoint='admin', url='/admin')
 #admin = Admin(app, name='Storage Admin', template_mode='bootstrap4', url='/admin', index_view=admin_dashboard_view)
 JQUERY_FULL_URL = 'https://code.jquery.com/jquery-3.5.1.min.js'
 
@@ -67,10 +62,7 @@ admin = Admin(
     template_mode='bootstrap4', 
     url='/admin', 
     index_view=admin_dashboard_view,
-    # --- START OF THE FIX ---
-    # This tells Flask-Admin to use our custom template as the base for all its pages.
     base_template='admin/my_admin_base.html'
-    # --- END OF THE FIX ---
 )
 logging.info("Flask-Admin initialized with custom dashboard. Accessible at /admin")
 
@@ -122,7 +114,7 @@ from routes.archive_routes import archive_bp
 # Register your existing blueprints
 blueprints_to_register_with_prefix = {
     'password_reset': (password_reset_bp, None),
-    'auth': (auth_bp, None), # Assuming this is for main app auth, not admin
+    'auth': (auth_bp, None), 
     'upload': (upload_bp, '/upload'),
     'download_prefixed': (download_prefixed_bp, '/download'),
     'download_sse': (download_sse_bp, None),
@@ -149,7 +141,7 @@ else:
     logging.warning("No new user-defined blueprints were registered via loop.")
 
 # Register the admin authentication blueprint
-if 'admin_auth' not in app.blueprints: # Check if not already registered by mistake
+if 'admin_auth' not in app.blueprints: 
     app.register_blueprint(admin_auth_bp, url_prefix='/admin')
     logging.info(f"Admin authentication blueprint '{admin_auth_bp.name}' registered with prefix: /admin")
 else:
@@ -157,26 +149,16 @@ else:
 
 @app.route('/')
 def home():
-    # This function will run and return a simple string.
-    return "whelcome to my site!"
+    return "whelcome to Our site!"
 
 # --- Application Runner ---
 if __name__ == '__main__':
     app_env = os.environ.get('APP_ENV', 'development').lower()
     is_development_mode = (app_env == 'development')
-    log_level = logging.DEBUG if is_development_mode else logging.INFO
-    logging.basicConfig(level=log_level, format='%(asctime)s - %(levelname)s - %(name)s - %(module)s - %(message)s')
     
     logging.info(f"Starting Flask server in '{app_env}' mode...")
     logging.info(f"  Debug mode: {is_development_mode}")
     logging.info(f"  Reloader: {is_development_mode}")
-
-    if not os.path.exists(LOG_DIR):
-        try:
-            os.makedirs(LOG_DIR)
-            logging.info(f"Log directory created: {LOG_DIR}")
-        except OSError as e:
-            logging.error(f"Could not create logging directory {LOG_DIR}: {e}")
 
     app.run(
         host=os.environ.get('FLASK_RUN_HOST', '0.0.0.0'),

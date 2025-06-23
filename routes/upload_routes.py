@@ -605,19 +605,46 @@ def initiate_batch_upload():
             user_info.update({"is_anonymous": False, "username": user_doc.get("username"), "user_email": user_doc.get("email")})
 
     data = request.get_json()
+    if not data:
+        return jsonify({"error": "Missing JSON payload."}), 400
+    is_batch_flag = data.get('is_batch', False)
     db_record_payload = {
-        "access_id": batch_id, "username": user_info['username'], "user_email": user_info['user_email'],
-        "is_anonymous": user_info['is_anonymous'], "upload_timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-        "storage_location": "gdrive", "status_overall": "batch_initiated", "is_batch": data.get('is_batch', True),
-        "batch_display_name": data.get('batch_display_name', 'Unnamed Batch'), "files_in_batch": [], "total_original_size": data.get('total_original_size', 0),
+        "access_id": batch_id,
+        "username": user_info['username'],
+        "user_email": user_info['user_email'],
+        "is_anonymous": user_info['is_anonymous'],
+        "upload_timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "storage_location": "gdrive",
+        "status_overall": "batch_initiated",
+        "is_batch": is_batch_flag,
+        "files_in_batch": [],
+        "total_original_size": data.get('total_original_size', 0),
     }
 
+    if not is_batch_flag:
+        # This is a SINGLE FILE upload.
+        # We expect the frontend to send 'original_filename'.
+        original_filename = data.get('original_filename')
+        if not original_filename:
+            return jsonify({"error": "For a single file upload, 'original_filename' must be provided in the request."}), 400
+        
+        # Add the top-level field you want
+        db_record_payload['original_filename'] = original_filename
+        # Also set the batch_display_name to the filename for consistency
+        db_record_payload['batch_display_name'] = original_filename
+        
+        logging.info(f"{log_prefix} Initiating single file record for '{original_filename}'.")
+    else:
+        # This is a BATCH upload.
+        db_record_payload['batch_display_name'] = data.get('batch_display_name', 'Unnamed Batch')
+        logging.info(f"{log_prefix} Initiating batch record for '{db_record_payload['batch_display_name']}'.")
+    
     save_success, save_msg = save_file_metadata(db_record_payload)
     if not save_success:
         logging.error(f"{log_prefix} DB placeholder save failed: {save_msg}.")
         return jsonify({"error": f"Failed to initiate batch record: {save_msg}"}), 500
 
-    logging.info(f"{log_prefix} Batch placeholder created for user '{user_info['username']}'.")
+    logging.info(f"{log_prefix} Record created successfully for user '{user_info['username']}'.")
     return jsonify({"message": "Batch initiated successfully.", "batch_id": batch_id}), 201
 
 @upload_bp.route('/stream', methods=['POST', 'OPTIONS'])

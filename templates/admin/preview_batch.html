@@ -1,12 +1,181 @@
-{% extends 'admin/my_admin_base.html' %}
+{% extends 'admin/master.html' %}
 
-{# --- The body block starts here and contains ONLY the HTML --- #}
-{% block body %}
+{% block page_body %}
+<style>
+/* You can keep page-specific styles here or move them to a CSS file if they grow large */
+
+/* MODIFIED STYLES FOR DL-HORIZONTAL */
+.dl-horizontal dt {
+    float: left;
+    width: 160px; /* Adjust this width as needed */
+    overflow: hidden;
+    clear: left;
+    text-align: right;
+    text-overflow: ellipsis;
+    white-space: nowrap; /* Keeps DT text on one line */
+    margin-bottom: 5px; 
+}
+
+.dl-horizontal dd {
+    margin-left: 180px; /* Must be > dt width (e.g., 160px + 20px padding) */
+    margin-bottom: 10px; 
+}
+
+/* Allow long content within dd to wrap */
+.dl-horizontal dd, 
+.dl-horizontal dd code { 
+    word-wrap: break-word; 
+    overflow-wrap: break-word; 
+    white-space: normal; 
+}
+/* END OF MODIFIED STYLES FOR DL-HORIZONTAL */
+
+
+.panel-title {
+    font-size: 1.25rem; /* Slightly larger panel titles */
+}
+.action-bar .btn {
+    margin-right: 10px;
+}
+.status-badge { /* Copied from file_metadata_list.html for consistency, adjust if needed */
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: white;
+    border-radius: 4px;
+    display: inline-block;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    border-width: 1px;
+    border-style: solid;
+}
+.status-badge.status-active { /* For "No" in Anonymous column - Reddish */
+     background-color: #FEE2E2;
+    color: #B91C1C;
+   border-color: #FECACA;
+}
+.status-badge.status-failed { /* For "Yes" in Anonymous column - Greenish */
+    background-color: #D1FAE5;
+    color: #047857;
+    border-color: #A7F3D0;
+}
+
+/* Modal styling if needed - Bootstrap default is usually fine */
+.modal-lg {
+    max-width: 80%; /* Make modal wider for better preview */
+}
+.modal-body img.img-fluid {
+    max-height: 75vh; /* Limit image height within modal */
+    object-fit: contain; /* Ensure image fits without cropping, maintaining aspect ratio */
+}
+
+.panel {
+    margin-bottom: 20px;
+    background-color: #fff;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+.panel-primary {
+    border-color: #014a2f;
+}
+.panel-primary > .panel-heading {
+    color: #fff;
+    background-color: #014a2f;
+    border-color: #014a2f;
+    padding: 10px 15px;
+    border-bottom: 1px solid transparent;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+.panel-default {
+    border-color: #ddd;
+}
+.panel-default > .panel-heading {
+    color: #333;
+    background-color: #f5f5f5;
+    border-color: #ddd;
+    padding: 10px 15px;
+    border-bottom: 1px solid transparent;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+.panel-body {
+    padding: 15px;
+}
+.table-bordered {
+    border: 1px solid #ddd;
+}
+.table-bordered > thead > tr > th,
+.table-bordered > tbody > tr > th,
+.table-bordered > tfoot > tr > th,
+.table-bordered > thead > tr > td,
+.table-bordered > tbody > tr > td,
+.table-bordered > tfoot > tr > td {
+    border: 1px solid #ddd;
+}
+.table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: #f9f9f9;
+}
+.table-hover > tbody > tr:hover {
+    background-color: #f5f5f5;
+}
+.btn-default {
+    border: 1px solid #006a43;
+    color: #006a43;
+
+    &:hover{
+       color: #006a43; 
+    }
+}
+.btn-primary { 
+    background-color: #014a2f;
+    border:1px solid #014a2f;
+    color: white;
+}
+.btn-primary:hover {
+    background-color: #d7fec8;
+    border-color:#014a2f;
+    color: #014a2f;
+}
+
+.btn-secondary{
+   background-color: red;
+   border-color:red;
+
+   &:hover{
+    background-color: red;
+   border-color:red;
+   }
+} 
+.btn-xs {
+    padding: 1px 5px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+}
+.close:focus{
+ outline:none;
+}
+@media (max-width: 768px) {
+    .dl-horizontal dt {
+        float:none;
+        text-align: left;
+    }
+    .dl-horizontal dd{
+    margin-left: 0px;
+    margin-bottom: 0px;
+    }
+}
+</style>
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
         <div class="action-bar" style="margin-bottom: 20px;">
-          <a href="{{ url_for('.index') }}" class="btn btn-default">
+          <a href="{{ url_for('files.index') }}" class="btn btn-default">
             <i class="fa fa-chevron-left"></i> Back to List
           </a>
         </div>
@@ -18,9 +187,9 @@
             <dl class="dl-horizontal">
               <dt>Batch Display Name</dt><dd>{{ batch_details.batch_display_name }}</dd>
               <dt>Access ID</dt><dd><code>{{ batch_details.access_id }}</code></dd>
-              <dt>Uploaded By</dt><dd>{{ batch_details.username }}</dd>
+              <dt>Uploaded By</dt><dd>{{ batch_details.username | default('N/A', true) }}</dd>
               <dt>Upload Timestamp</dt><dd>{{ batch_details.upload_timestamp.strftime('%Y-%m-%d %H:%M:%S') if batch_details.upload_timestamp else 'N/A' }} UTC</dd>
-              <dt>Total Size</dt><dd>{{ batch_details.total_size }} ({{ batch_details.file_count }} file(s))</dd>
+              <dt>Total Size</dt><dd>{{ batch_details.total_original_size | format_bytes if batch_details.total_original_size is defined else batch_details.total_size }} ({{ batch_details.file_count }} file(s))</dd>
               <dt>Is Anonymous</dt>
               <dd>
                 {% if batch_details.is_anonymous %}<span class="status-badge status-failed">Yes</span>
@@ -34,34 +203,36 @@
         <div class="panel panel-default">
             <div class="panel-heading"><h3 class="panel-title">Files in this Batch</h3></div>
             <div class="panel-body">
-                <table class="table table-bordered table-striped table-hover">
-                    <thead><tr><th>Filename</th><th>Size</th><th>MIME Type</th><th>Actions</th></tr></thead>
-                    <tbody>
-                      {% for file in files_in_batch %}
-                      <tr>
-                        <td><i class="fa fa-file-o" style="margin-right: 8px;"></i>{{ file.original_filename or '[No Filename]' }}</td>
-                        <td>{{ file.total_original_size | format_bytes }}</td>
-                        <td>{{ file.mime_type or 'N/A' }}</td>
-                        <td>
-                        {% if file.original_filename %}
-                          <button type="button" class="btn btn-xs btn-primary view-content-btn" data-toggle="modal" data-target="#filePreviewModal" data-filename="{{ file.original_filename }}" data-batch-id="{{ batch_details.access_id }}">View Content</button>
+                <div class="table-responsive">
+                  <table class="table table-bordered table-striped table-hover">
+                      <thead><tr><th>Filename</th><th>Size</th><th>MIME Type</th><th>Actions</th></tr></thead>
+                      <tbody>
+                        {% for file in files_in_batch %}
+                        <tr>
+                          <td><i class="fa fa-file-o" style="margin-right: 8px;"></i>{{ file.original_filename or '[No Filename]' }}</td>
+                          <td>{{ file.total_original_size | format_bytes if file.total_original_size is defined else (file.original_size | format_bytes if file.original_size is defined else 'N/A') }}</td>
+                          <td>{{ file.mime_type or 'N/A' }}</td>
+                          <td>
+                          {% if file.original_filename %}
+                            <button type="button" class="btn btn-xs btn-primary view-content-btn" data-toggle="modal" data-target="#filePreviewModal" data-filename="{{ file.original_filename }}" data-batch-id="{{ batch_details.access_id }}">View Content</button>
+                          {% else %}
+                            <button type="button" class="btn btn-xs btn-default" disabled>No Filename</button>
+                          {% endif %}
+                          </td>
+                        </tr>
                         {% else %}
-                          <button type="button" class="btn btn-xs btn-default" disabled>No Filename</button>
-                        {% endif %}
-                        </td>
-                      </tr>
-                      {% else %}
-                      <tr><td colspan="4" class="text-center">No individual file records found for this batch.</td></tr>
-                      {% endfor %}
-                    </tbody>
-                  </table>
+                        <tr><td colspan="4" class="text-center">No individual file records found for this batch.</td></tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
             </div>
         </div>
       </div>
     </div>
   </div>
-  
-  <!-- MODAL HTML (Correctly placed inside the body block) -->
+
+  <!-- MODAL HTML (Correctly placed inside the page_body block) -->
   <div class="modal fade" id="filePreviewModal" tabindex="-1" role="dialog" aria-labelledby="filePreviewModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -74,84 +245,103 @@
         </div>
     </div>
   </div>
-{% endblock %} {# <-- The body block ENDS here #}
+{% endblock page_body %}
 
 
-{# --- The tail_js block is now OUTSIDE and SEPARATE from the body block --- #}
 {% block tail_js %}
   {{ super() }}
   <script>
-    $('#filePreviewModal').on('show.bs.modal', function(event) {
-        var button = $(event.relatedTarget);
-        var filename = button.data('filename');
-        var batchId = button.data('batch-id');
-        var modal = $(this);
-        var modalBody = modal.find('#filePreviewModalBody');
+    $(document).ready(function() { 
+        $('#filePreviewModal').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget);
+            var filename = button.data('filename');
+            var batchId = button.data('batch-id');
+            var modal = $(this);
+            var modalBody = modal.find('#filePreviewModalBody');
 
-        modal.find('.modal-title').text('Preview: ' + filename);
-        modalBody.html('<p class="text-center"><em>Loading content...</em></p>');
+            modal.find('.modal-title').text('Preview: ' + filename);
+            modalBody.html('<p class="text-center"><em>Loading content...</em></p>');
 
-        var contentUrl = "{{ url_for('.view_file_content', batch_id='__BATCH_ID__', filename='__FILENAME__') }}"
-            .replace('__BATCH_ID__', batchId)
-            .replace('__FILENAME__', encodeURIComponent(filename));
+            var contentUrl = "{{ url_for('files.view_file_content', batch_id='__BATCH_ID__', filename='__FILENAME__') }}"
+                .replace('__BATCH_ID__', batchId)
+                .replace('__FILENAME__', encodeURIComponent(filename));
 
-        console.log("Fetching content for:", filename, "from URL:", contentUrl);
+            console.log("Fetching content for:", filename, "from URL:", contentUrl);
 
-        fetch(contentUrl)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Server responded with status: ' + response.status);
-                }
-                return Promise.all([response.blob(), response.headers.get('Content-Type')]);
-            })
-            .then(([blob, contentType]) => {
-                console.log("Received data. Blob size:", blob.size, "bytes. Content-Type:", contentType);
-                modalBody.empty();
-
-                var effectiveContentType = contentType;
-                if (!effectiveContentType || effectiveContentType === 'application/octet-stream') {
-                    if (filename.toLowerCase().endsWith('.jpg') || filename.toLowerCase().endsWith('.jpeg')) {
-                        effectiveContentType = 'image/jpeg';
-                    } else if (filename.toLowerCase().endsWith('.png')) {
-                        effectiveContentType = 'image/png';
-                    } else if (filename.toLowerCase().endsWith('.pdf')) {
-                        effectiveContentType = 'application/pdf';
-                    } else if (filename.toLowerCase().startsWith('text/')) {
-                        effectiveContentType = 'text/plain';
+            fetch(contentUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => { 
+                            throw new Error('Server responded with status: ' + response.status + '. Message: ' + text);
+                        });
                     }
-                    console.log("Guessed Content-Type from filename:", effectiveContentType);
-                }
+                    return Promise.all([response.blob(), response.headers.get('Content-Type')]);
+                })
+                .then(([blob, contentType]) => {
+                    console.log("Received data. Blob size:", blob.size, "bytes. Content-Type:", contentType);
+                    modalBody.empty();
 
-                if (effectiveContentType.startsWith('image/')) {
-                    var imageUrl = URL.createObjectURL(blob);
-                    modalBody.html('<img src="' + imageUrl + '" class="img-fluid" alt="Image preview">');
-                    console.log("Rendering as image.");
-                } else if (effectiveContentType === 'application/pdf') {
-                    var pdfUrl = URL.createObjectURL(blob);
-                    modalBody.html('<embed src="' + pdfUrl + '" type="application/pdf" width="100%" height="650px" />');
-                    console.log("Rendering as PDF.");
-                } else if (effectiveContentType.startsWith('text/')) {
-                    blob.text().then(function(textContent) {
-                        var pre = $('<pre></pre>').css({"white-space": "pre-wrap", "word-wrap": "break-word", "max-height": "70vh", "overflow-y": "auto"});
-                        pre.text(textContent);
-                        modalBody.append(pre);
-                        console.log("Rendering as text.");
-                    });
-                } else {
-                    console.log("Unsupported type. Showing download link.");
-                    modalBody.html(
-                        '<div class="alert alert-warning">' +
-                        '  <h4>Preview Not Available</h4>' +
-                        '  <p>Preview is not supported for this file type (<code>' + (contentType || 'unknown') + '</code>).</p>' +
-                        '  <a href="' + contentUrl + '" class="btn btn-primary" download="' + filename + '">Download File</a>' +
-                        '</div>'
-                    );
+                    var effectiveContentType = contentType;
+                    if (!effectiveContentType || effectiveContentType.toLowerCase() === 'application/octet-stream' || effectiveContentType.toLowerCase() === 'binary/octet-stream') {
+                        const extension = filename.split('.').pop().toLowerCase();
+                        const mimeMap = {
+                            'jpg': 'image/jpeg', 'jpeg': 'image/jpeg', 'png': 'image/png',
+                            'gif': 'image/gif', 'svg': 'image/svg+xml', 'webp': 'image/webp',
+                            'pdf': 'application/pdf', 'txt': 'text/plain', 'html': 'text/html',
+                            'css': 'text/css', 'js': 'application/javascript', 'json': 'application/json',
+                            'xml': 'application/xml'
+                        };
+                        effectiveContentType = mimeMap[extension] || contentType; 
+                        console.log("Guessed Content-Type from filename extension:", effectiveContentType);
+                    }
+
+
+                    if (effectiveContentType && effectiveContentType.startsWith('image/')) {
+                        var imageUrl = URL.createObjectURL(blob);
+                        modalBody.html('<img src="' + imageUrl + '" class="img-fluid" alt="Image preview">');
+                        $(modalBody.find('img')).on('load', function() { URL.revokeObjectURL(imageUrl); }); 
+                        console.log("Rendering as image.");
+                    } else if (effectiveContentType === 'application/pdf') {
+                        var pdfUrl = URL.createObjectURL(blob);
+                        modalBody.html('<iframe src="' + pdfUrl + '" style="width:100%; height:650px; border:none;" title="PDF Preview"></iframe>');
+                        console.log("Rendering as PDF.");
+                    } else if (effectiveContentType && (effectiveContentType.startsWith('text/') || effectiveContentType === 'application/json' || effectiveContentType === 'application/xml' || effectiveContentType === 'application/javascript')) {
+                        blob.text().then(function(textContent) {
+                            var pre = $('<pre></pre>').css({"white-space": "pre-wrap", "word-wrap": "break-word", "max-height": "70vh", "overflow-y": "auto"});
+                            pre.text(textContent);
+                            modalBody.append(pre);
+                            console.log("Rendering as text/code.");
+                        });
+                    } else {
+                        console.log("Unsupported type or preview disabled. Showing download link.");
+                        var downloadUrl = URL.createObjectURL(blob);
+                        modalBody.html(
+                            '<div class="alert alert-warning">' +
+                            '  <h4>Preview Not Available</h4>' +
+                            '  <p>Preview is not supported for this file type (<code>' + (effectiveContentType || contentType || 'unknown') + '</code>).</p>' +
+                            '  <a href="' + downloadUrl + '" class="btn btn-primary" download="' + filename + '">Download File</a>' +
+                            '</div>'
+                        );
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching file for preview:', error);
+                    modalBody.html('<div class="alert alert-danger"><strong>Error:</strong> Could not load file preview. ' + error.message + ' Check the browser console.</div>');
+                });
+        });
+
+        $('#filePreviewModal').on('hidden.bs.modal', function () {
+            var modalBody = $(this).find('#filePreviewModalBody');
+            var objectUrlElements = modalBody.find('img[src^="blob:"], iframe[src^="blob:"], a[href^="blob:"]');
+            objectUrlElements.each(function() {
+                var url = $(this).is('a') ? $(this).attr('href') : $(this).attr('src');
+                if (url) {
+                    URL.revokeObjectURL(url);
+                    console.log("Revoked Object URL:", url);
                 }
-            })
-            .catch(error => {
-                console.error('Error fetching file for preview:', error);
-                modalBody.html('<div class="alert alert-danger"><strong>Error:</strong> Could not load file preview. Check the browser console.</div>');
             });
+            modalBody.html('<p class="text-center">Loading...</p>'); 
+        });
     });
   </script>
-{% endblock %}
+{% endblock tail_js %}

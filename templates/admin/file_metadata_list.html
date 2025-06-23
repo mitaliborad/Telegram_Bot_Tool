@@ -1,5 +1,5 @@
 {# templates/admin/file_metadata_list.html #}
-{% extends 'admin/my_admin_base.html' %}
+{% extends 'admin/master.html' %} {# MODIFIED THIS LINE #}
 {# Assuming your pagination_widget from lib.html is similar to the macro defined here.
    If it's different, you might prefer to use the macro below or adapt.
    For simplicity, I'll use the macro defined in this template.
@@ -41,8 +41,8 @@
   {% endif %}
 {% endmacro %}
 
-{# Change 'body' to 'page_body' to fit into the main content area of master.html #}
-{% block body %}
+{# This block content will be injected into the {% block page_body %} of admin/master.html #}
+{% block page_body %}
 <style>
     .custom-styled-table {
         background-color: #ffffff;
@@ -69,7 +69,7 @@
         vertical-align: middle;
         font-size: 0.875rem;
         color: #333333;
-        height: 68px; /* This was original, keeping it */
+        height: 88px; /* This was original, keeping it */
         overflow: hidden; /* This was original, keeping it */
     }
 
@@ -77,7 +77,6 @@
         border-bottom: none;
     }
 
-    /* Status badge styling to match screenshot's appearance (rounded rectangles) */
     .status-badge {
         padding: 6px 12px;
         font-size: 0.8rem;
@@ -93,59 +92,82 @@
         border-style: solid;
     }
 
-    .status-badge.status-active { /* Green - like 'Active' in screenshot */
+    .status-badge.status-active { /* For "No" in Anonymous column - Reddish */
          background-color: #FEE2E2;
         color: #B91C1C;
        border-color: #FECACA;
     }
 
-    .status-badge.status-failed { /* Red - like 'Failed' in screenshot */
+    .status-badge.status-failed { /* For "Yes" in Anonymous column - Greenish */
         background-color: #D1FAE5;
         color: #047857;
         border-color: #A7F3D0;
     }
 
-    /* Custom colors for 'Batch' and 'Single File' as they don't have direct screenshot equivalents */
     .status-badge.status-info-custom { /* For Batch */
         background-color: #c8d1df;
         color: #475569;
-        border-color: #CBD5E1; /* Neutral blue-grey */
+        border-color: #CBD5E1;
     }
     .status-badge.status-secondary-custom { /* For Single File */
       background-color: #E2E8F0;
       color: #475569;
-      border-color: #CBD5E1;/* Lighter neutral grey */
+      border-color: #CBD5E1;
     }
 
-    /* Action buttons styling (optional, can be inherited or customized further) */
     .actions-column{
       display:flex;
-        align-items: center; /* Vertically center the Details link and Archive form */
-      gap: 5px;           /* Space between the buttons */
+      align-items: center;
+      gap: 5px;
       height: 100%;
     }
     .actions-column .btn {
-        margin-right: 5px;
+        margin-right: 5px; /* Default spacing, can be overridden by specific button styles */
     }
-    .actions-column .btn-xs {
+    .actions-column .btn-sm { /* Ensure btn-sm is effective for consistency if used by formatter */
         padding: 0.25rem 0.5rem;
-        font-size: 0.75rem;
+        font-size: 0.875rem; /* Bootstrap standard, adjust if needed */
+        line-height: 1.5;
     }
+
+    /* Styles for action buttons to match screenshot */
+    .actions-column .btn-preview { /* Custom class for Preview button */
+        background-color: #17a2b8; /* Teal/Blue from screenshot */
+        border-color: #17a2b8;
+        color: white;
+    }
+    .actions-column .btn-preview:hover {
+        background-color: #138496;
+        border-color: #117a8b;
+        color: white;
+    }
+    .actions-column .btn-archive { /* Custom class for Archive button */
+        background-color: #dc3545; /* Red from screenshot */
+        border-color: #dc3545;
+        color: white;
+    }
+     .actions-column .btn-archive:hover {
+        background-color: #c82333;
+        border-color: #bd2130;
+        color: white;
+    }
+
+
     form.form-inline button.btn-primary[type="submit"] {
-        background-color: #177452; /* Blue from screenshot */
+        background-color: #177452; /* Green search button */
         border-color: #177452;
         color: #ffffff;
-        padding: 0.375rem 0.75rem; /* Standard Bootstrap padding */
-        font-size: 1rem; /* Standard Bootstrap font size */
-        line-height: 1.5; /* Standard Bootstrap line height */
-        border-radius: 0.25rem; /* Standard Bootstrap border radius */
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        border-radius: 0.25rem;
     }
     form.form-inline button.btn-primary[type="submit"]:hover {
-        background-color: #d7fec8; /* Darker blue for hover */
+        background-color: #d7fec8;
         border-color: #177452;
         color: #177452;
     }
-    ul.pagination { /* Corrected selector */
+    ul.pagination {
         margin-top: 20px;
     }
 
@@ -156,16 +178,15 @@
 
     .page-link {
       color:#177452;
-
-      &:hover{
+    }
+    .page-link:hover{
         color:#177452;
-      }
-      &:focus{
+    }
+    .page-link:focus{
         box-shadow:none;
-      }
     }
 
-    .action{
+    .action{ /* This class seems unused based on the table structure, but keeping if it's for something else */
       display:flex;
     }
 
@@ -216,9 +237,8 @@
   {% endif %}
 
   {% if records %}
-    {# --- MODIFICATION: Added div with class table-responsive --- #}
     <div class="table-responsive">
-      <table class="custom-styled-table"> {# Changed class here #}
+      <table class="custom-styled-table">
         <thead>
           <tr>
             <th>Access ID</th>
@@ -244,7 +264,6 @@
                        {% else %}N/A{% endif %}
                    </td>
                    <td>
-                       {# Updated badge classes for new styling #}
                        {% if record.is_batch %}
                            <span class="status-badge status-info-custom">Batch</span>
                        {% else %}
@@ -252,12 +271,11 @@
                        {% endif %}
                    </td>
                    <td>
-                       {# Assuming upload_timestamp is a datetime object. Changed format to match screenshot. #}
                        {% if record.upload_timestamp %}
                           {% if record.upload_timestamp is string %}
-                              {{ record.upload_timestamp }} {# Assuming pre-formatted string if it is a string #}
+                              {{ record.upload_timestamp }}
                           {% else %}
-                              {{ record.upload_timestamp.strftime('%m/%d/%y') if record.upload_timestamp else 'N/A' }}
+                              {{ record.upload_timestamp.strftime('%Y-%m-%dT%H:%M:%SZ') if record.upload_timestamp else 'N/A' }}
                           {% endif %}
                        {% else %}
                           N/A
@@ -271,23 +289,28 @@
                        {% else %}N/A{% endif %}
                    </td>
                    <td>
-                       {# Updated badge classes for new styling #}
                        {% if record.is_anonymous %}
                            <span class="status-badge status-failed">Yes</span>{% if record.anonymous_id %}({{ record.anonymous_id[:8] }}...){% endif %}
                        {% else %}
                            <span class="status-badge status-active">No</span>
                        {% endif %}
                    </td>
-                   <td>
-    {% if list_view.column_formatters and 'actions' in list_view.column_formatters %}
-        {{ admin_view._actions_formatter(None, record, 'actions') | safe }}
-    {% endif %}
-    </td>
+                   <td class="actions-column">
+                        {% if list_view.column_formatters and 'actions' in list_view.column_formatters %}
+                            {# Ensure your _actions_formatter generates buttons with classes like btn-preview and btn-archive, or standard Bootstrap classes #}
+                            {{ admin_view._actions_formatter(None, record, 'actions') | safe }}
+                        {% else %}
+                            {# Fallback example to match screenshot buttons if formatter is missing/not customized #}
+                            {# Replace # with actual URLs and consider form for POST actions like Archive #}
+                            <a href="#" class="btn btn-sm btn-preview">Preview</a>
+                            <a href="#" class="btn btn-sm btn-archive">Archive</a>
+                        {% endif %}
+                   </td>
                  </tr>
                {% endfor %}
              </tbody>
       </table>
-    </div> {# --- END OF MODIFICATION --- #}
+    </div>
 
     {% set current_endpoint_args = {} %}
     {% if request.args.get('q') %}{% set _ = current_endpoint_args.update({'q': request.args.get('q')}) %}{% endif %}
@@ -298,7 +321,7 @@
   {% elif not error_message %}
     {% if search_query and user_type_filter %}
         <p>No file/batch upload records found matching your search for "<strong>{{ search_query }}</strong>" with user type "<strong>{{ user_type_filter }}</strong>".</p>
-    {% elif search_query %}
+    {% elif search_query %} {# Corrected from search__query #}
         <p>No file/batch upload records found matching your search for "<strong>{{ search_query }}</strong>".</p>
     {% elif user_type_filter %}
         <p>No file/batch upload records found with user type "<strong>{{ user_type_filter }}</strong>".</p>
@@ -306,4 +329,4 @@
         <p>No file/batch upload records found in the system.</p>
     {% endif %}
   {% endif %}
-{% endblock %}
+{% endblock page_body %}

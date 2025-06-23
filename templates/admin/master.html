@@ -12,82 +12,86 @@
             html { height: 100%; }
             /* Apply body_class block to the body tag */
             body { height: 100%; padding-top: 56px; overflow: hidden; }
-            body.sidebar-open { /* overflow: hidden; already handled */ }
+            
 
-            .navbar-dark.fixed-top { 
+            .navbar-dark.fixed-top {
                 background-color: #fff;
                  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-                 z-index: 1031; 
+                 z-index: 1031;
             }
 
             .navbar-dark .navbar-brand {
                 color:#006a43;
+
+                &:hover{
+                  color:#006a43;  
+                }
             }
 
             .navbar-dark .navbar-toggler-icon {
                 background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23006a43' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
             }
 
-            .admin-layout { display: flex; height: calc(100vh - 56px); }
+            .admin-layout { display: flex; height: calc(100vh - 56px);overflow:hidden; }
 
-            .admin-sidebar { 
-                background-color: #fff; 
+            .admin-sidebar {
+                background-color: #fff;
                 color: #fff; padding-left: 0;
-                padding-right: 0; 
+                padding-right: 0;
                 z-index: 1030;
-                display: flex; 
+                display: flex;
                 flex-direction: column;
                 border-width: 0 1px 0 0;
                 border-color: rgba(0, 0, 0, .05);
              }
-            .admin-sidebar .sidebar-sticky { 
-                display: flex; 
-                flex-direction: column; 
-                flex-grow: 1; 
-                padding-top: 1.5rem; 
-                overflow-y: auto; 
+            .admin-sidebar .sidebar-sticky {
+                display: flex;
+                flex-direction: column;
+                flex-grow: 1;
+                padding-top: 1.5rem;
+                overflow-y: auto;
                 padding-left:24px;
                 padding-right:24px;
             }
-            .admin-sidebar .sidebar-sticky .nav-main { 
+            .admin-sidebar .sidebar-sticky .nav-main {
                 flex-grow: 1;
              }
 
-            .admin-sidebar .nav-link { 
-                font-weight: 500; 
-                color: #006a43; 
+            .admin-sidebar .nav-link {
+                font-weight: 500;
+                color: #006a43;
                 padding: 0.75rem 1rem;
              }
             .admin-sidebar .nav-link:hover,
-            .admin-sidebar .nav-link.active { 
-                color: #014a2f; 
+            .admin-sidebar .nav-link.active {
+                color: #014a2f;
              }
-            .admin-sidebar h5 { 
-                padding: 0.5rem 1rem; 
-                margin-top: 0; 
-                color: #014a2f; 
-                font-size: 0.9rem; 
-                text-transform: uppercase; 
-                font-weight: 600; 
+            .admin-sidebar h5 {
+                padding: 0.5rem 1rem;
+                margin-top: 0;
+                color: #014a2f;
+                font-size: 0.9rem;
+                text-transform: uppercase;
+                font-weight: 600;
                 }
-            .admin-sidebar .close { 
-            color: white; 
-            opacity: 0.8; 
-            position: absolute; 
-            top: 10px; 
-            right: 15px; 
-            font-size: 1.8rem; 
-            line-height: 1; 
-            padding: 0.5rem; 
-            z-index: 10; 
+            .admin-sidebar .close {
+            color: #006a43; /* Adjusted to be visible on white background */
+            opacity: 0.8;
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.8rem;
+            line-height: 1;
+            padding: 0.5rem;
+            z-index: 10;
             }
             .admin-sidebar .close:hover {
-             opacity: 1; 
+             opacity: 1;
              }
-            .feather { width: 16px; 
-            height: 16px; 
-            vertical-align: text-bottom; 
-            margin-right: 8px; 
+            .feather { width: 16px;
+            height: 16px;
+            vertical-align: text-bottom;
+            margin-right: 8px;
             }
             .feather-user-nav { /* Specific style for navbar user icon */
                 width: 20px; /* Slightly larger for navbar */
@@ -96,13 +100,13 @@
             }
 
 
-            .main-admin-content-wrapper { 
-            flex-grow: 1; 
-            height: 100%; 
-            overflow-y: auto; 
+            .main-admin-content-wrapper {
+            flex-grow: 1;
+            height: 100%;
+            overflow-y: auto;
             background-color:#f8f9fe;
             }
-            .main-admin-content { 
+            .main-admin-content {
             padding: 20px;
              }
 
@@ -118,7 +122,7 @@
             .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle::after {
                 margin-left: 0.25rem; /* Space between icon and caret */
                 vertical-align: 0.1em; /* Align caret slightly better */
-                color: #f8f9fa; /* Make caret white */
+                color: #006a43; /* Make caret match icon color */
             }
 
             .navbar-nav .dropdown-menu {
@@ -126,9 +130,10 @@
                 /* border: 1px solid #014a2f; */
                 min-width: 220px;
                 margin-top: 0.125rem;
-                transform: translateX(0);
-                top: 44px;
-                right: 10px;
+                transform: translateX(0); /* Adjusted for typical dropdown positioning */
+                top: 100%; /* Position below the toggle */
+                right: 0; /* Align to the right of the toggle parent */
+                left: auto; /* Ensure it doesn't try to align left */
                 box-shadow: 0 5px 15px #0000001a, 0 2px 5px #0000000d;
                 border:none;
             }
@@ -145,12 +150,11 @@
                 border:1px solid #006a43;
                 width: 83px;
                border-radius: 5px;
-
-               &:hover{
-                background-color:#d7fec8;
-               }
             }
-           
+            .navbar-nav .dropdown-menu .dropdown-item:hover{
+                background-color:#d7fec8;
+            }
+
             .navbar-nav .dropdown-menu .dropdown-header {
                 color: #006a43;
                 padding: .5rem 1rem .25rem;
@@ -167,7 +171,7 @@
                border-color:unset;
                border:0
             }
-            
+
             @media (min-width: 768px) { /* Desktop */
                 .admin-sidebar { flex: 0 0 250px; max-width: 250px; }
                 .navbar-toggler { display: none; }
@@ -184,7 +188,7 @@
                 .main-admin-content h1 { font-size: 1.5rem; }
                 .main-admin-content p { font-size: 0.9rem; }
                 .navbar-nav .nav-item.dropdown.user-dropdown-desktop { display: none !important; }
-                .navbar-dark .navbar-toggler{ 
+                .navbar-dark .navbar-toggler{
                     outline:none;
                     color:#006a43;
                  }
@@ -194,28 +198,28 @@
             }
 
             /* dashboard_index.css - (condensed) */
-            .card.gradient-stat-card { position: relative; 
+            .card.gradient-stat-card { position: relative;
                 overflow: hidden;
-                 border: none; 
-                 border-radius: 12px; color: #fff; 
+                 border: none;
+                 border-radius: 12px; color: #fff;
                  padding: 20px;
-                 box-shadow: 0 5px 15px rgba(0,0,0,0.12); 
+                 box-shadow: 0 5px 15px rgba(0,0,0,0.12);
                  transition: transform 0.2s ease-in-out;
              }
             .card.gradient-stat-card:hover { transform: translateY(-5px); }
             .gradient-stat-card .card-header { background-color: transparent; border-bottom: none; padding: 0 0 5px 0; font-size: 0.85rem; font-weight: 500; opacity: 0.9; color: inherit; }
             .gradient-stat-card .card-title { font-size: 2.2rem; font-weight: 700; margin-bottom: 8px; color: inherit; line-height: 1.2; }
             .gradient-stat-card .card-text { font-size: 0.8rem; opacity: 0.8; margin-bottom: 15px; color: inherit; flex-grow: 1; }
-            .gradient-stat-card .btn-stat-card { 
-                background-color: rgba(255, 255, 255, 0.2); 
-                border: 1px solid rgba(255, 255, 255, 0.3); 
-                color: #fff; font-size: 0.75rem; 
-                padding: 0.35rem 0.75rem; 
-                border-radius: 20px; 
-                text-transform: uppercase; 
-                font-weight: 500; 
-                letter-spacing: 0.5px; 
-                align-self: flex-start; 
+            .gradient-stat-card .btn-stat-card {
+                background-color: rgba(255, 255, 255, 0.2);
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                color: #fff; font-size: 0.75rem;
+                padding: 0.35rem 0.75rem;
+                border-radius: 20px;
+                text-transform: uppercase;
+                font-weight: 500;
+                letter-spacing: 0.5px;
+                align-self: flex-start;
             }
             .gradient-stat-card .btn-stat-card:hover { background-color: rgba(255, 255, 255, 0.3); border-color: rgba(255, 255, 255, 0.4); color: #fff; }
             .gradient-color-1 { background-image: linear-gradient(135deg, #db5946 0%, #c12040 100%); }
@@ -230,7 +234,7 @@
             .card.gradient-stat-card::after { width: 100px; height: 100px; bottom: -10px; right: 30px; }
             .gradient-stat-card .card-header, .gradient-stat-card .card-body { position: relative; z-index: 1; }
             /* ... */
-            
+
         </style>
     {% endblock %}
     {% block head %}{% endblock %}
@@ -287,9 +291,9 @@
     {% endblock %}
 
     <div class="admin-layout">
-        {% include 'admin/sidebar.html' %}
-        <div class="sidebar-overlay"></div> {# ADDED: For mobile sidebar functionality #}
-        <div class="main-admin-content-wrapper">
+        {% include 'admin/sidebar.html' %} {# This line includes the sidebar #}
+        {# <div class="sidebar-overlay"></div> Removed duplicate from here as it's also in sidebar.html logic #}
+        <div class="main-admin-content-wrapper col-md-9 ml-sm-auto col-lg-10 px-md-4"> {# Ensure Bootstrap grid classes for content area #}
             <main role="main" class="main-admin-content">
                 {% block page_body %}
                     <p>Welcome to the admin area. Please select an option from the sidebar.</p>
@@ -307,8 +311,8 @@
             // Sidebar Toggler
             $('#sidebarToggler').on('click', function () {
                 $('#adminSidebar').toggleClass('open');
-                $('.sidebar-overlay').toggleClass('open'); 
-                $('body').toggleClass('sidebar-open'); 
+                $('.sidebar-overlay').toggleClass('open');
+                $('body').toggleClass('sidebar-open');
             });
 
             // Close sidebar via overlay click or close button inside sidebar
@@ -321,7 +325,7 @@
             // Auto-dismiss flash messages after a delay
             window.setTimeout(function() {
                 $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                    $(this).remove(); 
+                    $(this).remove();
                 });
             }, 5000); // 5 seconds
         });

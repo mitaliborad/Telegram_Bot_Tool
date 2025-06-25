@@ -197,18 +197,101 @@ def api_get_single_file_details(access_id: str):
     if file_info.get('is_batch'): 
         return jsonify({"error": "This ID is for a batch. Use /api/batch-details."}), 400
     
+    # --- MODIFIED PART FOR original_size ---
+    size_from_batch_item = None
+    final_original_size = None # Default to None if not found
+
+    files_in_batch_list = file_info.get("files_in_batch")
+    if files_in_batch_list and isinstance(files_in_batch_list, list) and len(files_in_batch_list) > 0:
+        first_file_item = files_in_batch_list[0]
+        if 'original_size' in first_file_item: # Check if key exists
+            size_from_batch_item = first_file_item['original_size']
+
+    if size_from_batch_item is not None:
+        final_original_size = size_from_batch_item
+    elif 'original_size' in file_info: # Check top-level if not in files_in_batch item
+        final_original_size = file_info['original_size']
+    # If not found in either, final_original_size remains None
+    # --- END OF MODIFICATION ---
+
     response_data = {
         "access_id": access_id,
         "filename_to_preview": file_info.get("files_in_batch", [{}])[0].get("original_filename") or \
                                file_info.get('original_filename', 'Unknown'),
-        "original_size": file_info.get("files_in_batch", [{}])[0].get("original_size") or \
-                         file_info.get('original_size', 0),
+        "original_size": final_original_size, # Use the determined size
         "upload_timestamp": file_info.get('upload_timestamp'),
         "username": file_info.get('username', 'N/A'),
         "is_compressed": file_info.get("files_in_batch", [{}])[0].get('is_compressed', False),
         "is_split": file_info.get("files_in_batch", [{}])[0].get('is_split', False),
     }
     return jsonify(response_data)
+
+
+
+# @file_bp.route('/api/file-details/<access_id>', methods=['GET'])
+# def api_get_single_file_details(access_id: str):
+#     file_info, error_msg = find_metadata_by_access_id(access_id)
+#     if error_msg: return jsonify({"error": "Server error."}), 500
+#     if not file_info: return jsonify({"error": f"File ID '{access_id}' not found."}), 404
+
+#     if file_info.get('is_batch'): 
+#         return jsonify({"error": "This ID is for a batch. Use /api/batch-details."}), 400
+    
+#     response_data = {
+#         "access_id": access_id,
+#         "filename_to_preview": file_info.get("files_in_batch", [{}])[0].get("original_filename") or \
+#                                file_info.get('original_filename', 'Unknown'),
+#         "original_size": file_info.get("files_in_batch", [{}])[0].get("original_size") or \
+#                          file_info.get('original_size', 0),
+#         "upload_timestamp": file_info.get('upload_timestamp'),
+#         "username": file_info.get('username', 'N/A'),
+#         "is_compressed": file_info.get("files_in_batch", [{}])[0].get('is_compressed', False),
+#         "is_split": file_info.get("files_in_batch", [{}])[0].get('is_split', False),
+#     }
+#     return jsonify(response_data)
+
+# @file_bp.route('/batch-details/<access_id>', methods=['GET'])
+# def api_get_batch_details(access_id: str):
+#     log_prefix = f"[APIBatchDetails-{access_id}]"
+#     batch_info, error_msg = find_metadata_by_access_id(access_id)
+#     if error_msg:
+#         logging.error(f"{log_prefix} Server error fetching metadata: {error_msg}")
+#         return jsonify({"error": "Server error."}), 500
+#     if not batch_info:
+#         logging.warning(f"{log_prefix} Record not found.")
+#         return jsonify({"error": f"Record ID '{access_id}' not found."}), 404
+
+#     files_in_record = batch_info.get('files_in_batch', [])
+#     if not files_in_record:
+#         logging.warning(f"{log_prefix} Record '{access_id}' has no files in 'files_in_batch'. is_batch flag: {batch_info.get('is_batch')}")
+#         return jsonify({"error": "Record contains no file information."}), 400
+
+#     response_data = {
+#         "batch_name": batch_info.get('batch_display_name', f"Files for {access_id}"),
+#         "username": batch_info.get('username', 'N/A'),
+#         "upload_date": batch_info.get('upload_timestamp'),
+#         "total_size": batch_info.get('total_original_size', 0),
+#         "files": files_in_record, 
+#         "access_id": access_id,
+#         "is_anonymous": batch_info.get('is_anonymous', False),
+#         "upload_timestamp_raw": batch_info.get('upload_timestamp'),
+#         "is_batch": batch_info.get('is_batch', False) 
+#     }
+    
+#     processed_files = []
+#     for f_item in response_data["files"]:
+#         processed_f_item = f_item.copy()
+#         processed_f_item.setdefault('original_filename', "Unknown File")
+#         processed_f_item.setdefault('filename_to_preview', processed_f_item['original_filename'])
+#         processed_f_item.setdefault('original_size', 0)
+#         processed_f_item.setdefault('skipped', False)
+#         processed_f_item.setdefault('failed', False)
+#         processed_f_item.setdefault('reason', None)
+#         processed_files.append(processed_f_item)
+#     response_data["files"] = processed_files
+    
+#     logging.info(f"{log_prefix} Successfully retrieved batch details for access_id: {access_id}")
+#     return jsonify(response_data)
 
 @file_bp.route('/batch-details/<access_id>', methods=['GET'])
 def api_get_batch_details(access_id: str):
@@ -239,11 +322,20 @@ def api_get_batch_details(access_id: str):
     }
     
     processed_files = []
-    for f_item in response_data["files"]:
+    for f_item in response_data["files"]: # f_item is a dict from batch_info['files_in_batch']
         processed_f_item = f_item.copy()
         processed_f_item.setdefault('original_filename', "Unknown File")
         processed_f_item.setdefault('filename_to_preview', processed_f_item['original_filename'])
-        processed_f_item.setdefault('original_size', 0)
+        
+        # --- MODIFIED PART FOR original_size ---
+        if 'original_size' not in f_item: 
+            # If 'original_size' key is missing in the item from the database
+            processed_f_item['original_size'] = None 
+        else:
+            # If 'original_size' key exists, use its value (could be 0 or any other number)
+            processed_f_item['original_size'] = f_item['original_size']
+        # --- END OF MODIFICATION ---
+            
         processed_f_item.setdefault('skipped', False)
         processed_f_item.setdefault('failed', False)
         processed_f_item.setdefault('reason', None)
@@ -252,6 +344,109 @@ def api_get_batch_details(access_id: str):
     
     logging.info(f"{log_prefix} Successfully retrieved batch details for access_id: {access_id}")
     return jsonify(response_data)
+
+# @file_bp.route('/preview-details/<access_id>', methods=['GET', 'OPTIONS'])
+# def get_preview_details(access_id: str):
+#     log_prefix = f"[PreviewDetails-{access_id}]"
+#     filename_to_preview_query = request.args.get('filename')
+#     if filename_to_preview_query:
+#         log_prefix += f"-File-{filename_to_preview_query[:20]}"
+#     logging.info(f"{log_prefix} Request received.")
+
+#     top_level_record, error_msg_db = find_metadata_by_access_id(access_id)
+
+#     if error_msg_db: 
+#         logging.error(f"{log_prefix} Database error: {error_msg_db}")
+#         return jsonify({"error": "Server error while fetching file information."}), 500
+#     if not top_level_record:
+#         logging.warning(f"{log_prefix} File or batch not found (access_id: {access_id}).")
+#         return jsonify({"error": "File or batch not found."}), 404
+
+#     target_file_info: Optional[Dict[str, Any]] = None
+#     effective_filename_for_preview: Optional[str] = None
+
+#     files_in_record_arr = top_level_record.get('files_in_batch', [])
+
+#     if not files_in_record_arr: 
+#         logging.error(f"{log_prefix} Record {access_id} has no 'files_in_batch' array or it's empty.")
+#         return jsonify({"error": "Record contains no file information."}), 400
+
+#     if top_level_record.get('is_batch', False): 
+#         if not filename_to_preview_query:
+#             logging.warning(f"{log_prefix} Accessing preview for a batch record without specifying a file.")
+#             return jsonify({"error": "Please select a file from the batch to preview."}), 400
+        
+#         target_file_info = next((f for f in files_in_record_arr if f.get('original_filename') == filename_to_preview_query), None)
+#         if not target_file_info:
+#             logging.warning(f"{log_prefix} File '{filename_to_preview_query}' not found in batch {access_id}.")
+#             return jsonify({"error": f"File '{filename_to_preview_query}' not found in batch."}), 404
+#         effective_filename_for_preview = filename_to_preview_query
+#     else: 
+#         if len(files_in_record_arr) != 1:
+#             logging.error(f"{log_prefix} Record {access_id} marked as non-batch but files_in_batch count is not 1.")
+#             return jsonify({"error": "Inconsistent single file record."}), 500
+#         target_file_info = files_in_record_arr[0]
+#         effective_filename_for_preview = target_file_info.get('original_filename')
+#         if filename_to_preview_query and filename_to_preview_query != effective_filename_for_preview:
+#             logging.warning(f"{log_prefix} Query filename '{filename_to_preview_query}' does not match single file record's filename '{effective_filename_for_preview}'.")
+
+
+#     if not target_file_info or not effective_filename_for_preview:
+#         logging.error(f"{log_prefix} Could not determine target file info or effective filename for preview.")
+#         return jsonify({"error": "Could not determine file to preview from the record."}), 500
+    
+#     mime_type = target_file_info.get('mime_type')
+#     if not mime_type:
+#         mime_type, _ = mimetypes.guess_type(effective_filename_for_preview)
+#         mime_type = mime_type or 'application/octet-stream' 
+#         logging.info(f"{log_prefix} Guessed MIME type for '{effective_filename_for_preview}': {mime_type}")
+
+#     preview_type_str = get_preview_type(mime_type, effective_filename_for_preview)
+#     response_data = {
+#         "access_id": access_id,
+#         "filename": effective_filename_for_preview, 
+#         "size": target_file_info.get('original_size', 0),
+#         "mime_type": mime_type,
+#         "preview_type": preview_type_str,
+#         "is_anonymous": top_level_record.get('is_anonymous', False),
+#         "upload_timestamp": top_level_record.get('upload_timestamp'),
+#         "preview_content_url": None,
+#         "preview_data": None,
+#     }
+
+#     if response_data["is_anonymous"] and response_data["upload_timestamp"]:
+#         logging.info(f"{log_prefix} Anonymous upload. Checking expiration. Timestamp: '{response_data['upload_timestamp']}'")
+#         try:
+#             upload_datetime = dateutil_parser.isoparse(response_data["upload_timestamp"])
+#             if upload_datetime.tzinfo is None or upload_datetime.tzinfo.utcoffset(upload_datetime) is None:
+#                 upload_datetime = upload_datetime.replace(tzinfo=timezone.utc)
+#             expiration_days = app.config.get('ANONYMOUS_LINK_EXPIRATION_DAYS', 5)
+#             expiration_limit = timedelta(days=expiration_days) 
+#             if datetime.now(timezone.utc) > (upload_datetime + expiration_limit):
+#                 logging.info(f"{log_prefix} Anonymous download link EXPIRED.")
+#                 response_data["preview_type"] = "expired"
+#                 return jsonify(response_data), 410
+#             else:
+#                 logging.info(f"{log_prefix} Anonymous download link still valid.")
+#         except ValueError as e_parse:
+#             logging.error(f"{log_prefix} Error parsing upload_timestamp '{response_data['upload_timestamp']}': {e_parse}", exc_info=True)
+#             return jsonify({"error": "Error processing file metadata (invalid timestamp format)."}), 500
+#         except Exception as e_exp: 
+#             logging.error(f"{log_prefix} Unexpected error during expiration check: {e_exp}", exc_info=True)
+#             return jsonify({"error": "Server error during file validation."}), 500
+
+#     if response_data["preview_type"] not in ['unsupported', 'expired', 'directory_listing']: # directory_listing doesn't need content URL
+#         response_data['preview_content_url'] = url_for(
+#             'file_api.serve_raw_file_content', 
+#             access_id=access_id, 
+#             filename=effective_filename_for_preview, 
+#             _external=False
+#         )
+#         logging.info(f"{log_prefix} Preview content URL set to: {response_data['preview_content_url']}")
+
+#     logging.info(f"{log_prefix} Successfully prepared preview details: {response_data}")
+#     return jsonify(response_data)
+
 
 @file_bp.route('/preview-details/<access_id>', methods=['GET', 'OPTIONS'])
 def get_preview_details(access_id: str):
@@ -310,10 +505,13 @@ def get_preview_details(access_id: str):
         logging.info(f"{log_prefix} Guessed MIME type for '{effective_filename_for_preview}': {mime_type}")
 
     preview_type_str = get_preview_type(mime_type, effective_filename_for_preview)
+    file_size = None # Default to None
+    if 'original_size' in target_file_info: # Check if key exists
+        file_size = target_file_info['original_size']
     response_data = {
         "access_id": access_id,
         "filename": effective_filename_for_preview, 
-        "size": target_file_info.get('original_size', 0),
+        "size": file_size,
         "mime_type": mime_type,
         "preview_type": preview_type_str,
         "is_anonymous": top_level_record.get('is_anonymous', False),

@@ -668,12 +668,33 @@ def stream_file_to_batch():
     
     try:
         # Buffer the entire request stream into memory (io.BytesIO).
-        # This is fast but limited by server RAM.
-        logging.info(f"{log_prefix} Buffering file '{filename}' into memory...")
-        in_memory_stream = io.BytesIO(request.stream.read())
-        file_size = in_memory_stream.tell()
-        in_memory_stream.seek(0) # Rewind the stream to the beginning for reading.
-        logging.info(f"{log_prefix} File buffered. Size: {format_bytes(file_size)}. Starting GDrive upload.")
+        logging.info(f"{log_prefix} Reading request.stream for '{filename}' into memory buffer...")
+        
+        # Read the stream content first
+        raw_content = request.stream.read()
+        actual_bytes_read = len(raw_content)
+        logging.info(f"{log_prefix} Read {actual_bytes_read} bytes from request.stream for '{filename}'.")
+        if actual_bytes_read == 0 and filename: # Log warning if empty content for a named file
+            logging.warning(f"{log_prefix} Read 0 bytes for file '{filename}'. This will result in original_size being 0.")
+
+        in_memory_stream = io.BytesIO(raw_content)
+        
+        # To get the size of the content in BytesIO, the most reliable ways are:
+        # 1. Get the length of its internal buffer: len(in_memory_stream.getvalue())
+        # 2. Seek to the end and tell():
+        # in_memory_stream.seek(0, io.SEEK_END)
+        # file_size = in_memory_stream.tell()
+        # in_memory_stream.seek(0) # IMPORTANT: Rewind after getting size this way
+
+        # Using len(getvalue()) is straightforward after populating.
+        file_size = len(in_memory_stream.getvalue())
+
+        logging.info(f"{log_prefix} Determined file_size for '{filename}' as: {file_size} bytes ({format_bytes(file_size)}).")
+        
+        # Ensure stream is at the beginning for GDrive upload
+        in_memory_stream.seek(0)
+        
+        logging.info(f"{log_prefix} File '{filename}' buffered. Size: {format_bytes(file_size)}. Starting GDrive upload.")
 
         # Pass the seekable in-memory stream to the upload function.
         upload_generator = upload_to_gdrive_with_progress(
@@ -698,7 +719,8 @@ def stream_file_to_batch():
         # Update the database
         file_details = {
             "original_filename": filename, "gdrive_file_id": gdrive_file_id,
-            "original_size": file_size, "mime_type": mimetypes.guess_type(filename)[0] or 'application/octet-stream',
+            "original_size": file_size, # Use the determined file_size
+            "mime_type": mimetypes.guess_type(filename)[0] or 'application/octet-stream',
             "telegram_send_status": "pending"
         }
         coll, db_error = get_metadata_collection()
@@ -716,7 +738,10 @@ def stream_file_to_batch():
         return jsonify({"error": f"Failed to upload '{filename}': {str(e)}"}), 500
     finally:
         # No temp file to clean up, in-memory stream is handled by garbage collection.
-        pass
+        if 'in_memory_stream' in locals() and in_memory_stream:
+            in_memory_stream.close() # Good practice to close BytesIO streams
+            logging.debug(f"{log_prefix} Closed in_memory_stream for '{filename}'.")
+
 
     upload_progress_data[batch_id] = {"type": "status", "message": f"Completed: {filename}"}
     return jsonify({"message": f"File '{filename}' uploaded successfully to GDrive."}), 200
